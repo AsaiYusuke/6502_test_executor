@@ -100,6 +100,9 @@ void set_pre_conditions(vector<string> test, mos6502 *cpu, char* symbols_file) {
                 cpu->Y = stoi(words[2]);
             } else if ("mem" == words[1]) {
                 data[stoi(words[2])] = stoi(words[3]);
+            } else {
+                cout << "does not understand set " <<  words[1] << endl;
+                throw 2;
             }
         }
 
@@ -129,6 +132,9 @@ void assert_end_condtions(vector<string> test, mos6502 cpu) {
                 assert_equal(stoi(words[2]), cpu.Y, "Wrong value in Y");
             } else if ("mem" == words[1]){
                 assert_equal(stoi(words[3]), data[stoi(words[2])], "Wrong value in memory");
+            } else {
+                cout << "does not understand assert " <<  words[1] << endl;
+                throw 2;
             }
         }
     }
