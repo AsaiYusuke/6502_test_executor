@@ -108,19 +108,36 @@ uint16_t find_symbol(string label) {
     throw 2;
 }
 
+uint8_t str2byte(string str) {
+    int val;
+
+    if (str.compare(0, 2, "0x") == 0)       val = stoi(str.substr(2), 0, 16);
+    else if (str.compare(0, 2, "0b") == 0)  val = stoi(str.substr(2), 0, 2);
+    else                                    val = stoi(str);
+
+    if (val < 0) val += 256; // convert to two's complement
+    
+    if (val >> 8) {
+        cerr << "value doesn't fit into 8 bits: " << str << endl;
+        throw 2;
+    }
+
+    return val;
+}
+
 void set_pre_conditions(vector<string> test, mos6502 *cpu) {
     for(int i=0; i<test.size(); i++) {
         vector<string> words = split(test[i]);
         if ("set" == words[0])
         {
             if ("A" == words[1]) {
-                cpu->A = stoi(words[2]);
+                cpu->A = str2byte(words[2]);
             } else if ("X" == words[1]) {
-                cpu->X = stoi(words[2]);
+                cpu->X = str2byte(words[2]);
             } else if ("Y" == words[1]) {
-                cpu->Y = stoi(words[2]);
+                cpu->Y = str2byte(words[2]);
             } else if ("mem" == words[1]) {
-                data[find_symbol(words[2])] = stoi(words[3]);
+                data[find_symbol(words[2])] = str2byte(words[3]);
             } else {
                 cout << "does not understand set " <<  words[1] << endl;
                 throw 2;
@@ -146,13 +163,13 @@ void assert_end_condtions(vector<string> test, mos6502 cpu) {
         if ("assert" == words[0])
         {
             if ("A" == words[1]) {
-                assert_equal(stoi(words[2]), cpu.A, "Wrong value in A");
+                assert_equal(str2byte(words[2]), cpu.A, "Wrong value in A");
             } else if ("X" == words[1]) {
-                assert_equal(stoi(words[2]), cpu.X, "Wrong value in X");
+                assert_equal(str2byte(words[2]), cpu.X, "Wrong value in X");
             } else if ("Y" == words[1]) {
-                assert_equal(stoi(words[2]), cpu.Y, "Wrong value in Y");
+                assert_equal(str2byte(words[2]), cpu.Y, "Wrong value in Y");
             } else if ("mem" == words[1]){
-                assert_equal(stoi(words[3]), data[find_symbol(words[2])], "Wrong value in memory");
+                assert_equal(str2byte(words[3]), data[find_symbol(words[2])], "Wrong value in memory");
             } else {
                 cout << "does not understand assert " <<  words[1] << endl;
                 throw 2;
