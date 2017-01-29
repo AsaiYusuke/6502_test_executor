@@ -104,7 +104,7 @@ uint16_t find_symbol(string label) {
             return symbol_cache[label];
         }
     }
-    cerr << "didnt find start address in symbols file" << endl;
+    cerr << "didnt find symbol '" << label << "' in symbols file" << endl;
     throw 2;
 }
 
@@ -139,7 +139,7 @@ void set_pre_conditions(vector<string> test, mos6502 *cpu) {
             } else if ("mem" == words[1]) {
                 data[find_symbol(words[2])] = str2byte(words[3]);
             } else {
-                cout << "does not understand set " <<  words[1] << endl;
+                cerr << "does not understand set " <<  words[1] << endl;
                 throw 2;
             }
         }
@@ -150,9 +150,9 @@ void set_pre_conditions(vector<string> test, mos6502 *cpu) {
     }
 }
 
-void assert_equal(int expected, int actual, const char message[]) {
+void assert_equal(int expected, int actual, string message) {
     if (expected != actual) {
-        printf("%s. Expected %d, but was %d\n", message, expected, actual);
+        cerr << message << ": Expected " << expected << ", but was " << actual << endl;
         passed = false;
     }
 }
@@ -169,9 +169,11 @@ void assert_end_condtions(vector<string> test, mos6502 cpu) {
             } else if ("Y" == words[1]) {
                 assert_equal(str2byte(words[2]), cpu.Y, "Wrong value in Y");
             } else if ("mem" == words[1]){
-                assert_equal(str2byte(words[3]), data[find_symbol(words[2])], "Wrong value in memory");
+                ostringstream msg;
+                msg << "Wrong value in " << words[2];
+                assert_equal(str2byte(words[3]), data[find_symbol(words[2])], msg.str());
             } else {
-                cout << "does not understand assert " <<  words[1] << endl;
+                cerr << "does not understand assert " <<  words[1] << endl;
                 throw 2;
             }
         }
