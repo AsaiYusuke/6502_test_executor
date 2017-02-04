@@ -127,6 +127,7 @@ uint8_t str2byte(string str) {
 
 void set_pre_conditions(vector<string> test, mos6502 *cpu) {
     for(int i=0; i<test.size(); i++) {
+        if (test[i].size() == 0) continue;
         vector<string> words = split(test[i]);
         if ("set" == words[0])
         {
@@ -159,6 +160,7 @@ void assert_equal(int expected, int actual, string message) {
 
 void assert_end_condtions(vector<string> test, mos6502 cpu) {
     for(int i=0; i<test.size(); i++) {
+        if (test[i].size() == 0) continue;
         vector<string> words = split(test[i]);
         if ("assert" == words[0])
         {
@@ -208,7 +210,7 @@ int main(int argc, char* argv[]) {
     while (!(cpu.pc > pc_start && cpu.pc <= pc_start + 3) && ++count < DEFAULT_TIMEOUT);
 
     if (count == DEFAULT_TIMEOUT) {
-        printf("Stopped after timed out\n");
+        cerr << "Stopped after timed out" << endl;
         return -1;
     } else {
         printf("Stopped upon reaching PC=%x\n", cpu.pc);
