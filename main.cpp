@@ -87,8 +87,17 @@ vector<string> split(string str) {
 }
 
 uint16_t find_symbol(string label) {
+    int offset = 0;
+    string::size_type array_offset_start = label.find("[", 0);
+    if (array_offset_start != string::npos)
+    {
+        string::size_type array_offset_end = label.find("]", array_offset_start);
+        offset = stoi(label.substr(array_offset_start+1, array_offset_end - array_offset_start-1));
+        label = label.substr(0, array_offset_start);
+    }
+
     if (symbol_cache.count(label) == 1) {
-        return symbol_cache[label];
+        return symbol_cache[label] + offset;
     }
     ostringstream stream;
     stream << "sym\t\"" << label << "\",value=0x";
@@ -101,7 +110,7 @@ uint16_t find_symbol(string label) {
             for (i=label_pattern_size; line[i] != ','; i++);
             string addr = line.substr(label_pattern_size, i - label_pattern_size);
             symbol_cache[label] = stoi(addr, 0, 16);
-            return symbol_cache[label];
+            return symbol_cache[label] + offset;
         }
     }
     cerr << "didnt find symbol '" << label << "' in symbols file" << endl;
