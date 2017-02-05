@@ -48,5 +48,5 @@ It is also possible to refer to variables such as in the following, assuming pla
 ```
 set mem player_position 10
 start TestMovePlayer
-assert player_position 11
+assert mem player_position 11
 ```
