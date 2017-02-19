@@ -5,8 +5,9 @@ if [ -z $1 ]; then
 fi
 
 RC=0
+script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 for test_file in `ls $1/*.test`; do
-    msg=$(test_executor/6502_tester portal.nes symbols.txt $test_file 2>&1 >/dev/null)
+    msg=$($script_dir/6502_tester portal.nes symbols.txt $test_file 2>&1 >/dev/null)
     if [[ $? -eq 0 ]]; then
        echo -e "  \e[32m[PASS]\e[0m    $(basename $test_file .test)"
     else
