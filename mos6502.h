@@ -162,10 +162,11 @@ private:
     BusWrite Write;
     
     // stack operations
-    inline void StackPush(uint8_t byte);
     inline uint8_t StackPop();
-    
+
 public:
+   
+    void StackPush(uint8_t byte);
     
     mos6502(BusRead r, BusWrite w);
     void NMI();

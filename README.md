@@ -28,7 +28,7 @@ In both examples value should be a number. It can be specified in the following 
 In the first example, <register> can be either A, X or Y, refering to the corresponding CPU registers. The second example refers to memory locations given by a label in the source such as player_position. The memory address is determined by the symbols table. An optional offset can be added using C-style array-offset notation, e.g. my_array[3].
 
 #### start
-The start command is used to set the PC register, meaning telling the processor where to start when executing the test. This memory address is given by a single argument containing a label, just like in the set mem instruction. Note that the test executor will stop upon reaching the instruction directly after the one given by the start command. This means that for the test to make sense, the start command must point to a JSR instruction. The test will then terminate when this JSR returns. Also note that the function that the JSR instruction is pointing to cannot be directly below the JSR. This is because it would then jump only to the next instruction, and the test would immediately terminate.
+The start command is used to set the PC register, meaning telling the processor where to start when executing the test. This memory address is given by a single argument containing a label, just like in the set mem instruction. Assuming the label points to a sub routine, the test executor will stop when the sub routine returns (using RTS). 
 
 #### assert
 The assert command is identical to the set command, except that "set" is replaced with "assert". In this case the memory address or register is checked to be equal to the given value. If all assert commands holds true, the test will pass.

@@ -191,6 +191,11 @@ void assert_end_condtions(vector<string> test, mos6502 cpu) {
     }
 }
 
+void set_return_address(mos6502* cpu) {
+    cpu->StackPush(0xFF);
+    cpu->StackPush(0xFE);
+}
+
 void print_cpu(mos6502* cpu) {
     printf("A=%d, X=%d, Y=%d, pc=%x\n", cpu->A, cpu->X, cpu->Y, cpu->pc);
 }
@@ -208,15 +213,16 @@ int main(int argc, char* argv[]) {
 
     set_pre_conditions(test, &cpu);
     print_cpu(&cpu);
+    
+    set_return_address(&cpu);
 
     int count = 0;
-    uint16_t pc_start = cpu.pc;
     printf("starting\n");
     do {
         cpu.Run(1);
         printf("pc = %x\n", cpu.pc);
     }
-    while (!(cpu.pc > pc_start && cpu.pc <= pc_start + 3) && ++count < DEFAULT_TIMEOUT);
+    while (cpu.pc != 0xFFFF && ++count < DEFAULT_TIMEOUT);
 
     if (count == DEFAULT_TIMEOUT) {
         cerr << "Stopped after timed out" << endl;
