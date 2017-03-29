@@ -1,23 +1,23 @@
-##MOS6502 Unit Test executor ##
+## MOS6502 Unit Test executor
 This repository is a fork of gianlucag's MOS6502 emulator, and adds a driver for performing unit tests on it. 
 
-##How to use##
+## How to use
 Build with make and start the driver (6502_tester) with the following arguments:
 
-### Argument 1: 6502 executable ###
+### Argument 1: 6502 executable
 Path to the 6502 program that the test should be performed on.
 
-### Argument 2: symbols table ###
+### Argument 2: symbols table
 Path to the symbols table. This file contains debug information from the building of the 6502 program. To generate this file when building with the cc65 compiler, use the --debug-info flag when compiling and --dbgfile <filename> when linking.
 
-### Argument 3: test procedure ###
+### Argument 3: test procedure
 Path to the test procedure file. This file contains a description for performing the test, using three commands "set", "start" and "assert". Note that the order of these commands does not matter: It will always perform all "set"-commands before starting the test, and always perform asserts after the return of the function under test.
 
 #### set
 The set instruction is used to set the state of the machine before starting to run the code. It can be used in the following formats:
 ```
 set <register> <value>
-set mem <label>([<offset>]) <value>
+set <label>([<offset>]) <value>
 ```
 
 In both examples value should be a number. It can be specified in the following ways: 
@@ -25,10 +25,10 @@ In both examples value should be a number. It can be specified in the following 
 * Unsigned base 16 (hexadecimal), e.g. 0xff, 0xFF or 0x1 (twohundred fifty five, twohundred fifty five or one)
 * Unsigned base 2 (binary), e.g. 0b10 (two)
 
-In the first example, <register> can be either A, X or Y, refering to the corresponding CPU registers. The second example refers to memory locations given by a label in the source such as player_position. The memory address is determined by the symbols table. An optional offset can be added using C-style array-offset notation, e.g. my_array[3].
+In the first example, <register> can be either A, X or Y, refering to the corresponding CPU registers. The second example refers to memory locations given by a label in the source such as player_position. The memory address is determined by the symbols table. An optional offset can be added using C-style array-offset notation, e.g. my_array[3]. Note that in a conflict, registers are allways given precedence, meaning that labels named either X, Y or Z will not be possible to set.
 
 #### start
-The start command is used to set the PC register, meaning telling the processor where to start when executing the test. This memory address is given by a single argument containing a label, just like in the set mem instruction. Assuming the label points to a sub routine, the test executor will stop when the sub routine returns (using RTS). 
+The start command is used to set the PC register, meaning telling the processor where to start when executing the test. This memory address is given by a single argument containing a label, just like in the set instruction. Assuming the label points to a sub routine, the test executor will stop when the sub routine returns (using RTS). 
 
 #### assert
 The assert command is identical to the set command, except that "set" is replaced with "assert". In this case the memory address or register is checked to be equal to the given value. If all assert commands holds true, the test will pass.
@@ -46,7 +46,7 @@ This will start by setting the A register to 4 and X to 3, then the PC to the ad
 It is also possible to refer to variables such as in the following, assuming player_position is a label in the symbols table:
 
 ```
-set mem player_position 10
+set player_position 10
 start TestMovePlayer
-assert mem player_position 11
+assert player_position 11
 ```

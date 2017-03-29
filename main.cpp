@@ -146,11 +146,8 @@ void set_pre_conditions(vector<string> test, mos6502 *cpu) {
                 cpu->X = str2byte(words[2]);
             } else if ("Y" == words[1]) {
                 cpu->Y = str2byte(words[2]);
-            } else if ("mem" == words[1]) {
-                data[find_symbol(words[2])] = str2byte(words[3]);
             } else {
-                cerr << "does not understand set " <<  words[1] << endl;
-                throw 2;
+                data[find_symbol(words[1])] = str2byte(words[2]);
             }
         }
 
@@ -179,13 +176,10 @@ void assert_end_condtions(vector<string> test, mos6502 cpu) {
                 assert_equal(str2byte(words[2]), cpu.X, "Wrong value in X");
             } else if ("Y" == words[1]) {
                 assert_equal(str2byte(words[2]), cpu.Y, "Wrong value in Y");
-            } else if ("mem" == words[1]){
-                ostringstream msg;
-                msg << "Wrong value in " << words[2];
-                assert_equal(str2byte(words[3]), data[find_symbol(words[2])], msg.str());
             } else {
-                cerr << "does not understand assert " <<  words[1] << endl;
-                throw 2;
+                ostringstream msg;
+                msg << "Wrong value in " << words[1];
+                assert_equal(str2byte(words[2]), data[find_symbol(words[1])], msg.str());
             }
         }
     }
