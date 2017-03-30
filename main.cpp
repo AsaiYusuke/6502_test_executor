@@ -117,12 +117,17 @@ uint16_t find_symbol(string label) {
     throw 2;
 }
 
+bool is_digits(const std::string &str) {
+    return str.find_first_not_of("-0123456789") == std::string::npos;
+}
+
 uint8_t str2byte(string str) {
     int val;
 
     if (str.compare(0, 2, "0x") == 0)       val = stoi(str.substr(2), 0, 16);
     else if (str.compare(0, 2, "0b") == 0)  val = stoi(str.substr(2), 0, 2);
-    else                                    val = stoi(str);
+    else if (is_digits(str))                val = stoi(str);
+    else                                    val = find_symbol(str);
 
     if (val < 0) val += 256; // convert to two's complement
     

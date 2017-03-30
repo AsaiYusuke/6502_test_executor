@@ -20,10 +20,11 @@ set <register> <value>
 set <label>([<offset>]) <value>
 ```
 
-In both examples value should be a number. It can be specified in the following ways: 
+In both examples value should represent a number. It can be specified in the following ways: 
 * Signed base 10 (decimal), e.g. 123 or -10 (onehundred twenty three or minus ten)
 * Unsigned base 16 (hexadecimal), e.g. 0xff, 0xFF or 0x1 (twohundred fifty five, twohundred fifty five or one)
 * Unsigned base 2 (binary), e.g. 0b10 (two)
+* A constant defined somewhere in your code, e.g. TRUE
 
 In the first example, <register> can be either A, X or Y, refering to the corresponding CPU registers. The second example refers to memory locations given by a label in the source such as player_position. The memory address is determined by the symbols table. An optional offset can be added using C-style array-offset notation, e.g. my_array[3]. Note that in a conflict, registers are allways given precedence, meaning that labels named either X, Y or Z will not be possible to set.
 
