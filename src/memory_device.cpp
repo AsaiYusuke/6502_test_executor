@@ -70,8 +70,8 @@ void memory_device::parse_symbol_def(string line)
 
     auto label = line.substr(name_pos, name_end_pos - name_pos);
     auto value = stoi(line.substr(val_pos, val_end_pos - val_pos), 0, 16);
-    symbol_address_map[label] = value;
-    address_symbol_map[value] = label;
+    label_address_map[label] = value;
+    address_label_map[value] = label;
 }
 
 memory_device::memory_device(string program_path, string symbol_path)
@@ -87,17 +87,17 @@ void memory_device::clear()
 
 bool memory_device::has_address(string label)
 {
-    return symbol_address_map.count(label) > 0;
+    return label_address_map.count(label) > 0;
 }
 
 uint16_t memory_device::get_address(string label)
 {
-    return symbol_address_map[label];
+    return label_address_map[label];
 }
 
-string memory_device::get_symbol(uint16_t address)
+string memory_device::get_label(uint16_t address)
 {
-    return address_symbol_map[address];
+    return address_label_map[address];
 }
 
 uint8_t memory_device::read(uint16_t address)
@@ -127,6 +127,6 @@ void memory_device::print()
     {
         uint16_t k = iter->first;
         uint8_t v = iter->second;
-        printf("- %s($%x) : $%x\n", address_symbol_map[k].c_str(), k, v);
+        printf("- %s($%x) : $%x\n", address_label_map[k].c_str(), k, v);
     }
 }

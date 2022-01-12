@@ -1,5 +1,5 @@
-#ifndef __CPUDEVICE_H_INCLUDED__
-#define __CPUDEVICE_H_INCLUDED__
+#ifndef __CPU_DEVICE_H_INCLUDED__
+#define __CPU_DEVICE_H_INCLUDED__
 
 #include "mos6502.h"
 #include "memory_access.h"

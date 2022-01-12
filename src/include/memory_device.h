@@ -1,5 +1,5 @@
-#ifndef __MEMORYDEVICE_H_INCLUDED__
-#define __MEMORYDEVICE_H_INCLUDED__
+#ifndef __MEMORY_DEVICE_H_INCLUDED__
+#define __MEMORY_DEVICE_H_INCLUDED__
 
 #include <stdio.h>
 #include <map>
@@ -16,8 +16,8 @@ private:
     char *rom;
     map<uint16_t, uint8_t> ram;
 
-    map<string, uint16_t> symbol_address_map;
-    map<uint16_t, string> address_symbol_map;
+    map<string, uint16_t> label_address_map;
+    map<uint16_t, string> address_label_map;
 
     void load_rom_image(string path);
     void load_symbol_defs(string path);
@@ -30,7 +30,7 @@ public:
     void clear();
     bool has_address(string label);
     uint16_t get_address(string label);
-    string get_symbol(uint16_t address);
+    string get_label(uint16_t address);
     uint8_t read(uint16_t address);
     void write(uint16_t address, uint8_t value);
     void print();

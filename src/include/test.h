@@ -1,5 +1,5 @@
-#ifndef __TESTCASE_H_INCLUDED__
-#define __TESTCASE_H_INCLUDED__
+#ifndef __TEST_H_INCLUDED__
+#define __TEST_H_INCLUDED__
 
 #include "emulation_devices.h"
 #include "../../../json/single_include/nlohmann/json.hpp"

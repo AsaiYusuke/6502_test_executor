@@ -7,11 +7,8 @@ cpu_device::cpu_device(i_memory_access *i_memory_access)
 
 void cpu_device::clear(uint16_t target_program_counter)
 {
+    cpu->Reset();
     cpu->setPC(target_program_counter);
-    cpu->setA(0);
-    cpu->setX(0);
-    cpu->setY(0);
-    cpu->setStatus(0);
     cpu->StackPush(0xFF);
     cpu->StackPush(0xFE);
 }
@@ -80,7 +77,7 @@ bool cpu_device::is_reg_status_negative_flag()
 
 void cpu_device::set_reg_status_negative_flag(bool value)
 {
-    cpu->setStatus(cpu->getStatus() & !(NEGATIVE) | (value ? NEGATIVE : 0));
+    cpu->setStatus(cpu->getStatus() & !NEGATIVE | value * NEGATIVE);
 }
 
 bool cpu_device::is_reg_status_overflow_flag()
@@ -90,7 +87,7 @@ bool cpu_device::is_reg_status_overflow_flag()
 
 void cpu_device::set_reg_status_overflow_flag(bool value)
 {
-    cpu->setStatus(cpu->getStatus() & !(OVERFLOW) | (value ? OVERFLOW : 0));
+    cpu->setStatus(cpu->getStatus() & !OVERFLOW | value * OVERFLOW);
 }
 
 bool cpu_device::is_reg_status_break_flag()
@@ -100,7 +97,7 @@ bool cpu_device::is_reg_status_break_flag()
 
 void cpu_device::set_reg_status_break_flag(bool value)
 {
-    cpu->setStatus(cpu->getStatus() & !(BREAK) | (value ? BREAK : 0));
+    cpu->setStatus(cpu->getStatus() & !BREAK | value * BREAK);
 }
 
 bool cpu_device::is_reg_status_interrupt_flag()
@@ -110,7 +107,7 @@ bool cpu_device::is_reg_status_interrupt_flag()
 
 void cpu_device::set_status_interrupt_flag(bool value)
 {
-    cpu->setStatus(cpu->getStatus() & !(INTERRUPT) | (value ? INTERRUPT : 0));
+    cpu->setStatus(cpu->getStatus() & !INTERRUPT | value * INTERRUPT);
 }
 
 bool cpu_device::is_reg_status_zero_flag()
@@ -120,7 +117,7 @@ bool cpu_device::is_reg_status_zero_flag()
 
 void cpu_device::set_status_zero_flag(bool value)
 {
-    cpu->setStatus(cpu->getStatus() & !(ZERO) | (value ? ZERO : 0));
+    cpu->setStatus(cpu->getStatus() & !ZERO | value * ZERO);
 }
 
 bool cpu_device::is_reg_status_carry_flag()
@@ -130,7 +127,7 @@ bool cpu_device::is_reg_status_carry_flag()
 
 void cpu_device::set_status_carry_flag(bool value)
 {
-    cpu->setStatus(cpu->getStatus() & !(CARRY) | (value ? CARRY : 0));
+    cpu->setStatus(cpu->getStatus() & !CARRY | value * CARRY);
 }
 
 void cpu_device::print()
