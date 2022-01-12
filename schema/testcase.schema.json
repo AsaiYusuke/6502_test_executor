@@ -1,0 +1,166 @@
+{
+    "$schema": "http://json-schema.org/schema",
+    "type": "object",
+    "required": [
+        "target",
+        "cases"
+    ],
+    "additionalProperties": false,
+    "properties": {
+        "$schema": {
+            "type": "string"
+        },
+        "target": {
+            "description": "Test target",
+            "$ref": "#/definitions/address"
+        },
+        "cases": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "type": "object",
+                "required": [
+                    "name",
+                    "setup",
+                    "expected"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "skip": {
+                        "type": "boolean"
+                    },
+                    "setup": {
+                        "$ref": "#/definitions/conditions"
+                    },
+                    "expected": {
+                        "$ref": "#/definitions/conditions"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "address": {
+            "type": "object",
+            "oneOf": [
+                {
+                    "required": [
+                        "address"
+                    ]
+                },
+                {
+                    "required": [
+                        "label"
+                    ]
+                }
+            ],
+            "properties": {
+                "address": {
+                    "type": "string",
+                    "pattern": "^\\$[0-9A-F]{1,4}$"
+                },
+                "label": {
+                    "type": "string"
+                }
+            },
+            "dependencies": {
+                "address": {
+                    "properties": {
+                        "label": {
+                            "type": "null"
+                        }
+                    }
+                },
+                "label": {
+                    "properties": {
+                        "address": {
+                            "type": "null"
+                        }
+                    }
+                }
+            }
+        },
+        "number": {
+            "oneOf": [
+                {
+                    "type": "integer",
+                    "minimum": -256,
+                    "maximum": 256
+                },
+                {
+                    "type": "string",
+                    "pattern": "^\\$[0-9A-F]{1,2}$"
+                },
+                {
+                    "type": "string",
+                    "pattern": "^%[01]{1,8}$"
+                }
+            ]
+        },
+        "conditions": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "A": {
+                    "$ref": "#/definitions/number"
+                },
+                "X": {
+                    "$ref": "#/definitions/number"
+                },
+                "Y": {
+                    "$ref": "#/definitions/number"
+                },
+                "Status": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "Negative": {
+                            "type": "boolean"
+                        },
+                        "Overflow": {
+                            "type": "boolean"
+                        },
+                        "Break": {
+                            "type": "boolean"
+                        },
+                        "Interrupt": {
+                            "type": "boolean"
+                        },
+                        "Zero": {
+                            "type": "boolean"
+                        },
+                        "Carry": {
+                            "type": "boolean"
+                        }
+                    }
+                },
+                "memory": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "type": "object",
+                        "allOf": [
+                            {
+                                "$ref": "#/definitions/address"
+                            }
+                        ],
+                        "required": [
+                            "value"
+                        ],
+                        "additionalProperties": false,
+                        "properties": {
+                            "address": {},
+                            "label": {},
+                            "value": {
+                                "$ref": "#/definitions/number"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

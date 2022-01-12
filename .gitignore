@@ -1,1 +1,4 @@
+.vscode
 6502_tester
+example/build
+example/dist
