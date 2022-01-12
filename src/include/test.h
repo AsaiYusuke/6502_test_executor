@@ -11,6 +11,9 @@ using json = nlohmann::json;
 class test
 {
 private:
+    bool is_quiet_ok;
+    bool is_quiet_fail;
+    bool is_quiet_summary;
     bool is_quiet;
     vector<string> errors;
     emulation_devices *device;
@@ -18,8 +21,11 @@ private:
 
     uint16_t target_program_counter;
 
-    enum test_result {
-        OK, FAIL, SKIP
+    enum test_result
+    {
+        OK,
+        FAIL,
+        SKIP
     };
 
     uint8_t to_byte(json value);
@@ -30,7 +36,7 @@ private:
     bool assert_condition(json condition_json);
 
 public:
-    test(string test_path, emulation_devices *device, bool quiet);
+    test(string test_path, emulation_devices *device, bool quiet_ok, bool quiet_fail, bool quiet_summary, bool quiet);
     void clear();
     bool execute();
     void print_test_result(test_result result, string test_name);

@@ -126,6 +126,9 @@
                         "Break": {
                             "type": "boolean"
                         },
+                        "Decimal": {
+                            "type": "boolean"
+                        },
                         "Interrupt": {
                             "type": "boolean"
                         },

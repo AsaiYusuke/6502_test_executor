@@ -1,3 +1,4 @@
+#include <sstream>
 #include <fstream>
 #include <string>
 
@@ -5,7 +6,7 @@
 
 using namespace std;
 
-test::test(string test_path, emulation_devices *device, bool quiet)
+test::test(string test_path, emulation_devices *device, bool quiet_ok, bool quiet_fail, bool quiet_summary, bool quiet)
 {
     ifstream in(test_path);
     in >> test_json;
@@ -21,6 +22,9 @@ test::test(string test_path, emulation_devices *device, bool quiet)
             device->get_address(
                 test_json["target"]["label"].get<string>());
 
+    is_quiet_ok = quiet_ok;
+    is_quiet_fail = quiet_fail;
+    is_quiet_summary = quiet_summary;
     is_quiet = quiet;
 }
 
@@ -59,6 +63,10 @@ void test::setup_condition(json condition)
         if (!condition["Status"]["Break"].is_null())
             cpu->set_reg_status_break_flag(
                 condition["Status"]["Break"].get<bool>());
+
+        if (!condition["Status"]["Decimal"].is_null())
+            cpu->set_reg_status_decimal_flag(
+                condition["Status"]["Decimal"].get<bool>());
 
         if (!condition["Status"]["Interrupt"].is_null())
             cpu->set_status_interrupt_flag(
@@ -156,6 +164,12 @@ bool test::assert_condition(json condition)
             cpu->is_reg_status_break_flag(),
             "Register Status(Break flag)");
 
+    if (!condition["Status"]["Decimal"].is_null())
+        result &= assert_equal(
+            condition["Status"]["Decimal"].get<bool>(),
+            cpu->is_reg_status_decimal_flag(),
+            "Register Status(Decimal flag)");
+
     if (!condition["Status"]["Interrupt"].is_null())
         result &= assert_equal(
             condition["Status"]["Interrupt"].get<bool>(),
@@ -184,15 +198,19 @@ bool test::assert_condition(json condition)
         {
             address = device->to_byte(
                 memory_def["address"].get<string>());
+            stringstream ss;
+            ss << hex << address;
             address_name =
-                "Memory " + memory_def["address"].get<string>() + to_string(address);
+                "Memory " + memory_def["address"].get<string>() + "($" + ss.str() + ")";
         }
         else
         {
             address = device->get_address(
                 memory_def["label"].get<string>());
+            stringstream ss;
+            ss << hex << address;
             address_name =
-                "Memory " + memory_def["label"].get<string>() + to_string(address);
+                "Memory " + memory_def["label"].get<string>() + "($" + ss.str() + ")";
         }
 
         uint8_t value;
@@ -260,12 +278,18 @@ void test::print_test_result(test_result result, string test_name)
     switch (result)
     {
     case OK:
+        if (is_quiet_ok)
+            return;
         cout << "OK";
         break;
     case FAIL:
+        if (is_quiet_fail)
+            return;
         cout << "FAIL";
         break;
     case SKIP:
+        if (is_quiet_ok)
+            return;
         cout << "SKIP";
         break;
     }
@@ -287,7 +311,7 @@ void test::print_test_result(test_result result, string test_name)
 
 void test::print_summary(int ok, int fail, int skip, int total)
 {
-    if (is_quiet)
+    if (is_quiet || is_quiet_summary)
         return;
 
     cout << "----------------------------------------------------------------------" << endl;

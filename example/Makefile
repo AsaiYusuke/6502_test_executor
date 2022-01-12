@@ -41,7 +41,7 @@ $(TEST_EXEC) :
 	make -C ..
 
 %.test : %.test.json
-	$(TEST_EXEC) -p $(TARGET) -s $(DEBUG) -t $<
+	$(TEST_EXEC) -p $(TARGET) -s $(DEBUG) --quiet-ok --quiet-summary -t $<
 
 clean :
 	rm -rf $(BUILD_DIR)

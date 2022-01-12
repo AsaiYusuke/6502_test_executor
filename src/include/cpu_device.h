@@ -33,6 +33,8 @@ public:
     void set_reg_status_overflow_flag(bool value);
     bool is_reg_status_break_flag();
     void set_reg_status_break_flag(bool value);
+    bool is_reg_status_decimal_flag();
+    void set_reg_status_decimal_flag(bool value);
     bool is_reg_status_interrupt_flag();
     void set_status_interrupt_flag(bool value);
     bool is_reg_status_zero_flag();

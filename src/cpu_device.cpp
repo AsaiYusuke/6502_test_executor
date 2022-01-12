@@ -100,6 +100,16 @@ void cpu_device::set_reg_status_break_flag(bool value)
     cpu->setStatus(cpu->getStatus() & !BREAK | value * BREAK);
 }
 
+bool cpu_device::is_reg_status_decimal_flag()
+{
+    return cpu->getStatus() & DECIMAL > 0;
+}
+
+void cpu_device::set_reg_status_decimal_flag(bool value)
+{
+    cpu->setStatus(cpu->getStatus() & !DECIMAL | value * DECIMAL);
+}
+
 bool cpu_device::is_reg_status_interrupt_flag()
 {
     return cpu->getStatus() & INTERRUPT > 0;
@@ -132,7 +142,7 @@ void cpu_device::set_status_carry_flag(bool value)
 
 void cpu_device::print()
 {
-    printf("CPU result:\n A: $%x, X: $%x, Y: $%x, S: $%x (N: %s, O: %s, B: %s, I: %s, Z: %s, C: %s), PC: $%x\n",
+    printf("CPU result:\n A: $%x, X: $%x, Y: $%x, S: $%x (N: %s, O: %s, B: %s, D: %s, I: %s, Z: %s, C: %s), PC: $%x\n",
            cpu->getA(),
            cpu->getX(),
            cpu->getY(),
@@ -140,6 +150,7 @@ void cpu_device::print()
            (cpu->getStatus() & NEGATIVE) > 0 ? "True" : "False",
            (cpu->getStatus() & OVERFLOW) > 0 ? "True" : "False",
            (cpu->getStatus() & BREAK) > 0 ? "True" : "False",
+           (cpu->getStatus() & DECIMAL) > 0 ? "True" : "False",
            (cpu->getStatus() & INTERRUPT) > 0 ? "True" : "False",
            (cpu->getStatus() & ZERO) > 0 ? "True" : "False",
            (cpu->getStatus() & CARRY) > 0 ? "True" : "False",
