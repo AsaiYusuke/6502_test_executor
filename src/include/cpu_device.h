@@ -36,11 +36,11 @@ public:
     bool is_reg_status_decimal_flag();
     void set_reg_status_decimal_flag(bool value);
     bool is_reg_status_interrupt_flag();
-    void set_status_interrupt_flag(bool value);
+    void set_reg_status_interrupt_flag(bool value);
     bool is_reg_status_zero_flag();
-    void set_status_zero_flag(bool value);
+    void set_reg_status_zero_flag(bool value);
     bool is_reg_status_carry_flag();
-    void set_status_carry_flag(bool value);
+    void set_reg_status_carry_flag(bool value);
 
     void print();
 };

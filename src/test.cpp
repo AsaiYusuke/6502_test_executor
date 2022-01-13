@@ -48,17 +48,17 @@ void test::setup_condition(json condition)
     auto cpu = device->get_cpu();
 
     cpu->set_reg_a(to_byte(condition["A"]));
-    cpu->set_reg_a(to_byte(condition["X"]));
-    cpu->set_reg_a(to_byte(condition["Y"]));
+    cpu->set_reg_x(to_byte(condition["X"]));
+    cpu->set_reg_y(to_byte(condition["Y"]));
     if (!condition["Status"].is_null())
     {
         cpu->set_reg_status_negative_flag(condition["Status"].value("Negative", false));
         cpu->set_reg_status_overflow_flag(condition["Status"].value("Overflow", false));
         cpu->set_reg_status_break_flag(condition["Status"].value("Break", false));
         cpu->set_reg_status_decimal_flag(condition["Status"].value("Decimal", false));
-        cpu->set_status_interrupt_flag(condition["Status"].value("Interrupt", false));
-        cpu->set_status_zero_flag(condition["Status"].value("Zero", false));
-        cpu->set_status_carry_flag(condition["Status"].value("Carry", false));
+        cpu->set_reg_status_interrupt_flag(condition["Status"].value("Interrupt", false));
+        cpu->set_reg_status_zero_flag(condition["Status"].value("Zero", false));
+        cpu->set_reg_status_carry_flag(condition["Status"].value("Carry", false));
     }
 
     if (!condition["memory"].is_null())
