@@ -15,18 +15,21 @@ test::test(string test_path, emulation_devices *device, bool quiet_ok, bool quie
 
     json target = test_json["target"];
     if (target.contains("address"))
-        target_program_counter =
-            to_byte(target["address"]);
+        target_program_counter = to_byte(target["address"]);
     else
-        target_program_counter =
-            device->get_address(
-                target["label"].get<string>(),
-                to_byte(target["offset"]));
+        target_program_counter = get_address(target);
 
     is_quiet_ok = quiet_ok;
     is_quiet_fail = quiet_fail;
     is_quiet_summary = quiet_summary;
     is_quiet = quiet;
+}
+
+uint16_t test::get_address(json value)
+{
+    return device->get_address(
+        value["label"].get<string>(),
+        to_byte(value["offset"]));
 }
 
 uint8_t test::to_byte(json value)
@@ -68,9 +71,7 @@ void test::setup_condition(json condition)
             if (memory_def.contains("address"))
                 address = to_byte(memory_def["address"]);
             else
-                address = device->get_address(
-                    memory_def["label"].get<string>(),
-                    to_byte(memory_def["offset"]));
+                address = get_address(memory_def);
 
             uint8_t value = to_byte(memory_def["value"]);
 
@@ -180,13 +181,11 @@ bool test::assert_condition(json condition)
         }
         else
         {
-            uint8_t offset = to_byte(memory_def["offset"]);
-
-            address = device->get_address(
-                memory_def["label"].get<string>(),
-                offset);
+            address = get_address(memory_def["label"]);
             stringstream ss;
-            ss << "Memory " << memory_def["label"].get<string>() << " + " << to_hex_string(offset) << " (" << to_hex_string(address) << ")";
+            ss << "Memory " << memory_def["label"].get<string>();
+            ss << " + " << to_hex_string(to_byte(memory_def["offset"]));
+            ss << " (" << to_hex_string(address) << ")";
             address_name = ss.str();
         }
 

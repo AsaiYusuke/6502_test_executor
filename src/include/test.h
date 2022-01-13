@@ -28,6 +28,7 @@ private:
         SKIP
     };
 
+    uint16_t get_address(json value);
     uint8_t to_byte(json value);
     void setup_condition(json condition_json);
     string to_hex_string(uint16_t value);
