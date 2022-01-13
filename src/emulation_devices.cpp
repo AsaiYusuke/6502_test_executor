@@ -22,17 +22,8 @@ memory_device *emulation_devices::get_memory()
     return memory;
 }
 
-uint16_t emulation_devices::get_address(string label)
+uint16_t emulation_devices::get_address(string label, int offset)
 {
-    int offset = 0;
-    string::size_type array_offset_start = label.find("[", 0);
-    if (array_offset_start != string::npos)
-    {
-        string::size_type array_offset_end = label.find("]", array_offset_start);
-        offset = stoi(label.substr(array_offset_start + 1, array_offset_end - array_offset_start - 1));
-        label = label.substr(0, array_offset_start);
-    }
-
     if (!memory->has_address(label))
     {
         cerr << "didnt find symbol '" << label << "' in symbols file" << endl;
@@ -73,7 +64,7 @@ uint8_t emulation_devices::to_byte(string str)
     else if (is_digits(str))
         value = stoi(str);
     else
-        value = get_address(str);
+        value = get_address(str, 0);
 
     value = two_complement_byte(value);
 

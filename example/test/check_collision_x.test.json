@@ -9,15 +9,18 @@
             "setup": {
                 "memory": [
                     {
-                        "label": "vector[1]",
+                        "label": "vector",
+                        "offset": 1,
                         "value": 6
                     },
                     {
-                        "label": "pos[1]",
+                        "label": "pos",
+                        "offset": 1,
                         "value": 223
                     },
                     {
-                        "label": "old_pos[1]",
+                        "label": "old_pos",
+                        "offset": 1,
                         "value": 222
                     }
                 ]
@@ -25,7 +28,8 @@
             "expected": {
                 "memory": [
                     {
-                        "label": "vector[1]",
+                        "label": "vector",
+                        "offset": 1,
                         "value": 6
                     }
                 ]
@@ -36,15 +40,18 @@
             "setup": {
                 "memory": [
                     {
-                        "label": "vector[1]",
+                        "label": "vector",
+                        "offset": 1,
                         "value": 6
                     },
                     {
-                        "label": "pos[1]",
+                        "label": "pos",
+                        "offset": 1,
                         "value": 224
                     },
                     {
-                        "label": "old_pos[1]",
+                        "label": "old_pos",
+                        "offset": 1,
                         "value": 222
                     }
                 ]
@@ -52,7 +59,8 @@
             "expected": {
                 "memory": [
                     {
-                        "label": "vector[1]",
+                        "label": "vector",
+                        "offset": 1,
                         "value": -6
                     }
                 ]
@@ -63,15 +71,18 @@
             "setup": {
                 "memory": [
                     {
-                        "label": "vector[1]",
+                        "label": "vector",
+                        "offset": 1,
                         "value": 6
                     },
                     {
-                        "label": "pos[1]",
+                        "label": "pos",
+                        "offset": 1,
                         "value": 225
                     },
                     {
-                        "label": "old_pos[1]",
+                        "label": "old_pos",
+                        "offset": 1,
                         "value": 222
                     }
                 ]
@@ -79,7 +90,8 @@
             "expected": {
                 "memory": [
                     {
-                        "label": "vector[1]",
+                        "label": "vector",
+                        "offset": 1,
                         "value": -6
                     }
                 ]
@@ -90,15 +102,18 @@
             "setup": {
                 "memory": [
                     {
-                        "label": "vector[1]",
+                        "label": "vector",
+                        "offset": 1,
                         "value": -6
                     },
                     {
-                        "label": "pos[1]",
+                        "label": "pos",
+                        "offset": 1,
                         "value": 33
                     },
                     {
-                        "label": "old_pos[1]",
+                        "label": "old_pos",
+                        "offset": 1,
                         "value": 34
                     }
                 ]
@@ -106,7 +121,8 @@
             "expected": {
                 "memory": [
                     {
-                        "label": "vector[1]",
+                        "label": "vector",
+                        "offset": 1,
                         "value": -6
                     }
                 ]
@@ -117,15 +133,18 @@
             "setup": {
                 "memory": [
                     {
-                        "label": "vector[1]",
+                        "label": "vector",
+                        "offset": 1,
                         "value": -6
                     },
                     {
-                        "label": "pos[1]",
+                        "label": "pos",
+                        "offset": 1,
                         "value": 32
                     },
                     {
-                        "label": "old_pos[1]",
+                        "label": "old_pos",
+                        "offset": 1,
                         "value": 34
                     }
                 ]
@@ -133,7 +152,8 @@
             "expected": {
                 "memory": [
                     {
-                        "label": "vector[1]",
+                        "label": "vector",
+                        "offset": 1,
                         "value": 6
                     }
                 ]
@@ -144,15 +164,18 @@
             "setup": {
                 "memory": [
                     {
-                        "label": "vector[1]",
+                        "label": "vector",
+                        "offset": 1,
                         "value": -6
                     },
                     {
-                        "label": "pos[1]",
+                        "label": "pos",
+                        "offset": 1,
                         "value": 31
                     },
                     {
-                        "label": "old_pos[1]",
+                        "label": "old_pos",
+                        "offset": 1,
                         "value": 34
                     }
                 ]
@@ -160,7 +183,8 @@
             "expected": {
                 "memory": [
                     {
-                        "label": "vector[1]",
+                        "label": "vector",
+                        "offset": 1,
                         "value": 6
                     }
                 ]

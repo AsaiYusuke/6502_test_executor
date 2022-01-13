@@ -13,14 +13,16 @@ test::test(string test_path, emulation_devices *device, bool quiet_ok, bool quie
 
     this->device = device;
 
-    if (test_json["target"].contains("address"))
+    json target = test_json["target"];
+    if (target.contains("address"))
         target_program_counter =
             device->to_byte(
-                test_json["target"]["address"].get<string>());
+                target["address"].get<string>());
     else
         target_program_counter =
             device->get_address(
-                test_json["target"]["label"].get<string>());
+                target["label"].get<string>(),
+                to_byte(target["offset"]));
 
     is_quiet_ok = quiet_ok;
     is_quiet_fail = quiet_fail;
@@ -30,6 +32,9 @@ test::test(string test_path, emulation_devices *device, bool quiet_ok, bool quie
 
 uint8_t test::to_byte(json value)
 {
+    if (value.is_null())
+        return 0;
+
     if (value.is_string())
         return device->to_byte(
             value.get<string>());
@@ -41,44 +46,18 @@ void test::setup_condition(json condition)
 {
     auto cpu = device->get_cpu();
 
-    if (!condition["A"].is_null())
-        cpu->set_reg_a(to_byte(condition["A"]));
-
-    if (!condition["X"].is_null())
-        cpu->set_reg_a(to_byte(condition["X"]));
-
-    if (!condition["Y"].is_null())
-        cpu->set_reg_a(to_byte(condition["Y"]));
-
+    cpu->set_reg_a(to_byte(condition["A"]));
+    cpu->set_reg_a(to_byte(condition["X"]));
+    cpu->set_reg_a(to_byte(condition["Y"]));
     if (!condition["Status"].is_null())
     {
-        if (!condition["Status"]["Negative"].is_null())
-            cpu->set_reg_status_negative_flag(
-                condition["Status"]["Negative"].get<bool>());
-
-        if (!condition["Status"]["Overflow"].is_null())
-            cpu->set_reg_status_overflow_flag(
-                condition["Status"]["Overflow"].get<bool>());
-
-        if (!condition["Status"]["Break"].is_null())
-            cpu->set_reg_status_break_flag(
-                condition["Status"]["Break"].get<bool>());
-
-        if (!condition["Status"]["Decimal"].is_null())
-            cpu->set_reg_status_decimal_flag(
-                condition["Status"]["Decimal"].get<bool>());
-
-        if (!condition["Status"]["Interrupt"].is_null())
-            cpu->set_status_interrupt_flag(
-                condition["Status"]["Interrupt"].get<bool>());
-
-        if (!condition["Status"]["Zero"].is_null())
-            cpu->set_status_zero_flag(
-                condition["Status"]["Zero"].get<bool>());
-
-        if (!condition["Status"]["Carry"].is_null())
-            cpu->set_status_carry_flag(
-                condition["Status"]["Carry"].get<bool>());
+        cpu->set_reg_status_negative_flag(condition["Status"].value("Negative", false));
+        cpu->set_reg_status_overflow_flag(condition["Status"].value("Overflow", false));
+        cpu->set_reg_status_break_flag(condition["Status"].value("Break", false));
+        cpu->set_reg_status_decimal_flag(condition["Status"].value("Decimal", false));
+        cpu->set_status_interrupt_flag(condition["Status"].value("Interrupt", false));
+        cpu->set_status_zero_flag(condition["Status"].value("Zero", false));
+        cpu->set_status_carry_flag(condition["Status"].value("Carry", false));
     }
 
     if (!condition["memory"].is_null())
@@ -93,7 +72,8 @@ void test::setup_condition(json condition)
                     memory_def["address"].get<string>());
             else
                 address = device->get_address(
-                    memory_def["label"].get<string>());
+                    memory_def["label"].get<string>(),
+                    to_byte(memory_def["offset"]));
 
             uint8_t value;
             if (memory_def["value"].is_string())
@@ -106,6 +86,13 @@ void test::setup_condition(json condition)
             memory->write(address, value);
         }
     }
+}
+
+string test::to_hex_string(uint16_t value)
+{
+    stringstream ss;
+    ss << uppercase << hex << value;
+    return ss.str();
 }
 
 void test::err(string expected, string actual, string message)
@@ -198,19 +185,17 @@ bool test::assert_condition(json condition)
         {
             address = device->to_byte(
                 memory_def["address"].get<string>());
-            stringstream ss;
-            ss << hex << address;
             address_name =
-                "Memory " + memory_def["address"].get<string>() + "($" + ss.str() + ")";
+                "Memory " + memory_def["address"].get<string>();
         }
         else
         {
             address = device->get_address(
-                memory_def["label"].get<string>());
+                memory_def["label"].get<string>(),
+                to_byte(memory_def["offset"]));
             stringstream ss;
-            ss << hex << address;
-            address_name =
-                "Memory " + memory_def["label"].get<string>() + "($" + ss.str() + ")";
+            ss << "Memory " << memory_def["label"].get<string>() << " + $" << to_hex_string(to_byte(memory_def["offset"])) << " ($" << to_hex_string(address) << ")";
+            address_name = ss.str();
         }
 
         uint8_t value;

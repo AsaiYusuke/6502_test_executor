@@ -30,6 +30,7 @@ private:
 
     uint8_t to_byte(json value);
     void setup_condition(json condition_json);
+    string to_hex_string(uint16_t value);
     void err(string expected, string actual, string message);
     bool assert_equal(uint8_t expected, uint8_t actual, string message);
     bool assert_equal(bool expected, bool actual, string message);

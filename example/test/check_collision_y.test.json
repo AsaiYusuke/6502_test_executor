@@ -9,15 +9,15 @@
             "setup": {
                 "memory": [
                     {
-                        "label": "vector[0]",
+                        "label": "vector",
                         "value": 8
                     },
                     {
-                        "label": "pos[0]",
+                        "label": "pos",
                         "value": 223
                     },
                     {
-                        "label": "old_pos[0]",
+                        "label": "old_pos",
                         "value": 222
                     }
                 ]
@@ -25,7 +25,7 @@
             "expected": {
                 "memory": [
                     {
-                        "label": "vector[0]",
+                        "label": "vector",
                         "value": 8
                     }
                 ]
@@ -36,15 +36,15 @@
             "setup": {
                 "memory": [
                     {
-                        "label": "vector[0]",
+                        "label": "vector",
                         "value": 8
                     },
                     {
-                        "label": "pos[0]",
+                        "label": "pos",
                         "value": 224
                     },
                     {
-                        "label": "old_pos[0]",
+                        "label": "old_pos",
                         "value": 222
                     }
                 ]
@@ -52,7 +52,7 @@
             "expected": {
                 "memory": [
                     {
-                        "label": "vector[0]",
+                        "label": "vector",
                         "value": -8
                     }
                 ]
@@ -63,15 +63,15 @@
             "setup": {
                 "memory": [
                     {
-                        "label": "vector[0]",
+                        "label": "vector",
                         "value": 8
                     },
                     {
-                        "label": "pos[0]",
+                        "label": "pos",
                         "value": 225
                     },
                     {
-                        "label": "old_pos[0]",
+                        "label": "old_pos",
                         "value": 222
                     }
                 ]
@@ -79,7 +79,7 @@
             "expected": {
                 "memory": [
                     {
-                        "label": "vector[0]",
+                        "label": "vector",
                         "value": -8
                     }
                 ]
@@ -90,15 +90,15 @@
             "setup": {
                 "memory": [
                     {
-                        "label": "vector[0]",
+                        "label": "vector",
                         "value": -8
                     },
                     {
-                        "label": "pos[0]",
+                        "label": "pos",
                         "value": 33
                     },
                     {
-                        "label": "old_pos[0]",
+                        "label": "old_pos",
                         "value": 34
                     }
                 ]
@@ -106,7 +106,7 @@
             "expected": {
                 "memory": [
                     {
-                        "label": "vector[0]",
+                        "label": "vector",
                         "value": -8
                     }
                 ]
@@ -117,15 +117,15 @@
             "setup": {
                 "memory": [
                     {
-                        "label": "vector[0]",
+                        "label": "vector",
                         "value": -8
                     },
                     {
-                        "label": "pos[0]",
+                        "label": "pos",
                         "value": 32
                     },
                     {
-                        "label": "old_pos[0]",
+                        "label": "old_pos",
                         "value": 34
                     }
                 ]
@@ -133,7 +133,7 @@
             "expected": {
                 "memory": [
                     {
-                        "label": "vector[0]",
+                        "label": "vector",
                         "value": 8
                     }
                 ]
@@ -144,15 +144,15 @@
             "setup": {
                 "memory": [
                     {
-                        "label": "vector[0]",
+                        "label": "vector",
                         "value": -8
                     },
                     {
-                        "label": "pos[0]",
+                        "label": "pos",
                         "value": 31
                     },
                     {
-                        "label": "old_pos[0]",
+                        "label": "old_pos",
                         "value": 34
                     }
                 ]
@@ -160,7 +160,7 @@
             "expected": {
                 "memory": [
                     {
-                        "label": "vector[0]",
+                        "label": "vector",
                         "value": 8
                     }
                 ]

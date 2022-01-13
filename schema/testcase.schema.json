@@ -64,11 +64,17 @@
                 },
                 "label": {
                     "type": "string"
+                },
+                "offset": {
+                    "$ref": "#/definitions/number"
                 }
             },
             "dependencies": {
                 "address": {
                     "properties": {
+                        "offset": {
+                            "type": "null"
+                        },
                         "label": {
                             "type": "null"
                         }
@@ -157,6 +163,7 @@
                         "properties": {
                             "address": {},
                             "label": {},
+                            "offset": {},
                             "value": {
                                 "$ref": "#/definitions/number"
                             }

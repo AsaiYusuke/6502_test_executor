@@ -21,7 +21,7 @@ public:
     cpu_device *get_cpu();
     memory_device *get_memory();
 
-    uint16_t get_address(string label);
+    uint16_t get_address(string label, int offset);
 
     bool is_digits(const string &str);
     uint8_t two_complement_byte(uint8_t value);

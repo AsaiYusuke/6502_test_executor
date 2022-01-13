@@ -142,7 +142,7 @@ void cpu_device::set_status_carry_flag(bool value)
 
 void cpu_device::print()
 {
-    printf("CPU result:\n A: $%x, X: $%x, Y: $%x, S: $%x (N: %s, O: %s, B: %s, D: %s, I: %s, Z: %s, C: %s), PC: $%x\n",
+    printf("CPU result:\n A: $%X, X: $%X, Y: $%X, S: $%X (N: %s, O: %s, B: %s, D: %s, I: %s, Z: %s, C: %s), PC: $%X\n",
            cpu->getA(),
            cpu->getX(),
            cpu->getY(),
