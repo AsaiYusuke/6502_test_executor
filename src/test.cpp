@@ -16,8 +16,7 @@ test::test(string test_path, emulation_devices *device, bool quiet_ok, bool quie
     json target = test_json["target"];
     if (target.contains("address"))
         target_program_counter =
-            device->to_byte(
-                target["address"].get<string>());
+            to_byte(target["address"]);
     else
         target_program_counter =
             device->get_address(
@@ -36,10 +35,9 @@ uint8_t test::to_byte(json value)
         return 0;
 
     if (value.is_string())
-        return device->to_byte(
-            value.get<string>());
+        return device->to_byte(value.get<string>());
 
-    return value.get<uint8_t>();
+    return device->two_complement_byte(value.get<uint8_t>());
 }
 
 void test::setup_condition(json condition)
@@ -68,20 +66,13 @@ void test::setup_condition(json condition)
         {
             uint16_t address;
             if (memory_def.contains("address"))
-                address = device->to_byte(
-                    memory_def["address"].get<string>());
+                address = to_byte(memory_def["address"]);
             else
                 address = device->get_address(
                     memory_def["label"].get<string>(),
                     to_byte(memory_def["offset"]));
 
-            uint8_t value;
-            if (memory_def["value"].is_string())
-                value = device->to_byte(
-                    memory_def["value"].get<string>());
-            else
-                value = device->two_complement_byte(
-                    memory_def["value"].get<uint8_t>());
+            uint8_t value = to_byte(memory_def["value"]);
 
             memory->write(address, value);
         }
@@ -91,7 +82,7 @@ void test::setup_condition(json condition)
 string test::to_hex_string(uint16_t value)
 {
     stringstream ss;
-    ss << uppercase << hex << value;
+    ss << "$" << uppercase << hex << value;
     return ss.str();
 }
 
@@ -183,28 +174,23 @@ bool test::assert_condition(json condition)
         uint16_t address;
         if (memory_def.contains("address"))
         {
-            address = device->to_byte(
-                memory_def["address"].get<string>());
+            address = to_byte(memory_def["address"]);
             address_name =
                 "Memory " + memory_def["address"].get<string>();
         }
         else
         {
+            uint8_t offset = to_byte(memory_def["offset"]);
+
             address = device->get_address(
                 memory_def["label"].get<string>(),
-                to_byte(memory_def["offset"]));
+                offset);
             stringstream ss;
-            ss << "Memory " << memory_def["label"].get<string>() << " + $" << to_hex_string(to_byte(memory_def["offset"])) << " ($" << to_hex_string(address) << ")";
+            ss << "Memory " << memory_def["label"].get<string>() << " + " << to_hex_string(offset) << " (" << to_hex_string(address) << ")";
             address_name = ss.str();
         }
 
-        uint8_t value;
-        if (memory_def["value"].is_string())
-            value = device->to_byte(
-                memory_def["value"].get<string>());
-        else
-            value = device->two_complement_byte(
-                memory_def["value"].get<uint8_t>());
+        uint8_t value = to_byte(memory_def["value"]);
 
         result &= assert_equal(
             value, memory->read(address), address_name);
