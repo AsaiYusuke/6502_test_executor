@@ -92,21 +92,16 @@ void test::err(string expected, string actual, string message)
     errors.push_back(message + ": [Expected: " + expected + ", Actual: " + actual + "]");
 }
 
-bool test::assert_equal(uint8_t expected, uint8_t actual, string message)
+string test::to_string(bool value)
+{
+    return value ? "True" : "False";
+}
+
+template <typename T> bool test::assert_equal(T expected, T actual, string message)
 {
     if (expected != actual)
     {
         err(to_string(expected), to_string(actual), message);
-        return false;
-    }
-    return true;
-}
-
-bool test::assert_equal(bool expected, bool actual, string message)
-{
-    if (expected != actual)
-    {
-        err((expected ? "True" : "False"), (actual ? "True" : "False"), message);
         return false;
     }
     return true;
@@ -181,7 +176,7 @@ bool test::assert_condition(json condition)
         }
         else
         {
-            address = get_address(memory_def["label"]);
+            address = get_address(memory_def);
             stringstream ss;
             ss << "Memory " << memory_def["label"].get<string>();
             ss << " + " << to_hex_string(to_byte(memory_def["offset"]));
