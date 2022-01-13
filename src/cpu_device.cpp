@@ -115,7 +115,7 @@ bool cpu_device::is_reg_status_interrupt_flag()
     return cpu->getStatus() & INTERRUPT > 0;
 }
 
-void cpu_device::set_status_interrupt_flag(bool value)
+void cpu_device::set_reg_status_interrupt_flag(bool value)
 {
     cpu->setStatus(cpu->getStatus() & !INTERRUPT | value * INTERRUPT);
 }
@@ -125,7 +125,7 @@ bool cpu_device::is_reg_status_zero_flag()
     return cpu->getStatus() & ZERO > 0;
 }
 
-void cpu_device::set_status_zero_flag(bool value)
+void cpu_device::set_reg_status_zero_flag(bool value)
 {
     cpu->setStatus(cpu->getStatus() & !ZERO | value * ZERO);
 }
@@ -135,7 +135,7 @@ bool cpu_device::is_reg_status_carry_flag()
     return cpu->getStatus() & CARRY > 0;
 }
 
-void cpu_device::set_status_carry_flag(bool value)
+void cpu_device::set_reg_status_carry_flag(bool value)
 {
     cpu->setStatus(cpu->getStatus() & !CARRY | value * CARRY);
 }
