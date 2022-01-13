@@ -66,7 +66,5 @@ uint8_t emulation_devices::to_byte(string str)
     else
         value = get_address(str, 0);
 
-    value = two_complement_byte(value);
-
-    return value;
+    return two_complement_byte(value);
 }

@@ -23,8 +23,6 @@ void memory_device::load_rom_image(string path)
 
 void memory_device::load_symbol_defs(string path)
 {
-    streampos size;
-
     ifstream file(path);
     if (!file.is_open())
     {
