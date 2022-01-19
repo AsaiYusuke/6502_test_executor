@@ -1,3 +1,4 @@
+#include <sstream>
 #include "condition/address_convert.h"
 
 uint16_t address_convert::get_address(emulation_devices *device, json value)
@@ -20,4 +21,11 @@ uint8_t address_convert::to_byte(emulation_devices *device, json value)
         return device->to_byte(value.get<string>());
 
     return device->two_complement_byte(value.get<uint8_t>());
+}
+
+string address_convert::to_hex_string(uint16_t value)
+{
+    stringstream ss;
+    ss << "$" << uppercase << hex << value;
+    return ss.str();
 }

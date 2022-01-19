@@ -1,14 +1,14 @@
 #pragma once
 
 #include <stdint.h>
-#include "condition/address_convert.h"
+#include "emulation_devices.h"
 #include "nlohmann/json.hpp"
 
 using namespace std;
 
 using json = nlohmann::json;
 
-class condition_pc_register : public address_convert
+class condition_pc_register
 {
 private:
     uint16_t address;

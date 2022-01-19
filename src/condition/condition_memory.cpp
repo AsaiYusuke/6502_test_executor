@@ -1,5 +1,5 @@
 #include <sstream>
-
+#include "condition/address_convert.h"
 #include "condition/condition_memory.h"
 
 condition_memory::condition_memory(emulation_devices *_device, json condition)
@@ -50,18 +50,11 @@ string condition_memory::get_address_name(emulation_devices *device, json memory
     }
 
     if (offset != 0)
-        ss << " + " << to_hex_string(offset);
+        ss << " + " << address_convert::to_hex_string(offset);
 
     if (offset != 0 || append_total_address)
-        ss << " (" << to_hex_string(address) << ")";
+        ss << " (" << address_convert::to_hex_string(address) << ")";
 
-    return ss.str();
-}
-
-string condition_memory::to_hex_string(uint16_t value)
-{
-    stringstream ss;
-    ss << "$" << uppercase << hex << value;
     return ss.str();
 }
 

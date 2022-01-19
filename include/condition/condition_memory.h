@@ -1,18 +1,17 @@
 #pragma once
 
 #include <stdint.h>
-#include "condition/address_convert.h"
+#include "emulation_devices.h"
 #include "nlohmann/json.hpp"
 
 using namespace std;
 
 using json = nlohmann::json;
 
-class condition_memory : public address_convert
+class condition_memory
 {
 private:
     vector<tuple<uint16_t, uint8_t, string>> memory_defs;
-    string to_hex_string(uint16_t value);
     string get_address_name(emulation_devices *device, json memory_def, int offset);
     vector<uint8_t> get_values(emulation_devices *_device, json memory_def);
 

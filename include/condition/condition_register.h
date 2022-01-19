@@ -2,14 +2,14 @@
 
 #include <stdint.h>
 #include "register_type.h"
-#include "condition/address_convert.h"
+#include "emulation_devices.h"
 #include "nlohmann/json.hpp"
 
 using namespace std;
 
 using json = nlohmann::json;
 
-class condition_register : public address_convert
+class condition_register
 {
 private:
     register_type type;

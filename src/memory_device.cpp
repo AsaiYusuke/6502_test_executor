@@ -125,6 +125,6 @@ void memory_device::print()
     {
         uint16_t k = iter->first;
         uint8_t v = iter->second;
-        printf("- %s($%X) : $%X\n", address_label_map[k].c_str(), k, v);
+        printf("  %s($%X) : $%X\n", address_label_map[k].c_str(), k, v);
     }
 }

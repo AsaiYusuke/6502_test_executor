@@ -1,4 +1,5 @@
 #include "test_assert.h"
+#include "condition/address_convert.h"
 
 test_assert::test_assert(condition *cond)
 {
@@ -7,7 +8,12 @@ test_assert::test_assert(condition *cond)
 
 void test_assert::err(string expected, string actual, string message)
 {
-    errors.push_back(message + ": [Expected: " + expected + ", Actual: " + actual + "]");
+    errors.push_back(message + ": Expected: " + expected + ", Actual: " + actual);
+}
+
+string to_string(uint8_t value)
+{
+    return address_convert::to_hex_string(value);
 }
 
 string to_string(bool value)
