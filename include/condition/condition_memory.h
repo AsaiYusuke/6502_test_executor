@@ -2,7 +2,7 @@
 
 #include <stdint.h>
 #include "condition/address_convert.h"
-#include "../../../../json/single_include/nlohmann/json.hpp"
+#include "nlohmann/json.hpp"
 
 using namespace std;
 

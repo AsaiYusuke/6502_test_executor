@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <map>
 
-#include "../../args/args.hxx"
+#include "args.hxx"
 #include "emulation_devices.h"
 #include "test.h"
 

@@ -1,16 +1,21 @@
-SRC_DIR		:=	src
-INC_DIR		:=	$(SRC_DIR)/include
+SRC_DIR			:=	src
+INC_DIR			:=	include
 
-TARGET		:=	6502_tester
-SOURCES		:=	$(shell find $(SRC_DIR) -type f -name '*.cpp')
-HEADERS		:=	$(shell find $(SRC_DIR) -type f -name '*.h')
+TARGET			:=	6502_tester
+SOURCES			:=	$(shell find $(SRC_DIR) -type f -name '*.cpp')
+HEADERS			:=	$(shell find $(SRC_DIR) -type f -name '*.h')
 
-ARGS_HEADER	:=	../args/args.hxx
-ARGS_URL	:=	https://github.com/Taywee/args.git
-JSON_HEADER	:=	../json/single_include/nlohmann/json.hpp
-JSON_URL	:=	https://github.com/nlohmann/json.git
+ARGS_INC_DIR	:=	../args
+ARGS_HEADER		:=	$(ARGS_INC_DIR)/args.hxx
+ARGS_URL		:=	https://github.com/Taywee/args.git
 
-CFLAGS		:=	--std=c++11 -I $(INC_DIR) -g
+JSON_INC_DIR	:=	../json/single_include
+JSON_HEADER		:=	$(JSON_INC_DIR)/nlohmann/json.hpp
+JSON_URL		:=	https://github.com/nlohmann/json.git
+
+CFLAGS			:=	--std=c++11 -I $(INC_DIR) -I $(ARGS_INC_DIR) -I $(JSON_INC_DIR) -g
+
+.PHONY : all clean
 
 all: $(TARGET)
 
@@ -22,3 +27,6 @@ $(ARGS_HEADER) :
 
 $(JSON_HEADER) :
 	(cd .. ; git clone $(JSON_URL))
+
+clean :
+	rm $(TARGET)

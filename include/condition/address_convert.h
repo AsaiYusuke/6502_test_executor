@@ -2,7 +2,7 @@
 
 #include <stdint.h>
 #include "emulation_devices.h"
-#include "../../../../json/single_include/nlohmann/json.hpp"
+#include "nlohmann/json.hpp"
 
 using namespace std;
 

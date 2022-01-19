@@ -5,7 +5,7 @@
 #include "condition/condition_status_register.h"
 #include "condition/condition_pc_register.h"
 #include "condition/condition_memory.h"
-#include "../../../../json/single_include/nlohmann/json.hpp"
+#include "nlohmann/json.hpp"
 
 using namespace std;
 
