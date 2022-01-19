@@ -5,7 +5,7 @@ condition_register::condition_register(register_type _type, emulation_devices *d
 {
     type = _type;
     blank = condition.is_null();
-    value = address_convert::to_byte(device, condition);
+    value = address_convert::to_two_complement_byte(device, condition);
 }
 
 register_type condition_register::get_type()

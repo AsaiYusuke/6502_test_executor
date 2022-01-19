@@ -93,8 +93,8 @@
             "oneOf": [
                 {
                     "type": "integer",
-                    "minimum": -256,
-                    "maximum": 256
+                    "minimum": -128,
+                    "maximum": 255
                 },
                 {
                     "type": "string",

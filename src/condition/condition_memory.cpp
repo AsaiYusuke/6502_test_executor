@@ -65,14 +65,14 @@ vector<uint8_t> condition_memory::get_values(emulation_devices *_device, json me
     if (memory_def.contains("value"))
     {
         result.push_back(
-            address_convert::to_byte(_device, memory_def["value"]));
+            address_convert::to_two_complement_byte(_device, memory_def["value"]));
         return result;
     }
 
     for (json &value_json : memory_def["values"])
     {
         result.push_back(
-            address_convert::to_byte(_device, value_json));
+            address_convert::to_two_complement_byte(_device, value_json));
     }
     return result;
 }
