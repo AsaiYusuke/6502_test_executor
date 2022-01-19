@@ -13,7 +13,8 @@ class condition_memory : public address_convert
 private:
     vector<tuple<uint16_t, uint8_t, string>> memory_defs;
     string to_hex_string(uint16_t value);
-    string get_address_name(emulation_devices *device, json memory_def);
+    string get_address_name(emulation_devices *device, json memory_def, int offset);
+    vector<uint8_t> get_values(emulation_devices *_device, json memory_def);
 
 public:
     condition_memory(emulation_devices *_device, json condition);

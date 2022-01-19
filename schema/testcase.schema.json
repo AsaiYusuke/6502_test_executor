@@ -156,8 +156,17 @@
                                 "$ref": "#/definitions/address"
                             }
                         ],
-                        "required": [
-                            "value"
+                        "oneOf": [
+                            {
+                                "required": [
+                                    "value"
+                                ]        
+                            },
+                            {
+                                "required": [
+                                    "values"
+                                ]
+                            }
                         ],
                         "additionalProperties": false,
                         "properties": {
@@ -166,6 +175,13 @@
                             "offset": {},
                             "value": {
                                 "$ref": "#/definitions/number"
+                            },
+                            "values": {
+                                "type": "array",
+                                "minItems": 1,
+                                "items": {
+                                    "$ref": "#/definitions/number"
+                                }
                             }
                         }
                     }

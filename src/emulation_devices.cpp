@@ -57,10 +57,10 @@ uint8_t emulation_devices::to_byte(string str)
 {
     int value;
 
-    if (str.compare(0, 2, "$") == 0)
-        value = stoi(str.substr(2), 0, 16);
-    else if (str.compare(0, 2, "%") == 0)
-        value = stoi(str.substr(2), 0, 2);
+    if (str.compare(0, 1, "$") == 0)
+        value = stoi(str.substr(1), 0, 16);
+    else if (str.compare(0, 1, "%") == 0)
+        value = stoi(str.substr(1), 0, 2);
     else if (is_digits(str))
         value = stoi(str);
     else
