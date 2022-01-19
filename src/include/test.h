@@ -1,6 +1,6 @@
-#ifndef __TEST_H_INCLUDED__
-#define __TEST_H_INCLUDED__
+#pragma once
 
+#include "test_result.h"
 #include "emulation_devices.h"
 #include "../../../json/single_include/nlohmann/json.hpp"
 
@@ -15,34 +15,12 @@ private:
     bool is_quiet_fail;
     bool is_quiet_summary;
     bool is_quiet;
-    vector<string> errors;
     emulation_devices *device;
     json test_json;
 
-    uint16_t target_program_counter;
-
-    enum test_result
-    {
-        OK,
-        FAIL,
-        SKIP
-    };
-
-    string to_string(bool value);
-    uint16_t get_address(json value);
-    uint8_t to_byte(json value);
-    void setup_condition(json condition_json);
-    string to_hex_string(uint16_t value);
-    void err(string expected, string actual, string message);
-    template <typename T> bool assert_equal(T expected, T actual, string message);
-    bool assert_condition(json condition_json);
-
 public:
     test(string test_path, emulation_devices *device, bool quiet_ok, bool quiet_fail, bool quiet_summary, bool quiet);
-    void clear();
     bool execute();
-    void print_test_result(test_result result, string test_name);
+    void print_test_result(string test_name, test_result result, vector<string> errors);
     void print_summary(int ok, int fail, int skip, int total);
-};
-
-#endif
+}; 

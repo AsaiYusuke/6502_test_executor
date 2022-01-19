@@ -1,5 +1,4 @@
-#ifndef __MEMORY_DEVICE_H_INCLUDED__
-#define __MEMORY_DEVICE_H_INCLUDED__
+#pragma once
 
 #include <stdio.h>
 #include <map>
@@ -35,5 +34,3 @@ public:
     void write(uint16_t address, uint8_t value);
     void print();
 };
-
-#endif

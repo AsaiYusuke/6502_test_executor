@@ -13,7 +13,7 @@ void cpu_device::clear(uint16_t target_program_counter)
     cpu->StackPush(0xFE);
 }
 
-bool cpu_device::execute()
+void cpu_device::execute()
 {
     int count = 0;
     uint64_t cycleCount = 0;
@@ -22,7 +22,11 @@ bool cpu_device::execute()
         cpu->Run(1, cycleCount, cpu->INST_COUNT);
     } while (cpu->getPC() != 0xFFFF && ++count < timeout());
 
-    return count < timeout();
+    if (count >= timeout())
+    {
+        cerr << "Execution count >= " + to_string(timeout()) << endl;
+        throw 2;
+    }
 }
 
 int cpu_device::timeout()
@@ -30,114 +34,60 @@ int cpu_device::timeout()
     return DEFAULT_TIMEOUT;
 }
 
-uint16_t cpu_device::get_reg_pc()
+uint16_t cpu_device::get_register16(register_type type)
 {
-    return cpu->getPC();
+    switch (type)
+    {
+    case register_type::PC:
+        return cpu->getPC();
+    }
+    cerr << "invalid register16: '" << register_type_name_map[type] << endl;
+    throw 2;
 }
 
-void cpu_device::set_reg_pc(uint16_t value)
+void cpu_device::set_register16(register_type type, uint16_t value)
 {
-    cpu->setPC(value);
+    switch (type)
+    {
+    case register_type::PC:
+        cpu->setPC(value);
+    }
+    cerr << "invalid register16: '" << register_type_name_map[type] << endl;
+    throw 2;
 }
 
-uint8_t cpu_device::get_reg_a()
+uint8_t cpu_device::get_register8(register_type type)
 {
-    return cpu->getA();
+    switch (type)
+    {
+    case register_type::A:
+        return cpu->getA();
+    case register_type::X:
+        return cpu->getX();
+    case register_type::Y:
+        return cpu->getY();
+    case register_type::Status:
+        return cpu->getStatus();
+    }
+    cerr << "invalid register8: '" << register_type_name_map[type] << endl;
+    throw 2;
 }
 
-void cpu_device::set_reg_a(uint8_t value)
+void cpu_device::set_register8(register_type type, uint8_t value)
 {
-    cpu->setA(value);
-}
-
-uint8_t cpu_device::get_reg_x()
-{
-    return cpu->getX();
-}
-
-void cpu_device::set_reg_x(uint8_t value)
-{
-    cpu->setX(value);
-}
-
-uint8_t cpu_device::get_reg_y()
-{
-    return cpu->getY();
-}
-
-void cpu_device::set_reg_y(uint8_t value)
-{
-    cpu->setY(value);
-}
-
-bool cpu_device::is_reg_status_negative_flag()
-{
-    return cpu->getStatus() & NEGATIVE > 0;
-}
-
-void cpu_device::set_reg_status_negative_flag(bool value)
-{
-    cpu->setStatus(cpu->getStatus() & !NEGATIVE | value * NEGATIVE);
-}
-
-bool cpu_device::is_reg_status_overflow_flag()
-{
-    return cpu->getStatus() & OVERFLOW > 0;
-}
-
-void cpu_device::set_reg_status_overflow_flag(bool value)
-{
-    cpu->setStatus(cpu->getStatus() & !OVERFLOW | value * OVERFLOW);
-}
-
-bool cpu_device::is_reg_status_break_flag()
-{
-    return cpu->getStatus() & BREAK > 0;
-}
-
-void cpu_device::set_reg_status_break_flag(bool value)
-{
-    cpu->setStatus(cpu->getStatus() & !BREAK | value * BREAK);
-}
-
-bool cpu_device::is_reg_status_decimal_flag()
-{
-    return cpu->getStatus() & DECIMAL > 0;
-}
-
-void cpu_device::set_reg_status_decimal_flag(bool value)
-{
-    cpu->setStatus(cpu->getStatus() & !DECIMAL | value * DECIMAL);
-}
-
-bool cpu_device::is_reg_status_interrupt_flag()
-{
-    return cpu->getStatus() & INTERRUPT > 0;
-}
-
-void cpu_device::set_reg_status_interrupt_flag(bool value)
-{
-    cpu->setStatus(cpu->getStatus() & !INTERRUPT | value * INTERRUPT);
-}
-
-bool cpu_device::is_reg_status_zero_flag()
-{
-    return cpu->getStatus() & ZERO > 0;
-}
-
-void cpu_device::set_reg_status_zero_flag(bool value)
-{
-    cpu->setStatus(cpu->getStatus() & !ZERO | value * ZERO);
-}
-
-bool cpu_device::is_reg_status_carry_flag()
-{
-    return cpu->getStatus() & CARRY > 0;
-}
-
-void cpu_device::set_reg_status_carry_flag(bool value)
-{
-    cpu->setStatus(cpu->getStatus() & !CARRY | value * CARRY);
+    switch (type)
+    {
+    case register_type::A:
+        return cpu->setA(value);
+    case register_type::X:
+        return cpu->setX(value);
+    case register_type::Y:
+        return cpu->setY(value);
+    case register_type::Status:
+        return cpu->setStatus(value);
+    }
+    cerr << "invalid register8: '" << register_type_name_map[type] << endl;
+    throw 2;
 }
 
 void cpu_device::print()

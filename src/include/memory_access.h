@@ -1,7 +1,8 @@
-#ifndef __MEMORY_ACCESS_H_INCLUDED__
-#define __MEMORY_ACCESS_H_INCLUDED__
+#pragma once
 
 #include <stdint.h>
+
+using namespace std;
 
 class i_memory_access
 {
@@ -11,5 +12,3 @@ public:
     virtual uint8_t read(uint16_t address) = 0;
     virtual void write(uint16_t address, uint8_t value) = 0;
 };
-
-#endif

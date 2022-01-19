@@ -1,5 +1,4 @@
-#ifndef __EMULATION_DEVICES_H_INCLUDED__
-#define __EMULATION_DEVICES_H_INCLUDED__
+#pragma once
 
 #include <stdio.h>
 #include <map>
@@ -29,5 +28,3 @@ public:
 
     void print();
 };
-
-#endif

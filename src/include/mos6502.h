@@ -5,6 +5,7 @@
 // Copyright   :
 // Description : A MOS 6502 CPU emulator written in C++
 //============================================================================
+#pragma once
 
 #include <iostream>
 #include <stdint.h>
