@@ -24,9 +24,9 @@ bool test_setup::execute()
     cpu_dev->set_register8(register_type::Status, status);
 
     memory_device *mem_dev = cond->get_device()->get_memory();
-    for (auto memory_def : cond->get_memory_defs())
+    for (auto memory_def : cond->get_memory_value_defs())
     {
-        mem_dev->write(get<0>(memory_def), get<1>(memory_def));
+        mem_dev->set_read_sequence(get<0>(memory_def), get<1>(memory_def));
     }
 
     return true;

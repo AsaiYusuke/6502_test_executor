@@ -1,3 +1,5 @@
+#include <sstream>
+
 #include "test_assert.h"
 #include "condition/address_convert.h"
 
@@ -11,9 +13,18 @@ void test_assert::err(string expected, string actual, string message)
     errors.push_back(message + ": Expected: " + expected + ", Actual: " + actual);
 }
 
-string to_string(uint8_t value)
+string to_string(vector<uint8_t> values)
 {
-    return address_convert::to_hex_string(value);
+    stringstream ss;
+    ss << "[";
+
+    ss << address_convert::to_hex_string(values[0]);
+    for (decltype(values.size()) index = 1, size = values.size(); index < size; index++) {
+      ss << ", " << address_convert::to_hex_string(values[index]);
+    }
+
+    ss << "]";
+    return ss.str();
 }
 
 string to_string(bool value)
@@ -58,12 +69,38 @@ void test_assert::execute()
     }
 
     memory_device *mem_dev = cond->get_device()->get_memory();
-    for (auto memory_def : cond->get_memory_defs())
+
+    for (auto memory_def : cond->get_memory_value_defs())
     {
+        auto address = get<0>(memory_def);
+        auto history = get<1>(memory_def);
+        auto name = get<2>(memory_def);
         test_result &= assert_equal(
-            get<1>(memory_def),
-            mem_dev->read(get<0>(memory_def)),
-            "Memory [" + get<2>(memory_def) + "]");
+            history,
+            mem_dev->get_write_sequence(address, history.size()),
+            "Memory data [" + name + "]");
+    }
+
+    for (auto count_def : cond->get_memory_read_count_defs())
+    {
+        auto address = get<0>(count_def);
+        auto count = get<1>(count_def);
+        auto name = get<2>(count_def);
+        test_result &= assert_equal(
+            count,
+            mem_dev->get_read_count(address),
+            "Memory read count [" + name + "]");
+    }
+
+    for (auto count_def : cond->get_memory_write_count_defs())
+    {
+        auto address = get<0>(count_def);
+        auto count = get<1>(count_def);
+        auto name = get<2>(count_def);
+        test_result &= assert_equal(
+            count,
+            mem_dev->get_write_count(address),
+            "Memory write count [" + name + "]");
     }
 
     result = test_result ? test_result::OK : test_result::FAIL;

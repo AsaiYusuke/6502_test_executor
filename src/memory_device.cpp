@@ -98,8 +98,35 @@ string memory_device::get_label(uint16_t address)
     return address_label_map[address];
 }
 
+void memory_device::set_read_sequence(uint16_t address, vector<uint8_t> sequence)
+{
+    read_sequences[address] = sequence;
+}
+
+vector<uint8_t> memory_device::get_write_sequence(uint16_t address, size_t length)
+{
+    if (write_sequences.count(address) > 0)
+    {
+        vector<uint8_t> result(write_sequences[address].end() - length, write_sequences[address].end());
+        return result;
+    }
+    return {read(address)};
+}
+
+uint8_t memory_device::get_read_count(uint16_t address)
+{
+    return read_counts[address];
+}
+
+uint8_t memory_device::get_write_count(uint16_t address)
+{
+    return write_counts[address];
+}
+
 uint8_t memory_device::read(uint16_t address)
 {
+    read_counts[address]++;
+
     uint8_t val;
     if (address >= 0x8000)
     {
@@ -107,6 +134,13 @@ uint8_t memory_device::read(uint16_t address)
     }
     else
     {
+        if (read_sequences.count(address) > 0)
+        {
+            ram[address] = read_sequences[address].front();
+            read_sequences[address].erase(read_sequences[address].begin());
+            if (read_sequences[address].size() == 0)
+                read_sequences.erase(address);
+        }
         val = ram[address];
     }
 
@@ -115,6 +149,13 @@ uint8_t memory_device::read(uint16_t address)
 
 void memory_device::write(uint16_t address, uint8_t value)
 {
+    write_counts[address]++;
+
+    if (write_sequences.count(address) == 0)
+        write_sequences[address] = {};
+
+    write_sequences[address].push_back(value);
+
     ram[address] = value;
 }
 

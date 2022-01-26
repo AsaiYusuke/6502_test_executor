@@ -34,9 +34,19 @@ vector<tuple<status_flag_type, bool, string>> condition::get_status_flag_defs()
     return register_status->get_flags();
 }
 
-vector<tuple<uint16_t, uint8_t, string>> condition::get_memory_defs()
+vector<tuple<uint16_t, vector<uint8_t>, string>> condition::get_memory_value_defs()
 {
-    return memory->get_memory_defs();
+    return memory->get_memory_value_defs();
+}
+
+vector<tuple<uint16_t, uint8_t, string>> condition::get_memory_read_count_defs()
+{
+    return memory->get_memory_read_count_defs();
+}
+
+vector<tuple<uint16_t, uint8_t, string>> condition::get_memory_write_count_defs()
+{
+    return memory->get_memory_write_count_defs();
 }
 
 condition_pc_register *condition::get_pc_register_def()
