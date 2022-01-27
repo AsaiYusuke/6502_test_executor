@@ -137,6 +137,12 @@ palette:	.byte $0F, $11, $21, $31
 .proc	check_collision
 	.repeat 2, index
 		.scope
+			.if(index = 0)
+				SPEED_AXIS = SPRITE_SPEED_Y
+			.else
+				SPEED_AXIS = SPRITE_SPEED_X
+			.endif
+
 			lda vector + index
 			bpl move_plus
 
@@ -145,11 +151,7 @@ palette:	.byte $0F, $11, $21, $31
 			bmi end_check
 			cmp old_pos + index
 			bpl end_check
-			.if(index = 0)
-				lda #SPRITE_SPEED_Y
-			.else
-				lda #SPRITE_SPEED_X
-			.endif
+			lda #SPEED_AXIS
 			sta vector + index
 			jmp end_check
 
@@ -161,11 +163,7 @@ palette:	.byte $0F, $11, $21, $31
 			turn:
 			cmp old_pos + index
 			bmi end_check
-			.if(index = 0)
-				lda #.lobyte(SPRITE_SPEED_Y * -1)
-			.else
-				lda #.lobyte(SPRITE_SPEED_X * -1)
-			.endif
+			lda #.lobyte(SPEED_AXIS * -1)
 			sta vector + index
 
 			end_check:
