@@ -11,7 +11,7 @@ SOURCES		:=		$(shell find $(SRC_DIR) -type f -name '*.asm')
 OBJECTS		:=		$(SOURCES:$(SRC_DIR)/%.asm=$(BUILD_DIR)/%.o)
 NES_CFG		:=		$(CONFIG_DIR)/nes.cfg
 
-TESTS		:=		$(shell find $(TEST_DIR) -type f -name '*.test.json')
+TESTS		:=		$(shell find $(TEST_DIR) -type f -name '*.test.json' | sort)
 TEST_IDS	:=		$(TESTS:%.test.json=%.test)
 
 AS			:=		ca65
