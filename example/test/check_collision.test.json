@@ -13,14 +13,14 @@
                     },
                     {
                         "label": "pos",
-                        "values": [
+                        "value": [
                             223,
                             223
                         ]
                     },
                     {
                         "label": "old_pos",
-                        "values": [
+                        "value": [
                             222,
                             222
                         ]
@@ -45,14 +45,14 @@
                     },
                     {
                         "label": "pos",
-                        "values": [
+                        "value": [
                             224,
                             224
                         ]
                     },
                     {
                         "label": "old_pos",
-                        "values": [
+                        "value": [
                             222,
                             222
                         ]
@@ -77,14 +77,14 @@
                     },
                     {
                         "label": "pos",
-                        "values": [
+                        "value": [
                             225,
                             225
                         ]
                     },
                     {
                         "label": "old_pos",
-                        "values": [
+                        "value": [
                             222,
                             222
                         ]
@@ -109,14 +109,14 @@
                     },
                     {
                         "label": "pos",
-                        "values": [
+                        "value": [
                             33,
                             33
                         ]
                     },
                     {
                         "label": "old_pos",
-                        "values": [
+                        "value": [
                             34,
                             34
                         ]
@@ -141,14 +141,14 @@
                     },
                     {
                         "label": "pos",
-                        "values": [
+                        "value": [
                             32,
                             32
                         ]
                     },
                     {
                         "label": "old_pos",
-                        "values": [
+                        "value": [
                             34,
                             34
                         ]
@@ -173,14 +173,14 @@
                     },
                     {
                         "label": "pos",
-                        "values": [
+                        "value": [
                             31,
                             31
                         ]
                     },
                     {
                         "label": "old_pos",
-                        "values": [
+                        "value": [
                             34,
                             34
                         ]

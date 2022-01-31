@@ -96,23 +96,37 @@ vector<vector<uint8_t>> condition_memory::get_value_sequences(emulation_devices 
     vector<vector<uint8_t>> result;
 
     json value_defs;
-    if (memory_def.contains("values"))
-        value_defs = memory_def["values"];
+    if (memory_def.contains("sequence"))
+    {
+        if (memory_def["sequence"].at(0).is_array())
+        {
+            value_defs = memory_def["sequence"];
+        }
+        else
+        {
+            value_defs = {memory_def["sequence"]};
+        }
+    }
     else if (memory_def.contains("value"))
-        value_defs = {memory_def["value"]};
+    {
+        if (memory_def["value"].is_array())
+        {
+            value_defs = {};
+            for (json &value_def : memory_def["value"])
+            {
+                value_defs.push_back({value_def});
+            }
+        }
+        else
+            value_defs = {{memory_def["value"]}};
+    }
     else
         return {};
 
     for (json &value_def : value_defs)
     {
-        json value_def_array;
-        if (value_def.is_array())
-            value_def_array = value_def;
-        else
-            value_def_array = {value_def};
-
         vector<uint8_t> sequence;
-        for (json &value_sequence : value_def_array)
+        for (json &value_sequence : value_def)
         {
             sequence.push_back(
                 address_convert::to_two_complement_byte(_device, value_sequence));

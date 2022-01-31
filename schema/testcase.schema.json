@@ -191,7 +191,7 @@
                             },
                             {
                                 "required": [
-                                    "values"
+                                    "sequence"
                                 ]
                             },
                             {
@@ -234,23 +234,25 @@
                                     }
                                 ]
                             },
-                            "values": {
+                            "sequence": {
                                 "type": "array",
                                 "minItems": 1,
-                                "items": {
-                                    "oneOf": [
-                                        {
+                                "oneOf": [
+                                    {
+                                        "items": {
                                             "$ref": "#/definitions/number"
-                                        },
-                                        {
+                                        }
+                                    },
+                                    {
+                                        "items": {
                                             "type": "array",
                                             "minItems": 1,
                                             "items": {
                                                 "$ref": "#/definitions/number"
                                             }
                                         }
-                                    ]
-                                }
+                                    }
+                                ]
                             },
                             "readCount": {
                                 "type": "number",
@@ -280,12 +282,12 @@
                         "dependencies": {
                             "value": {
                                 "properties": {
-                                    "values": {
+                                    "sequence": {
                                         "type": "null"
                                     }
                                 }
                             },
-                            "values": {
+                            "sequence": {
                                 "properties": {
                                     "value": {
                                         "type": "null"
