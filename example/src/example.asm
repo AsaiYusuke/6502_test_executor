@@ -121,7 +121,6 @@ palette:		.byte $0F, $11, $21, $31
 	bmi save_id
 	lda #0
 	save_id:
-
 	sta vector_addr
 	rts
 .endproc
@@ -196,11 +195,9 @@ palette:		.byte $0F, $11, $21, $31
 			jmp turn
 
 			move_plus:
-			lda #BORDER_MAX
+			lda #BORDER_MAX - 1
 			cmp pos + index
-			beq check_old_pos
 			bpl end_check
-			check_old_pos:
 			cmp old_pos + index
 			bmi end_check
 
