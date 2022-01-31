@@ -3,9 +3,8 @@
     "target": {
         "label": "check_collision"
     },
-    "cases": [
-        {
-            "name": "vector_addr = 4(Vx>0,Vy>0), pos < MAX : continue",
+    "cases": {
+        "setup:[vector_addr= 4(Vx>0,Vy>0), pos <  MAX], expected:[vector_addr= 4(continue)]": {
             "setup": {
                 "memory": [
                     {
@@ -37,8 +36,7 @@
                 ]
             }
         },
-        {
-            "name": "vector_addr = 4(Vx>0,Vy>0), pos == MAX : turn",
+        "setup:[vector_addr= 4(Vx>0,Vy>0), pos == MAX], expected:[vector_addr=28(turn)]": {
             "setup": {
                 "memory": [
                     {
@@ -70,8 +68,7 @@
                 ]
             }
         },
-        {
-            "name": "vector_addr = 4(Vx>0,Vy>0), pos > MAX : turn",
+        "setup:[vector_addr= 4(Vx>0,Vy>0), pos >  MAX], expected:[vector_addr=28(turn)]": {
             "setup": {
                 "memory": [
                     {
@@ -103,8 +100,7 @@
                 ]
             }
         },
-        {
-            "name": "vector_addr = 32(Vx<0,Vy<0), pos > MIN : continue",
+        "setup:[vector_addr=32(Vx<0,Vy<0), pos >  MIN], expected:[vector_addr=32(continue)]": {
             "setup": {
                 "memory": [
                     {
@@ -136,8 +132,7 @@
                 ]
             }
         },
-        {
-            "name": "vector_addr = 32(Vx<0,Vy<0), pos == MIN : turn",
+        "setup:[vector_addr=32(Vx<0,Vy<0), pos == MIN], expected:[vector_addr= 8(turn)]": {
             "setup": {
                 "memory": [
                     {
@@ -169,8 +164,7 @@
                 ]
             }
         },
-        {
-            "name": "vector_addr = 32(Vx<0,Vy<0), pos < MIN : turn",
+        "setup:[vector_addr=32(Vx<0,Vy<0), pos <  MIN], expected:[vector_addr= 8(turn)]": {
             "setup": {
                 "memory": [
                     {
@@ -202,5 +196,5 @@
                 ]
             }
         }
-    ]
+    }
 }

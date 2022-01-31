@@ -3,9 +3,8 @@
     "target": {
         "label": "control"
     },
-    "cases": [
-        {
-            "name": "setup:[vector_addr=0], expected:[vector_addr=4]",
+    "cases": {
+        "setup:[vector_addr= 0], expected:[vector_addr=4]": {
             "setup": {
                 "memory": [
                     {
@@ -32,8 +31,7 @@
                 ]
             }
         },
-        {
-            "name": "setup:[vector_addr=44], expected:[vector_addr=0]",
+        "setup:[vector_addr=44], expected:[vector_addr=0]": {
             "setup": {
                 "memory": [
                     {
@@ -60,5 +58,5 @@
                 ]
             }
         }
-    ]
+    }
 }

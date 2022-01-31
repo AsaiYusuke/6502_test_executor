@@ -15,56 +15,55 @@
             "$ref": "#/definitions/address"
         },
         "cases": {
-            "type": "array",
+            "type": "object",
             "minItems": 1,
-            "items": {
-                "type": "object",
-                "required": [
-                    "name",
-                    "setup",
-                    "expected"
-                ],
+            "patternProperties": {
                 "additionalProperties": false,
-                "properties": {
-                    "name": {
-                        "type": "string"
-                    },
-                    "skip": {
-                        "type": "boolean"
-                    },
-                    "setup": {
-                        "allOf": [
-                            {
-                                "$ref": "#/definitions/conditions"
-                            }
-                        ],
-                        "properties": {
-                            "A": {},
-                            "X": {},
-                            "Y": {},
-                            "Status": {},
-                            "memory": {
-                                "items": {
-                                    "properties": {
-                                        "readCount": {
-                                            "type": "null"
-                                        },
-                                        "readCounts": {
-                                            "type": "null"
-                                        },
-                                        "writeCount": {
-                                            "type": "null"
-                                        },
-                                        "writeCounts": {
-                                            "type": "null"
+                "^.*$": {
+                    "type": "object",
+                    "required": [
+                        "setup",
+                        "expected"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                        "skip": {
+                            "type": "boolean"
+                        },
+                        "setup": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/conditions"
+                                }
+                            ],
+                            "properties": {
+                                "A": {},
+                                "X": {},
+                                "Y": {},
+                                "Status": {},
+                                "memory": {
+                                    "items": {
+                                        "properties": {
+                                            "readCount": {
+                                                "type": "null"
+                                            },
+                                            "readCounts": {
+                                                "type": "null"
+                                            },
+                                            "writeCount": {
+                                                "type": "null"
+                                            },
+                                            "writeCounts": {
+                                                "type": "null"
+                                            }
                                         }
                                     }
                                 }
                             }
+                        },
+                        "expected": {
+                            "$ref": "#/definitions/conditions"
                         }
-                    },
-                    "expected": {
-                        "$ref": "#/definitions/conditions"
                     }
                 }
             }
