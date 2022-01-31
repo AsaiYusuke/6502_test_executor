@@ -24,12 +24,15 @@ bool test::execute()
 {
     map<test_result, int> test_result_map;
 
-    for (json &testcase : test_json["cases"])
+    for (auto &element : test_json["cases"].items())
     {
+        auto name = element.key();
+        auto testcase = element.value();
+
         if (testcase["skip"].is_boolean() && testcase["skip"].get<bool>())
         {
             print_test_result(
-                testcase["name"].get<string>(),
+                name,
                 test_result::SKIP,
                 {});
             test_result_map[test_result::SKIP]++;
@@ -54,7 +57,7 @@ bool test::execute()
         assert.execute();
 
         print_test_result(
-            testcase["name"].get<string>(),
+            name,
             assert.get_result(),
             assert.get_errors());
 
