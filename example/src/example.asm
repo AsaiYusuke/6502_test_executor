@@ -46,7 +46,7 @@ vector_dic_36:	.byte	0,	M(6),	VADDR(vector_dic_36),	VADDR(vector_dic_12)
 vector_dic_40:	.byte	3,	M(5),	VADDR(vector_dic_32),	VADDR(vector_dic_08)
 vector_dic_44:	.byte	5,	M(3),	VADDR(vector_dic_28),	VADDR(vector_dic_04)
 
-palette:		.byte $0F, $11, $21, $31
+palette:	.byte $0F, $11, $21, $31
 
 .segment "CODE"
 .proc reset
