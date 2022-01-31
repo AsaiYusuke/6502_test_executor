@@ -14,24 +14,8 @@ mkdir -p build
 ca65 --cpu 6502 --target nes --debug-info -o build/example.o src/example.asm
 mkdir -p dist
 ld65  -o dist/example.nes --dbgfile dist/example.dbg --config cfg/nes.cfg --obj build/example.o
-../6502_tester -p dist/example.nes -s dist/example.dbg -t test/check_collision_y.test.json
-OK: [V > 0, pos < MAX : continue]
-OK: [V > 0, pos == MAX : turn]
-OK: [V > 0, pos > MAX : turn]
-OK: [V < 0, pos > MIN : continue]
-OK: [V < 0, pos == MIN : turn]
-OK: [V < 0, pos < MIN : turn]
-----------------------------------------------------------------------
-OK: 6, FAIL: 0, SKIP: 0 / TOTAL: 6
-../6502_tester -p dist/example.nes -s dist/example.dbg -t test/check_collision_x.test.json
-OK: [V > 0, pos < MAX : continue]
-OK: [V > 0, pos == MAX : turn]
-OK: [V > 0, pos > MAX : turn]
-OK: [V < 0, pos > MIN : continue]
-OK: [V < 0, pos == MIN : turn]
-OK: [V < 0, pos < MIN : turn]
-----------------------------------------------------------------------
-OK: 6, FAIL: 0, SKIP: 0 / TOTAL: 6
+../6502_tester -p dist/example.nes -s dist/example.dbg --quiet-ok --quiet-summary -t test/check_collision.test.json
+../6502_tester -p dist/example.nes -s dist/example.dbg --quiet-ok --quiet-summary -t test/control.test.json
 echo "All tests passed."
 All tests passed.
 ```
@@ -60,7 +44,7 @@ Run the tester by specifying the program image file, symbol definition file, and
 You can check the available optional arguments by displaying the help:
 
 ```
-./6502_tester --help
+# ./6502_tester --help
   ./6502_tester {OPTIONS}
 
     6502 test executor
@@ -71,6 +55,9 @@ You can check the available optional arguments by displaying the help:
       -p[PROGRAM], --program=[PROGRAM]  The program file path.
       -s[SYMBOL], --symbol=[SYMBOL]     The symbol file path.
       -t[TEST], --test=[TEST]           The test file path.
+      --quiet-ok                        The quiet OK flag
+      --quiet-fail                      The quiet FAIL flag
+      --quiet-summary                   The quiet summary flag
       -q, --quiet                       The quiet flag
 
 ```
