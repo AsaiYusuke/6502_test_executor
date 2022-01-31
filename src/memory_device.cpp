@@ -81,6 +81,10 @@ memory_device::memory_device(string program_path, string symbol_path)
 void memory_device::clear()
 {
     ram.clear();
+    read_sequences.clear();
+    write_sequences.clear();
+    read_counts.clear();
+    write_counts.clear();
 }
 
 bool memory_device::has_address(string label)
