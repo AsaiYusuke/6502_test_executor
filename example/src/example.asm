@@ -1,18 +1,18 @@
-.include	"nes.inc"
+.include "nes.inc"
 
-.define		BORDER_MIN		32
-.define		BORDER_MAX		224
+.define BORDER_MIN	32
+.define BORDER_MAX	224
 
 .segment "HEADER"
-	.byte   'N', 'E', 'S', $1A
-	.byte   $02, $01, $00, $00
-	.byte   $00, $00, $00, $00
-	.byte   $00, $00, $00, $00
+	.byte	'N', 'E', 'S', $1A
+	.byte	$02, $01, $00, $00
+	.byte	$00, $00, $00, $00
+	.byte	$00, $00, $00, $00
 
 .segment "VECTORS"
-	.word nmi
-	.word reset
-	.word $0000
+	.word	nmi
+	.word	reset
+	.word	$0000
 
 .segment "CHARS"
 	.repeat 8
@@ -49,7 +49,7 @@ vector_dic_44:	.byte	5,		M(3),	VADDR(vector_dic_28),	VADDR(vector_dic_04)
 palette:		.byte $0F, $11, $21, $31
 
 .segment "CODE"
-.proc	reset
+.proc reset
 	sei
 	lda #$40
 	sta APU_PAD2
@@ -81,9 +81,9 @@ palette:		.byte $0F, $11, $21, $31
 	.endrepeat
 
 	lda #$3f
-	sta	PPU_VRAM_ADDR2
+	sta PPU_VRAM_ADDR2
 	lda #$10
-	sta	PPU_VRAM_ADDR2
+	sta PPU_VRAM_ADDR2
 	.repeat 4, index
 		lda palette + index
 		sta PPU_VRAM_IO
@@ -105,14 +105,14 @@ palette:		.byte $0F, $11, $21, $31
 	jmp :-
 .endproc
 
-.proc	control
+.proc control
 	not_pushed:
 	jsr read_joypad_a_key
-	bcc	not_pushed
+	bcc not_pushed
 
 	pushing:
 	jsr read_joypad_a_key
-	bcs	pushing
+	bcs pushing
 
 	lda vector_addr
 	clc
@@ -125,7 +125,7 @@ palette:		.byte $0F, $11, $21, $31
 	rts
 .endproc
 
-.proc	read_joypad_a_key
+.proc read_joypad_a_key
 	lda #1
 	sta APU_PAD1
 	lda #0
@@ -135,7 +135,7 @@ palette:		.byte $0F, $11, $21, $31
 	rts
 .endproc
 
-.proc	nmi
+.proc nmi
 	pha
 	txa
 	pha
@@ -155,7 +155,7 @@ palette:		.byte $0F, $11, $21, $31
 	rti
 .endproc
 
-.proc	update_oam
+.proc update_oam
 	jsr move_pos
 	jsr check_collision
 	lda pos + 0
@@ -167,7 +167,7 @@ palette:		.byte $0F, $11, $21, $31
 	rts
 .endproc
 
-.proc	move_pos
+.proc move_pos
 	ldx vector_addr
 	.repeat 2, index
 		lda pos + index
@@ -179,7 +179,7 @@ palette:		.byte $0F, $11, $21, $31
 	rts
 .endproc
 
-.proc	check_collision
+.proc check_collision
 	.repeat 2, index
 		.scope
 			ldx vector_addr
