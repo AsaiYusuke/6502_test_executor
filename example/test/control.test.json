@@ -1,0 +1,64 @@
+{
+    "$schema": "../../schema/testcase.schema.json",
+    "target": {
+        "label": "control"
+    },
+    "cases": [
+        {
+            "name": "setup:[vector_addr=0], expected:[vector_addr=4]",
+            "setup": {
+                "memory": [
+                    {
+                        "label": "vector_addr",
+                        "value": 0
+                    },
+                    {
+                        "label": "APU_PAD1",
+                        "value": [
+                            0,
+                            1,
+                            1,
+                            0
+                        ]
+                    }
+                ]
+            },
+            "expected": {
+                "memory": [
+                    {
+                        "label": "vector_addr",
+                        "value": 4
+                    }
+                ]
+            }
+        },
+        {
+            "name": "setup:[vector_addr=44], expected:[vector_addr=0]",
+            "setup": {
+                "memory": [
+                    {
+                        "label": "vector_addr",
+                        "value": 44
+                    },
+                    {
+                        "label": "APU_PAD1",
+                        "value": [
+                            0,
+                            1,
+                            1,
+                            0
+                        ]
+                    }
+                ]
+            },
+            "expected": {
+                "memory": [
+                    {
+                        "label": "vector_addr",
+                        "value": 0
+                    }
+                ]
+            }
+        }
+    ]
+}

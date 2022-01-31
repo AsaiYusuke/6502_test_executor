@@ -5,162 +5,198 @@
     },
     "cases": [
         {
-            "name": "V > 0, pos < MAX : continue",
+            "name": "vector_addr = 4(Vx>0,Vy>0), pos < MAX : continue",
             "setup": {
                 "memory": [
                     {
-                        "label": "vector",
-                        "value": 8
+                        "label": "vector_addr",
+                        "value": 4
                     },
                     {
                         "label": "pos",
-                        "value": 223
+                        "values": [
+                            223,
+                            223
+                        ]
                     },
                     {
                         "label": "old_pos",
-                        "value": 222
+                        "values": [
+                            222,
+                            222
+                        ]
                     }
                 ]
             },
             "expected": {
                 "memory": [
                     {
-                        "label": "vector",
-                        "value": 8
+                        "label": "vector_addr",
+                        "value": 4
                     }
                 ]
             }
         },
         {
-            "name": "V > 0, pos == MAX : turn",
+            "name": "vector_addr = 4(Vx>0,Vy>0), pos == MAX : turn",
             "setup": {
                 "memory": [
                     {
-                        "label": "vector",
-                        "value": 8
+                        "label": "vector_addr",
+                        "value": 4
                     },
                     {
                         "label": "pos",
-                        "value": 224
+                        "values": [
+                            224,
+                            224
+                        ]
                     },
                     {
                         "label": "old_pos",
-                        "value": 222
+                        "values": [
+                            222,
+                            222
+                        ]
                     }
                 ]
             },
             "expected": {
                 "memory": [
                     {
-                        "label": "vector",
-                        "value": -8
+                        "label": "vector_addr",
+                        "value": 28
                     }
                 ]
             }
         },
         {
-            "name": "V > 0, pos > MAX : turn",
+            "name": "vector_addr = 4(Vx>0,Vy>0), pos > MAX : turn",
             "setup": {
                 "memory": [
                     {
-                        "label": "vector",
-                        "value": 8
+                        "label": "vector_addr",
+                        "value": 4
                     },
                     {
                         "label": "pos",
-                        "value": 225
+                        "values": [
+                            225,
+                            225
+                        ]
                     },
                     {
                         "label": "old_pos",
-                        "value": 222
+                        "values": [
+                            222,
+                            222
+                        ]
                     }
                 ]
             },
             "expected": {
                 "memory": [
                     {
-                        "label": "vector",
-                        "value": -8
+                        "label": "vector_addr",
+                        "value": 28
                     }
                 ]
             }
         },
         {
-            "name": "V < 0, pos > MIN : continue",
+            "name": "vector_addr = 32(Vx<0,Vy<0), pos > MIN : continue",
             "setup": {
                 "memory": [
                     {
-                        "label": "vector",
-                        "value": -8
-                    },
-                    {
-                        "label": "pos",
-                        "value": 33
-                    },
-                    {
-                        "label": "old_pos",
-                        "value": 34
-                    }
-                ]
-            },
-            "expected": {
-                "memory": [
-                    {
-                        "label": "vector",
-                        "value": -8
-                    }
-                ]
-            }
-        },
-        {
-            "name": "V < 0, pos == MIN : turn",
-            "setup": {
-                "memory": [
-                    {
-                        "label": "vector",
-                        "value": -8
-                    },
-                    {
-                        "label": "pos",
+                        "label": "vector_addr",
                         "value": 32
                     },
                     {
+                        "label": "pos",
+                        "values": [
+                            33,
+                            33
+                        ]
+                    },
+                    {
                         "label": "old_pos",
-                        "value": 34
+                        "values": [
+                            34,
+                            34
+                        ]
                     }
                 ]
             },
             "expected": {
                 "memory": [
                     {
-                        "label": "vector",
+                        "label": "vector_addr",
+                        "value": 32
+                    }
+                ]
+            }
+        },
+        {
+            "name": "vector_addr = 32(Vx<0,Vy<0), pos == MIN : turn",
+            "setup": {
+                "memory": [
+                    {
+                        "label": "vector_addr",
+                        "value": 32
+                    },
+                    {
+                        "label": "pos",
+                        "values": [
+                            32,
+                            32
+                        ]
+                    },
+                    {
+                        "label": "old_pos",
+                        "values": [
+                            34,
+                            34
+                        ]
+                    }
+                ]
+            },
+            "expected": {
+                "memory": [
+                    {
+                        "label": "vector_addr",
                         "value": 8
                     }
                 ]
             }
         },
         {
-            "name": "V < 0, pos < MIN : turn",
+            "name": "vector_addr = 32(Vx<0,Vy<0), pos < MIN : turn",
             "setup": {
                 "memory": [
                     {
-                        "label": "vector",
-                        "value": -8
+                        "label": "vector_addr",
+                        "value": 32
                     },
                     {
                         "label": "pos",
-                        "value": 31
+                        "values": [
+                            31,
+                            31
+                        ]
                     },
                     {
                         "label": "old_pos",
-                        "value": 34
+                        "values": [
+                            34,
+                            34
+                        ]
                     }
                 ]
             },
             "expected": {
                 "memory": [
                     {
-                        "label": "vector",
+                        "label": "vector_addr",
                         "value": 8
                     }
                 ]
