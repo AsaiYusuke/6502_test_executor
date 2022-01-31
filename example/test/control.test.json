@@ -58,7 +58,7 @@
                 ]
             }
         },
-        "setup:[vector_addr= 0, PadInput=1off:2on -> 1on:2on -> 1off:2on -> 1off:2off], expected:[vector_addr=0]": {
+        "setup:[vector_addr= 0, PadInput=1off:2on -> 1on:2on -> 1off:2on -> 1off:2off], expected:[vector_addr=4]": {
             "setup": {
                 "memory": [
                     {
