@@ -47,13 +47,7 @@
                                             "readCount": {
                                                 "type": "null"
                                             },
-                                            "readCounts": {
-                                                "type": "null"
-                                            },
                                             "writeCount": {
-                                                "type": "null"
-                                            },
-                                            "writeCounts": {
                                                 "type": "null"
                                             }
                                         }
@@ -201,17 +195,7 @@
                             },
                             {
                                 "required": [
-                                    "readCounts"
-                                ]
-                            },
-                            {
-                                "required": [
                                     "writeCount"
-                                ]
-                            },
-                            {
-                                "required": [
-                                    "writeCounts"
                                 ]
                             }
                         ],
@@ -255,28 +239,36 @@
                                 ]
                             },
                             "readCount": {
-                                "type": "number",
-                                "minimum": 0
-                            },
-                            "readCounts": {
-                                "type": "array",
-                                "minItems": 1,
-                                "items": {
-                                    "type": "number",
-                                    "minimum": 0
-                                }
+                                "oneOf": [
+                                    {
+                                        "type": "number",
+                                        "minimum": 0
+                                    },
+                                    {
+                                        "type": "array",
+                                        "minItems": 1,
+                                        "items": {
+                                            "type": "number",
+                                            "minimum": 0
+                                        }
+                                    }
+                                ]
                             },
                             "writeCount": {
-                                "type": "number",
-                                "minimum": 0
-                            },
-                            "writeCounts": {
-                                "type": "array",
-                                "minItems": 1,
-                                "items": {
-                                    "type": "number",
-                                    "minimum": 0
-                                }
+                                "oneOf": [
+                                    {
+                                        "type": "number",
+                                        "minimum": 0
+                                    },
+                                    {
+                                        "type": "array",
+                                        "minItems": 1,
+                                        "items": {
+                                            "type": "number",
+                                            "minimum": 0
+                                        }
+                                    }
+                                ]
                             }
                         },
                         "dependencies": {
@@ -290,34 +282,6 @@
                             "sequence": {
                                 "properties": {
                                     "value": {
-                                        "type": "null"
-                                    }
-                                }
-                            },
-                            "readCount": {
-                                "properties": {
-                                    "readCounts": {
-                                        "type": "null"
-                                    }
-                                }
-                            },
-                            "readCounts": {
-                                "properties": {
-                                    "readCount": {
-                                        "type": "null"
-                                    }
-                                }
-                            },
-                            "writeCount": {
-                                "properties": {
-                                    "writeCounts": {
-                                        "type": "null"
-                                    }
-                                }
-                            },
-                            "writeCounts": {
-                                "properties": {
-                                    "writeCount": {
                                         "type": "null"
                                     }
                                 }

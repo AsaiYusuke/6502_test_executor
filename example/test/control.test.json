@@ -57,6 +57,47 @@
                     }
                 ]
             }
+        },
+        "setup:[vector_addr= 0, PadInput=1off:2on -> 1on:2on -> 1off:2on -> 1off:2off], expected:[vector_addr=0]": {
+            "setup": {
+                "memory": [
+                    {
+                        "label": "vector_addr",
+                        "value": 0
+                    },
+                    {
+                        "label": "APU_PAD1",
+                        "sequence": [
+                            [
+                                0,
+                                1,
+                                0,
+                                0
+                            ],
+                            [
+                                1,
+                                1,
+                                0
+                            ]
+                        ]
+                    }
+                ]
+            },
+            "expected": {
+                "memory": [
+                    {
+                        "label": "vector_addr",
+                        "value": 4
+                    },
+                    {
+                        "label": "APU_PAD1",
+                        "readCount": [
+                            4,
+                            3
+                        ]
+                    }
+                ]
+            }
         }
     }
 }

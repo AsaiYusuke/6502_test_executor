@@ -130,8 +130,12 @@ palette:		.byte $0F, $11, $21, $31
 	sta APU_PAD1
 	lda #0
 	sta APU_PAD1
-	lda APU_PAD1
-	lsr
+	.repeat 2, index
+		lda APU_PAD1 + index
+		lsr
+		bcs read_end
+	.endrepeat
+	read_end:
 	rts
 .endproc
 

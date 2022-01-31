@@ -141,10 +141,17 @@ vector<uint8_t> condition_memory::get_read_counts(emulation_devices *_device, js
     vector<uint8_t> result;
 
     json count_defs;
-    if (memory_def.contains("readCounts"))
-        count_defs = memory_def["readCounts"];
-    else if (memory_def.contains("readCount"))
-        count_defs = {memory_def["readCount"]};
+    if (memory_def.contains("readCount"))
+    {
+        if (memory_def["readCount"].is_array())
+        {
+            count_defs = memory_def["readCount"];
+        }
+        else
+        {
+            count_defs = {memory_def["readCount"]};
+        }
+    }
     else
         return {};
 
@@ -159,10 +166,17 @@ vector<uint8_t> condition_memory::get_write_counts(emulation_devices *_device, j
     vector<uint8_t> result;
 
     json count_defs;
-    if (memory_def.contains("writeCounts"))
-        count_defs = memory_def["writeCounts"];
-    else if (memory_def.contains("writeCount"))
-        count_defs = {memory_def["writeCount"]};
+    if (memory_def.contains("writeCount"))
+    {
+        if (memory_def["writeCount"].is_array())
+        {
+            count_defs = memory_def["writeCount"];
+        }
+        else
+        {
+            count_defs = {memory_def["writeCount"]};
+        }
+    }
     else
         return {};
 
