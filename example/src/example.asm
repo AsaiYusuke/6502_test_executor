@@ -20,12 +20,12 @@
 	.endrepeat
 
 .segment "OAM"
-oam:			.res 256
+oam:		.res 256
 
 .segment "ZEROPAGE"
-pos:			.res 2
-old_pos:		.res 2
-nmi_lock:		.res 1
+pos:		.res 2
+old_pos:	.res 2
+nmi_lock:	.res 1
 vector_addr:	.res 1
 
 .segment "RODATA"
@@ -33,18 +33,18 @@ vector_addr:	.res 1
 .define VADDR(val)	.lobyte(val - vector_dic)
 
 vector_dic:
-vector_dic_00:	.byte	6,		0,		VADDR(vector_dic_24),	VADDR(vector_dic_00)
-vector_dic_04:	.byte	5,		3,		VADDR(vector_dic_20),	VADDR(vector_dic_44)
-vector_dic_08:	.byte	3,		5,		VADDR(vector_dic_16),	VADDR(vector_dic_40)
-vector_dic_12:	.byte	0,		6,		VADDR(vector_dic_12),	VADDR(vector_dic_36)
-vector_dic_16:	.byte	M(3),	5,		VADDR(vector_dic_08),	VADDR(vector_dic_32)
-vector_dic_20:	.byte	M(5),	3,		VADDR(vector_dic_04),	VADDR(vector_dic_28)
-vector_dic_24:	.byte	M(6),	0,		VADDR(vector_dic_00),	VADDR(vector_dic_24)
+vector_dic_00:	.byte	6,	0,	VADDR(vector_dic_24),	VADDR(vector_dic_00)
+vector_dic_04:	.byte	5,	3,	VADDR(vector_dic_20),	VADDR(vector_dic_44)
+vector_dic_08:	.byte	3,	5,	VADDR(vector_dic_16),	VADDR(vector_dic_40)
+vector_dic_12:	.byte	0,	6,	VADDR(vector_dic_12),	VADDR(vector_dic_36)
+vector_dic_16:	.byte	M(3),	5,	VADDR(vector_dic_08),	VADDR(vector_dic_32)
+vector_dic_20:	.byte	M(5),	3,	VADDR(vector_dic_04),	VADDR(vector_dic_28)
+vector_dic_24:	.byte	M(6),	0,	VADDR(vector_dic_00),	VADDR(vector_dic_24)
 vector_dic_28:	.byte	M(5),	M(3),	VADDR(vector_dic_44),	VADDR(vector_dic_20)
 vector_dic_32:	.byte	M(3),	M(5),	VADDR(vector_dic_40),	VADDR(vector_dic_16)
-vector_dic_36:	.byte	0,		M(6),	VADDR(vector_dic_36),	VADDR(vector_dic_12)
-vector_dic_40:	.byte	3,		M(5),	VADDR(vector_dic_32),	VADDR(vector_dic_08)
-vector_dic_44:	.byte	5,		M(3),	VADDR(vector_dic_28),	VADDR(vector_dic_04)
+vector_dic_36:	.byte	0,	M(6),	VADDR(vector_dic_36),	VADDR(vector_dic_12)
+vector_dic_40:	.byte	3,	M(5),	VADDR(vector_dic_32),	VADDR(vector_dic_08)
+vector_dic_44:	.byte	5,	M(3),	VADDR(vector_dic_28),	VADDR(vector_dic_04)
 
 palette:		.byte $0F, $11, $21, $31
 
