@@ -1,11 +1,12 @@
 # 6502 Unit Test executor
-This tool enables unit testing for 6502 assembly programs built with the [ca65 assembler](https://cc65.github.io/doc/ca65.html) on a cross-platform basis.
+This tool enables unit testing for 6502 assembly programs on a cross-platform basis. 
 
-#### Note:
-This project is a fork of [Erik Lothe's 6502 Unit test executor](https://github.com/89erik/6502_test_executor) contains [gianlucag's 6502 emulator](https://github.com/gianlucag/mos6502).
+This project is a fork of the following project:
+- [gianlucag's 6502 emulator](https://github.com/gianlucag/mos6502)
+  - [Erik Lothe's 6502 Unit test executor](https://github.com/89erik/6502_test_executor)
 
 ## Getting started
-A simple project that gives you everything you need for this tool is available in `example` directory.
+[A simple example project](https://github.com/AsaiYusuke/6502_test_executor/tree/master/example) that gives you everything you need for this tool is available.
 
 ```
 # cd example
@@ -23,19 +24,23 @@ All tests passed.
 ## How to use
 
 ### Build the 6502 project with debug option
-By specifying the debug option to the ca65/ld65 command, symbol definitions consisting of label/address pair will be output.
+Build the 6502 project using the [CA65 assembler](https://cc65.github.io/doc/ca65.html) with debug option.
+By specifying the debug option, symbol definitions consisting of label/address pair will be output.
 
 ### Create test files
-Create test files consisting of three items in JSON format:
-- the starting address of the procedure to be tested
-- the register and memory settings to be made before execution
-- the expected values of the register and memory after the test procedure is executed
+Create test files containing the three items in JSON format.
+- *Test target*
+the starting address of the test procedure
+- *Setup condition*
+the settings of the register and memory to make before the test
+- *Expected condition*
+the expected responses of the register and memory after the test
 
-And also the tool provides a `JSON Schema file` for creating test files, so you can easily write tests that satisfy the format.
+The tool also provides [a JSON Schema file](https://github.com/AsaiYusuke/6502_test_executor/blob/master/schema/testcase.schema.json) that makes it easy to create test files according to the format.
 If you use [Visual Studio Code](https://code.visualstudio.com/), it will tell you about formatting error based on JSON Schema without any extensions.
 
 ### Execute tester
-Run the tester by specifying the program image file, symbol definition file, and test file:
+Run the tool by specifying the program image file, symbol definition file, and test file:
 
 ```
 6502_tester -p <program iamge> -s <symbol definition> -t <test file>
