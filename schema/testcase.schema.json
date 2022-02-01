@@ -11,15 +11,20 @@
             "type": "string"
         },
         "target": {
-            "description": "Test target",
+            "title": "Test target",
+            "description": "Test target specifies the address to be set in the PC register at the start of the test.",
             "$ref": "#/definitions/address"
         },
         "cases": {
+            "title": "Test cases",
+            "description": "Test cases specify, for each test, the setup conditions and the expected conditions.",
             "type": "object",
             "minItems": 1,
             "patternProperties": {
                 "additionalProperties": false,
                 "^.*$": {
+                    "title": "Test ID",
+                    "description": "Test ID can be any string that uniquely identifies it in the file.",
                     "type": "object",
                     "required": [
                         "setup",
@@ -31,6 +36,8 @@
                             "type": "boolean"
                         },
                         "setup": {
+                            "title": "Setup condition",
+                            "description": "Setup condition specifies the initial settings of the registers and memory at the start of the test.",
                             "allOf": [
                                 {
                                     "$ref": "#/definitions/conditions"
@@ -56,6 +63,8 @@
                             }
                         },
                         "expected": {
+                            "title": "Expected condition",
+                            "description": "Expected Condition specifies the result of the registers and memory at the end of the test.",
                             "$ref": "#/definitions/conditions"
                         }
                     }
@@ -80,13 +89,19 @@
             ],
             "properties": {
                 "address": {
+                    "title": "Address",
+                    "description": "Address is expressed as a hexadecimal address value.",
                     "type": "string",
                     "pattern": "^\\$[0-9A-F]{1,4}$"
                 },
                 "label": {
+                    "title": "Label",
+                    "description": "Label specifies the symbol name written in the symbol file.",
                     "type": "string"
                 },
                 "offset": {
+                    "title": "Offset",
+                    "description": "The offset specifies the position relative to the point of the address indicated by the Label.",
                     "$ref": "#/definitions/number"
                 }
             },
@@ -132,37 +147,48 @@
             "additionalProperties": false,
             "properties": {
                 "A": {
+                    "title": "A Register",
                     "$ref": "#/definitions/number"
                 },
                 "X": {
+                    "title": "X Register",
                     "$ref": "#/definitions/number"
                 },
                 "Y": {
+                    "title": "Y Register",
                     "$ref": "#/definitions/number"
                 },
                 "Status": {
+                    "title": "Status Register",
                     "type": "object",
                     "additionalProperties": false,
                     "properties": {
                         "Negative": {
+                            "title": "Negative flag",
                             "type": "boolean"
                         },
                         "Overflow": {
+                            "title": "Overflow flag",
                             "type": "boolean"
                         },
                         "Break": {
+                            "title": "Break flag",
                             "type": "boolean"
                         },
                         "Decimal": {
+                            "title": "Decimal flag",
                             "type": "boolean"
                         },
                         "Interrupt": {
+                            "title": "Interrupt flag",
                             "type": "boolean"
                         },
                         "Zero": {
+                            "title": "Zero flag",
                             "type": "boolean"
                         },
                         "Carry": {
+                            "title": "Carry flag",
                             "type": "boolean"
                         }
                     }
@@ -205,6 +231,8 @@
                             "label": {},
                             "offset": {},
                             "value": {
+                                "title": "Memory value",
+                                "description": "Memory value can be either the single value at the specified address or the values given in an array starting from the address.",
                                 "oneOf": [
                                     {
                                         "$ref": "#/definitions/number"
@@ -219,6 +247,8 @@
                                 ]
                             },
                             "sequence": {
+                                "title": "Memory sequence",
+                                "description": "Memory sequence can be either the value array in the order of processing at the specified address, or the value arrays given in the two-dimensioned array starting from address.",
                                 "type": "array",
                                 "minItems": 1,
                                 "oneOf": [
@@ -239,6 +269,8 @@
                                 ]
                             },
                             "readCount": {
+                                "title": "Read count",
+                                "description": "Read count specifies the number of times the read instruction(LDA, CMP, ...) for the specified address is executed.",
                                 "oneOf": [
                                     {
                                         "type": "number",
@@ -255,6 +287,8 @@
                                 ]
                             },
                             "writeCount": {
+                                "title": "Write count",
+                                "description": "Write count specifies the number of times the write instruction(STA, INC, ..) for the specified address is executed.",
                                 "oneOf": [
                                     {
                                         "type": "number",
