@@ -110,10 +110,14 @@ void test::print_test_result(string test_name, test_result result, vector<string
     cout << ": [" << test_name << "]" << endl;
 
     if (result == test_result::FAIL)
+    {
+        cerr << endl;
         device->print();
+    }
 
     if (!errors.empty())
     {
+        cerr << endl;
         for (string error : errors)
         {
             cerr << error << endl;

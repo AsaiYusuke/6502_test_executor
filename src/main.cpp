@@ -51,11 +51,19 @@ int main(int argc, char *argv[])
         return -1;
     }
 
-    emulation_devices emulation = emulation_devices(program_filename, symbol_filename);
-    test test_def = test(test_filename, &emulation, quiet_ok, quiet_fail, quiet_summary, quiet);
-    bool result = test_def.execute();
-    if (!result)
+    try
+    {
+        emulation_devices emulation = emulation_devices(program_filename, symbol_filename);
+        test test_def = test(test_filename, &emulation, quiet_ok, quiet_fail, quiet_summary, quiet);
+        bool result = test_def.execute();
+        if (!result)
+            return 1;
+    }
+    catch (exception &e)
+    {
+        cerr << e.what() << endl;
         return 1;
+    }
 
     return 0;
 }

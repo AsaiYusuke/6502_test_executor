@@ -19,10 +19,8 @@ public:
     void execute();
     int get_timeout();
 
-    uint16_t get_register16(register_type type);
-    void set_register16(register_type type, uint16_t value);
-    uint8_t get_register8(register_type type);
-    void set_register8(register_type type, uint8_t value);
+    uint8_t get_register(register_type type);
+    void set_register(register_type type, uint8_t value);
 
     void print();
 };

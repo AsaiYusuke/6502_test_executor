@@ -1,3 +1,5 @@
+#include <stdexcept>
+
 #include "emulation_devices.h"
 
 emulation_devices::emulation_devices(string program_path, string symbol_path)
@@ -25,10 +27,7 @@ memory_device *emulation_devices::get_memory()
 uint16_t emulation_devices::get_address(string label, int offset)
 {
     if (!memory->has_address(label))
-    {
-        cerr << "didnt find symbol '" << label << "' in symbols file" << endl;
-        throw 2;
-    }
+        throw invalid_argument("Symbol not found: " + label);
 
     return memory->get_address(label) + offset;
 }

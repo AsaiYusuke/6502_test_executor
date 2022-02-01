@@ -1,8 +1,5 @@
-#include <stdexcept>
-
 #include "cpu_device.h"
 #include "exception/timeout.h"
-#include "exception/invalid_register.h"
 
 cpu_device::cpu_device(i_memory_access *i_memory_access)
 {
@@ -35,27 +32,7 @@ int cpu_device::get_timeout()
     return DEFAULT_TIMEOUT;
 }
 
-uint16_t cpu_device::get_register16(register_type type)
-{
-    switch (type)
-    {
-    case register_type::PC:
-        return cpu->getPC();
-    }
-    throw invalid_register_error("register16: '" + register_type_name_map[type]);
-}
-
-void cpu_device::set_register16(register_type type, uint16_t value)
-{
-    switch (type)
-    {
-    case register_type::PC:
-        cpu->setPC(value);
-    }
-    throw invalid_register_error("register16: '" + register_type_name_map[type]);
-}
-
-uint8_t cpu_device::get_register8(register_type type)
+uint8_t cpu_device::get_register(register_type type)
 {
     switch (type)
     {
@@ -68,10 +45,10 @@ uint8_t cpu_device::get_register8(register_type type)
     case register_type::Status:
         return cpu->getStatus();
     }
-    throw invalid_register_error("register8: '" + register_type_name_map[type]);
+    return 0;
 }
 
-void cpu_device::set_register8(register_type type, uint8_t value)
+void cpu_device::set_register(register_type type, uint8_t value)
 {
     switch (type)
     {
@@ -84,7 +61,6 @@ void cpu_device::set_register8(register_type type, uint8_t value)
     case register_type::Status:
         return cpu->setStatus(value);
     }
-    throw invalid_register_error("register8: '" + register_type_name_map[type]);
 }
 
 void cpu_device::print()

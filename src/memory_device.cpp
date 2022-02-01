@@ -3,6 +3,7 @@
 #include <fstream>
 
 #include "memory_device.h"
+#include "exception/file_open.h"
 
 void memory_device::load_rom_image(string path)
 {
@@ -10,10 +11,8 @@ void memory_device::load_rom_image(string path)
 
     ifstream file(path, ios::in | ios::binary | ios::ate);
     if (!file.is_open())
-    {
-        cerr << "Unable to open Program file: " << path << endl;
-        throw 1;
-    }
+        throw file_open_error(path);
+
     size = file.tellg();
     rom = new char[size];
     file.seekg(0, ios::beg);
@@ -25,10 +24,7 @@ void memory_device::load_symbol_defs(string path)
 {
     ifstream file(path);
     if (!file.is_open())
-    {
-        cerr << "Unable to open Symbol file: " << path << endl;
-        throw 1;
-    }
+        throw file_open_error(path);
 
     string line;
     while (getline(file, line))

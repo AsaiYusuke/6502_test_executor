@@ -55,11 +55,11 @@ void test_assert::execute()
 
         test_result &= assert_equal(
             register_def.get_value(),
-            cpu_dev->get_register8(register_def.get_type()),
+            cpu_dev->get_register(register_def.get_type()),
             "Register [" + string(register_type_name_map[register_def.get_type()]) + "]");
     }
 
-    uint8_t status = cpu_dev->get_register8(register_type::Status);
+    uint8_t status = cpu_dev->get_register(register_type::Status);
     for (auto status_flag_def : cond->get_status_flag_defs())
     {
         test_result &= assert_equal(
