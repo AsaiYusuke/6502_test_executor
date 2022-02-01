@@ -1,4 +1,8 @@
+#include <stdexcept>
+
 #include "cpu_device.h"
+#include "exception/timeout.h"
+#include "exception/invalid_register.h"
 
 cpu_device::cpu_device(i_memory_access *i_memory_access)
 {
@@ -20,16 +24,13 @@ void cpu_device::execute()
     do
     {
         cpu->Run(1, cycleCount, cpu->INST_COUNT);
-    } while (cpu->getPC() != 0xFFFF && ++count < timeout());
+    } while (cpu->getPC() != 0xFFFF && ++count < get_timeout());
 
-    if (count >= timeout())
-    {
-        cerr << "Execution count >= " + to_string(timeout()) << endl;
-        throw 2;
-    }
+    if (count >= get_timeout())
+        throw timeout_error("execution count >= " + to_string(get_timeout()));
 }
 
-int cpu_device::timeout()
+int cpu_device::get_timeout()
 {
     return DEFAULT_TIMEOUT;
 }
@@ -41,8 +42,7 @@ uint16_t cpu_device::get_register16(register_type type)
     case register_type::PC:
         return cpu->getPC();
     }
-    cerr << "invalid register16: '" << register_type_name_map[type] << endl;
-    throw 2;
+    throw invalid_register_error("register16: '" + register_type_name_map[type]);
 }
 
 void cpu_device::set_register16(register_type type, uint16_t value)
@@ -52,8 +52,7 @@ void cpu_device::set_register16(register_type type, uint16_t value)
     case register_type::PC:
         cpu->setPC(value);
     }
-    cerr << "invalid register16: '" << register_type_name_map[type] << endl;
-    throw 2;
+    throw invalid_register_error("register16: '" + register_type_name_map[type]);
 }
 
 uint8_t cpu_device::get_register8(register_type type)
@@ -69,8 +68,7 @@ uint8_t cpu_device::get_register8(register_type type)
     case register_type::Status:
         return cpu->getStatus();
     }
-    cerr << "invalid register8: '" << register_type_name_map[type] << endl;
-    throw 2;
+    throw invalid_register_error("register8: '" + register_type_name_map[type]);
 }
 
 void cpu_device::set_register8(register_type type, uint8_t value)
@@ -86,8 +84,7 @@ void cpu_device::set_register8(register_type type, uint8_t value)
     case register_type::Status:
         return cpu->setStatus(value);
     }
-    cerr << "invalid register8: '" << register_type_name_map[type] << endl;
-    throw 2;
+    throw invalid_register_error("register8: '" + register_type_name_map[type]);
 }
 
 void cpu_device::print()

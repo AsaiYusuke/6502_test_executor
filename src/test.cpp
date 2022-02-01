@@ -39,29 +39,39 @@ bool test::execute()
             continue;
         }
 
-        bool result = true;
+        try
+        {
+            test_setup(
+                new condition(
+                    device,
+                    testcase["setup"],
+                    test_json["target"]))
+                .execute();
 
-        test_setup(
-            new condition(
-                device,
-                testcase["setup"],
-                test_json["target"]))
-            .execute();
+            device->get_cpu()->execute();
 
-        device->get_cpu()->execute();
+            test_assert assert = test_assert(
+                new condition(
+                    device,
+                    testcase["expected"]));
+            assert.execute();
 
-        test_assert assert = test_assert(
-            new condition(
-                device,
-                testcase["expected"]));
-        assert.execute();
+            print_test_result(
+                name,
+                assert.get_result(),
+                assert.get_errors());
 
-        print_test_result(
-            name,
-            assert.get_result(),
-            assert.get_errors());
+            test_result_map[assert.get_result()]++;
+        }
+        catch (exception &e)
+        {
+            print_test_result(
+                name,
+                test_result::FAIL,
+                {e.what()});
 
-        test_result_map[assert.get_result()]++;
+            test_result_map[test_result::FAIL]++;
+        }
     }
 
     print_summary(
