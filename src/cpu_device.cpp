@@ -1,3 +1,5 @@
+#include <vector>
+
 #include "cpu_device.h"
 #include "exception/timeout.h"
 
@@ -9,7 +11,11 @@ cpu_device::cpu_device(i_memory_access *i_memory_access)
 void cpu_device::clear(uint16_t target_program_counter)
 {
     cpu->Reset();
+
     cpu->setPC(target_program_counter);
+    callStack.push_back(0xFFFF);
+    callStack.push_back(target_program_counter);
+
     cpu->StackPush(0xFF);
     cpu->StackPush(0xFE);
 }
@@ -20,7 +26,24 @@ void cpu_device::execute()
     uint64_t cycleCount = 0;
     do
     {
-        cpu->Run(1, cycleCount, cpu->INST_COUNT);
+        bool isCallInstr = false;
+
+        if (cpu->isCallInstr())
+        {
+            callStack.push_back(cpu->getPC());
+            isCallInstr = true;
+        }
+        else if (cpu->isReturnInstr())
+        {
+            callStack.pop_back();
+            callStack.pop_back();
+        }
+
+        auto arg_address = cpu->Run(1, cycleCount, cpu->INST_COUNT);
+
+        if (isCallInstr)
+            callStack.push_back(arg_address);
+
     } while (cpu->getPC() != 0xFFFF && ++count < get_timeout());
 
     if (count >= get_timeout())
@@ -78,4 +101,10 @@ void cpu_device::print()
            (cpu->getStatus() & ZERO) > 0 ? "True" : "False",
            (cpu->getStatus() & CARRY) > 0 ? "True" : "False",
            cpu->getPC());
+}
+
+vector<uint16_t> cpu_device::get_call_stack()
+{
+    callStack.push_back(cpu->getPC());
+    return callStack;
 }

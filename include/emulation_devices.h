@@ -15,7 +15,7 @@ private:
     memory_device *memory;
 
 public:
-    emulation_devices(string program_path, string symbol_path);
+    emulation_devices(string program_path, string debug_path);
     void clear(uint16_t target_program_counter);
     cpu_device *get_cpu();
     memory_device *get_memory();

@@ -5,7 +5,9 @@
 #include "test.h"
 #include "test_setup.h"
 #include "test_assert.h"
+#include "condition/address_convert.h"
 #include "condition/condition.h"
+#include "exception/timeout.h"
 
 test::test(string test_path, emulation_devices *device, bool quiet_ok, bool quiet_fail, bool quiet_summary, bool quiet)
 {
@@ -62,6 +64,17 @@ bool test::execute()
                 assert.get_errors());
 
             test_result_map[assert.get_result()]++;
+        }
+        catch (timeout_error &e)
+        {
+            print_test_result(
+                name,
+                test_result::FAIL,
+                {e.what()});
+
+            print_call_stack();
+
+            test_result_map[test_result::FAIL]++;
         }
         catch (exception &e)
         {
@@ -136,4 +149,18 @@ void test::print_summary(int ok, int fail, int skip, int total)
     cout << ", FAIL: " << fail;
     cout << ", SKIP: " << skip;
     cout << " / TOTAL: " << total << endl;
+}
+
+void test::print_call_stack()
+{
+    cerr << "Call stack:" << endl;
+    for (auto address : device->get_cpu()->get_call_stack())
+    {
+        if (address == 0xFFFF)
+            continue;
+
+        cerr << "  " << address_convert::to_hex_string(address) << " : ";
+        cerr << device->get_memory()->get_source_line(address) << endl;
+    }
+    cerr << endl;
 }

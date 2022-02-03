@@ -1,3 +1,4 @@
+#include <algorithm>
 
 #include "mos6502.h"
 
@@ -872,11 +873,12 @@ void mos6502::NMI()
 	return;
 }
 
-void mos6502::Run(
+uint16_t mos6502::Run(
 	int32_t cyclesRemaining,
 	uint64_t& cycleCount,
 	CycleMethod cycleMethod
 ) {
+	uint16_t address;
 	uint8_t opcode;
 	Instr instr;
 
@@ -889,18 +891,20 @@ void mos6502::Run(
 		instr = InstrTable[opcode];
 
 		// execute
-		Exec(instr);
+		address = Exec(instr);
 		cycleCount += instr.cycles;
 		cyclesRemaining -=
 			cycleMethod == CYCLE_COUNT        ? instr.cycles
 			/* cycleMethod == INST_COUNT */   : 1;
 	}
+	return address;
 }
 
-void mos6502::Exec(Instr i)
+uint16_t mos6502::Exec(Instr i)
 {
 	uint16_t src = (this->*i.addr)();
 	(this->*i.code)(src);
+	return src;
 }
 
 void mos6502::Op_ILLEGAL(uint16_t src)
@@ -1514,4 +1518,16 @@ uint8_t mos6502::getStatus()
 void mos6502::setStatus(uint8_t value)
 {
 	status = value;
+}
+
+bool mos6502::isCallInstr()
+{
+	auto instr = InstrTable[memory_access->read(pc)].code;
+	return find(callInstr.begin(), callInstr.end(), instr) != callInstr.end();
+}
+
+bool mos6502::isReturnInstr()
+{
+	auto instr = InstrTable[memory_access->read(pc)].code;
+	return find(returnInstr.begin(), returnInstr.end(), instr) != returnInstr.end();
 }

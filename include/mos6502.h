@@ -9,6 +9,7 @@
 
 #include <iostream>
 #include <stdint.h>
+#include <vector>
 #include "memory_access.h"
 using namespace std;
 
@@ -70,7 +71,7 @@ private:
 
 	Instr InstrTable[256];
 
-	void Exec(Instr i);
+	uint16_t Exec(Instr i);
 
 	bool illegalOpcode;
 
@@ -168,6 +169,14 @@ private:
 	static const uint16_t nmiVectorL = 0xFFFA;
 
     i_memory_access *memory_access;
+	vector<CodeExec> callInstr{
+		&mos6502::Op_BRK,
+		&mos6502::Op_JSR
+	};
+	vector<CodeExec> returnInstr{
+		&mos6502::Op_RTI,
+		&mos6502::Op_RTS
+	};
 
 public:
 	enum CycleMethod {
@@ -178,7 +187,7 @@ public:
 	void NMI();
 	void IRQ();
 	void Reset();
-	void Run(
+	uint16_t Run(
 		int32_t cycles,
 		uint64_t& cycleCount,
 		CycleMethod cycleMethod = CYCLE_COUNT);
@@ -195,4 +204,6 @@ public:
 	void setStatus(uint8_t value);
 	void StackPush(uint8_t byte);
 	uint8_t StackPop();
+	bool isCallInstr();
+	bool isReturnInstr();
 };

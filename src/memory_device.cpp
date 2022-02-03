@@ -1,5 +1,3 @@
-#include <stdio.h>
-#include <iostream>
 #include <fstream>
 
 #include "memory_device.h"
@@ -20,58 +18,15 @@ void memory_device::load_rom_image(string path)
     file.close();
 }
 
-void memory_device::load_symbol_defs(string path)
-{
-    ifstream file(path);
-    if (!file.is_open())
-        throw file_open_error(path);
-
-    string line;
-    while (getline(file, line))
-        parse_symbol_def(line);
-    file.close();
-}
-
 uint16_t memory_device::memory_offset(uint16_t address)
 {
     return address - 0x8000 + 0x10;
 }
 
-void memory_device::parse_symbol_def(string line)
-{
-    if (line.substr(0, 4).compare("sym\t") != 0)
-        return;
-
-    auto name_pos = line.find("name=\"");
-    if (name_pos == string::npos)
-        return;
-
-    name_pos += 6;
-
-    auto name_end_pos = line.find("\"", name_pos);
-    if (name_end_pos == string::npos)
-        return;
-
-    auto val_pos = line.find("val=0x");
-    if (val_pos == string::npos)
-        return;
-
-    val_pos += 6;
-
-    auto val_end_pos = line.find(",", val_pos);
-    if (val_end_pos == string::npos)
-        return;
-
-    auto label = line.substr(name_pos, name_end_pos - name_pos);
-    auto value = stoi(line.substr(val_pos, val_end_pos - val_pos), 0, 16);
-    label_address_map[label] = value;
-    address_label_map[value] = label;
-}
-
-memory_device::memory_device(string program_path, string symbol_path)
+memory_device::memory_device(string program_path, string debug_path)
 {
     load_rom_image(program_path);
-    load_symbol_defs(symbol_path);
+    debug = new debug_info(debug_path);
 }
 
 void memory_device::clear()
@@ -83,19 +38,24 @@ void memory_device::clear()
     write_counts.clear();
 }
 
-bool memory_device::has_address(string label)
+string memory_device::get_source_line(uint16_t address)
 {
-    return label_address_map.count(label) > 0;
+    return debug->get_source_line(address);
+}
+
+bool memory_device::has_label(string label)
+{
+    return debug->has_label(label);
 }
 
 uint16_t memory_device::get_address(string label)
 {
-    return label_address_map[label];
+    return debug->get_address(label);
 }
 
 string memory_device::get_label(uint16_t address)
 {
-    return address_label_map[address];
+    return debug->get_label(address);
 }
 
 void memory_device::set_read_sequence(uint16_t address, vector<uint8_t> sequence)
@@ -166,6 +126,6 @@ void memory_device::print()
     {
         uint16_t k = iter->first;
         uint8_t v = iter->second;
-        printf("  %s($%X) : $%X\n", address_label_map[k].c_str(), k, v);
+        printf("  %s($%X) : $%X\n", debug->get_label(k).c_str(), k, v);
     }
 }

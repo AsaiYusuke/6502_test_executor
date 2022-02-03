@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
     args::ArgumentParser parser("6502 test executor");
     args::HelpFlag help(parser, "HELP", "Show this help menu.", {'h', "help"});
     args::ValueFlag<string> program_file(parser, "PROGRAM", "The program file path.", {'p', "program"});
-    args::ValueFlag<string> symbol_file(parser, "SYMBOL", "The symbol file path.", {'s', "symbol"});
+    args::ValueFlag<string> debug_file(parser, "DEBUG", "The debug file path.", {'d', "debug"});
     args::ValueFlag<string> test_file(parser, "TEST", "The test file path.", {'t', "test"});
     args::Flag quiet_ok(parser, "quiet OK", "The quiet OK flag", {"quiet-ok"});
     args::Flag quiet_fail(parser, "quiet FAIL", "The quiet FAIL flag", {"quiet-fail"});
@@ -42,10 +42,10 @@ int main(int argc, char *argv[])
     }
 
     const string program_filename = args::get(program_file);
-    const string symbol_filename = args::get(symbol_file);
+    const string debug_filename = args::get(debug_file);
     const string test_filename = args::get(test_file);
 
-    if (program_filename.empty() || symbol_filename.empty() || test_filename.empty())
+    if (program_filename.empty() || debug_filename.empty() || test_filename.empty())
     {
         cout << parser;
         return -1;
@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
 
     try
     {
-        emulation_devices emulation = emulation_devices(program_filename, symbol_filename);
+        emulation_devices emulation = emulation_devices(program_filename, debug_filename);
         test test_def = test(test_filename, &emulation, quiet_ok, quiet_fail, quiet_summary, quiet);
         bool result = test_def.execute();
         if (!result)

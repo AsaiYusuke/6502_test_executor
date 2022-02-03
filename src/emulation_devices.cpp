@@ -2,9 +2,9 @@
 
 #include "emulation_devices.h"
 
-emulation_devices::emulation_devices(string program_path, string symbol_path)
+emulation_devices::emulation_devices(string program_path, string debug_path)
 {
-    memory = new memory_device(program_path, symbol_path);
+    memory = new memory_device(program_path, debug_path);
     cpu = new cpu_device(memory);
 }
 
@@ -26,7 +26,7 @@ memory_device *emulation_devices::get_memory()
 
 uint16_t emulation_devices::get_address(string label, int offset)
 {
-    if (!memory->has_address(label))
+    if (!memory->has_label(label))
         throw invalid_argument("Symbol not found: " + label);
 
     return memory->get_address(label) + offset;

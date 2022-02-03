@@ -18,9 +18,11 @@ private:
     emulation_devices *device;
     json test_json;
 
+    void print_test_result(string test_name, test_result result, vector<string> errors);
+    void print_summary(int ok, int fail, int skip, int total);
+    void print_call_stack();
+
 public:
     test(string test_path, emulation_devices *device, bool quiet_ok, bool quiet_fail, bool quiet_summary, bool quiet);
     bool execute();
-    void print_test_result(string test_name, test_result result, vector<string> errors);
-    void print_summary(int ok, int fail, int skip, int total);
 }; 

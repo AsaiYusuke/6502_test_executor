@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "memory_access.h"
+#include "debug_info.h"
 
 using namespace std;
 
@@ -22,19 +23,16 @@ private:
     map<uint16_t, uint8_t> read_counts;
     map<uint16_t, uint8_t> write_counts;
 
-    map<string, uint16_t> label_address_map;
-    map<uint16_t, string> address_label_map;
+    debug_info *debug;
 
     void load_rom_image(string path);
-    void load_symbol_defs(string path);
-
     uint16_t memory_offset(uint16_t address);
-    void parse_symbol_def(string line);
 
 public:
-    memory_device(string program_path, string symbol_path);
+    memory_device(string program_path, string debug_path);
     void clear();
-    bool has_address(string label);
+    string get_source_line(uint16_t address);
+    bool has_label(string label);
     uint16_t get_address(string label);
     string get_label(uint16_t address);
     void set_read_sequence(uint16_t address, vector<uint8_t> queue);

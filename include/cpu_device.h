@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include "register_type.h"
 #include "mos6502.h"
 #include "memory_access.h"
@@ -12,6 +14,7 @@ class cpu_device
 {
 private:
     mos6502 *cpu;
+    vector<uint16_t> callStack;
 
 public:
     cpu_device(i_memory_access *memory_access);
@@ -23,4 +26,5 @@ public:
     void set_register(register_type type, uint8_t value);
 
     void print();
+    vector<uint16_t> get_call_stack();
 };
