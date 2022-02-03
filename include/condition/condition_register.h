@@ -2,7 +2,7 @@
 
 #include <stdint.h>
 #include "register_type.h"
-#include "emulation_devices.h"
+#include "emulation/emulation_devices.h"
 #include "nlohmann/json.hpp"
 
 using namespace std;

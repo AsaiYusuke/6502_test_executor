@@ -1,6 +1,6 @@
 #pragma once
 
-#include "emulation_devices.h"
+#include "emulation/emulation_devices.h"
 #include "condition/condition_register.h"
 #include "condition/condition_status_register.h"
 #include "condition/condition_pc_register.h"

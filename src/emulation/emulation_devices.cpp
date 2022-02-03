@@ -1,6 +1,6 @@
 #include <stdexcept>
 
-#include "emulation_devices.h"
+#include "emulation/emulation_devices.h"
 
 emulation_devices::emulation_devices(string program_path, string debug_path)
 {

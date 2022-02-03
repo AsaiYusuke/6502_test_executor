@@ -1,6 +1,6 @@
 #include <algorithm>
 
-#include "mos6502.h"
+#include "emulation/mos6502.h"
 
 mos6502::mos6502(i_memory_access *memory_access)
 {

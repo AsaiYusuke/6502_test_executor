@@ -1,7 +1,7 @@
 #pragma once
 
 #include "test_result.h"
-#include "emulation_devices.h"
+#include "emulation/emulation_devices.h"
 #include "nlohmann/json.hpp"
 
 using namespace std;

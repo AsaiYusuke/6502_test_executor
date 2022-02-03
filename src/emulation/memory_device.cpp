@@ -1,6 +1,6 @@
 #include <fstream>
 
-#include "memory_device.h"
+#include "emulation/memory_device.h"
 #include "exception/file_open.h"
 
 void memory_device::load_rom_image(string path)

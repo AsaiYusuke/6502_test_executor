@@ -1,7 +1,7 @@
 #include <fstream>
 #include <vector>
 
-#include "debug_info.h"
+#include "emulation/debug_info.h"
 #include "exception/file_open.h"
 
 debug_info::debug_info(string path)

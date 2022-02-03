@@ -1,6 +1,6 @@
 #include <vector>
 
-#include "cpu_device.h"
+#include "emulation/cpu_device.h"
 #include "exception/timeout.h"
 
 cpu_device::cpu_device(i_memory_access *i_memory_access)

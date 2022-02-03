@@ -2,7 +2,7 @@
 #include <map>
 
 #include "args.hxx"
-#include "emulation_devices.h"
+#include "emulation/emulation_devices.h"
 #include "test.h"
 
 using namespace std;
