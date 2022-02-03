@@ -154,12 +154,14 @@ void test::print_summary(int ok, int fail, int skip, int total)
 void test::print_call_stack()
 {
     cerr << "Call stack:" << endl;
+
+    int index = 0;
     for (auto address : device->get_cpu()->get_call_stack())
     {
         if (address == 0xFFFF)
             continue;
 
-        cerr << "  " << address_convert::to_hex_string(address) << " : ";
+        cerr << index++ << ":  " << address_convert::to_hex_string(address) << " : ";
         cerr << device->get_memory()->get_source_line(address) << endl;
     }
     cerr << endl;
