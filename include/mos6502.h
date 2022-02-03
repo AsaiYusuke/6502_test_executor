@@ -71,7 +71,7 @@ private:
 
 	Instr InstrTable[256];
 
-	uint16_t Exec(Instr i);
+	void Exec(Instr i);
 
 	bool illegalOpcode;
 
@@ -187,7 +187,7 @@ public:
 	void NMI();
 	void IRQ();
 	void Reset();
-	uint16_t Run(
+	void Run(
 		int32_t cycles,
 		uint64_t& cycleCount,
 		CycleMethod cycleMethod = CYCLE_COUNT);

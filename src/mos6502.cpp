@@ -873,38 +873,32 @@ void mos6502::NMI()
 	return;
 }
 
-uint16_t mos6502::Run(
+void mos6502::Run(
 	int32_t cyclesRemaining,
 	uint64_t& cycleCount,
 	CycleMethod cycleMethod
 ) {
-	uint16_t address;
 	uint8_t opcode;
 	Instr instr;
 
-	while(cyclesRemaining > 0 && !illegalOpcode)
-	{
-		// fetch
-		opcode = memory_access->read(pc++);
+	// fetch
+	opcode = memory_access->read(pc++);
 
-		// decode
-		instr = InstrTable[opcode];
+	// decode
+	instr = InstrTable[opcode];
 
-		// execute
-		address = Exec(instr);
-		cycleCount += instr.cycles;
-		cyclesRemaining -=
-			cycleMethod == CYCLE_COUNT        ? instr.cycles
-			/* cycleMethod == INST_COUNT */   : 1;
-	}
-	return address;
+	// execute
+	Exec(instr);
+	cycleCount += instr.cycles;
+	cyclesRemaining -=
+		cycleMethod == CYCLE_COUNT        ? instr.cycles
+		/* cycleMethod == INST_COUNT */   : 1;
 }
 
-uint16_t mos6502::Exec(Instr i)
+void mos6502::Exec(Instr i)
 {
 	uint16_t src = (this->*i.addr)();
 	(this->*i.code)(src);
-	return src;
 }
 
 void mos6502::Op_ILLEGAL(uint16_t src)

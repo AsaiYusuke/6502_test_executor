@@ -23,6 +23,7 @@ void cpu_device::clear(uint16_t target_program_counter)
 void cpu_device::execute()
 {
     int count = 0;
+    int32_t cyclesRemaining;
     uint64_t cycleCount = 0;
     do
     {
@@ -39,10 +40,11 @@ void cpu_device::execute()
             callStack.pop_back();
         }
 
-        auto arg_address = cpu->Run(1, cycleCount, cpu->INST_COUNT);
+        cyclesRemaining = 1;
+        cpu->Run(cyclesRemaining, cycleCount, cpu->INST_COUNT);
 
         if (isCallInstr)
-            callStack.push_back(arg_address);
+            callStack.push_back(cpu->getPC());
 
     } while (cpu->getPC() != 0xFFFF && ++count < get_timeout());
 
