@@ -1,9 +1,14 @@
 SRC_DIR			:=	src
 INC_DIR			:=	include
+BUILD_DIR		:=	build
+
+SRC_DIRS		:=	$(shell find $(SRC_DIR) -type d)
+BUILD_DIRS		:=	$(SRC_DIRS:$(SRC_DIR)%=$(BUILD_DIR)%)
 
 TARGET			:=	6502_tester
 SOURCES			:=	$(shell find $(SRC_DIR) -type f -name '*.cpp')
 HEADERS			:=	$(shell find $(SRC_DIR) -type f -name '*.h')
+OBJECTS         :=	$(SOURCES:$(SRC_DIR)/%.cpp=$(BUILD_DIR)/%.o)
 
 ARGS_INC_DIR	:=	../args
 ARGS_HEADER		:=	$(ARGS_INC_DIR)/args.hxx
@@ -17,10 +22,16 @@ CFLAGS			:=	--std=c++11 -I $(INC_DIR) -I $(ARGS_INC_DIR) -I $(JSON_INC_DIR) -g
 
 .PHONY : all clean
 
-all: $(TARGET)
+all: $(BUILD_DIRS) $(TARGET)
 
-$(TARGET): $(SOURCES) $(HEADERS) $(ARGS_HEADER) $(JSON_HEADER)
-	g++ $(CFLAGS) -o $(TARGET) $(SOURCES)
+$(BUILD_DIRS) : % :
+	mkdir -p $@
+
+$(TARGET): $(OBJECTS)
+	g++ $(CFLAGS) -o $(TARGET) $(OBJECTS)
+
+$(BUILD_DIR)/%.o : $(SRC_DIR)/%.cpp $(HEADERS) $(ARGS_HEADER) $(JSON_HEADER)
+	g++ $(CFLAGS) -c -o $@ $<
 
 $(ARGS_HEADER) :
 	(cd .. ; git clone $(ARGS_URL))
@@ -29,4 +40,5 @@ $(JSON_HEADER) :
 	(cd .. ; git clone $(JSON_URL))
 
 clean :
+	rm -rf $(BUILD_DIR)
 	rm $(TARGET)
