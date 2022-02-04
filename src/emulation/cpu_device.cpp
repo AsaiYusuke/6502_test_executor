@@ -12,6 +12,8 @@ void cpu_device::clear(uint16_t target_program_counter)
 {
     cpu->Reset();
 
+    callStack.clear();
+
     cpu->setPC(target_program_counter);
     callStack.push_back(0xFFFF);
     callStack.push_back(target_program_counter);
