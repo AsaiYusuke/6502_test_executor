@@ -29,11 +29,11 @@ By specifying the debug option, symbol definitions consisting of label/address p
 
 ### Create test files
 Create test files containing the three items in JSON format.
-- *Test target*
+#### *Test target*
 the starting address of the test procedure
-- *Setup condition*
+#### *Setup condition*
 the settings of the register and memory to make before the test
-- *Expected condition*
+#### *Expected condition*
 the expected responses of the register and memory after the test
 
 The tool also provides [a JSON Schema file](https://github.com/AsaiYusuke/6502_test_executor/blob/master/schema/testcase.schema.json) that makes it easy to create test files according to the format.
