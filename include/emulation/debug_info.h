@@ -29,7 +29,7 @@ private:
 public:
     debug_info(string debug_path);
     string get_source_line(uint16_t address);
-    bool has_label(string label);
+    bool has_address(string label);
     string get_label(uint16_t address);
     uint16_t get_address(string label);
 };

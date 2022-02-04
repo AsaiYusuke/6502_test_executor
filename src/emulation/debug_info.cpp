@@ -257,7 +257,7 @@ string debug_info::get_source_line(uint16_t address)
     return line_def.first + ":" + to_string(line_def.second);
 }
 
-bool debug_info::has_label(string label)
+bool debug_info::has_address(string label)
 {
     return label_address_map.count(label) > 0;
 }

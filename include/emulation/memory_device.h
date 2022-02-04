@@ -32,7 +32,7 @@ public:
     memory_device(string program_path, string debug_path);
     void clear();
     string get_source_line(uint16_t address);
-    bool has_label(string label);
+    bool has_address(string label);
     uint16_t get_address(string label);
     string get_label(uint16_t address);
     void set_read_sequence(uint16_t address, vector<uint8_t> queue);

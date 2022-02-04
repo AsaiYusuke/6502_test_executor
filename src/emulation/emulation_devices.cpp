@@ -26,7 +26,7 @@ memory_device *emulation_devices::get_memory()
 
 uint16_t emulation_devices::get_address(string label, int offset)
 {
-    if (!memory->has_label(label))
+    if (!memory->has_address(label))
         throw invalid_argument("Symbol not found: " + label);
 
     return memory->get_address(label) + offset;

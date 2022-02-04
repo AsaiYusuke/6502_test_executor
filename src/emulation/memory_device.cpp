@@ -43,9 +43,9 @@ string memory_device::get_source_line(uint16_t address)
     return debug->get_source_line(address);
 }
 
-bool memory_device::has_label(string label)
+bool memory_device::has_address(string label)
 {
-    return debug->has_label(label);
+    return debug->has_address(label);
 }
 
 uint16_t memory_device::get_address(string label)
