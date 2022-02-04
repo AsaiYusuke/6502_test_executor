@@ -36,6 +36,7 @@ the settings of the register and memory to make before the test
 #### *Expected condition*
 the expected responses of the register and memory after the test
 
+##### Note:
 The tool also provides [a JSON Schema file](https://github.com/AsaiYusuke/6502_test_executor/blob/master/schema/testcase.schema.json) that makes it easy to create test files according to the format.
 If you use [Visual Studio Code](https://code.visualstudio.com/), it will tell you about formatting error based on JSON Schema without any extensions.
 
