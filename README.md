@@ -15,8 +15,8 @@ mkdir -p build
 ca65 --cpu 6502 --target nes --debug-info -o build/example.o src/example.asm
 mkdir -p dist
 ld65  -o dist/example.nes --dbgfile dist/example.dbg --config cfg/nes.cfg --obj build/example.o
-../6502_tester -p dist/example.nes -s dist/example.dbg --quiet-ok --quiet-summary -t test/check_collision.test.json
-../6502_tester -p dist/example.nes -s dist/example.dbg --quiet-ok --quiet-summary -t test/control.test.json
+../6502_tester -p dist/example.nes -d dist/example.dbg --quiet-ok --quiet-summary -t test/check_collision.test.json
+../6502_tester -p dist/example.nes -d dist/example.dbg --quiet-ok --quiet-summary -t test/control.test.json
 echo "All tests passed."
 All tests passed.
 ```
@@ -57,12 +57,17 @@ You can check the available optional arguments by displaying the help:
   OPTIONS:
 
       -h, --help                        Show this help menu.
-      -p[PROGRAM], --program=[PROGRAM]  The program file path.
-      -s[SYMBOL], --symbol=[SYMBOL]     The symbol file path.
-      -t[TEST], --test=[TEST]           The test file path.
-      --quiet-ok                        The quiet OK flag
-      --quiet-fail                      The quiet FAIL flag
-      --quiet-summary                   The quiet summary flag
-      -q, --quiet                       The quiet flag
+      -p[PROGRAM], --program=[PROGRAM]  Specify the path of the program image
+                                        file to be tested.
+      -d[DEBUG], --debug=[DEBUG]        Specify the path of the debug
+                                        information file used for testing.
+      -t[TEST], --test=[TEST]           Specify the path of the test scinario
+                                        file.
+      --timeout=[TIMEOUT]               Specify the timeout period before the
+                                        test becomes an error.
+      -q, --quiet                       Do not show any output.
+      --quiet-ok                        Do not show the successful output.
+      --quiet-fail                      Do not show the failed output.
+      --quiet-summary                   Do not show the test summary output.
 
 ```
