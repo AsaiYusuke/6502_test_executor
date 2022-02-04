@@ -9,17 +9,14 @@
 #include "condition/condition.h"
 #include "exception/timeout.h"
 
-test::test(string test_path, emulation_devices *device, bool quiet_ok, bool quiet_fail, bool quiet_summary, bool quiet)
+test::test(args_parser *_args)
 {
-    ifstream in(test_path);
+    args = _args;
+
+    ifstream in(args->get_test_path());
     in >> test_json;
 
-    this->device = device;
-
-    is_quiet_ok = quiet_ok;
-    is_quiet_fail = quiet_fail;
-    is_quiet_summary = quiet_summary;
-    is_quiet = quiet;
+    device = new emulation_devices(args, test_json["config"]);
 }
 
 bool test::execute()
@@ -98,23 +95,23 @@ bool test::execute()
 
 void test::print_test_result(string test_name, test_result result, vector<string> errors)
 {
-    if (is_quiet)
+    if (args->is_quiet())
         return;
 
     switch (result)
     {
     case test_result::OK:
-        if (is_quiet_ok)
+        if (args->is_quiet_success())
             return;
         cout << "OK";
         break;
     case test_result::FAIL:
-        if (is_quiet_fail)
+        if (args->is_quiet_failed())
             return;
         cout << "FAIL";
         break;
     case test_result::SKIP:
-        if (is_quiet_ok)
+        if (args->is_quiet_success())
             return;
         cout << "SKIP";
         break;
@@ -141,7 +138,7 @@ void test::print_test_result(string test_name, test_result result, vector<string
 
 void test::print_summary(int ok, int fail, int skip, int total)
 {
-    if (is_quiet || is_quiet_summary)
+    if (args->is_quiet() || args->is_quiet_summary())
         return;
 
     cout << "----------------------------------------------------------------------" << endl;

@@ -3,10 +3,14 @@
 #include <stdio.h>
 #include <map>
 
+#include "nlohmann/json.hpp"
+#include "args_parser.h"
 #include "cpu_device.h"
 #include "memory_device.h"
 
 using namespace std;
+
+using json = nlohmann::json;
 
 class emulation_devices
 {
@@ -15,7 +19,7 @@ private:
     memory_device *memory;
 
 public:
-    emulation_devices(string program_path, string debug_path);
+    emulation_devices(args_parser *args, json config);
     void clear(uint16_t target_program_counter);
     cpu_device *get_cpu();
     memory_device *get_memory();

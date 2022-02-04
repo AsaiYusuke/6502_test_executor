@@ -6,6 +6,9 @@
 
 debug_info::debug_info(string path)
 {
+    if (path.empty())
+        return;
+
     ifstream file(path);
     if (!file.is_open())
         throw file_open_error(path);
@@ -253,6 +256,9 @@ void debug_info::make_address_source_map()
 
 string debug_info::get_source_line(uint16_t address)
 {
+    if (address_source_map.count(address) == 0)
+        return "";
+
     auto line_def = address_source_map[address];
     return line_def.first + ":" + to_string(line_def.second);
 }

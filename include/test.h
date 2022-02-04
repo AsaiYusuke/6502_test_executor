@@ -1,5 +1,6 @@
 #pragma once
 
+#include "args_parser.h"
 #include "test_result.h"
 #include "emulation/emulation_devices.h"
 #include "nlohmann/json.hpp"
@@ -11,10 +12,7 @@ using json = nlohmann::json;
 class test
 {
 private:
-    bool is_quiet_ok;
-    bool is_quiet_fail;
-    bool is_quiet_summary;
-    bool is_quiet;
+    args_parser *args;
     emulation_devices *device;
     json test_json;
 
@@ -23,6 +21,6 @@ private:
     void print_call_stack();
 
 public:
-    test(string test_path, emulation_devices *device, bool quiet_ok, bool quiet_fail, bool quiet_summary, bool quiet);
+    test(args_parser *args);
     bool execute();
 }; 

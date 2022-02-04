@@ -3,9 +3,14 @@
 #include "emulation/cpu_device.h"
 #include "exception/timeout.h"
 
-cpu_device::cpu_device(i_memory_access *i_memory_access)
+cpu_device::cpu_device(args_parser *args, json config, i_memory_access *i_memory_access)
 {
     cpu = new mos6502(i_memory_access);
+    
+    if (config.is_null() || config["timeout"].is_null())
+        timeout = args->get_test_timeout();
+    else
+        timeout = config["timeout"].get<int>();
 }
 
 void cpu_device::clear(uint16_t target_program_counter)
@@ -56,7 +61,7 @@ void cpu_device::execute()
 
 int cpu_device::get_timeout()
 {
-    return DEFAULT_TIMEOUT;
+    return timeout;
 }
 
 uint8_t cpu_device::get_register(register_type type)

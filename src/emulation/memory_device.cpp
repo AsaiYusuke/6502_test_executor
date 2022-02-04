@@ -23,8 +23,20 @@ uint16_t memory_device::memory_offset(uint16_t address)
     return address - 0x8000 + 0x10;
 }
 
-memory_device::memory_device(string program_path, string debug_path)
+memory_device::memory_device(args_parser *args, json config)
 {
+    string program_path;
+    if (config.is_null() || config["programFile"].is_null())
+        program_path = args->get_program_path();
+    else
+        program_path = config["programFile"].get<string>();
+
+    string debug_path;
+    if (config.is_null() || config["debugFile"].is_null())
+        debug_path = args->get_debug_path();
+    else
+        debug_path = config["debugFile"].get<string>();
+
     load_rom_image(program_path);
     debug = new debug_info(debug_path);
 }

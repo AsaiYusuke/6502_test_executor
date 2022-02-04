@@ -6,10 +6,14 @@
 #include <string>
 #include <vector>
 
+#include "nlohmann/json.hpp"
+#include "args_parser.h"
 #include "memory_access.h"
 #include "debug_info.h"
 
 using namespace std;
+
+using json = nlohmann::json;
 
 class memory_device : public i_memory_access
 {
@@ -29,7 +33,7 @@ private:
     uint16_t memory_offset(uint16_t address);
 
 public:
-    memory_device(string program_path, string debug_path);
+    memory_device(args_parser *args, json config);
     void clear();
     string get_source_line(uint16_t address);
     bool has_address(string label);

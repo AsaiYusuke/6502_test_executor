@@ -2,10 +2,10 @@
 
 #include "emulation/emulation_devices.h"
 
-emulation_devices::emulation_devices(string program_path, string debug_path)
+emulation_devices::emulation_devices(args_parser *args, json config)
 {
-    memory = new memory_device(program_path, debug_path);
-    cpu = new cpu_device(memory);
+    memory = new memory_device(args, config);
+    cpu = new cpu_device(args, config, memory);
 }
 
 void emulation_devices::clear(uint16_t target_program_counter)
