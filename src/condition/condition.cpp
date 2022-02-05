@@ -6,17 +6,17 @@ condition::condition(emulation_devices *_device, json condition, json target)
     register_pc = new condition_pc_register(_device, target);
 }
 
-condition::condition(emulation_devices *_device, json condition)
+condition::condition(emulation_devices *_device, json condition_json)
 {
     device = _device;
 
-    registers.push_back(condition_register(register_type::A, device, condition["A"]));
-    registers.push_back(condition_register(register_type::X, device, condition["X"]));
-    registers.push_back(condition_register(register_type::Y, device, condition["Y"]));
+    registers.push_back(condition_register(register_type::A, device, condition_json["A"]));
+    registers.push_back(condition_register(register_type::X, device, condition_json["X"]));
+    registers.push_back(condition_register(register_type::Y, device, condition_json["Y"]));
 
-    register_status = new condition_status_register(condition["Status"]);
+    register_status = new condition_status_register(condition_json["Status"]);
 
-    memory = new condition_memory(device, condition["memory"]);
+    memory = new condition_memory(device, condition_json["memory"]);
 }
 
 emulation_devices *condition::get_device()

@@ -22,7 +22,7 @@ private:
 
 public:
     condition(emulation_devices *_device, json condition, json target);
-    condition(emulation_devices *_device, json condition);
+    condition(emulation_devices *_device, json condition_json);
     emulation_devices *get_device();
     vector<condition_register> get_register_defs();
     vector<tuple<status_flag_type, bool, string>> get_status_flag_defs();

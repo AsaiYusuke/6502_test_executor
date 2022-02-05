@@ -14,7 +14,7 @@ class test
 private:
     args_parser *args;
     emulation_devices *device;
-    json test_json;
+    json test_scinario;
 
     void print_test_result(string test_name, test_result result, vector<string> errors);
     void print_summary(int ok, int fail, int skip, int total);

@@ -14,16 +14,16 @@ test::test(args_parser *_args)
     args = _args;
 
     ifstream in(args->get_test_path());
-    in >> test_json;
+    in >> test_scinario;
 
-    device = new emulation_devices(args, test_json["config"]);
+    device = new emulation_devices(args, test_scinario["config"]);
 }
 
 bool test::execute()
 {
     map<test_result, int> test_result_map;
 
-    for (auto &element : test_json["cases"].items())
+    for (auto &element : test_scinario["cases"].items())
     {
         auto name = element.key();
         auto testcase = element.value();
@@ -44,7 +44,7 @@ bool test::execute()
                 new condition(
                     device,
                     testcase["setup"],
-                    test_json["target"]))
+                    test_scinario["target"]))
                 .execute();
 
             device->get_cpu()->execute();
@@ -88,7 +88,7 @@ bool test::execute()
         test_result_map[test_result::OK],
         test_result_map[test_result::FAIL],
         test_result_map[test_result::SKIP],
-        test_json["cases"].size());
+        test_scinario["cases"].size());
 
     return test_result_map[test_result::FAIL] == 0;
 }
