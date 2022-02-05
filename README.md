@@ -27,17 +27,18 @@ All tests passed.
 Build the 6502 project using the [CA65 assembler](https://cc65.github.io/doc/ca65.html) with debug option.
 By specifying the debug option, symbol definitions consisting of label/address pair will be output.
 
-### Create test files
-Create test files containing the three items in JSON format.
-#### *Test target*
+### Create test scinario files
+Create test scinario files containing the three key items in JSON format:
+
+- *Test target*  
 the starting address of the test procedure
-#### *Setup condition*
+- *Setup condition*  
 the settings of the register and memory to make before the test
-#### *Expected condition*
+- *Expected condition*  
 the expected responses of the register and memory after the test
 
-##### Note:
-The tool also provides [a JSON Schema file](https://github.com/AsaiYusuke/6502_test_executor/blob/master/schema/testcase.schema.json) that makes it easy to create test files according to the format.
+#### [JSON Schema file](https://github.com/AsaiYusuke/6502_test_executor/blob/master/schema/testcase.schema.json)
+The tool also provides a [JSON Schema](https://json-schema.org/) document that makes it easy to create test scinario files.
 If you use [Visual Studio Code](https://code.visualstudio.com/), it will tell you about formatting error based on JSON Schema without any extensions.
 
 ### Execute tester
