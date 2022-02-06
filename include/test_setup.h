@@ -4,12 +4,9 @@
 
 using namespace std;
 
-class test_setup
+class test_setup : condition
 {
-private:
-    condition *cond;
-
 public:
-    test_setup(condition *cond);
-    bool execute();
+    test_setup(emulation_devices *device, json condition_json, json target);
+    void execute();
 };

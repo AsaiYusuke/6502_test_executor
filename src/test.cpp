@@ -41,18 +41,16 @@ bool test::execute()
         try
         {
             test_setup(
-                new condition(
-                    device,
-                    testcase["setup"],
-                    test_scinario["target"]))
+                device,
+                testcase["setup"],
+                test_scinario["target"])
                 .execute();
 
             device->get_cpu()->execute();
 
             test_assert assert = test_assert(
-                new condition(
-                    device,
-                    testcase["expected"]));
+                device,
+                testcase["expected"]);
             assert.execute();
 
             print_test_result(

@@ -20,14 +20,18 @@ private:
     condition_memory *memory;
     condition_pc_register *register_pc;
 
-public:
-    condition(emulation_devices *_device, json condition, json target);
-    condition(emulation_devices *_device, json condition_json);
+protected:
     emulation_devices *get_device();
+    condition_pc_register *get_pc_register_def();
     vector<condition_register> get_register_defs();
     vector<tuple<status_flag_type, bool, string>> get_status_flag_defs();
     vector<tuple<uint16_t, vector<uint8_t>, string>> get_memory_value_defs();
     vector<tuple<uint16_t, uint8_t, string>> get_memory_read_count_defs();
     vector<tuple<uint16_t, uint8_t, string>> get_memory_write_count_defs();
-    condition_pc_register *get_pc_register_def();
+
+public:
+    condition(emulation_devices *_device, json condition_json, json target);
+    condition(emulation_devices *_device, json condition_json);
+
+    virtual void execute() = 0;
 };

@@ -3,9 +3,9 @@
 #include "test_assert.h"
 #include "condition/address_convert.h"
 
-test_assert::test_assert(condition *cond)
+test_assert::test_assert(emulation_devices *device, json condition_json)
+    : condition(device, condition_json)
 {
-    this->cond = cond;
 }
 
 void test_assert::err(string expected, string actual, string message)
@@ -19,8 +19,9 @@ string to_string(vector<uint8_t> values)
     ss << "[";
 
     ss << address_convert::to_hex_string(values[0]);
-    for (decltype(values.size()) index = 1, size = values.size(); index < size; index++) {
-      ss << ", " << address_convert::to_hex_string(values[index]);
+    for (decltype(values.size()) index = 1, size = values.size(); index < size; index++)
+    {
+        ss << ", " << address_convert::to_hex_string(values[index]);
     }
 
     ss << "]";
@@ -47,8 +48,8 @@ void test_assert::execute()
 {
     bool test_result = true;
 
-    cpu_device *cpu_dev = cond->get_device()->get_cpu();
-    for (auto register_def : cond->get_register_defs())
+    cpu_device *cpu_dev = get_device()->get_cpu();
+    for (auto register_def : get_register_defs())
     {
         if (register_def.is_blank())
             continue;
@@ -60,45 +61,48 @@ void test_assert::execute()
     }
 
     uint8_t status = cpu_dev->get_register(register_type::Status);
-    for (auto status_flag_def : cond->get_status_flag_defs())
+    for (auto status_flag_def : get_status_flag_defs())
     {
+        auto status_flag_type = get<0>(status_flag_def);
+        auto expected_value = get<1>(status_flag_def);
+        auto name = get<2>(status_flag_def);
         test_result &= assert_equal(
-            get<1>(status_flag_def),
-            (status & (uint8_t)get<0>(status_flag_def)) > 0,
-            "Register [" + string(register_type_name_map[register_type::Status]) + " (" + get<2>(status_flag_def) + ")]");
+            expected_value,
+            (status & (uint8_t)status_flag_type) > 0,
+            "Register [" + string(register_type_name_map[register_type::Status]) + " (" + name + ")]");
     }
 
-    memory_device *mem_dev = cond->get_device()->get_memory();
+    memory_device *mem_dev = get_device()->get_memory();
 
-    for (auto memory_def : cond->get_memory_value_defs())
+    for (auto memory_def : get_memory_value_defs())
     {
         auto address = get<0>(memory_def);
-        auto history = get<1>(memory_def);
+        auto expected_value = get<1>(memory_def);
         auto name = get<2>(memory_def);
         test_result &= assert_equal(
-            history,
-            mem_dev->get_write_sequence(address, history.size()),
+            expected_value,
+            mem_dev->get_write_sequence(address, expected_value.size()),
             "Memory data [" + name + "]");
     }
 
-    for (auto count_def : cond->get_memory_read_count_defs())
+    for (auto count_def : get_memory_read_count_defs())
     {
         auto address = get<0>(count_def);
-        auto count = get<1>(count_def);
+        auto expected_value = get<1>(count_def);
         auto name = get<2>(count_def);
         test_result &= assert_equal(
-            count,
+            expected_value,
             mem_dev->get_read_count(address),
             "Memory read count [" + name + "]");
     }
 
-    for (auto count_def : cond->get_memory_write_count_defs())
+    for (auto count_def : get_memory_write_count_defs())
     {
         auto address = get<0>(count_def);
-        auto count = get<1>(count_def);
+        auto expected_value = get<1>(count_def);
         auto name = get<2>(count_def);
         test_result &= assert_equal(
-            count,
+            expected_value,
             mem_dev->get_write_count(address),
             "Memory write count [" + name + "]");
     }
