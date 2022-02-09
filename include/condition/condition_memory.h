@@ -1,6 +1,5 @@
 #pragma once
 
-#include <stdint.h>
 #include "emulation/emulation_devices.h"
 #include "condition/condition_memory_value.h"
 #include "condition/condition_memory_count.h"

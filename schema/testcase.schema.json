@@ -44,10 +44,7 @@
                                 }
                             ],
                             "properties": {
-                                "A": {},
-                                "X": {},
-                                "Y": {},
-                                "Status": {},
+                                "register": {},
                                 "memory": {
                                     "items": {
                                         "properties": {
@@ -170,50 +167,58 @@
             "type": "object",
             "additionalProperties": false,
             "properties": {
-                "A": {
-                    "title": "A Register",
-                    "$ref": "#/definitions/number"
-                },
-                "X": {
-                    "title": "X Register",
-                    "$ref": "#/definitions/number"
-                },
-                "Y": {
-                    "title": "Y Register",
-                    "$ref": "#/definitions/number"
-                },
-                "Status": {
-                    "title": "Status Register",
+                "register": {
+                    "title": "Register",
                     "type": "object",
+                    "minItems": 1,
                     "additionalProperties": false,
                     "properties": {
-                        "Negative": {
-                            "title": "Negative flag",
-                            "type": "boolean"
+                        "A": {
+                            "title": "A Register",
+                            "$ref": "#/definitions/number"
                         },
-                        "Overflow": {
-                            "title": "Overflow flag",
-                            "type": "boolean"
+                        "X": {
+                            "title": "X Register",
+                            "$ref": "#/definitions/number"
                         },
-                        "Break": {
-                            "title": "Break flag",
-                            "type": "boolean"
+                        "Y": {
+                            "title": "Y Register",
+                            "$ref": "#/definitions/number"
                         },
-                        "Decimal": {
-                            "title": "Decimal flag",
-                            "type": "boolean"
-                        },
-                        "Interrupt": {
-                            "title": "Interrupt flag",
-                            "type": "boolean"
-                        },
-                        "Zero": {
-                            "title": "Zero flag",
-                            "type": "boolean"
-                        },
-                        "Carry": {
-                            "title": "Carry flag",
-                            "type": "boolean"
+                        "Status": {
+                            "title": "Status Register",
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                                "Negative": {
+                                    "title": "Negative flag",
+                                    "type": "boolean"
+                                },
+                                "Overflow": {
+                                    "title": "Overflow flag",
+                                    "type": "boolean"
+                                },
+                                "Break": {
+                                    "title": "Break flag",
+                                    "type": "boolean"
+                                },
+                                "Decimal": {
+                                    "title": "Decimal flag",
+                                    "type": "boolean"
+                                },
+                                "Interrupt": {
+                                    "title": "Interrupt flag",
+                                    "type": "boolean"
+                                },
+                                "Zero": {
+                                    "title": "Zero flag",
+                                    "type": "boolean"
+                                },
+                                "Carry": {
+                                    "title": "Carry flag",
+                                    "type": "boolean"
+                                }
+                            }
                         }
                     }
                 },

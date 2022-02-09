@@ -14,9 +14,9 @@ enum class register_type
     PC
 };
 
-static map<register_type, string> register_type_name_map = {
-    {register_type::A, "A"},
-    {register_type::X, "X"},
-    {register_type::Y, "Y"},
-    {register_type::Status, "Status"},
-    {register_type::PC, "PC"}};
+static map<string, register_type> register_name_type_map = {
+    {"A", register_type::A},
+    {"X", register_type::X},
+    {"Y", register_type::Y},
+    {"Status", register_type::Status},
+    {"PC", register_type::PC}};

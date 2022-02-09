@@ -11,11 +11,8 @@ void test_setup::execute()
 
     cpu_device *cpu_dev = get_device()->get_cpu();
     for (auto register_def : get_register_defs())
-    {
-        if (register_def.is_blank())
-            continue;
         cpu_dev->set_register(register_def.get_type(), register_def.get_value());
-    }
+
     uint8_t status;
     for (auto status_flag_def : get_status_flag_defs())
         status |= ((uint8_t)status_flag_def.get_type() * status_flag_def.get_value());

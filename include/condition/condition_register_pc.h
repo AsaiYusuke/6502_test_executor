@@ -8,12 +8,12 @@ using namespace std;
 
 using json = nlohmann::json;
 
-class condition_pc_register
+class condition_register_pc
 {
 private:
     uint16_t address;
 
 public:
-    condition_pc_register(emulation_devices *_device, json condition);
+    condition_register_pc(emulation_devices *_device, json condition);
     uint16_t get_address();
 };

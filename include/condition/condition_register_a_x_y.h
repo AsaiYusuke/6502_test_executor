@@ -8,16 +8,16 @@ using namespace std;
 
 using json = nlohmann::json;
 
-class condition_register
+class condition_register_a_x_y
 {
 private:
+    string name;
     register_type type;
-    bool blank;
     uint8_t value;
 
 public:
-    condition_register(register_type _type, emulation_devices *_device, json condition);
+    condition_register_a_x_y(emulation_devices *_device, string _name, json condition);
+    string get_name();
     register_type get_type();
-    bool is_blank();
     uint8_t get_value();
 };
