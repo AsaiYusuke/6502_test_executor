@@ -21,5 +21,5 @@ void test_setup::execute()
     memory_device *mem_dev = get_device()->get_memory();
     for (auto memory_def : get_memory_defs())
         for (auto memory_value_def : memory_def.get_value_sequences())
-            mem_dev->set_read_sequence(memory_value_def.get_address(), memory_value_def.get_sequence());
+            mem_dev->set_read_sequence(memory_value_def.get_address(), memory_value_def.get_sequence(), memory_value_def.is_permanent());
 }

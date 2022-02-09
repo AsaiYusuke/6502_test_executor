@@ -7,7 +7,6 @@
 #include "test_assert.h"
 #include "condition/address_convert.h"
 #include "condition/condition.h"
-#include "exception/timeout.h"
 
 test::test(args_parser *_args)
 {
@@ -59,17 +58,6 @@ bool test::execute()
                 assert.get_errors());
 
             test_result_map[assert.get_result()]++;
-        }
-        catch (timeout_error &e)
-        {
-            print_test_result(
-                name,
-                test_result::FAIL,
-                {e.what()});
-
-            print_call_stack();
-
-            test_result_map[test_result::FAIL]++;
         }
         catch (exception &e)
         {

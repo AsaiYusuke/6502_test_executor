@@ -37,6 +37,11 @@ condition::condition(emulation_devices *_device, json condition_json)
                 condition_memory(
                     device,
                     memory_def));
+    
+    if (!condition_json["timeout"].is_null())
+        timeout_def = condition_json["timeout"].get<bool>();
+    else
+        timeout_def = false;
 }
 
 emulation_devices *condition::get_device()
@@ -62,4 +67,9 @@ vector<condition_memory> condition::get_memory_defs()
 condition_register_pc *condition::get_pc_register_def()
 {
     return register_pc;
+}
+
+bool condition::get_timeout_def()
+{
+    return timeout_def;
 }

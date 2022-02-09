@@ -9,7 +9,7 @@ args_parser::args_parser(int argc, char *argv[])
     debug_file_path = new args::ValueFlag<string>(parser, "DEBUG", "Specify the path of the debug information file used for testing.", {'d', "debug"});
     test_file_path = new args::ValueFlag<string>(parser, "TEST", "Specify the path of the test scinario file.", {'t', "test"}, args::Options::Required);
 
-    test_timeout = new args::ValueFlag<int>(parser, "TIMEOUT", "Specify the timeout period before the test becomes an error.", {"timeout"}, 100000);
+    test_timeout = new args::ValueFlag<int>(parser, "TIMEOUT", "Specify the timeout period before the test becomes an error.", {"timeout"}, 10000);
 
     quiet = new args::Flag(parser, "quiet", "Do not show any output.", {'q', "quiet"});
     quiet_ok = new args::Flag(parser, "quiet OK", "Do not show the successful output.", {"quiet-ok"});

@@ -1,16 +1,15 @@
 #include <vector>
 
 #include "emulation/cpu_device.h"
-#include "exception/timeout.h"
 
 cpu_device::cpu_device(args_parser *args, json config, i_memory_access *i_memory_access)
 {
     cpu = new mos6502(i_memory_access);
     
     if (config.is_null() || config["timeout"].is_null())
-        timeout = args->get_test_timeout();
+        timeout_threshold = args->get_test_timeout();
     else
-        timeout = config["timeout"].get<int>();
+        timeout_threshold = config["timeout"].get<int>();
 }
 
 void cpu_device::clear(uint16_t target_program_counter)
@@ -25,6 +24,8 @@ void cpu_device::clear(uint16_t target_program_counter)
 
     cpu->StackPush(0xFF);
     cpu->StackPush(0xFE);
+
+    timeout = false;
 }
 
 void cpu_device::execute()
@@ -53,15 +54,20 @@ void cpu_device::execute()
         if (isCallInstr)
             callStack.push_back(cpu->getPC());
 
-    } while (cpu->getPC() != 0xFFFF && ++count < get_timeout());
+    } while (cpu->getPC() != 0xFFFF && ++count < get_timeout_threshold());
 
-    if (count >= get_timeout())
-        throw timeout_error("execution count >= " + to_string(get_timeout()));
+    if (count >= get_timeout_threshold())
+        timeout = true;
 }
 
-int cpu_device::get_timeout()
+bool cpu_device::is_timeout()
 {
     return timeout;
+}
+
+int cpu_device::get_timeout_threshold()
+{
+    return timeout_threshold;
 }
 
 uint8_t cpu_device::get_register(register_type type)

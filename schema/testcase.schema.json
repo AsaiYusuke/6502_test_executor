@@ -56,13 +56,32 @@
                                             }
                                         }
                                     }
+                                },
+                                "timeout": {
+                                    "type": "null"
                                 }
                             }
                         },
                         "expected": {
                             "title": "Expected condition",
                             "description": "Expected Condition specifies the result of the registers and memory at the end of the test.",
-                            "$ref": "#/definitions/conditions"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/conditions"
+                                }
+                            ],
+                            "properties": {
+                                "register": {},
+                                "memory": {
+                                    "items": {
+                                        "properties": {
+                                            "permanent": {
+                                                "type": "null"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -74,8 +93,8 @@
             "type": "object",
             "properties": {
                 "timeout": {
-                    "title": "Timeout",
-                    "description": "Timeout specifies the timeout period before the test becomes an error.\nUnit : Number of execution instructions\nDefault: 10000",
+                    "title": "Timeout threshold",
+                    "description": "Timeout threshold specifies the threshold before the test becomes an error.\nUnit : Number of execution instructions\nDefault: 10000",
                     "type": "number",
                     "default": 10000,
                     "minimum": 1
@@ -333,6 +352,11 @@
                                         }
                                     }
                                 ]
+                            },
+                            "permanent": {
+                                "title": "Permanent value",
+                                "description": "Permanent value specifies whether or not the last value in read sequence queue will be used permanently.",
+                                "type": "boolean"
                             }
                         },
                         "dependencies": {
@@ -352,6 +376,11 @@
                             }
                         }
                     }
+                },
+                "timeout": {
+                    "title": "Timeout",
+                    "description": "Timeout specifies whether or not the test will error on timeout.",
+                    "type": "boolean"
                 }
             }
         }

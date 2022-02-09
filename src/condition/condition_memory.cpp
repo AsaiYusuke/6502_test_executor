@@ -6,6 +6,8 @@ condition_memory::condition_memory(emulation_devices *_device, json condition)
 {
     auto address = address_convert::get_address(_device, condition);
 
+    bool is_permanent = condition.value("permanent", false);
+
     auto sequences = create_value_sequences(_device, condition);
     for (decltype(sequences.size()) offset = 0, size = sequences.size(); offset < size; offset++)
     {
@@ -14,6 +16,7 @@ condition_memory::condition_memory(emulation_devices *_device, json condition)
             condition_memory_value(
                 address + offset,
                 sequence,
+                is_permanent,
                 create_address_name(_device, condition, offset)));
     }
 
