@@ -2,6 +2,8 @@
 
 #include <stdint.h>
 #include "emulation/emulation_devices.h"
+#include "condition/condition_memory_value.h"
+#include "condition/condition_memory_count.h"
 #include "nlohmann/json.hpp"
 
 using namespace std;
@@ -11,17 +13,18 @@ using json = nlohmann::json;
 class condition_memory
 {
 private:
-    vector<tuple<uint16_t, vector<uint8_t>, string>> memory_value_defs;
-    vector<tuple<uint16_t, uint8_t, string>> memory_read_count_defs;
-    vector<tuple<uint16_t, uint8_t, string>> memory_write_count_defs;
-    string get_address_name(emulation_devices *device, json memory_def, int offset);
-    vector<vector<uint8_t>> get_value_sequences(emulation_devices *_device, json memory_def);
-    vector<uint8_t> get_read_counts(emulation_devices *_device, json memory_def);
-    vector<uint8_t> get_write_counts(emulation_devices *_device, json memory_def);
+    vector<condition_memory_value> value_sequences;
+    vector<condition_memory_count> read_counts;
+    vector<condition_memory_count> write_counts;
+
+    string create_address_name(emulation_devices *device, json memory_def, int offset);
+    vector<vector<uint8_t>> create_value_sequences(emulation_devices *_device, json memory_def);
+    vector<uint8_t> create_read_counts(emulation_devices *_device, json memory_def);
+    vector<uint8_t> create_write_counts(emulation_devices *_device, json memory_def);
 
 public:
     condition_memory(emulation_devices *_device, json condition);
-    vector<tuple<uint16_t, vector<uint8_t>, string>> get_memory_value_defs();
-    vector<tuple<uint16_t, uint8_t, string>> get_memory_read_count_defs();
-    vector<tuple<uint16_t, uint8_t, string>> get_memory_write_count_defs();
+    vector<condition_memory_value> get_value_sequences();
+    vector<condition_memory_count> get_read_counts();
+    vector<condition_memory_count> get_write_counts();
 };

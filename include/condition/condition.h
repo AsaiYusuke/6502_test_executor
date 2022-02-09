@@ -2,7 +2,7 @@
 
 #include "emulation/emulation_devices.h"
 #include "condition/condition_register.h"
-#include "condition/condition_status_register.h"
+#include "condition/condition_status_flag.h"
 #include "condition/condition_pc_register.h"
 #include "condition/condition_memory.h"
 #include "nlohmann/json.hpp"
@@ -15,19 +15,17 @@ class condition
 {
 private:
     emulation_devices *device;
-    vector<condition_register> registers;
-    condition_status_register *register_status;
-    condition_memory *memory;
+    vector<condition_register> register_defs;
+    vector<condition_status_flag> status_flag_defs;
+    vector<condition_memory> memory_defs;
     condition_pc_register *register_pc;
 
 protected:
     emulation_devices *get_device();
     condition_pc_register *get_pc_register_def();
     vector<condition_register> get_register_defs();
-    vector<tuple<status_flag_type, bool, string>> get_status_flag_defs();
-    vector<tuple<uint16_t, vector<uint8_t>, string>> get_memory_value_defs();
-    vector<tuple<uint16_t, uint8_t, string>> get_memory_read_count_defs();
-    vector<tuple<uint16_t, uint8_t, string>> get_memory_write_count_defs();
+    vector<condition_status_flag> get_status_flag_defs();
+    vector<condition_memory> get_memory_defs();
 
 public:
     condition(emulation_devices *_device, json condition_json, json target);

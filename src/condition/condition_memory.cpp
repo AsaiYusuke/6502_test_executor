@@ -4,64 +4,58 @@
 
 condition_memory::condition_memory(emulation_devices *_device, json condition)
 {
-    if (condition.is_null())
-        return;
+    auto address = address_convert::get_address(_device, condition);
 
-    for (json &memory_def : condition)
+    auto sequences = create_value_sequences(_device, condition);
+    for (decltype(sequences.size()) offset = 0, size = sequences.size(); offset < size; offset++)
     {
-        uint16_t address = address_convert::get_address(_device, memory_def);
+        auto sequence = sequences.at(offset);
+        value_sequences.push_back(
+            condition_memory_value(
+                address + offset,
+                sequence,
+                create_address_name(_device, condition, offset)));
+    }
 
-        auto sequences = get_value_sequences(_device, memory_def);
-        for (decltype(sequences.size()) offset = 0, size = sequences.size(); offset < size; offset++)
-        {
-            auto sequence = sequences.at(offset);
-            memory_value_defs.push_back(
-                make_tuple(
-                    address + offset,
-                    sequence,
-                    get_address_name(_device, memory_def, offset)));
-        }
+    auto r_counts = create_read_counts(_device, condition);
+    for (decltype(r_counts.size()) offset = 0, size = r_counts.size(); offset < size; offset++)
+    {
+        auto read_count = r_counts.at(offset);
+        read_counts.push_back(
+            condition_memory_count(
+                address + offset,
+                read_count,
+                create_address_name(_device, condition, offset)));
+    }
 
-        auto read_counts = get_read_counts(_device, memory_def);
-        for (decltype(read_counts.size()) offset = 0, size = read_counts.size(); offset < size; offset++)
-        {
-            auto read_count = read_counts.at(offset);
-            memory_read_count_defs.push_back(
-                make_tuple(
-                    address + offset,
-                    read_count,
-                    get_address_name(_device, memory_def, offset)));
-        }
-
-        auto write_counts = get_write_counts(_device, memory_def);
-        for (decltype(write_counts.size()) offset = 0, size = write_counts.size(); offset < size; offset++)
-        {
-            auto write_count = write_counts.at(offset);
-            memory_write_count_defs.push_back(
-                make_tuple(
-                    address + offset,
-                    write_count,
-                    get_address_name(_device, memory_def, offset)));
-        }
+    auto w_counts = create_write_counts(_device, condition);
+    for (decltype(w_counts.size()) offset = 0, size = w_counts.size(); offset < size; offset++)
+    {
+        auto write_count = w_counts.at(offset);
+        write_counts.push_back(
+            condition_memory_count(
+                address + offset,
+                write_count,
+                create_address_name(_device, condition, offset)));
     }
 }
 
-vector<tuple<uint16_t, vector<uint8_t>, string>> condition_memory::get_memory_value_defs()
+vector<condition_memory_value> condition_memory::get_value_sequences()
 {
-    return memory_value_defs;
+    return value_sequences;
 }
 
-vector<tuple<uint16_t, uint8_t, string>> condition_memory::get_memory_read_count_defs()
+vector<condition_memory_count> condition_memory::get_read_counts()
 {
-    return memory_read_count_defs;
+    return read_counts;
 }
 
-vector<tuple<uint16_t, uint8_t, string>> condition_memory::get_memory_write_count_defs()
+vector<condition_memory_count> condition_memory::get_write_counts()
 {
-    return memory_write_count_defs;
+    return write_counts;
 }
 
-string condition_memory::get_address_name(emulation_devices *device, json memory_def, int offset)
+string condition_memory::create_address_name(emulation_devices *device, json memory_def, int offset)
 {
     bool append_total_address = false;
     stringstream ss;
@@ -91,7 +85,7 @@ string condition_memory::get_address_name(emulation_devices *device, json memory
     return ss.str();
 }
 
-vector<vector<uint8_t>> condition_memory::get_value_sequences(emulation_devices *_device, json memory_def)
+vector<vector<uint8_t>> condition_memory::create_value_sequences(emulation_devices *_device, json memory_def)
 {
     vector<vector<uint8_t>> result;
 
@@ -136,7 +130,7 @@ vector<vector<uint8_t>> condition_memory::get_value_sequences(emulation_devices 
     return result;
 }
 
-vector<uint8_t> condition_memory::get_read_counts(emulation_devices *_device, json memory_def)
+vector<uint8_t> condition_memory::create_read_counts(emulation_devices *_device, json memory_def)
 {
     vector<uint8_t> result;
 
@@ -161,7 +155,7 @@ vector<uint8_t> condition_memory::get_read_counts(emulation_devices *_device, js
     return result;
 }
 
-vector<uint8_t> condition_memory::get_write_counts(emulation_devices *_device, json memory_def)
+vector<uint8_t> condition_memory::create_write_counts(emulation_devices *_device, json memory_def)
 {
     vector<uint8_t> result;
 

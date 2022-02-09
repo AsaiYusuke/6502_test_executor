@@ -10,13 +10,24 @@ condition::condition(emulation_devices *_device, json condition_json)
 {
     device = _device;
 
-    registers.push_back(condition_register(register_type::A, device, condition_json["A"]));
-    registers.push_back(condition_register(register_type::X, device, condition_json["X"]));
-    registers.push_back(condition_register(register_type::Y, device, condition_json["Y"]));
+    register_defs.push_back(condition_register(register_type::A, device, condition_json["A"]));
+    register_defs.push_back(condition_register(register_type::X, device, condition_json["X"]));
+    register_defs.push_back(condition_register(register_type::Y, device, condition_json["Y"]));
 
-    register_status = new condition_status_register(condition_json["Status"]);
+    if (!condition_json["Status"].is_null())
+        for (auto &element : condition_json["Status"].items())
+            status_flag_defs.push_back(
+                condition_status_flag(
+                    device,
+                    element.key(),
+                    element.value()));
 
-    memory = new condition_memory(device, condition_json["memory"]);
+    if (!condition_json["memory"].is_null())
+        for (auto &memory_def : condition_json["memory"])
+            memory_defs.push_back(
+                condition_memory(
+                    device,
+                    memory_def));
 }
 
 emulation_devices *condition::get_device()
@@ -26,27 +37,17 @@ emulation_devices *condition::get_device()
 
 vector<condition_register> condition::get_register_defs()
 {
-    return registers;
+    return register_defs;
 }
 
-vector<tuple<status_flag_type, bool, string>> condition::get_status_flag_defs()
+vector<condition_status_flag> condition::get_status_flag_defs()
 {
-    return register_status->get_flags();
+    return status_flag_defs;
 }
 
-vector<tuple<uint16_t, vector<uint8_t>, string>> condition::get_memory_value_defs()
+vector<condition_memory> condition::get_memory_defs()
 {
-    return memory->get_memory_value_defs();
-}
-
-vector<tuple<uint16_t, uint8_t, string>> condition::get_memory_read_count_defs()
-{
-    return memory->get_memory_read_count_defs();
-}
-
-vector<tuple<uint16_t, uint8_t, string>> condition::get_memory_write_count_defs()
-{
-    return memory->get_memory_write_count_defs();
+    return memory_defs;
 }
 
 condition_pc_register *condition::get_pc_register_def()
