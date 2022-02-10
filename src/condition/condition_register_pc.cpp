@@ -1,5 +1,5 @@
 #include "condition/condition_register_pc.h"
-#include "condition/address_convert.h"
+#include "util/address_convert.h"
 
 condition_register_pc::condition_register_pc(emulation_devices *_device, json condition)
 {

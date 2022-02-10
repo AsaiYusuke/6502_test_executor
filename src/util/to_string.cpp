@@ -1,8 +1,8 @@
 #include <vector>
 #include <sstream>
 
-#include "assert/operation/to_string.h"
-#include "condition/address_convert.h"
+#include "util/to_string.h"
+#include "util/address_convert.h"
 
 string to_string(vector<uint8_t> values)
 {

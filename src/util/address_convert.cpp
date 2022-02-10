@@ -1,5 +1,5 @@
 #include <sstream>
-#include "condition/address_convert.h"
+#include "util/address_convert.h"
 
 uint16_t address_convert::get_address(emulation_devices *device, json value)
 {

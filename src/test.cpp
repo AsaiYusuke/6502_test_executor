@@ -5,7 +5,7 @@
 #include "test.h"
 #include "test_setup.h"
 #include "test_assert.h"
-#include "condition/address_convert.h"
+#include "util/address_convert.h"
 #include "condition/condition.h"
 
 test::test(args_parser *_args)

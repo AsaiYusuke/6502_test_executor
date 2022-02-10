@@ -1,5 +1,5 @@
 #include "condition/condition_register_a_x_y.h"
-#include "condition/address_convert.h"
+#include "util/address_convert.h"
 
 condition_register_a_x_y::condition_register_a_x_y(emulation_devices *device, string _name, json condition)
 {

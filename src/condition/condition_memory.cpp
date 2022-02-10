@@ -1,5 +1,5 @@
 #include <sstream>
-#include "condition/address_convert.h"
+#include "util/address_convert.h"
 #include "condition/condition_memory.h"
 
 condition_memory::condition_memory(emulation_devices *_device, json condition)

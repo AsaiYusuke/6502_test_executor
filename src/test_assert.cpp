@@ -1,7 +1,7 @@
 #include <sstream>
 
 #include "test_assert.h"
-#include "condition/address_convert.h"
+#include "util/address_convert.h"
 #include "assert/assert_timeout.h"
 #include "assert/assert_register_value.h"
 #include "assert/assert_status_flag_value.h"
