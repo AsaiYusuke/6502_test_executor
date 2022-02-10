@@ -28,10 +28,10 @@ $(BUILD_DIRS) : % :
 	mkdir -p $@
 
 $(TARGET): $(OBJECTS)
-	g++ $(CFLAGS) -o $(TARGET) $(OBJECTS)
+	$(CXX) $(CFLAGS) -o $(TARGET) $(OBJECTS)
 
-$(BUILD_DIR)/%.o : $(SRC_DIR)/%.cpp $(HEADERS) $(ARGS_HEADER) $(JSON_HEADER)
-	g++ $(CFLAGS) -c -o $@ $<
+$(BUILD_DIR)/%.o : $(SRC_DIR)/%.cpp
+	$(CXX) $(CFLAGS) -c -o $@ $<
 
 $(ARGS_HEADER) :
 	(cd .. ; git clone $(ARGS_URL))
@@ -42,3 +42,5 @@ $(JSON_HEADER) :
 clean :
 	rm -rf $(BUILD_DIR)
 	rm $(TARGET)
+
+$(foreach SOURCE,$(SOURCES),$(eval $(subst \,,$(shell $(CXX) $(CFLAGS) -MM $(SOURCE) | sed -e 's/^\([^ ]*\)\.o:/$(BUILD_DIR)\/\1.o:/'))))
