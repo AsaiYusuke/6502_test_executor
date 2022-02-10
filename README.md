@@ -42,10 +42,10 @@ The tool also provides a [JSON Schema](https://json-schema.org/) document that m
 If you use [Visual Studio Code](https://code.visualstudio.com/), it will tell you about formatting error based on JSON Schema without any extensions.
 
 ### Execute tester
-Run the tool by specifying the program image file, symbol definition file, and test file:
+Run the tool by specifying the program image file, debug information file, and test scinario file:
 
 ```
-6502_tester -p <program iamge> -s <symbol definition> -t <test file>
+6502_tester -p <program iamge> -d <debug information> -t <test scinario>
 ```
 
 You can check the available optional arguments by displaying the help:
