@@ -92,6 +92,7 @@ void test::print_test_result(string test_name, test_result result, vector<string
         cout << "OK";
         break;
     case test_result::FAIL:
+    case test_result::FAIL_WITH_CALLSTACK:
         if (args->is_quiet_failed())
             return;
         cout << "FAIL";
@@ -105,7 +106,7 @@ void test::print_test_result(string test_name, test_result result, vector<string
 
     cout << ": [" << test_name << "]" << endl;
 
-    if (result == test_result::FAIL)
+    if (result == test_result::FAIL || result == test_result::FAIL_WITH_CALLSTACK)
     {
         cerr << endl;
         device->print();
@@ -119,6 +120,11 @@ void test::print_test_result(string test_name, test_result result, vector<string
             cerr << error << endl;
         }
         cerr << endl;
+    }
+
+    if (result == test_result::FAIL_WITH_CALLSTACK)
+    {
+        print_call_stack();
     }
 }
 
