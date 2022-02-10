@@ -382,6 +382,18 @@
                     "description": "Timeout specifies whether or not the test will error on timeout.",
                     "type": "boolean"
                 }
+            },
+            "dependencies": {
+                "timeout": {
+                    "properties": {
+                        "register": {
+                            "type": "null"
+                        },
+                        "memory": {
+                            "type": "null"
+                        }
+                    }
+                }
             }
         }
     }
