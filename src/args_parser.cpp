@@ -5,9 +5,9 @@ args_parser::args_parser(int argc, char *argv[])
 {
     args::ArgumentParser parser("6502 test executor");
     args::HelpFlag help(parser, "HELP", "Show this help menu.", {'h', "help"});
-    program_file_path = new args::ValueFlag<string>(parser, "PROGRAM", "Specify the path of the program image file to be tested.", {'p', "program"}, args::Options::Required);
+    program_file_path = new args::ValueFlag<string>(parser, "PROGRAM", "Specify the path of the program image file to be tested.", {'p', "program"});
     debug_file_path = new args::ValueFlag<string>(parser, "DEBUG", "Specify the path of the debug information file used for testing.", {'d', "debug"});
-    test_file_path = new args::ValueFlag<string>(parser, "TEST", "Specify the path of the test scinario file.", {'t', "test"}, args::Options::Required);
+    test_file_path = new args::ValueFlag<string>(parser, "TEST", "(REQUIRED)\nSpecify the path of the test scinario file.", {'t', "test"}, args::Options::Required);
 
     test_timeout = new args::ValueFlag<int>(parser, "TIMEOUT", "Specify the timeout period before the test becomes an error.", {"timeout"}, 10000);
 
