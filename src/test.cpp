@@ -57,7 +57,10 @@ bool test::execute()
                 assert.get_result(),
                 assert.get_errors());
 
-            test_result_map[assert.get_result()]++;
+            auto result = assert.get_result() == test_result::FAIL_WITH_CALLSTACK
+                              ? test_result::FAIL
+                              : assert.get_result();
+            test_result_map[result]++;
         }
         catch (exception &e)
         {
