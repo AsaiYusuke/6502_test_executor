@@ -1,0 +1,62 @@
+{
+    "$schema": "../../schema/testcase.schema.json",
+    "target": {
+        "label": "check_collision"
+    },
+    "cases": {
+        "decimal value": {
+            "setup": {
+                "memory": [
+                    {
+                        "label": "vector_addr",
+                        "value": 44
+                    }
+                ]
+            },
+            "expected": {
+                "memory": [
+                    {
+                        "label": "vector_addr",
+                        "value": 44
+                    }
+                ]
+            }
+        },
+        "hexadecimal value": {
+            "setup": {
+                "memory": [
+                    {
+                        "label": "vector_addr",
+                        "value": 44
+                    }
+                ]
+            },
+            "expected": {
+                "memory": [
+                    {
+                        "label": "vector_addr",
+                        "value": "$2C"
+                    }
+                ]
+            }
+        },
+        "binary value": {
+            "setup": {
+                "memory": [
+                    {
+                        "label": "vector_addr",
+                        "value": 44
+                    }
+                ]
+            },
+            "expected": {
+                "memory": [
+                    {
+                        "label": "vector_addr",
+                        "value": "%101100"
+                    }
+                ]
+            }
+        }
+    }
+}

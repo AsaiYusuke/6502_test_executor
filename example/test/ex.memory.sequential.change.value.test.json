@@ -4,7 +4,7 @@
         "label": "control"
     },
     "cases": {
-        "setup:[vector_addr= 0], expected:[vector_addr=4]": {
+        "sequential change value test": {
             "setup": {
                 "memory": [
                     {
@@ -31,34 +31,7 @@
                 ]
             }
         },
-        "setup:[vector_addr=44], expected:[vector_addr=0]": {
-            "setup": {
-                "memory": [
-                    {
-                        "label": "vector_addr",
-                        "value": 44
-                    },
-                    {
-                        "label": "APU_PAD1",
-                        "sequence": [
-                            0,
-                            1,
-                            1,
-                            0
-                        ]
-                    }
-                ]
-            },
-            "expected": {
-                "memory": [
-                    {
-                        "label": "vector_addr",
-                        "value": 0
-                    }
-                ]
-            }
-        },
-        "setup:[vector_addr= 0, PadInput=1off:2on -> 1on:2on -> 1off:2on -> 1off:2off], expected:[vector_addr=4]": {
+        "sequential change value test with contiguous memory area": {
             "setup": {
                 "memory": [
                     {
@@ -97,20 +70,6 @@
                         ]
                     }
                 ]
-            }
-        },
-        "setup:[PadInput=1on], expected:[timeout]": {
-            "setup": {
-                "memory": [
-                    {
-                        "label": "APU_PAD1",
-                        "value": 1,
-                        "permanent": true
-                    }
-                ]
-            },
-            "expected": {
-                "timeout": true
             }
         }
     }

@@ -1,0 +1,31 @@
+{
+    "$schema": "../../schema/testcase.schema.json",
+    "target": {
+        "label": "check_collision"
+    },
+    "cases": {
+        "customize configurations test": {
+            "setup": {
+                "memory": [
+                    {
+                        "label": "vector_addr",
+                        "value": 4
+                    }
+                ]
+            },
+            "expected": {
+                "memory": [
+                    {
+                        "label": "vector_addr",
+                        "value": 4
+                    }
+                ]
+            }
+        }
+    },
+    "config": {
+        "programFile": "dist/example.nes",
+        "debugFile": "dist/example.dbg",
+        "timeout": 10000
+    }
+}

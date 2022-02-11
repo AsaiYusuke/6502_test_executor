@@ -1,0 +1,63 @@
+{
+    "$schema": "../../schema/testcase.schema.json",
+    "target": {
+        "label": "check_collision"
+    },
+    "cases": {
+        "abstract address": {
+            "setup": {
+                "memory": [
+                    {
+                        "address": "$5",
+                        "value": 4
+                    }
+                ]
+            },
+            "expected": {
+                "memory": [
+                    {
+                        "address": "$5",
+                        "value": 4
+                    }
+                ]
+            }
+        },
+         "labeled address": {
+            "setup": {
+                "memory": [
+                    {
+                        "label": "vector_addr",
+                        "value": 4
+                    }
+                ]
+            },
+            "expected": {
+                "memory": [
+                    {
+                        "address": "$5",
+                        "value": 4
+                    }
+                ]
+            }
+        },
+        "labeled address with offset": {
+            "setup": {
+                "memory": [
+                    {
+                        "label": "vector_addr",
+                        "offset": 1,
+                        "value": 4
+                    }
+                ]
+            },
+            "expected": {
+                "memory": [
+                    {
+                        "address": "$6",
+                        "value": 4
+                    }
+                ]
+            }
+        }
+   }
+}

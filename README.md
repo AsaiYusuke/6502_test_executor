@@ -15,15 +15,22 @@ mkdir -p build
 ca65 --cpu 6502 --target nes --debug-info -o build/example.o src/example.asm
 mkdir -p dist
 ld65  -o dist/example.nes --dbgfile dist/example.dbg --config cfg/nes.cfg --obj build/example.o
-../6502_tester -p dist/example.nes -d dist/example.dbg --quiet-ok --quiet-summary -t test/check_collision.test.json
-../6502_tester -p dist/example.nes -d dist/example.dbg --quiet-ok --quiet-summary -t test/control.test.json
+../6502_tester -p dist/example.nes -d dist/example.dbg --quiet-ok --quiet-summary -t test/ex.customize.configurations.test.json
+../6502_tester -p dist/example.nes -d dist/example.dbg --quiet-ok --quiet-summary -t test/ex.error.timeout.test.json
+../6502_tester -p dist/example.nes -d dist/example.dbg --quiet-ok --quiet-summary -t test/ex.memory.addressing.test.json
+../6502_tester -p dist/example.nes -d dist/example.dbg --quiet-ok --quiet-summary -t test/ex.memory.contiguous.memory.area.test.json
+../6502_tester -p dist/example.nes -d dist/example.dbg --quiet-ok --quiet-summary -t test/ex.memory.count.check.test.json
+../6502_tester -p dist/example.nes -d dist/example.dbg --quiet-ok --quiet-summary -t test/ex.memory.sequential.change.value.test.json
+../6502_tester -p dist/example.nes -d dist/example.dbg --quiet-ok --quiet-summary -t test/ex.memory.value.check.test.json
+../6502_tester -p dist/example.nes -d dist/example.dbg --quiet-ok --quiet-summary -t test/ex.register.axy.value.test.json
+../6502_tester -p dist/example.nes -d dist/example.dbg --quiet-ok --quiet-summary -t test/ex.register.status.flag.test.json
 echo "All tests passed."
 All tests passed.
 ```
 
 ## How to use
 
-### Build the 6502 project with debug option
+### (Optional) Build the 6502 project with debug option
 Build the 6502 project using the [CA65 assembler](https://cc65.github.io/doc/ca65.html) with debug option.
 By specifying the debug option, symbol definitions consisting of label/address pair will be output.
 
@@ -63,7 +70,8 @@ You can check the available optional arguments by displaying the help:
                                         file to be tested.
       -d[DEBUG], --debug=[DEBUG]        Specify the path of the debug
                                         information file used for testing.
-      -t[TEST], --test=[TEST]           Specify the path of the test scinario
+      -t[TEST], --test=[TEST]           (REQUIRED)
+                                        Specify the path of the test scinario
                                         file.
       --timeout=[TIMEOUT]               Specify the timeout period before the
                                         test becomes an error.
@@ -73,3 +81,22 @@ You can check the available optional arguments by displaying the help:
       --quiet-summary                   Do not show the test summary output.
 
 ```
+
+## Test scinario examples
+
+### Registers
+- [Check the value of the A/X/Y registers](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ex.register.axy.value.test.json)
+- [Check the flags of the Status register](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ex.register.status.flag.test.json)
+
+### Memory
+- [Memory addressing](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ex.memory.addressing.test.json)
+- [Check the value of the memory](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ex.memory.value.check.test.json)
+- [Check the read/write count](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ex.memory.count.check.test.json)
+- [Check the value of the continuous memory area](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ex.memory.contiguous.memory.area.test.json)
+- [Sequential change value](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ex.memory.sequential.change.value.test.json)
+
+### Error
+- [Check the Timeout error](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ex.error.timeout.test.json)
+
+### Configuration
+- [Customize configurations](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ex.customize.configurations.test.json)

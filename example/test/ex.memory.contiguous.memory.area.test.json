@@ -1,0 +1,32 @@
+{
+    "$schema": "../../schema/testcase.schema.json",
+    "target": {
+        "label": "check_collision"
+    },
+    "cases": {
+        "contiguous memory area test": {
+            "setup": {
+                "memory": [
+                    {
+                        "label": "vector_addr",
+                        "value": [
+                            4,
+                            5
+                        ]
+                    }
+                ]
+            },
+            "expected": {
+                "memory": [
+                    {
+                        "label": "vector_addr",
+                        "value": [
+                            4,
+                            5
+                        ]
+                    }
+                ]
+            }
+        }
+    }
+}

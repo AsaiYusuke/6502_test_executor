@@ -1,0 +1,36 @@
+{
+    "$schema": "../../schema/testcase.schema.json",
+    "target": {
+        "label": "check_collision"
+    },
+    "cases": {
+        "flags of the Status register": {
+            "setup": {
+                "register": {
+                    "Status": {
+                        "Negative": true,
+                        "Overflow": true,
+                        "Decimal": true,
+                        "Interrupt": true,
+                        "Break": true,
+                        "Carry": false,
+                        "Zero": true
+                    }
+                }
+            },
+            "expected": {
+                "register": {
+                    "Status": {
+                        "Negative": true,
+                        "Overflow": true,
+                        "Decimal": true,
+                        "Interrupt": true,
+                        "Break": true,
+                        "Carry": true,
+                        "Zero": false
+                    }
+                }
+            }
+        }
+    }
+}

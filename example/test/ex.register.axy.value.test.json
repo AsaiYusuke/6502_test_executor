@@ -1,0 +1,56 @@
+{
+    "$schema": "../../schema/testcase.schema.json",
+    "target": {
+        "label": "check_collision"
+    },
+    "cases": {
+        "decimal value": {
+            "setup": {
+                "register": {
+                    "A": 100,
+                    "X": 100,
+                    "Y": 100
+                }
+            },
+            "expected": {
+                "register": {
+                    "A": 223,
+                    "X": 0,
+                    "Y": 100
+                }
+            }
+        },
+        "hexadecimal value": {
+            "setup": {
+                "register": {
+                    "A": 100,
+                    "X": 100,
+                    "Y": 100
+                }
+            },
+            "expected": {
+                "register": {
+                    "A": "$DF",
+                    "X": "$0",
+                    "Y": "$64"
+                }
+            }
+        },
+        "binary value": {
+            "setup": {
+                "register": {
+                    "A": 100,
+                    "X": 100,
+                    "Y": 100
+                }
+            },
+            "expected": {
+                "register": {
+                    "A": "%11011111",
+                    "X": "%0",
+                    "Y": "%01100100"
+                }
+            }
+        }
+    }
+}
