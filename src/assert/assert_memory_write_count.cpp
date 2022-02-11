@@ -8,6 +8,6 @@ bool assert_memory_write_count::test(emulation_devices *device, condition_memory
     return assert_equal::test(
         expected_value,
         mem_dev->get_write_count(memory_count_def.get_address()),
-        "Memory data [" + memory_count_def.get_name() + "]",
+        "Memory write count [" + memory_count_def.get_name() + "]",
         errors);
 }
