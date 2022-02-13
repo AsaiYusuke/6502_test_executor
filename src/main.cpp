@@ -12,11 +12,11 @@ int main(int argc, char *argv[])
 {
     try
     {
-        args_parser args{argc, argv};
-        test test_def = test(&args);
-        bool result = test_def.execute();
-        if (!result)
-            return 1;
+        bool result =
+            test(new args_parser(argc, argv))
+                .execute();
+
+        return result ? 0 : 1;
     }
     catch (parse_abort &e)
     {
@@ -27,6 +27,4 @@ int main(int argc, char *argv[])
         cerr << e.what() << endl;
         return 1;
     }
-
-    return 0;
 }
