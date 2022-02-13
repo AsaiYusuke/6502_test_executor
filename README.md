@@ -98,5 +98,6 @@ You can check the available optional arguments by displaying the help:
 ### Error
 - [Check the Timeout error](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ex.error.timeout.test.json)
 
-### Configuration
+### Misc
 - [Customize configurations](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ex.customize.configurations.test.json)
+- [Skip test (ignore)](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ex.skip.test.json)

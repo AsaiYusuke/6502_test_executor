@@ -1,0 +1,23 @@
+{
+    "$schema": "../../schema/testcase.schema.json",
+    "target": {
+        "label": "control"
+    },
+    "cases": {
+        "skip test": {
+            "skip": true,
+            "setup": {
+                "memory": [
+                    {
+                        "label": "APU_PAD1",
+                        "value": 1,
+                        "permanent": true
+                    }
+                ]
+            },
+            "expected": {
+                "timeout": false
+            }
+        }
+    }
+}
