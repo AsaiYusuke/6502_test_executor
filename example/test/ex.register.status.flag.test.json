@@ -7,11 +7,11 @@
         "flags of the Status register": {
             "setup": {
                 "register": {
-                    "Status": {
+                    "P": {
                         "Negative": true,
                         "Overflow": true,
                         "Decimal": true,
-                        "Interrupt": true,
+                        "InterruptDisable": true,
                         "Break": true,
                         "Carry": false,
                         "Zero": true
@@ -20,11 +20,11 @@
             },
             "expected": {
                 "register": {
-                    "Status": {
+                    "P": {
                         "Negative": true,
                         "Overflow": true,
                         "Decimal": true,
-                        "Interrupt": true,
+                        "InterruptDisable": true,
                         "Break": true,
                         "Carry": true,
                         "Zero": false

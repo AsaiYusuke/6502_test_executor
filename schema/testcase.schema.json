@@ -193,48 +193,48 @@
                     "additionalProperties": false,
                     "properties": {
                         "A": {
-                            "title": "A Register",
+                            "title": "Accumulator",
                             "$ref": "#/definitions/number"
                         },
                         "X": {
-                            "title": "X Register",
+                            "title": "Index register X",
                             "$ref": "#/definitions/number"
                         },
                         "Y": {
-                            "title": "Y Register",
+                            "title": "Index register Y",
                             "$ref": "#/definitions/number"
                         },
-                        "Status": {
-                            "title": "Status Register",
+                        "P": {
+                            "title": "Processor status register",
                             "type": "object",
                             "additionalProperties": false,
                             "properties": {
                                 "Negative": {
-                                    "title": "Negative flag",
+                                    "title": "Negative Flag",
                                     "type": "boolean"
                                 },
                                 "Overflow": {
-                                    "title": "Overflow flag",
+                                    "title": "Overflow",
                                     "type": "boolean"
                                 },
                                 "Break": {
-                                    "title": "Break flag",
+                                    "title": "Break Command",
                                     "type": "boolean"
                                 },
                                 "Decimal": {
-                                    "title": "Decimal flag",
+                                    "title": "Decimal Mode Flag",
                                     "type": "boolean"
                                 },
-                                "Interrupt": {
-                                    "title": "Interrupt flag",
+                                "InterruptDisable": {
+                                    "title": "Interrupt Disable",
                                     "type": "boolean"
                                 },
                                 "Zero": {
-                                    "title": "Zero flag",
+                                    "title": "Zero Flag",
                                     "type": "boolean"
                                 },
                                 "Carry": {
-                                    "title": "Carry flag",
+                                    "title": "Carry Flag",
                                     "type": "boolean"
                                 }
                             }

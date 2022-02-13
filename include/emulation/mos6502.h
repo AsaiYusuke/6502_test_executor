@@ -200,8 +200,8 @@ public:
 	void setY(uint8_t value);
 	uint16_t getPC();
 	void setPC(uint16_t value);
-	uint8_t getStatus();
-	void setStatus(uint8_t value);
+	uint8_t getP();
+	void setP(uint8_t value);
 	void StackPush(uint8_t byte);
 	uint8_t StackPop();
 	bool isCallInstr();

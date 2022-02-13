@@ -1504,12 +1504,12 @@ void mos6502::setPC(uint16_t value)
 	pc = value;
 }
 
-uint8_t mos6502::getStatus()
+uint8_t mos6502::getP()
 {
 	return status;
 }
 
-void mos6502::setStatus(uint8_t value)
+void mos6502::setP(uint8_t value)
 {
 	status = value;
 }

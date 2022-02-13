@@ -14,7 +14,7 @@ condition::condition(emulation_devices *_device, json condition_json)
         for (auto &register_element : condition_json["register"].items())
             switch (register_name_type_map[register_element.key()])
             {
-            case register_type::Status:
+            case register_type::P:
                 for (auto &status_element : register_element.value().items())
                     status_flag_defs.push_back(
                         condition_register_status_flag(

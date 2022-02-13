@@ -16,7 +16,7 @@ void test_setup::execute()
     uint8_t status;
     for (auto status_flag_def : get_status_flag_defs())
         status |= ((uint8_t)status_flag_def.get_type() * status_flag_def.get_value());
-    cpu_dev->set_register(register_type::Status, status);
+    cpu_dev->set_register(register_type::P, status);
 
     memory_device *mem_dev = get_device()->get_memory();
     for (auto memory_def : get_memory_defs())

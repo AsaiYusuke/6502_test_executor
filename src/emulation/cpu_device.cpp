@@ -2,9 +2,9 @@
 
 #include "emulation/cpu_device.h"
 
-cpu_device::cpu_device(args_parser *args, json config, i_memory_access *i_memory_access)
+cpu_device::cpu_device(args_parser *args, json config, i_memory_access *memory_access)
 {
-    cpu = new mos6502(i_memory_access);
+    cpu = new mos6502(memory_access);
     
     if (config.is_null() || config["timeout"].is_null())
         timeout_threshold = args->get_test_timeout();
@@ -16,14 +16,13 @@ void cpu_device::clear(uint16_t target_program_counter)
 {
     cpu->Reset();
 
-    callStack.clear();
-
     cpu->setPC(target_program_counter);
-    callStack.push_back(0xFFFF);
-    callStack.push_back(target_program_counter);
-
     cpu->StackPush(0xFF);
     cpu->StackPush(0xFE);
+
+    callStack.clear();
+    callStack.push_back(0xFFFF);
+    callStack.push_back(target_program_counter);
 
     timeout = false;
 }
@@ -80,8 +79,8 @@ uint8_t cpu_device::get_register(register_type type)
         return cpu->getX();
     case register_type::Y:
         return cpu->getY();
-    case register_type::Status:
-        return cpu->getStatus();
+    case register_type::P:
+        return cpu->getP();
     }
     return 0;
 }
@@ -96,8 +95,8 @@ void cpu_device::set_register(register_type type, uint8_t value)
         return cpu->setX(value);
     case register_type::Y:
         return cpu->setY(value);
-    case register_type::Status:
-        return cpu->setStatus(value);
+    case register_type::P:
+        return cpu->setP(value);
     }
 }
 
@@ -107,14 +106,14 @@ void cpu_device::print()
            cpu->getA(),
            cpu->getX(),
            cpu->getY(),
-           cpu->getStatus(),
-           (cpu->getStatus() & NEGATIVE) > 0 ? "True" : "False",
-           (cpu->getStatus() & OVERFLOW) > 0 ? "True" : "False",
-           (cpu->getStatus() & BREAK) > 0 ? "True" : "False",
-           (cpu->getStatus() & DECIMAL) > 0 ? "True" : "False",
-           (cpu->getStatus() & INTERRUPT) > 0 ? "True" : "False",
-           (cpu->getStatus() & ZERO) > 0 ? "True" : "False",
-           (cpu->getStatus() & CARRY) > 0 ? "True" : "False",
+           cpu->getP(),
+           (cpu->getP() & NEGATIVE) > 0 ? "True" : "False",
+           (cpu->getP() & OVERFLOW) > 0 ? "True" : "False",
+           (cpu->getP() & BREAK) > 0 ? "True" : "False",
+           (cpu->getP() & DECIMAL) > 0 ? "True" : "False",
+           (cpu->getP() & INTERRUPT) > 0 ? "True" : "False",
+           (cpu->getP() & ZERO) > 0 ? "True" : "False",
+           (cpu->getP() & CARRY) > 0 ? "True" : "False",
            cpu->getPC());
 }
 
