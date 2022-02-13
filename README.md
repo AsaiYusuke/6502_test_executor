@@ -86,7 +86,7 @@ You can check the available optional arguments by displaying the help:
 
 ### Registers
 - [Check the value of the A/X/Y registers](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ex.register.axy.value.test.json)
-- [Check the flags of the Status register](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ex.register.status.flag.test.json)
+- [Check the flags of the Processor status register](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ex.register.status.flag.test.json)
 
 ### Memory
 - [Memory addressing](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ex.memory.addressing.test.json)
