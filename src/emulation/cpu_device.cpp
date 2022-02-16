@@ -99,7 +99,7 @@ void cpu_device::set_register(register_type type, uint8_t value)
 
 void cpu_device::print()
 {
-    printf("CPU result:\n  A: $%X, X: $%X, Y: $%X, P: $%X (N: %s, O: %s, B: %s, D: %s, I: %s, Z: %s, C: %s), PC: $%X\n",
+    printf("CPU result:\n  A: $%X, X: $%X, Y: $%X, P: $%X (N: %s, O: %s, B: %s, D: %s, I: %s, Z: %s, C: %s), PC: $%04X\n",
            cpu->getA(),
            cpu->getX(),
            cpu->getY(),

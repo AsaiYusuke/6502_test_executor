@@ -34,3 +34,10 @@ string address_convert::to_hex_string(uint16_t value)
     ss << "$" << uppercase << hex << value;
     return ss.str();
 }
+
+string address_convert::to_zero_filled_hex_string(uint16_t value)
+{
+    stringstream ss;
+    ss << "$" << uppercase << hex << setw(4) << setfill('0') << value;
+    return ss.str();
+}

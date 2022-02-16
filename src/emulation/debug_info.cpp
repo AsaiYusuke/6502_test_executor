@@ -324,7 +324,7 @@ tuple<uint16_t, int, bool> debug_info::get_segment_def(uint16_t address)
         if (start <= address && address < start + size)
             return segment_def.second;
     }
-    throw out_of_range("address=" + address_convert::to_hex_string(address));
+    throw out_of_range("address=" + address_convert::to_zero_filled_hex_string(address));
 }
 
 void debug_info::add_segment_def(int id, uint16_t start, int size, bool writable)

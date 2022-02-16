@@ -174,7 +174,7 @@ void memory_device::write(uint16_t address, uint8_t value)
         {
             if (!debug->has_write_access(address))
             {
-                device->add_error_reuslt(runtime_error_type::READONLY_MEMORY, "address=" + address_convert::to_hex_string(address));
+                device->add_error_reuslt(runtime_error_type::READONLY_MEMORY, "address=" + address_convert::to_zero_filled_hex_string(address));
             }
         }
         catch (const out_of_range &e)
@@ -193,6 +193,6 @@ void memory_device::print()
     {
         uint16_t k = iter->first;
         uint8_t v = iter->second;
-        printf("  %s($%X) : $%X\n", debug->get_label(k).c_str(), k, v);
+        printf("  $%04X (%s) : $%X\n", k, debug->get_label(k).c_str(), v);
     }
 }

@@ -35,7 +35,7 @@ string message::trace_message(emulation_devices *device, vector<uint16_t> call_s
             prev_address = address;
 
             ss << "  " << index++ << ":  "
-               << address_convert::to_hex_string(address) << " : "
+               << address_convert::to_zero_filled_hex_string(address) << " : "
                << device->get_memory()->get_source_line(address) << endl;
         }
         ss << endl;

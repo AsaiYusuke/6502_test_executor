@@ -83,7 +83,7 @@ string condition_memory::create_address_name(emulation_devices *device, json mem
         ss << " + " << address_convert::to_hex_string(offset);
 
     if (offset != 0 || append_total_address)
-        ss << " (" << address_convert::to_hex_string(address) << ")";
+        ss << " (" << address_convert::to_zero_filled_hex_string(address) << ")";
 
     return ss.str();
 }
