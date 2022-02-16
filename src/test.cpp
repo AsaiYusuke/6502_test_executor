@@ -61,10 +61,12 @@ bool test::execute()
         }
         catch (exception &e)
         {
+            stringstream ss;
+            ss << e.what() << endl;
             print_test_result(
                 name,
                 test_result::FAIL,
-                {e.what()});
+                {ss.str()});
 
             test_result_map[test_result::FAIL]++;
         }
