@@ -92,11 +92,13 @@ You can check the available optional arguments by displaying the help:
 - [Memory addressing](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ex.memory.addressing.test.json)
 - [Check the value of the memory](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ex.memory.value.check.test.json)
 - [Check the read/write count](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ex.memory.count.check.test.json)
-- [Check the value of the continuous memory area](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ex.memory.contiguous.memory.area.test.json)
+- [Batch selection of continuous memory area](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ex.memory.contiguous.memory.area.test.json)
 - [Sequential change value](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ex.memory.sequential.change.value.test.json)
 
 ### Error
-- [Check the Timeout error](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ex.error.timeout.test.json)
+- [Timeout](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ex.error.timeout.test.json)
+- [Write to readonly memory](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ex.error.readonly.test.json) ( The *-d* option is required. )
+- [Access to out of segment](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ex.error.out_of_segment.test.json) ( The *-d* option is required. )
 
 ### Misc
 - [Customize configurations](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ex.customize.configurations.test.json)
