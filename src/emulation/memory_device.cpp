@@ -43,12 +43,12 @@ memory_device::memory_device(emulation_devices *_device, args_parser *args, json
     load_rom_image(program_path);
     debug = new debug_info(debug_path);
 
-    if (config["invalidMemory"]["enable"].is_null())
+    if (debug->is_omit())
+        assert_invalid_memory = false;
+    else if (config["invalidMemory"]["enable"].is_null())
         assert_invalid_memory = true;
     else
-    {
         assert_invalid_memory = config["invalidMemory"]["enable"].get<bool>();
-    }
 
     if (config["invalidMemory"]["ignoreList"].is_null())
     {

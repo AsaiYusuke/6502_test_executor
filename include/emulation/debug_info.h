@@ -8,6 +8,7 @@ using namespace std;
 class debug_info
 {
 private:
+    bool omit;
     map<int, string> source_file_map;
     map<int, tuple<uint16_t, int, bool>> segment_map;
     map<int, pair<int, int>> span_map;
@@ -28,6 +29,7 @@ private:
 
 public:
     debug_info(string debug_path);
+    bool is_omit();
     string get_source_line(uint16_t address);
     bool has_address(string label);
     string get_label(uint16_t address);
