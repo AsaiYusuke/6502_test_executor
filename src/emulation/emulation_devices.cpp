@@ -70,7 +70,7 @@ uint16_t emulation_devices::to_byte(string str)
 
 void emulation_devices::add_error_reuslt(runtime_error_type type)
 {
-    add_error_reuslt(type, NULL);
+    add_error_reuslt(type, "");
 }
 
 void emulation_devices::add_error_reuslt(runtime_error_type type, string message)
