@@ -1,63 +1,62 @@
 {
-    "$schema": "../../schema/testcase.schema.json",
+    "$schema": "../../../schema/testcase.schema.json",
     "target": {
         "label": "check_collision"
     },
     "cases": {
-        "abstract address": {
-            "setup": {
-                "memory": [
-                    {
-                        "address": "$5",
-                        "value": 4
-                    }
-                ]
-            },
-            "expected": {
-                "memory": [
-                    {
-                        "address": "$5",
-                        "value": 4
-                    }
-                ]
-            }
-        },
-         "labeled address": {
+        "decimal value": {
             "setup": {
                 "memory": [
                     {
                         "label": "vector_addr",
-                        "value": 4
+                        "value": 44
                     }
                 ]
             },
             "expected": {
                 "memory": [
                     {
-                        "address": "$5",
-                        "value": 4
+                        "label": "vector_addr",
+                        "value": 44
                     }
                 ]
             }
         },
-        "labeled address with offset": {
+        "hexadecimal value": {
             "setup": {
                 "memory": [
                     {
                         "label": "vector_addr",
-                        "offset": 1,
-                        "value": 4
+                        "value": 44
                     }
                 ]
             },
             "expected": {
                 "memory": [
                     {
-                        "address": "$6",
-                        "value": 4
+                        "label": "vector_addr",
+                        "value": "$2C"
+                    }
+                ]
+            }
+        },
+        "binary value": {
+            "setup": {
+                "memory": [
+                    {
+                        "label": "vector_addr",
+                        "value": 44
+                    }
+                ]
+            },
+            "expected": {
+                "memory": [
+                    {
+                        "label": "vector_addr",
+                        "value": "%101100"
                     }
                 ]
             }
         }
-   }
+    }
 }

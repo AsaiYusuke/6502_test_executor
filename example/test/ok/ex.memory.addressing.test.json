@@ -1,62 +1,63 @@
 {
-    "$schema": "../../schema/testcase.schema.json",
+    "$schema": "../../../schema/testcase.schema.json",
     "target": {
         "label": "check_collision"
     },
     "cases": {
-        "decimal value": {
+        "abstract address": {
             "setup": {
                 "memory": [
                     {
-                        "label": "vector_addr",
-                        "value": 44
+                        "address": "$5",
+                        "value": 4
                     }
                 ]
             },
             "expected": {
                 "memory": [
                     {
-                        "label": "vector_addr",
-                        "value": 44
+                        "address": "$5",
+                        "value": 4
                     }
                 ]
             }
         },
-        "hexadecimal value": {
+         "labeled address": {
             "setup": {
                 "memory": [
                     {
                         "label": "vector_addr",
-                        "value": 44
+                        "value": 4
                     }
                 ]
             },
             "expected": {
                 "memory": [
                     {
-                        "label": "vector_addr",
-                        "value": "$2C"
+                        "address": "$5",
+                        "value": 4
                     }
                 ]
             }
         },
-        "binary value": {
+        "labeled address with offset": {
             "setup": {
                 "memory": [
                     {
                         "label": "vector_addr",
-                        "value": 44
+                        "offset": 1,
+                        "value": 4
                     }
                 ]
             },
             "expected": {
                 "memory": [
                     {
-                        "label": "vector_addr",
-                        "value": "%101100"
+                        "address": "$6",
+                        "value": 4
                     }
                 ]
             }
         }
-    }
+   }
 }

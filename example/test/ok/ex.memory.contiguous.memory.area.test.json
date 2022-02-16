@@ -1,15 +1,18 @@
 {
-    "$schema": "../../schema/testcase.schema.json",
+    "$schema": "../../../schema/testcase.schema.json",
     "target": {
         "label": "check_collision"
     },
     "cases": {
-        "customize configurations test": {
+        "contiguous memory area test": {
             "setup": {
                 "memory": [
                     {
                         "label": "vector_addr",
-                        "value": 4
+                        "value": [
+                            4,
+                            5
+                        ]
                     }
                 ]
             },
@@ -17,15 +20,13 @@
                 "memory": [
                     {
                         "label": "vector_addr",
-                        "value": 4
+                        "value": [
+                            4,
+                            5
+                        ]
                     }
                 ]
             }
         }
-    },
-    "config": {
-        "programFile": "dist/example.nes",
-        "debugFile": "dist/example.dbg",
-        "timeout": 10000
     }
 }

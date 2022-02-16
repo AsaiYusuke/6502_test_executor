@@ -1,10 +1,37 @@
 {
-    "$schema": "../../schema/testcase.schema.json",
+    "$schema": "../../../schema/testcase.schema.json",
     "target": {
         "label": "control"
     },
     "cases": {
-        "check the read/write count": {
+        "sequential change value test": {
+            "setup": {
+                "memory": [
+                    {
+                        "label": "vector_addr",
+                        "value": 0
+                    },
+                    {
+                        "label": "APU_PAD1",
+                        "sequence": [
+                            0,
+                            1,
+                            1,
+                            0
+                        ]
+                    }
+                ]
+            },
+            "expected": {
+                "memory": [
+                    {
+                        "label": "vector_addr",
+                        "value": 4
+                    }
+                ]
+            }
+        },
+        "sequential change value test with contiguous memory area": {
             "setup": {
                 "memory": [
                     {
@@ -33,7 +60,7 @@
                 "memory": [
                     {
                         "label": "vector_addr",
-                        "writeCount": 1
+                        "value": 4
                     },
                     {
                         "label": "APU_PAD1",

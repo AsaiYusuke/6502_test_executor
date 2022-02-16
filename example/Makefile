@@ -1,8 +1,10 @@
-SRC_DIR		:=		src
-CONFIG_DIR	:=		cfg
-BUILD_DIR	:=		build
-DIST_DIR	:=		dist
-TEST_DIR	:=		test
+SRC_DIR			:=		src
+CONFIG_DIR		:=		cfg
+BUILD_DIR		:=		build
+DIST_DIR		:=		dist
+TEST_DIR		:=		test
+TEST_OK_DIR		:=		$(TEST_DIR)/ok
+TEST_FAIL_DIR	:=		$(TEST_DIR)/fail
 
 PROJECT		:=		example
 TARGET		:=		$(DIST_DIR)/$(PROJECT).nes
@@ -11,8 +13,9 @@ SOURCES		:=		$(shell find $(SRC_DIR) -type f -name '*.asm')
 OBJECTS		:=		$(SOURCES:$(SRC_DIR)/%.asm=$(BUILD_DIR)/%.o)
 NES_CFG		:=		$(CONFIG_DIR)/nes.cfg
 
-TESTS		:=		$(shell find $(TEST_DIR) -type f -name '*.test.json' | sort)
-TEST_IDS	:=		$(TESTS:%.test.json=%.test)
+TEST_OK		:=		$(shell find $(TEST_OK_DIR) -type f -name '*.test.json' | sort)
+TEST_FAIL	:=		$(shell find $(TEST_FAIL_DIR) -type f -name '*.test.json' | sort)
+TEST_IDS	:=		$(TEST_OK:%.test.json=%.test) $(TEST_FAIL:%.test.json=%.test)
 
 AS			:=		ca65
 ASFLAGS		:=		--cpu 6502 --target nes --debug-info
@@ -40,8 +43,11 @@ test : $(TEST_EXEC) $(TEST_IDS)
 $(TEST_EXEC) :
 	make -C ..
 
-%.test : %.test.json
+$(TEST_OK_DIR)/%.test : $(TEST_OK_DIR)/%.test.json
 	$(TEST_EXEC) -p $(TARGET) -d $(DEBUG) --quiet-ok --quiet-summary -t $<
+
+$(TEST_FAIL_DIR)/%.test : $(TEST_FAIL_DIR)/%.test.json
+	-$(TEST_EXEC) -p $(TARGET) -d $(DEBUG) --quiet-ok --quiet-summary -t $<
 
 clean :
 	rm -rf $(BUILD_DIR)
