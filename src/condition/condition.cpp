@@ -10,7 +10,7 @@ condition::condition(emulation_devices *_device, json condition_json)
 {
     device = _device;
 
-    if (!condition_json["register"].is_null())
+    if (condition_json["register"].is_object())
         for (auto &register_element : condition_json["register"].items())
             switch (register_name_type_map[register_element.key()])
             {
@@ -31,14 +31,14 @@ condition::condition(emulation_devices *_device, json condition_json)
                 break;
             }
 
-    if (!condition_json["memory"].is_null())
+    if (condition_json["memory"].is_array())
         for (auto &memory_def : condition_json["memory"])
             memory_defs.push_back(
                 condition_memory(
                     device,
                     memory_def));
     
-    if (!condition_json["timeout"].is_null())
+    if (condition_json["timeout"].is_boolean())
         timeout_def = condition_json["timeout"].get<bool>();
     else
         timeout_def = false;

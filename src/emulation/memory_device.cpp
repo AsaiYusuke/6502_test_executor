@@ -29,16 +29,16 @@ memory_device::memory_device(emulation_devices *_device, args_parser *args, json
     device = _device;
 
     string program_path;
-    if (config["programFile"].is_null())
-        program_path = args->get_program_path();
-    else
+    if (config["programFile"].is_string())
         program_path = config["programFile"].get<string>();
+    else
+        program_path = args->get_program_path();
 
     string debug_path;
-    if (config["debugFile"].is_null())
-        debug_path = args->get_debug_path();
-    else
+    if (config["debugFile"].is_string())
         debug_path = config["debugFile"].get<string>();
+    else
+        debug_path = args->get_debug_path();
 
     load_rom_image(program_path);
     debug = new debug_info(debug_path);
