@@ -41,6 +41,6 @@ $(JSON_HEADER) :
 
 clean :
 	rm -rf $(BUILD_DIR)
-	rm $(TARGET)
+	-rm $(TARGET)
 
 $(foreach SOURCE,$(SOURCES),$(eval $(subst \,,$(shell $(CXX) $(CFLAGS) -MM $(SOURCE) | sed -e 's/^\([^ ]*\)\.o:/$(BUILD_DIR)\/\1.o:/'))))

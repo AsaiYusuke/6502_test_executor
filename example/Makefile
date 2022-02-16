@@ -35,7 +35,7 @@ $(BUILD_DIR)/%.o : $(SRC_DIR)/%.asm
 	$(AS) $(ASFLAGS) -o $@ $<
 
 test : $(TEST_EXEC) $(TEST_IDS)
-	echo "All tests passed."
+	@echo "All tests passed."
 
 $(TEST_EXEC) :
 	make -C ..
