@@ -53,7 +53,7 @@ memory_device::memory_device(emulation_devices *_device, args_parser *args, json
     if (config["invalidMemory"]["ignoreList"].is_null())
     {
         debug->add_segment_def(-1, 0x100, 0xFF, true);
-        debug->add_segment_def(-1, 0x4000, 0xFF, true);
+        debug->add_segment_def(-1, 0x2000, 0x2020, true);
     }
     else
     {
