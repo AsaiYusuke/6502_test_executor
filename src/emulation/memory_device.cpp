@@ -197,11 +197,15 @@ void memory_device::print()
         if (max_length < length)
             max_length = length;
     }
+    if (max_length < 5)
+        max_length = 5;
 
+    printf("  Address  %-*s  Value\n", max_length, "Label");
+    printf("  -------  %-*s  -----\n", max_length, "-----");
     for (auto ram_entry : ram)
     {
         uint16_t k = ram_entry.first;
         uint8_t v = ram_entry.second;
-        printf("  $%04X (%*s) : $%X\n", k, max_length, debug->get_label(k).c_str(), v);
+        printf("  $%04X    %*s  $%X\n", k, max_length, debug->get_label(k).c_str(), v);
     }
 }

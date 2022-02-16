@@ -99,10 +99,11 @@ void cpu_device::set_register(register_type type, uint8_t value)
 
 void cpu_device::print()
 {
-    printf("CPU result:\n  A: $%X, X: $%X, Y: $%X, P: $%X (N: %s, O: %s, B: %s, D: %s, I: %s, Z: %s, C: %s), PC: $%04X\n",
-           cpu->getA(),
-           cpu->getX(),
-           cpu->getY(),
+    printf("Register result:\n");
+    printf("  A   $%X\n", cpu->getA());
+    printf("  X   $%X\n", cpu->getX());
+    printf("  Y   $%X\n", cpu->getY());
+    printf("  P   $%X (N: %s, O: %s, B: %s, D: %s, I: %s, Z: %s, C: %s)\n",
            cpu->getP(),
            (cpu->getP() & NEGATIVE) > 0 ? "True" : "False",
            (cpu->getP() & OVERFLOW) > 0 ? "True" : "False",
@@ -110,8 +111,8 @@ void cpu_device::print()
            (cpu->getP() & DECIMAL) > 0 ? "True" : "False",
            (cpu->getP() & INTERRUPT) > 0 ? "True" : "False",
            (cpu->getP() & ZERO) > 0 ? "True" : "False",
-           (cpu->getP() & CARRY) > 0 ? "True" : "False",
-           cpu->getPC());
+           (cpu->getP() & CARRY) > 0 ? "True" : "False");
+    printf("  PC  $%04X\n", cpu->getPC());
 }
 
 vector<uint16_t> cpu_device::get_call_stack()
