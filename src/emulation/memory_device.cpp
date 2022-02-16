@@ -189,10 +189,19 @@ void memory_device::write(uint16_t address, uint8_t value)
 void memory_device::print()
 {
     printf("MEMORY result:\n");
-    for (map<uint16_t, uint8_t>::iterator iter = ram.begin(); iter != ram.end(); ++iter)
+
+    int max_length = 0;
+    for (auto ram_entry : ram)
     {
-        uint16_t k = iter->first;
-        uint8_t v = iter->second;
-        printf("  $%04X (%s) : $%X\n", k, debug->get_label(k).c_str(), v);
+        int length = debug->get_label(ram_entry.first).length();
+        if (max_length < length)
+            max_length = length;
+    }
+
+    for (auto ram_entry : ram)
+    {
+        uint16_t k = ram_entry.first;
+        uint8_t v = ram_entry.second;
+        printf("  $%04X (%*s) : $%X\n", k, max_length, debug->get_label(k).c_str(), v);
     }
 }
