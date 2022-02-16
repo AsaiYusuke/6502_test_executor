@@ -15,16 +15,9 @@ mkdir -p build
 ca65 --cpu 6502 --target nes --debug-info -o build/example.o src/example.asm
 mkdir -p dist
 ld65  -o dist/example.nes --dbgfile dist/example.dbg --config cfg/nes.cfg --obj build/example.o
-../6502_tester -p dist/example.nes -d dist/example.dbg --quiet-ok --quiet-summary -t test/ex.customize.configurations.test.json
-../6502_tester -p dist/example.nes -d dist/example.dbg --quiet-ok --quiet-summary -t test/ex.error.timeout.test.json
-../6502_tester -p dist/example.nes -d dist/example.dbg --quiet-ok --quiet-summary -t test/ex.memory.addressing.test.json
-../6502_tester -p dist/example.nes -d dist/example.dbg --quiet-ok --quiet-summary -t test/ex.memory.contiguous.memory.area.test.json
-../6502_tester -p dist/example.nes -d dist/example.dbg --quiet-ok --quiet-summary -t test/ex.memory.count.check.test.json
-../6502_tester -p dist/example.nes -d dist/example.dbg --quiet-ok --quiet-summary -t test/ex.memory.sequential.change.value.test.json
-../6502_tester -p dist/example.nes -d dist/example.dbg --quiet-ok --quiet-summary -t test/ex.memory.value.check.test.json
-../6502_tester -p dist/example.nes -d dist/example.dbg --quiet-ok --quiet-summary -t test/ex.register.axy.value.test.json
-../6502_tester -p dist/example.nes -d dist/example.dbg --quiet-ok --quiet-summary -t test/ex.register.status.flag.test.json
-echo "All tests passed."
+../6502_tester -p dist/example.nes -d dist/example.dbg --quiet-ok --quiet-summary -t test/ok/ex.customize.configurations.test.json
+../6502_tester -p dist/example.nes -d dist/example.dbg --quiet-ok --quiet-summary -t test/ok/ex.error.timeout.test.json
+:
 All tests passed.
 ```
 
