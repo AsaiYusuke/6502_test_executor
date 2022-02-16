@@ -17,6 +17,7 @@ class emulation_devices
 private:
     cpu_device *cpu;
     memory_device *memory;
+    vector<runtime_error_result> errors;
 
 public:
     emulation_devices(args_parser *args, json config);
@@ -27,8 +28,11 @@ public:
     uint16_t get_address(string label, int offset);
 
     bool is_digits(const string &str);
-    uint8_t two_complement_byte(uint8_t value);
-    uint8_t to_byte(string str);
+    uint16_t two_complement_byte(uint16_t value);
+    uint16_t to_byte(string str);
+    void add_error_reuslt(runtime_error_type type);
+    void add_error_reuslt(runtime_error_type type, string message);
+    vector<runtime_error_result> get_filtered_errors(vector<runtime_error_type> types);
 
     void print();
 };

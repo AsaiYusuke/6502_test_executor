@@ -1,6 +1,6 @@
 #pragma once
 
-#include "register_type.h"
+#include "enum/register_type.h"
 #include "emulation/emulation_devices.h"
 #include "nlohmann/json.hpp"
 

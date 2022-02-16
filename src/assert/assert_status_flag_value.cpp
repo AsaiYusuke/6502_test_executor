@@ -1,13 +1,24 @@
 #include "assert/assert_status_flag_value.h"
 #include "assert/operation/assert_equal.h"
+#include "message.h"
+#include "util/to_string.h"
 
 bool assert_status_flag_value::test(emulation_devices *device, condition_register_status_flag status_flag_def, vector<string> &errors)
 {
-    cpu_device *cpu_dev = device->get_cpu();
-    uint8_t status = cpu_dev->get_register(register_type::P);
-    return assert_equal::test(
-        status_flag_def.get_value(),
-        (status & (uint8_t)status_flag_def.get_type()) > 0,
-        "Register [P (" + status_flag_def.get_name() + ")]",
-        errors);
+    uint8_t status = device->get_cpu()->get_register(register_type::P);
+    auto expected = status_flag_def.get_value();
+    auto actual = (status & (uint8_t)status_flag_def.get_type()) > 0;
+
+    if (expected != actual)
+    {
+        errors.push_back(
+            message::error_register_status_flag_data(
+                status_flag_def,
+                to_string(expected),
+                to_string(actual)));
+
+        return false;
+    }
+
+    return true;
 }

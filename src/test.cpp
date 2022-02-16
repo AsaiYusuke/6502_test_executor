@@ -57,10 +57,7 @@ bool test::execute()
                 assert.get_result(),
                 assert.get_errors());
 
-            auto result = assert.get_result() == test_result::FAIL_WITH_CALLSTACK
-                              ? test_result::FAIL
-                              : assert.get_result();
-            test_result_map[result]++;
+            test_result_map[assert.get_result()]++;
         }
         catch (exception &e)
         {
@@ -95,7 +92,6 @@ void test::print_test_result(string test_name, test_result result, vector<string
         cout << "OK";
         break;
     case test_result::FAIL:
-    case test_result::FAIL_WITH_CALLSTACK:
         if (args->is_quiet_failed())
             return;
         cout << "FAIL";
@@ -109,7 +105,7 @@ void test::print_test_result(string test_name, test_result result, vector<string
 
     cout << ": [" << test_name << "]" << endl;
 
-    if (result == test_result::FAIL || result == test_result::FAIL_WITH_CALLSTACK)
+    if (result == test_result::FAIL)
     {
         cerr << endl;
         device->print();
@@ -120,14 +116,8 @@ void test::print_test_result(string test_name, test_result result, vector<string
         cerr << endl;
         for (string error : errors)
         {
-            cerr << error << endl;
+            cerr << error;
         }
-        cerr << endl;
-    }
-
-    if (result == test_result::FAIL_WITH_CALLSTACK)
-    {
-        print_call_stack();
     }
 }
 
@@ -141,20 +131,4 @@ void test::print_summary(int ok, int fail, int skip, int total)
     cout << ", FAIL: " << fail;
     cout << ", SKIP: " << skip;
     cout << " / TOTAL: " << total << endl;
-}
-
-void test::print_call_stack()
-{
-    cerr << "Call stack:" << endl;
-
-    int index = 0;
-    for (auto address : device->get_cpu()->get_call_stack())
-    {
-        if (address == 0xFFFF)
-            continue;
-
-        cerr << index++ << ":  " << address_convert::to_hex_string(address) << " : ";
-        cerr << device->get_memory()->get_source_line(address) << endl;
-    }
-    cerr << endl;
 }

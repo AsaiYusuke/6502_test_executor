@@ -1,0 +1,17 @@
+{
+    "$schema": "../../schema/testcase.schema.json",
+    "target": {
+        "label": "write_rodata"
+    },
+    "cases": {
+        "write readonly memory test": {
+            "setup": {},
+            "expected": {}
+        }
+    },
+    "config": {
+        "invalidMemory": {
+            "enable": true
+        }
+    }
+}

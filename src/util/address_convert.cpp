@@ -12,7 +12,7 @@ uint16_t address_convert::get_address(emulation_devices *device, json value)
         to_byte(device, value["offset"]));
 }
 
-uint8_t address_convert::to_byte(emulation_devices *device, json value)
+uint16_t address_convert::to_byte(emulation_devices *device, json value)
 {
     if (value.is_null())
         return 0;
@@ -23,7 +23,7 @@ uint8_t address_convert::to_byte(emulation_devices *device, json value)
     return value.get<uint8_t>();
 }
 
-uint8_t address_convert::to_two_complement_byte(emulation_devices *device, json value)
+uint16_t address_convert::to_two_complement_byte(emulation_devices *device, json value)
 {
     return device->two_complement_byte(address_convert::to_byte(device, value));
 }

@@ -3,6 +3,7 @@
 #include "test_assert.h"
 #include "util/address_convert.h"
 #include "assert/assert_timeout.h"
+#include "assert/assert_runtime_error.h"
 #include "assert/assert_register_value.h"
 #include "assert/assert_status_flag_value.h"
 #include "assert/assert_memory_value.h"
@@ -19,11 +20,19 @@ void test_assert::execute()
 
     if (!assert_timeout::test(get_device(), get_timeout_def(), errors))
     {
-        result = get_timeout_def() ? test_result::FAIL : test_result::FAIL_WITH_CALLSTACK;
+        result = test_result::FAIL;
         return;
     }
 
     bool test_result = true;
+
+    for (auto error_def :
+         get_device()->get_filtered_errors(
+             {runtime_error_type::OUT_OF_SEGMENT,
+              runtime_error_type::READONLY_MEMORY}))
+    {
+        test_result &= assert_runtime_error::test(get_device(), error_def, errors);
+    }
 
     for (auto register_def : get_register_defs())
         test_result &= assert_register_value::test(

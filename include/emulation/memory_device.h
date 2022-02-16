@@ -15,9 +15,13 @@ using namespace std;
 
 using json = nlohmann::json;
 
+class emulation_devices;
+
 class memory_device : public i_memory_access
 {
 private:
+    emulation_devices *device;
+
     char *rom;
     map<uint16_t, uint8_t> ram;
 
@@ -30,11 +34,13 @@ private:
 
     debug_info *debug;
 
+    bool assert_invalid_memory;
+
     void load_rom_image(string path);
     uint16_t memory_offset(uint16_t address);
 
 public:
-    memory_device(args_parser *args, json config);
+    memory_device(emulation_devices *_device, args_parser *args, json config);
     void clear();
     string get_source_line(uint16_t address);
     bool has_address(string label);

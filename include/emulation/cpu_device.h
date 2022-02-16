@@ -5,27 +5,31 @@
 #include "mos6502.h"
 #include "nlohmann/json.hpp"
 #include "args_parser.h"
-#include "memory_access.h"
-#include "register_type.h"
+#include "enum/register_type.h"
+#include "enum/runtime_error_type.h"
+#include "runtime_error_result.h"
 
 using namespace std;
 
 using json = nlohmann::json;
 
+class emulation_devices;
+
 class cpu_device
 {
 private:
+    emulation_devices *device;
+
     mos6502 *cpu;
     int timeout_threshold;
-    vector<uint16_t> callStack;
-    bool timeout;
+    vector<uint16_t> call_stack;
+    uint16_t currentPC;
 
 public:
-    cpu_device(args_parser *args, json config, i_memory_access *memory_access);
+    cpu_device(emulation_devices *_device, args_parser *args, json config);
     void clear(uint16_t target_program_counter);
     void execute();
 
-    bool is_timeout();
     int get_timeout_threshold();
 
     uint8_t get_register(register_type type);

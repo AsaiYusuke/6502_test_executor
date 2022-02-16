@@ -1,6 +1,6 @@
 #pragma once
 
-#include "status_flag_type.h"
+#include "enum/status_flag_type.h"
 #include "emulation/emulation_devices.h"
 #include "nlohmann/json.hpp"
 

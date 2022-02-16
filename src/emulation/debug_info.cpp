@@ -3,6 +3,7 @@
 
 #include "emulation/debug_info.h"
 #include "exception/file_open.h"
+#include "util/address_convert.h"
 
 debug_info::debug_info(string path)
 {
@@ -100,10 +101,26 @@ void debug_info::add_segment(string line)
     if (start_end_pos == string::npos)
         return;
 
+    auto size_pos = line.find(",size=0x");
+    if (size_pos == string::npos)
+        return;
+
+    size_pos += 8;
+
+    auto size_end_pos = line.find(",", size_pos);
+    if (size_end_pos == string::npos)
+        return;
+
+    bool writable = false;
+    auto type_pos = line.find(",type=rw");
+    if (type_pos != string::npos)
+        writable = true;
+
     auto id = stoi(line.substr(id_pos, id_end_pos - id_pos), 0, 10);
     auto start = stoi(line.substr(start_pos, start_end_pos - start_pos), 0, 16);
+    auto size = stoi(line.substr(size_pos, size_end_pos - size_pos), 0, 16);
 
-    segment_map[id] = start;
+    add_segment_def(id, start, size, writable);
 }
 
 void debug_info::add_span(string line)
@@ -248,7 +265,7 @@ void debug_info::make_address_source_map()
             auto span_def = span_map[span_id];
             auto segment_id = span_def.first;
             uint16_t span_addr = span_def.second;
-            uint16_t segment_addr = segment_map[segment_id];
+            uint16_t segment_addr = get<0>(segment_map[segment_id]);
             address_source_map[segment_addr + span_addr] = make_pair(file_name, line_number);
         }
     }
@@ -276,4 +293,43 @@ string debug_info::get_label(uint16_t address)
 uint16_t debug_info::get_address(string label)
 {
     return label_address_map[label];
+}
+
+bool debug_info::has_write_access(uint16_t address)
+{
+    return get<2>(get_segment_def(address));
+}
+
+bool debug_info::has_read_access(uint16_t address)
+{
+    get_segment_def(address);
+    return true;
+}
+
+tuple<uint16_t, int, bool> debug_info::get_segment_def(uint16_t address)
+{
+    for (auto segment_def : segment_map)
+    {
+        auto start = get<0>(segment_def.second);
+        auto size = get<1>(segment_def.second);
+        if (start <= address && address < start + size)
+            return segment_def.second;
+    }
+    throw out_of_range("address=" + address_convert::to_hex_string(address));
+}
+
+void debug_info::add_segment_def(int id, uint16_t start, int size, bool writable)
+{
+    if (id < 0)
+    {
+        int max_id = 0;
+        for (auto element : segment_map)
+        {
+            if (max_id < element.first)
+                max_id = element.first;
+        }
+        id = max_id + 1;
+    }
+
+    segment_map[id] = make_tuple(start, size, writable);
 }

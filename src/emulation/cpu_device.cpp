@@ -1,11 +1,13 @@
 #include <vector>
 
-#include "emulation/cpu_device.h"
+#include "emulation/emulation_devices.h"
 
-cpu_device::cpu_device(args_parser *args, json config, i_memory_access *memory_access)
+cpu_device::cpu_device(emulation_devices *_device, args_parser *args, json config)
 {
-    cpu = new mos6502(memory_access);
-    
+    device = _device;
+
+    cpu = new mos6502((i_memory_access *)_device->get_memory());
+
     if (config.is_null() || config["timeout"].is_null())
         timeout_threshold = args->get_test_timeout();
     else
@@ -20,11 +22,9 @@ void cpu_device::clear(uint16_t target_program_counter)
     cpu->StackPush(0xFF);
     cpu->StackPush(0xFE);
 
-    callStack.clear();
-    callStack.push_back(0xFFFF);
-    callStack.push_back(target_program_counter);
-
-    timeout = false;
+    call_stack.clear();
+    call_stack.push_back(0xFFFF);
+    call_stack.push_back(target_program_counter);
 }
 
 void cpu_device::execute()
@@ -36,32 +36,29 @@ void cpu_device::execute()
     {
         bool isCallInstr = false;
 
+        currentPC = cpu->getPC();
+
         if (cpu->isCallInstr())
         {
-            callStack.push_back(cpu->getPC());
+            call_stack.push_back(cpu->getPC());
             isCallInstr = true;
         }
         else if (cpu->isReturnInstr())
         {
-            callStack.pop_back();
-            callStack.pop_back();
+            call_stack.pop_back();
+            call_stack.pop_back();
         }
 
         cyclesRemaining = 1;
         cpu->Run(cyclesRemaining, cycleCount, cpu->INST_COUNT);
 
         if (isCallInstr)
-            callStack.push_back(cpu->getPC());
+            call_stack.push_back(cpu->getPC());
 
     } while (cpu->getPC() != 0xFFFF && ++count < get_timeout_threshold());
 
     if (count >= get_timeout_threshold())
-        timeout = true;
-}
-
-bool cpu_device::is_timeout()
-{
-    return timeout;
+        device->add_error_reuslt(runtime_error_type::TIMEOUT);
 }
 
 int cpu_device::get_timeout_threshold()
@@ -102,7 +99,7 @@ void cpu_device::set_register(register_type type, uint8_t value)
 
 void cpu_device::print()
 {
-    printf("CPU result:\n  A: $%X, X: $%X, Y: $%X, S: $%X (N: %s, O: %s, B: %s, D: %s, I: %s, Z: %s, C: %s), PC: $%X\n",
+    printf("CPU result:\n  A: $%X, X: $%X, Y: $%X, P: $%X (N: %s, O: %s, B: %s, D: %s, I: %s, Z: %s, C: %s), PC: $%X\n",
            cpu->getA(),
            cpu->getX(),
            cpu->getY(),
@@ -119,6 +116,7 @@ void cpu_device::print()
 
 vector<uint16_t> cpu_device::get_call_stack()
 {
-    callStack.push_back(cpu->getPC());
-    return callStack;
+    vector<uint16_t> current_call_stack = call_stack;
+    current_call_stack.push_back(currentPC);
+    return current_call_stack;
 }

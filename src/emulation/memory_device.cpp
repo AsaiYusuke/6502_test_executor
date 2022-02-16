@@ -1,7 +1,8 @@
 #include <fstream>
 
-#include "emulation/memory_device.h"
+#include "emulation/emulation_devices.h"
 #include "exception/file_open.h"
+#include "util/address_convert.h"
 
 void memory_device::load_rom_image(string path)
 {
@@ -23,22 +24,46 @@ uint16_t memory_device::memory_offset(uint16_t address)
     return address - 0x8000 + 0x10;
 }
 
-memory_device::memory_device(args_parser *args, json config)
+memory_device::memory_device(emulation_devices *_device, args_parser *args, json config)
 {
+    device = _device;
+
     string program_path;
-    if (config.is_null() || config["programFile"].is_null())
+    if (config["programFile"].is_null())
         program_path = args->get_program_path();
     else
         program_path = config["programFile"].get<string>();
 
     string debug_path;
-    if (config.is_null() || config["debugFile"].is_null())
+    if (config["debugFile"].is_null())
         debug_path = args->get_debug_path();
     else
         debug_path = config["debugFile"].get<string>();
 
     load_rom_image(program_path);
     debug = new debug_info(debug_path);
+
+    if (config["invalidMemory"]["enable"].is_null())
+        assert_invalid_memory = true;
+    else
+    {
+        assert_invalid_memory = config["invalidMemory"]["enable"].get<bool>();
+    }
+
+    if (config["invalidMemory"]["ignoreList"].is_null())
+    {
+        debug->add_segment_def(-1, 0x100, 0xFF, true);
+        debug->add_segment_def(-1, 0x4000, 0xFF, true);
+    }
+    else
+    {
+        for (auto &ignore_def : config["invalidMemory"]["ignoreList"])
+        {
+            auto start = address_convert::get_address(device, ignore_def["start"]);
+            auto size = address_convert::to_byte(device, ignore_def["size"]);
+            debug->add_segment_def(-1, start, size, true);
+        }
+    }
 }
 
 void memory_device::clear()
@@ -119,6 +144,19 @@ uint8_t memory_device::read(uint16_t address)
                     read_sequences.erase(address);
             }
         }
+
+        if (assert_invalid_memory)
+        {
+            try
+            {
+                debug->has_read_access(address);
+            }
+            catch (const out_of_range &e)
+            {
+                device->add_error_reuslt(runtime_error_type::OUT_OF_SEGMENT, e.what());
+            }
+        }
+
         val = ram[address];
     }
 
@@ -129,6 +167,22 @@ void memory_device::write(uint16_t address, uint8_t value)
 {
     write_counts[address]++;
     write_sequences[address].push_back(value);
+
+    if (assert_invalid_memory)
+    {
+        try
+        {
+            if (!debug->has_write_access(address))
+            {
+                device->add_error_reuslt(runtime_error_type::READONLY_MEMORY, "address=" + address_convert::to_hex_string(address));
+            }
+        }
+        catch (const out_of_range &e)
+        {
+            device->add_error_reuslt(runtime_error_type::OUT_OF_SEGMENT, e.what());
+        }
+    }
+
     ram[address] = value;
 }
 

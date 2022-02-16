@@ -91,6 +91,7 @@
             "title": "Configuration",
             "description": "Configuration specifies the customization parameters to be given to the testing tool.",
             "type": "object",
+            "additionalProperties": false,
             "properties": {
                 "timeout": {
                     "title": "Timeout threshold",
@@ -108,6 +109,59 @@
                     "title": "Debug file path",
                     "description": "Debug file path specifies the path of the debug information file used for testing.",
                     "type": "string"
+                },
+                "invalidMemory": {
+                    "title": "Invalid memory control",
+                    "description": "Invalid memory control specifies the behavior when an invalid memory access occurs.",
+                    "type": "object",
+                    "required": [
+                        "enable"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                        "enable": {
+                            "title": "Enable",
+                            "description": "Enable specifies whether or not to raise an error when an invalid memory access occurs.",
+                            "type": "boolean",
+                            "default": true
+                        },
+                        "ignoreList": {
+                            "title": "Ignore list",
+                            "description": "Ignore list specifies memory areas that are not controlled by invalid memory control.",
+                            "type": "array",
+                            "minItems": 1,
+                            "items": {
+                                "type": "object",
+                                "required": [
+                                    "start",
+                                    "size"
+                                ],
+                                "additionalProperties": false,
+                                "properties": {
+                                    "start": {
+                                        "$ref": "#/definitions/address"
+                                    },
+                                    "size": {
+                                        "$ref": "#/definitions/number"
+                                    }
+                                }
+                            },
+                            "default": [
+                                {
+                                    "start": {
+                                        "address": "$100"
+                                    },
+                                    "size": "$FF"
+                                },
+                                {
+                                    "start": {
+                                        "address": "$4000"
+                                    },
+                                    "size": "$FF"
+                                }
+                            ]
+                        }
+                    }
                 }
             }
         }

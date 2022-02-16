@@ -214,3 +214,15 @@ palette:	.byte $0F, $11, $21, $31
 	.endrepeat
 	rts
 .endproc
+
+.proc write_rodata
+	lda #$55
+	sta vector_dic
+	rts
+.endproc
+
+.proc write_out_of_segment
+	lda #$55
+	sta $7fff
+	rts
+.endproc

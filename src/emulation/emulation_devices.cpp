@@ -4,8 +4,8 @@
 
 emulation_devices::emulation_devices(args_parser *args, json config)
 {
-    memory = new memory_device(args, config);
-    cpu = new cpu_device(args, config, memory);
+    memory = new memory_device(this, args, config);
+    cpu = new cpu_device(this, args, config);
 }
 
 void emulation_devices::clear(uint16_t target_program_counter)
@@ -43,16 +43,16 @@ bool emulation_devices::is_digits(const string &str)
     return str.find_first_not_of("-0123456789") == string::npos;
 }
 
-uint8_t emulation_devices::two_complement_byte(uint8_t value)
+uint16_t emulation_devices::two_complement_byte(uint16_t value)
 {
-    uint8_t result = value;
+    uint16_t result = value;
     if (result < 0)
         result += 256;
 
     return result;
 }
 
-uint8_t emulation_devices::to_byte(string str)
+uint16_t emulation_devices::to_byte(string str)
 {
     int value;
 
@@ -66,4 +66,25 @@ uint8_t emulation_devices::to_byte(string str)
         value = get_address(str, 0);
 
     return two_complement_byte(value);
+}
+
+void emulation_devices::add_error_reuslt(runtime_error_type type)
+{
+    add_error_reuslt(type, NULL);
+}
+
+void emulation_devices::add_error_reuslt(runtime_error_type type, string message)
+{
+    errors.push_back(
+        runtime_error_result(type, message, cpu->get_call_stack()));
+}
+
+vector<runtime_error_result> emulation_devices::get_filtered_errors(vector<runtime_error_type> types)
+{
+    vector<runtime_error_result> filtered_result;
+    for (auto error : errors)
+        if (find(types.begin(), types.end(), error.get_type()) != types.end())
+            filtered_result.push_back(error);
+
+    return filtered_result;
 }

@@ -1,0 +1,17 @@
+{
+    "$schema": "../../schema/testcase.schema.json",
+    "target": {
+        "label": "write_out_of_segment"
+    },
+    "cases": {
+        "out of segment test": {
+            "setup": {},
+            "expected": {}
+        }
+    },
+    "config": {
+        "invalidMemory": {
+            "enable": true
+        }
+    }
+}
