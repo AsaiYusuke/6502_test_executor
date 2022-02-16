@@ -26,6 +26,23 @@
     "config": {
         "programFile": "dist/example.nes",
         "debugFile": "dist/example.dbg",
-        "timeout": 10000
+        "timeout": 10000,
+        "invalidMemory": {
+            "enable": true,
+            "ignoreList": [
+                {
+                    "start": {
+                        "address": "$100"
+                    },
+                    "size": "$FF"
+                },
+                {
+                    "start": {
+                        "address": "$2000"
+                    },
+                    "size": "$2020"
+                }
+            ]
+        }
     }
 }

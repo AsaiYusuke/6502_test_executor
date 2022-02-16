@@ -142,7 +142,7 @@
                                         "$ref": "#/definitions/address"
                                     },
                                     "size": {
-                                        "$ref": "#/definitions/number"
+                                        "$ref": "#/definitions/number_16bit"
                                     }
                                 }
                             },
@@ -185,8 +185,7 @@
                 "address": {
                     "title": "Address",
                     "description": "Address is expressed as a hexadecimal address value.",
-                    "type": "string",
-                    "pattern": "^\\$[0-9A-F]{1,4}$"
+                    "$ref": "#/definitions/number_16bit"
                 },
                 "label": {
                     "title": "Label",
@@ -196,7 +195,7 @@
                 "offset": {
                     "title": "Offset",
                     "description": "The offset specifies the position relative to the point of the address indicated by the Label.",
-                    "$ref": "#/definitions/number"
+                    "$ref": "#/definitions/number_8bit"
                 }
             },
             "dependencies": {
@@ -219,7 +218,7 @@
                 }
             }
         },
-        "number": {
+        "number_8bit": {
             "oneOf": [
                 {
                     "type": "integer",
@@ -236,6 +235,10 @@
                 }
             ]
         },
+        "number_16bit": {
+            "type": "string",
+            "pattern": "^\\$[0-9A-F]{1,4}$"
+        },
         "conditions": {
             "type": "object",
             "additionalProperties": false,
@@ -248,15 +251,15 @@
                     "properties": {
                         "A": {
                             "title": "Accumulator",
-                            "$ref": "#/definitions/number"
+                            "$ref": "#/definitions/number_8bit"
                         },
                         "X": {
                             "title": "Index register X",
-                            "$ref": "#/definitions/number"
+                            "$ref": "#/definitions/number_8bit"
                         },
                         "Y": {
                             "title": "Index register Y",
-                            "$ref": "#/definitions/number"
+                            "$ref": "#/definitions/number_8bit"
                         },
                         "P": {
                             "title": "Processor status register",
@@ -338,13 +341,13 @@
                                 "description": "Memory value can be either the single value at the specified address or the values given in an array starting from the address.",
                                 "oneOf": [
                                     {
-                                        "$ref": "#/definitions/number"
+                                        "$ref": "#/definitions/number_8bit"
                                     },
                                     {
                                         "type": "array",
                                         "minItems": 1,
                                         "items": {
-                                            "$ref": "#/definitions/number"
+                                            "$ref": "#/definitions/number_8bit"
                                         }
                                     }
                                 ]
@@ -357,7 +360,7 @@
                                 "oneOf": [
                                     {
                                         "items": {
-                                            "$ref": "#/definitions/number"
+                                            "$ref": "#/definitions/number_8bit"
                                         }
                                     },
                                     {
@@ -365,7 +368,7 @@
                                             "type": "array",
                                             "minItems": 1,
                                             "items": {
-                                                "$ref": "#/definitions/number"
+                                                "$ref": "#/definitions/number_8bit"
                                             }
                                         }
                                     }
