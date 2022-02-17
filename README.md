@@ -78,21 +78,21 @@ You can check the available optional arguments by displaying the help:
 ## Test scinario examples
 
 ### Registers
-- [Check the value of the A/X/Y registers](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ex.register.axy.value.test.json)
-- [Check the flags of the Processor status register](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ex.register.status.flag.test.json)
+- [Check the value of the A/X/Y registers](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/register.axy.value.test.json)
+- [Check the flags of the Processor status register](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/register.status.flag.test.json)
 
 ### Memory
-- [Memory addressing](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ex.memory.addressing.test.json)
-- [Check the value of the memory](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ex.memory.value.check.test.json)
-- [Check the read/write count](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ex.memory.count.check.test.json)
-- [Batch selection of continuous memory area](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ex.memory.contiguous.memory.area.test.json)
-- [Sequential change value](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ex.memory.sequential.change.value.test.json)
+- [Memory addressing](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/memory.addressing.test.json)
+- [Check the value of the memory](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/memory.value.check.test.json)
+- [Check the read/write count](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/memory.count.check.test.json)
+- [Batch selection of continuous memory area](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/memory.contiguous.memory.area.test.json)
+- [Sequential change value](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/memory.sequential.change.value.test.json)
 
 ### Error
-- [Timeout](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ex.error.timeout.test.json)
-- [Write to readonly memory](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ex.error.readonly.test.json) ( The *-d* option is required. )
-- [Access to out of segment](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ex.error.out_of_segment.test.json) ( The *-d* option is required. )
+- [Timeout](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/error.timeout.test.json)
+- [Write to readonly memory](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/fail/error.readonly.test.json) ( The *-d* option is required. )
+- [Access to out of segment](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/fail/error.out_of_segment.test.json) ( The *-d* option is required. )
 
 ### Misc
-- [Customize configurations](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ex.customize.configurations.test.json)
-- [Skip test (ignore)](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ex.skip.test.json)
+- [Customize configurations](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/customize.configurations.test.json)
+- [Skip test (ignore)](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/skip.test.json)
