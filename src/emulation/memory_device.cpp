@@ -206,6 +206,6 @@ void memory_device::print()
     {
         uint16_t k = ram_entry.first;
         uint8_t v = ram_entry.second;
-        printf("  $%04X    %*s  $%X\n", k, max_length, debug->get_label(k).c_str(), v);
+        printf("  $%04X    %-*s  $%X\n", k, max_length, debug->get_label(k).c_str(), v);
     }
 }
