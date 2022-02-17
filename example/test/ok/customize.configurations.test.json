@@ -43,16 +43,7 @@
                     "size": "$2020"
                 },
                 {
-                    "name": "NULL"
-                },
-                {
-                    "name": "HEADER"
-                },
-                {
-                    "name": "VECTORS"
-                },
-                {
-                    "name": "CHARS"
+                    "detect": "NES"
                 }
             ]
         }

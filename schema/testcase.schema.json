@@ -114,9 +114,6 @@
                     "title": "Invalid memory control",
                     "description": "Invalid memory control specifies the behavior when an invalid memory access occurs.",
                     "type": "object",
-                    "required": [
-                        "enable"
-                    ],
                     "additionalProperties": false,
                     "properties": {
                         "enable": {
@@ -143,6 +140,11 @@
                                         "required": [
                                             "name"
                                         ]
+                                    },
+                                    {
+                                        "required": [
+                                            "detect"
+                                        ]
                                     }
                                 ],
                                 "additionalProperties": false,
@@ -155,6 +157,12 @@
                                     },
                                     "name": {
                                         "type": "string"
+                                    },
+                                    "detect": {
+                                        "type": "string",
+                                        "enum": [
+                                            "NES"
+                                        ]
                                     }
                                 },
                                 "dependencies": {
@@ -162,12 +170,18 @@
                                         "properties": {
                                             "name": {
                                                 "type": "null"
+                                            },
+                                            "detect": {
+                                                "type": "null"
                                             }
                                         }
                                     },
                                     "size": {
                                         "properties": {
                                             "name": {
+                                                "type": "null"
+                                            },
+                                            "detect": {
                                                 "type": "null"
                                             }
                                         }
@@ -178,6 +192,22 @@
                                                 "type": "null"
                                             },
                                             "size": {
+                                                "type": "null"
+                                            },
+                                            "detect": {
+                                                "type": "null"
+                                            }
+                                        }
+                                    },
+                                    "detect": {
+                                        "properties": {
+                                            "start": {
+                                                "type": "null"
+                                            },
+                                            "size": {
+                                                "type": "null"
+                                            },
+                                            "name": {
                                                 "type": "null"
                                             }
                                         }
@@ -198,16 +228,7 @@
                                     "size": "$2020"
                                 },
                                 {
-                                    "name": "NULL"
-                                },
-                                {
-                                    "name": "HEADER"
-                                },
-                                {
-                                    "name": "VECTORS"
-                                },
-                                {
-                                    "name": "CHARS"
+                                    "detect": "NES"
                                 }
                             ]
                         }

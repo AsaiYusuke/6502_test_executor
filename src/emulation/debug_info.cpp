@@ -130,10 +130,9 @@ void debug_info::add_segment(string line)
     if (size_end_pos == string::npos)
         return;
 
-    bool writable = false;
-    auto type_pos = line.find(",type=rw");
-    if (type_pos != string::npos)
-        writable = true;
+    bool writable = (line.find(",type=rw") != string::npos);
+
+    bool file_exist = (line.find(",oname=") != string::npos);
 
     auto id = stoi(line.substr(id_pos, id_end_pos - id_pos), 0, 10);
     auto name = line.substr(name_pos, name_end_pos - name_pos);
@@ -143,6 +142,7 @@ void debug_info::add_segment(string line)
     add_segment_def(id, start, size, writable);
 
     segment_name_id_map[name] = id;
+    segment_name_file_exist_map[name] = file_exist;
 }
 
 void debug_info::add_span(string line)
@@ -358,6 +358,27 @@ void debug_info::add_segment_def(int id, uint16_t start, int size, bool writable
 
 void debug_info::remove_segment_def(string name)
 {
-    int id = segment_name_id_map[name];
-    segment_map.erase(id);
+    segment_map.erase(segment_name_id_map[name]);
+    segment_name_id_map.erase(name);
+}
+
+void debug_info::remove_detected_segment(string type)
+{
+    if (type != "NES")
+        return;
+
+    vector<string> remove_names;
+    for (auto segment_name_def : segment_name_id_map)
+    {
+        auto name = segment_name_def.first;
+        auto id = segment_name_def.second;
+        auto segment_def = segment_map[id];
+        if (get<0>(segment_def) != 0x0)
+            continue;
+        if (!segment_name_file_exist_map[name])
+            continue;
+        remove_names.push_back(name);
+    }
+    for (auto name : remove_names)
+        remove_segment_def(name);
 }

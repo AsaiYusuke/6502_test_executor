@@ -54,8 +54,7 @@ memory_device::memory_device(emulation_devices *_device, args_parser *args, json
     {
         debug->add_segment_def(-1, 0x100, 0xFF, true);
         debug->add_segment_def(-1, 0x2000, 0x2020, true);
-        for (auto name : {"NULL", "HEADER", "VECTORS", "CHARS"})
-            debug->remove_segment_def(name);
+        debug->remove_detected_segment("NES");
     }
     else
     {
@@ -70,6 +69,8 @@ memory_device::memory_device(emulation_devices *_device, args_parser *args, json
             else if (ignore_def["name"].is_string())
                 debug->remove_segment_def(
                     ignore_def["name"].get<string>());
+            else if (ignore_def["detect"].is_string())
+                debug->remove_detected_segment(ignore_def["detect"].get<string>());
         }
     }
 }
