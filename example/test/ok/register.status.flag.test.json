@@ -4,7 +4,7 @@
         "label": "check_collision"
     },
     "cases": {
-        "flags of the Status register": {
+        "flags of the Processor status register": {
             "setup": {
                 "register": {
                     "P": {
@@ -26,6 +26,24 @@
                         "Decimal": true,
                         "InterruptDisable": true,
                         "Break": true,
+                        "Carry": true,
+                        "Zero": false
+                    }
+                }
+            }
+        },
+        "check only part of the flags": {
+            "setup": {
+                "register": {
+                    "P": {
+                        "Carry": false,
+                        "Zero": true
+                    }
+                }
+            },
+            "expected": {
+                "register": {
+                    "P": {
                         "Carry": true,
                         "Zero": false
                     }
