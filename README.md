@@ -15,8 +15,8 @@ mkdir -p build
 ca65 --cpu 6502 --target nes --debug-info -o build/example.o src/example.asm
 mkdir -p dist
 ld65  -o dist/example.nes --dbgfile dist/example.dbg --config cfg/nes.cfg --obj build/example.o
-../6502_tester -p dist/example.nes -d dist/example.dbg --quiet-ok --quiet-summary -t test/ok/ex.customize.configurations.test.json
-../6502_tester -p dist/example.nes -d dist/example.dbg --quiet-ok --quiet-summary -t test/ok/ex.error.timeout.test.json
+../6502_tester -p dist/example.nes -d dist/example.dbg --quiet-ok --quiet-summary -t test/ok/customize.configurations.test.json
+../6502_tester -p dist/example.nes -d dist/example.dbg --quiet-ok --quiet-summary -t test/ok/error.timeout.test.json
 :
 All tests passed.
 ```
