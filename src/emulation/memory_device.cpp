@@ -54,14 +54,22 @@ memory_device::memory_device(emulation_devices *_device, args_parser *args, json
     {
         debug->add_segment_def(-1, 0x100, 0xFF, true);
         debug->add_segment_def(-1, 0x2000, 0x2020, true);
+        for (auto name : {"NULL", "HEADER", "VECTORS", "CHARS"})
+            debug->remove_segment_def(name);
     }
     else
     {
         for (auto &ignore_def : config["invalidMemory"]["ignoreList"])
         {
-            auto start = address_convert::get_address(device, ignore_def["start"]);
-            auto size = address_convert::to_byte(device, ignore_def["size"]);
-            debug->add_segment_def(-1, start, size, true);
+            if (ignore_def["start"].is_object() && !ignore_def["size"].is_null())
+                debug->add_segment_def(
+                    -1,
+                    address_convert::get_address(device, ignore_def["start"]),
+                    address_convert::to_byte(device, ignore_def["size"]),
+                    true);
+            else if (ignore_def["name"].is_string())
+                debug->remove_segment_def(
+                    ignore_def["name"].get<string>());
         }
     }
 }

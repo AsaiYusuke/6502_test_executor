@@ -100,6 +100,16 @@ void debug_info::add_segment(string line)
     if (id_end_pos == string::npos)
         return;
 
+    auto name_pos = line.find(",name=\"");
+    if (name_pos == string::npos)
+        return;
+
+    name_pos += 7;
+
+    auto name_end_pos = line.find("\"", name_pos);
+    if (name_end_pos == string::npos)
+        return;
+
     auto start_pos = line.find(",start=0x");
     if (start_pos == string::npos)
         return;
@@ -126,10 +136,13 @@ void debug_info::add_segment(string line)
         writable = true;
 
     auto id = stoi(line.substr(id_pos, id_end_pos - id_pos), 0, 10);
+    auto name = line.substr(name_pos, name_end_pos - name_pos);
     auto start = stoi(line.substr(start_pos, start_end_pos - start_pos), 0, 16);
     auto size = stoi(line.substr(size_pos, size_end_pos - size_pos), 0, 16);
 
     add_segment_def(id, start, size, writable);
+
+    segment_name_id_map[name] = id;
 }
 
 void debug_info::add_span(string line)
@@ -341,4 +354,10 @@ void debug_info::add_segment_def(int id, uint16_t start, int size, bool writable
     }
 
     segment_map[id] = make_tuple(start, size, writable);
+}
+
+void debug_info::remove_segment_def(string name)
+{
+    int id = segment_name_id_map[name];
+    segment_map.erase(id);
 }

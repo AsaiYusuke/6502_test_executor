@@ -11,6 +11,7 @@ private:
     bool omit;
     map<int, string> source_file_map;
     map<int, tuple<uint16_t, int, bool>> segment_map;
+    map<string, int> segment_name_id_map;
     map<int, pair<int, int>> span_map;
     map<int, tuple<int, int, vector<int>>> source_line_map;
 
@@ -38,4 +39,5 @@ public:
     bool has_read_access(uint16_t address);
     tuple<uint16_t, int, bool> get_segment_def(uint16_t address);
     void add_segment_def(int id, uint16_t start, int size, bool writable);
+    void remove_segment_def(string name);
 };

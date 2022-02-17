@@ -132,9 +132,18 @@
                             "minItems": 1,
                             "items": {
                                 "type": "object",
-                                "required": [
-                                    "start",
-                                    "size"
+                                "oneOf": [
+                                    {
+                                        "required": [
+                                            "start",
+                                            "size"
+                                        ]
+                                    },
+                                    {
+                                        "required": [
+                                            "name"
+                                        ]
+                                    }
                                 ],
                                 "additionalProperties": false,
                                 "properties": {
@@ -143,6 +152,35 @@
                                     },
                                     "size": {
                                         "$ref": "#/definitions/number_16bit"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    }
+                                },
+                                "dependencies": {
+                                    "start": {
+                                        "properties": {
+                                            "name": {
+                                                "type": "null"
+                                            }
+                                        }
+                                    },
+                                    "size": {
+                                        "properties": {
+                                            "name": {
+                                                "type": "null"
+                                            }
+                                        }
+                                    },
+                                    "name": {
+                                        "properties": {
+                                            "start": {
+                                                "type": "null"
+                                            },
+                                            "size": {
+                                                "type": "null"
+                                            }
+                                        }
                                     }
                                 }
                             },
@@ -158,6 +196,18 @@
                                         "address": "$2000"
                                     },
                                     "size": "$2020"
+                                },
+                                {
+                                    "name": "NULL"
+                                },
+                                {
+                                    "name": "HEADER"
+                                },
+                                {
+                                    "name": "VECTORS"
+                                },
+                                {
+                                    "name": "CHARS"
                                 }
                             ]
                         }
