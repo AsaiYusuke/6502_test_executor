@@ -29,7 +29,6 @@ public:
 
     bool is_digits(const string &str);
     uint16_t two_complement_byte(uint16_t value);
-    uint16_t to_byte(string str);
     void add_error_reuslt(runtime_error_type type);
     void add_error_reuslt(runtime_error_type type, string message);
     vector<runtime_error_result> get_filtered_errors(vector<runtime_error_type> types);
