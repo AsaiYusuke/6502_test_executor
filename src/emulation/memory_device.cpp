@@ -89,13 +89,11 @@ string memory_device::get_source_line(uint16_t address)
     return debug->get_source_line(address);
 }
 
-bool memory_device::has_address(string label)
-{
-    return debug->has_address(label);
-}
-
 uint16_t memory_device::get_address(string label)
 {
+    if (!debug->has_address(label))
+        throw invalid_argument("Symbol not found: " + label);
+
     return debug->get_address(label);
 }
 

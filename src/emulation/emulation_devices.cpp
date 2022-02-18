@@ -24,48 +24,15 @@ memory_device *emulation_devices::get_memory()
     return memory;
 }
 
-uint16_t emulation_devices::get_address(string label, int offset)
+uint16_t emulation_devices::get_address(string label)
 {
-    if (!memory->has_address(label))
-        throw invalid_argument("Symbol not found: " + label);
-
-    return memory->get_address(label) + offset;
+    return memory->get_address(label);
 }
 
 void emulation_devices::print()
 {
     cpu->print();
     memory->print();
-}
-
-bool emulation_devices::is_digits(const string &str)
-{
-    return str.find_first_not_of("-0123456789") == string::npos;
-}
-
-uint16_t emulation_devices::two_complement_byte(uint16_t value)
-{
-    uint16_t result = value;
-    if (result < 0)
-        result += 256;
-
-    return result;
-}
-
-uint16_t emulation_devices::to_byte(string str)
-{
-    int value;
-
-    if (str.compare(0, 1, "$") == 0)
-        value = stoi(str.substr(1), 0, 16);
-    else if (str.compare(0, 1, "%") == 0)
-        value = stoi(str.substr(1), 0, 2);
-    else if (is_digits(str))
-        value = stoi(str);
-    else
-        value = get_address(str, 0);
-
-    return two_complement_byte(value);
 }
 
 void emulation_devices::add_error_reuslt(runtime_error_type type)

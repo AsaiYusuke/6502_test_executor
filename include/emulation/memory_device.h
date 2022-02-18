@@ -43,7 +43,6 @@ public:
     memory_device(emulation_devices *_device, args_parser *args, json config);
     void clear();
     string get_source_line(uint16_t address);
-    bool has_address(string label);
     uint16_t get_address(string label);
     string get_label(uint16_t address);
     void set_read_sequence(uint16_t address, vector<uint8_t> sequence, bool permanent);
