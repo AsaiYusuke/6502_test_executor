@@ -19,11 +19,15 @@ uint16_t value_convert::parse_json_number(emulation_devices *device, json value)
     case json::value_t::number_unsigned:
         return value.get<uint16_t>();
     case json::value_t::string:
+    {
         string str = value.get<string>();
         if (str.compare(0, 1, "$") == 0)
             return stoi(str.substr(1), 0, 16);
         else if (str.compare(0, 1, "%") == 0)
             return stoi(str.substr(1), 0, 2);
+    }
+    case json::value_t::object:
+        return device->get_memory()->read(get_address(device, value));
     }
     return 0;
 }

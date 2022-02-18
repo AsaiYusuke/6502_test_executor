@@ -310,6 +310,16 @@
             "type": "string",
             "pattern": "^\\$[0-9A-F]{1,4}$"
         },
+        "register": {
+            "oneOf": [
+                {
+                    "$ref": "#/definitions/number_8bit"
+                },
+                {
+                    "$ref": "#/definitions/address"
+                }
+            ]
+        },
         "conditions": {
             "type": "object",
             "additionalProperties": false,
@@ -322,15 +332,15 @@
                     "properties": {
                         "A": {
                             "title": "Accumulator",
-                            "$ref": "#/definitions/number_8bit"
+                            "$ref": "#/definitions/register"
                         },
                         "X": {
                             "title": "Index register X",
-                            "$ref": "#/definitions/number_8bit"
+                            "$ref": "#/definitions/register"
                         },
                         "Y": {
                             "title": "Index register Y",
-                            "$ref": "#/definitions/number_8bit"
+                            "$ref": "#/definitions/register"
                         },
                         "P": {
                             "title": "Processor status register",

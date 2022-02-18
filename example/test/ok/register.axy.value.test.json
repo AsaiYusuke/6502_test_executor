@@ -51,6 +51,20 @@
                     "Y": "%01100100"
                 }
             }
+        },
+        "Value of the address pointed to by label": {
+            "setup": {
+                "register": {
+                    "Y": {
+                        "label": "vector_dic",
+                        "offset": 4
+                    }
+                }
+            },"expected": {
+                "register": {
+                    "Y": 5
+                }
+            }
         }
     }
 }
