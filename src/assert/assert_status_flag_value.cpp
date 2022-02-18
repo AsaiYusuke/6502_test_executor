@@ -1,5 +1,4 @@
 #include "assert/assert_status_flag_value.h"
-#include "assert/operation/assert_equal.h"
 #include "message.h"
 #include "util/to_string.h"
 

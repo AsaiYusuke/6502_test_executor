@@ -1,5 +1,4 @@
 #include "assert/assert_timeout.h"
-#include "assert/operation/assert_equal.h"
 #include "message.h"
 #include "util/to_string.h"
 
