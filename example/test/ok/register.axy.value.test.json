@@ -52,7 +52,7 @@
                 }
             }
         },
-        "Value of the address pointed to by label": {
+        "value of the address pointed to by label": {
             "setup": {
                 "register": {
                     "Y": {
@@ -60,7 +60,8 @@
                         "offset": 4
                     }
                 }
-            },"expected": {
+            },
+            "expected": {
                 "register": {
                     "Y": 5
                 }
