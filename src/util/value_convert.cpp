@@ -1,7 +1,7 @@
 #include <sstream>
-#include "util/address_convert.h"
+#include "util/value_convert.h"
 
-uint16_t address_convert::get_address(emulation_devices *device, json value)
+uint16_t value_convert::get_address(emulation_devices *device, json value)
 {
     uint16_t address;
     if (!value["address"].is_null())
@@ -11,7 +11,7 @@ uint16_t address_convert::get_address(emulation_devices *device, json value)
            to_byte(device, value["offset"]);
 }
 
-uint16_t address_convert::to_byte(emulation_devices *device, json value)
+uint16_t value_convert::to_byte(emulation_devices *device, json value)
 {
     switch (value.type())
     {
@@ -28,7 +28,7 @@ uint16_t address_convert::to_byte(emulation_devices *device, json value)
     return 0;
 }
 
-uint16_t address_convert::to_two_complement_byte(emulation_devices *device, json value)
+uint16_t value_convert::to_two_complement_byte(emulation_devices *device, json value)
 {
     auto number = to_byte(device, value);
     if (number < 0)
@@ -36,14 +36,14 @@ uint16_t address_convert::to_two_complement_byte(emulation_devices *device, json
     return number;
 }
 
-string address_convert::to_hex_string(uint16_t value)
+string value_convert::to_hex_string(uint16_t value)
 {
     stringstream ss;
     ss << "$" << uppercase << hex << value;
     return ss.str();
 }
 
-string address_convert::to_zero_filled_hex_string(uint16_t value)
+string value_convert::to_zero_filled_hex_string(uint16_t value)
 {
     stringstream ss;
     ss << "$" << uppercase << hex << setw(4) << setfill('0') << value;

@@ -8,7 +8,7 @@ using namespace std;
 
 using json = nlohmann::json;
 
-class address_convert
+class value_convert
 {
 public:
     static uint16_t get_address(emulation_devices *device, json value);

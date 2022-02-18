@@ -2,7 +2,7 @@
 
 #include "emulation/emulation_devices.h"
 #include "exception/file_open.h"
-#include "util/address_convert.h"
+#include "util/value_convert.h"
 
 void memory_device::load_rom_image(string path)
 {
@@ -63,8 +63,8 @@ memory_device::memory_device(emulation_devices *_device, args_parser *args, json
             if (ignore_def["start"].is_object() && !ignore_def["size"].is_null())
                 debug->add_segment_def(
                     -1,
-                    address_convert::get_address(device, ignore_def["start"]),
-                    address_convert::to_byte(device, ignore_def["size"]),
+                    value_convert::get_address(device, ignore_def["start"]),
+                    value_convert::to_byte(device, ignore_def["size"]),
                     true);
             else if (ignore_def["name"].is_string())
                 debug->remove_segment_def(
@@ -181,7 +181,9 @@ void memory_device::write(uint16_t address, uint8_t value)
         {
             if (!debug->has_write_access(address))
             {
-                device->add_error_reuslt(runtime_error_type::READONLY_MEMORY, "address=" + address_convert::to_zero_filled_hex_string(address));
+                device->add_error_reuslt(
+                    runtime_error_type::READONLY_MEMORY,
+                    "address=" + value_convert::to_zero_filled_hex_string(address));
             }
         }
         catch (const out_of_range &e)

@@ -2,7 +2,7 @@
 #include <sstream>
 
 #include "util/to_string.h"
-#include "util/address_convert.h"
+#include "util/value_convert.h"
 
 string to_string(vector<uint8_t> values)
 {
@@ -11,10 +11,10 @@ string to_string(vector<uint8_t> values)
 
     if (!values.empty())
     {
-        ss << address_convert::to_hex_string(values[0]);
+        ss << value_convert::to_hex_string(values[0]);
         for (decltype(values.size()) index = 1, size = values.size(); index < size; index++)
         {
-            ss << ", " << address_convert::to_hex_string(values[index]);
+            ss << ", " << value_convert::to_hex_string(values[index]);
         }
     }
 

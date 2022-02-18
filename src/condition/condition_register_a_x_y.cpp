@@ -1,11 +1,11 @@
 #include "condition/condition_register_a_x_y.h"
-#include "util/address_convert.h"
+#include "util/value_convert.h"
 
 condition_register_a_x_y::condition_register_a_x_y(emulation_devices *device, string _name, json condition)
 {
     name = _name;
     type = register_name_type_map[name];
-    value = address_convert::to_two_complement_byte(device, condition);
+    value = value_convert::to_two_complement_byte(device, condition);
 }
 
 string condition_register_a_x_y::get_name()

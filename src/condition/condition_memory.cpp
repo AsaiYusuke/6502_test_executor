@@ -1,10 +1,10 @@
 #include <sstream>
-#include "util/address_convert.h"
+#include "util/value_convert.h"
 #include "condition/condition_memory.h"
 
 condition_memory::condition_memory(emulation_devices *_device, json condition)
 {
-    auto address = address_convert::get_address(_device, condition);
+    auto address = value_convert::get_address(_device, condition);
 
     bool is_permanent = condition.value("permanent", false);
 
@@ -62,7 +62,7 @@ string condition_memory::create_address_name(emulation_devices *device, json mem
 {
     bool append_total_address = false;
     stringstream ss;
-    uint16_t address = address_convert::get_address(device, memory_def) + offset;
+    uint16_t address = value_convert::get_address(device, memory_def) + offset;
 
     if (memory_def.contains("address"))
     {
@@ -75,15 +75,15 @@ string condition_memory::create_address_name(emulation_devices *device, json mem
 
         if (!memory_def["offset"].is_null())
         {
-            offset += address_convert::to_byte(device, memory_def["offset"]);
+            offset += value_convert::to_byte(device, memory_def["offset"]);
         }
     }
 
     if (offset != 0)
-        ss << " + " << address_convert::to_hex_string(offset);
+        ss << " + " << value_convert::to_hex_string(offset);
 
     if (offset != 0 || append_total_address)
-        ss << " (" << address_convert::to_zero_filled_hex_string(address) << ")";
+        ss << " (" << value_convert::to_zero_filled_hex_string(address) << ")";
 
     return ss.str();
 }
@@ -126,7 +126,7 @@ vector<vector<uint8_t>> condition_memory::create_value_sequences(emulation_devic
         for (json &value_sequence : value_def)
         {
             sequence.push_back(
-                address_convert::to_two_complement_byte(_device, value_sequence));
+                value_convert::to_two_complement_byte(_device, value_sequence));
         }
         result.push_back(sequence);
     }
