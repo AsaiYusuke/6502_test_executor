@@ -75,7 +75,7 @@ string condition_memory::create_address_name(emulation_devices *device, json mem
 
         if (!memory_def["offset"].is_null())
         {
-            offset += value_convert::to_byte(device, memory_def["offset"]);
+            offset += value_convert::parse_json_number(device, memory_def["offset"]);
         }
     }
 

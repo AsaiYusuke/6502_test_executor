@@ -64,7 +64,7 @@ memory_device::memory_device(emulation_devices *_device, args_parser *args, json
                 debug->add_segment_def(
                     -1,
                     value_convert::get_address(device, ignore_def["start"]),
-                    value_convert::to_byte(device, ignore_def["size"]),
+                    value_convert::parse_json_number(device, ignore_def["size"]),
                     true);
             else if (ignore_def["name"].is_string())
                 debug->remove_segment_def(

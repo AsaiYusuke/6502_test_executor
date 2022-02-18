@@ -5,13 +5,13 @@ uint16_t value_convert::get_address(emulation_devices *device, json value)
 {
     uint16_t address;
     if (!value["address"].is_null())
-        return to_byte(device, value["address"]);
+        return parse_json_number(device, value["address"]);
 
     return device->get_address(value["label"].get<string>()) +
-           to_byte(device, value["offset"]);
+           parse_json_number(device, value["offset"]);
 }
 
-uint16_t value_convert::to_byte(emulation_devices *device, json value)
+uint16_t value_convert::parse_json_number(emulation_devices *device, json value)
 {
     switch (value.type())
     {
@@ -30,7 +30,7 @@ uint16_t value_convert::to_byte(emulation_devices *device, json value)
 
 uint16_t value_convert::to_two_complement_byte(emulation_devices *device, json value)
 {
-    auto number = to_byte(device, value);
+    auto number = parse_json_number(device, value);
     if (number < 0)
         number += 256;
     return number;
