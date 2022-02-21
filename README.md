@@ -1,5 +1,5 @@
 # 6502 Unit Test executor
-This tool enables unit testing for 6502 assembly programs on a cross-platform basis. 
+This tool enables [unit testing](https://en.wikipedia.org/wiki/Unit_testing) for 6502 assembly programs on a cross-platform basis.
 
 This project is a fork of the following project:
 - [gianlucag's 6502 emulator](https://github.com/gianlucag/mos6502)
