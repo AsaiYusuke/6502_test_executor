@@ -45,11 +45,7 @@ bool test::execute()
         print_test_result(name, result);
     }
 
-    print_summary(
-        test_result_map[test_result_type::OK],
-        test_result_map[test_result_type::FAIL],
-        test_result_map[test_result_type::SKIP],
-        test_scinario["cases"].size());
+    print_summary(test_result_map, test_scinario["cases"].size());
 
     return test_result_map[test_result_type::FAIL] == 0;
 }
@@ -94,14 +90,17 @@ void test::print_test_result(string test_name, test_result result)
     }
 }
 
-void test::print_summary(int ok, int fail, int skip, int total)
+void test::print_summary(map<test_result_type, int> result_map, int total)
 {
     if (args->is_quiet() || args->is_quiet_summary())
         return;
 
     cout << "----------------------------------------------------------------------" << endl;
-    cout << "OK: " << ok;
-    cout << ", FAIL: " << fail;
-    cout << ", SKIP: " << skip;
-    cout << " / TOTAL: " << total << endl;
+    cout
+        << result_type_name_map[test_result_type::OK] << ": " << result_map[test_result_type::OK]
+        << ", "
+        << result_type_name_map[test_result_type::FAIL] << ": " << result_map[test_result_type::FAIL]
+        << ", "
+        << result_type_name_map[test_result_type::SKIP] << ": " << result_map[test_result_type::SKIP]
+        << " / TOTAL: " << total << endl;
 }
