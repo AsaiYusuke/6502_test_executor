@@ -7,8 +7,11 @@ using namespace std;
 
 enum class test_result_type
 {
+    // OK
     OK,
+    // FAIL
     FAIL,
+    // SKIP
     SKIP
 };
 
