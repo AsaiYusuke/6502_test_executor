@@ -2,7 +2,7 @@
 #include "message.h"
 #include "util/to_string.h"
 
-bool assert_status_flag_value::test(emulation_devices *device, condition_register_status_flag status_flag_def, vector<string> &errors)
+bool assert_status_flag_value::test(emulation_devices *device, condition_register_status_flag status_flag_def, test_result *result)
 {
     uint8_t status = device->get_cpu()->get_register(register_type::P);
     auto expected = status_flag_def.get_value();
@@ -10,7 +10,7 @@ bool assert_status_flag_value::test(emulation_devices *device, condition_registe
 
     if (expected != actual)
     {
-        errors.push_back(
+        result->add_error(
             message::error_register_status_flag_data(
                 status_flag_def,
                 to_string(expected),

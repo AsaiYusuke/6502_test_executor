@@ -64,14 +64,17 @@ bool args_parser::is_quiet()
     return *quiet;
 }
 
-bool args_parser::is_quiet_success()
+bool args_parser::is_quiet_type(test_result_type type)
 {
-    return *quiet_ok;
-}
-
-bool args_parser::is_quiet_failed()
-{
-    return *quiet_fail;
+    switch (type)
+    {
+    case test_result_type::OK:
+    case test_result_type::SKIP:
+        return *quiet_ok;
+    case test_result_type::FAIL:
+        return *quiet_fail;
+    }
+    return false;
 }
 
 bool args_parser::is_quiet_summary()

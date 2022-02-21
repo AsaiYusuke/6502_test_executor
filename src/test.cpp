@@ -3,6 +3,7 @@
 #include <string>
 
 #include "test.h"
+#include "test_result.h"
 #include "test_setup.h"
 #include "test_assert.h"
 #include "util/value_convert.h"
@@ -20,106 +21,76 @@ test::test(args_parser *_args)
 
 bool test::execute()
 {
-    map<test_result, int> test_result_map;
+    map<test_result_type, int> test_result_map;
 
     for (auto &element : test_scinario["cases"].items())
     {
         auto name = element.key();
         auto testcase = element.value();
 
-        if (testcase["skip"].is_boolean() && testcase["skip"].get<bool>())
-        {
-            print_test_result(
-                name,
-                test_result::SKIP,
-                {});
-            test_result_map[test_result::SKIP]++;
-            continue;
-        }
+        test_result result;
 
         try
         {
-            test_setup(
-                device,
-                testcase["setup"],
-                test_scinario["target"])
-                .execute();
-
-            device->get_cpu()->execute();
-
-            test_assert assert = test_assert(
-                device,
-                testcase["expected"]);
-            assert.execute();
-
-            print_test_result(
-                name,
-                assert.get_result(),
-                assert.get_errors());
-
-            test_result_map[assert.get_result()]++;
+            result = do_test(testcase);
         }
         catch (exception &e)
         {
             stringstream ss;
             ss << e.what() << endl;
-            print_test_result(
-                name,
-                test_result::FAIL,
-                {ss.str()});
-
-            test_result_map[test_result::FAIL]++;
+            result.add_error(ss.str());
         }
+
+        test_result_map[result.get_result_type()]++;
+        print_test_result(name, result);
     }
 
     print_summary(
-        test_result_map[test_result::OK],
-        test_result_map[test_result::FAIL],
-        test_result_map[test_result::SKIP],
+        test_result_map[test_result_type::OK],
+        test_result_map[test_result_type::FAIL],
+        test_result_map[test_result_type::SKIP],
         test_scinario["cases"].size());
 
-    return test_result_map[test_result::FAIL] == 0;
+    return test_result_map[test_result_type::FAIL] == 0;
 }
 
-void test::print_test_result(string test_name, test_result result, vector<string> errors)
+test_result test::do_test(json testcase)
 {
-    if (args->is_quiet())
+    if (testcase["skip"].is_boolean() && testcase["skip"].get<bool>())
+        return test_result::skip();
+
+    test_setup(
+        device,
+        testcase["setup"],
+        test_scinario["target"])
+        .execute();
+
+    device->get_cpu()->execute();
+
+    test_assert assert = test_assert(
+        device,
+        testcase["expected"]);
+    assert.execute();
+
+    return assert.get_result();
+}
+
+void test::print_test_result(string test_name, test_result result)
+{
+    if (args->is_quiet() || args->is_quiet_type(result.get_result_type()))
         return;
 
-    switch (result)
-    {
-    case test_result::OK:
-        if (args->is_quiet_success())
-            return;
-        cout << "OK";
-        break;
-    case test_result::FAIL:
-        if (args->is_quiet_failed())
-            return;
-        cout << "FAIL";
-        break;
-    case test_result::SKIP:
-        if (args->is_quiet_success())
-            return;
-        cout << "SKIP";
-        break;
-    }
+    cout
+        << result.get_result_name()
+        << ": [" << test_name << "]" << endl;
 
-    cout << ": [" << test_name << "]" << endl;
-
-    if (result == test_result::FAIL)
+    if (result.get_result_type() == test_result_type::FAIL)
     {
         cerr << endl;
         device->print();
-    }
 
-    if (!errors.empty())
-    {
         cerr << endl;
-        for (string error : errors)
-        {
-            cerr << error;
-        }
+        result.print_error();
     }
 }
 

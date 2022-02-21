@@ -2,7 +2,7 @@
 #include "message.h"
 #include "util/to_string.h"
 
-bool assert_register_value::test(emulation_devices *device, condition_register_a_x_y register_def, vector<string> &errors)
+bool assert_register_value::test(emulation_devices *device, condition_register_a_x_y register_def, test_result *result)
 {
     auto expected = register_def.get_value();
     auto actual = device->get_cpu()->get_register(
@@ -10,7 +10,7 @@ bool assert_register_value::test(emulation_devices *device, condition_register_a
 
     if (expected != actual)
     {
-        errors.push_back(
+        result->add_error(
             message::error_register_data(
                 register_def,
                 to_string(expected),

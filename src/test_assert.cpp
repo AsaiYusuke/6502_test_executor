@@ -17,55 +17,42 @@ test_assert::test_assert(emulation_devices *device, json condition_json)
 
 void test_assert::execute()
 {
-
-    if (!assert_timeout::test(get_device(), get_timeout_def(), errors))
-    {
-        result = test_result::FAIL;
+    if (!assert_timeout::test(get_device(), get_timeout_def(), &result))
         return;
-    }
-
-    bool test_result = true;
 
     for (auto error_def :
          get_device()->get_filtered_errors(
              {runtime_error_type::OUT_OF_SEGMENT,
               runtime_error_type::READONLY_MEMORY}))
     {
-        test_result &= assert_runtime_error::test(get_device(), error_def, errors);
+        assert_runtime_error::test(get_device(), error_def, &result);
     }
 
     for (auto register_def : get_register_defs())
-        test_result &= assert_register_value::test(
-            get_device(), register_def, errors);
+        assert_register_value::test(
+            get_device(), register_def, &result);
 
     for (auto status_flag_def : get_status_flag_defs())
-        test_result &= assert_status_flag_value::test(
-            get_device(), status_flag_def, errors);
+        assert_status_flag_value::test(
+            get_device(), status_flag_def, &result);
 
     for (auto memory_def : get_memory_defs())
     {
         for (auto memory_value_def : memory_def.get_value_sequences())
-            test_result &= assert_memory_value::test(
-                get_device(), memory_value_def, errors);
+            assert_memory_value::test(
+                get_device(), memory_value_def, &result);
 
         for (auto memory_read_count_def : memory_def.get_read_counts())
-            test_result &= assert_memory_read_count::test(
-                get_device(), memory_read_count_def, errors);
+            assert_memory_read_count::test(
+                get_device(), memory_read_count_def, &result);
 
         for (auto memory_write_count_def : memory_def.get_write_counts())
-            test_result &= assert_memory_write_count::test(
-                get_device(), memory_write_count_def, errors);
+            assert_memory_write_count::test(
+                get_device(), memory_write_count_def, &result);
     }
-
-    result = test_result ? test_result::OK : test_result::FAIL;
 }
 
 test_result test_assert::get_result()
 {
     return result;
-}
-
-vector<string> test_assert::get_errors()
-{
-    return errors;
 }

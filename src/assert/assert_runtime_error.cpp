@@ -2,7 +2,7 @@
 #include "message.h"
 #include "util/to_string.h"
 
-bool assert_runtime_error::test(emulation_devices *device, runtime_error_result error_def, vector<string> &errors)
+bool assert_runtime_error::test(emulation_devices *device, runtime_error_result error_def, test_result *result)
 {
     auto expected = false;
     auto actual = true;
@@ -12,7 +12,7 @@ bool assert_runtime_error::test(emulation_devices *device, runtime_error_result 
         switch (error_def.get_type())
         {
         case runtime_error_type::READONLY_MEMORY:
-            errors.push_back(
+            result->add_error(
                 message::trace_readonly_memory(
                     device,
                     error_def.get_call_stack(),
@@ -21,7 +21,7 @@ bool assert_runtime_error::test(emulation_devices *device, runtime_error_result 
                     to_string(actual)));
             break;
         case runtime_error_type::OUT_OF_SEGMENT:
-            errors.push_back(
+            result->add_error(
                 message::trace_out_of_segment(
                     device,
                     error_def.get_call_stack(),

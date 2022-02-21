@@ -1,7 +1,7 @@
 #pragma once
 
 #include "args.hxx"
-#include "args_parser.h"
+#include "enum/test_result_type.h"
 
 using namespace std;
 
@@ -26,7 +26,6 @@ public:
     string get_test_path();
     int get_test_timeout();
     bool is_quiet();
-    bool is_quiet_success();
-    bool is_quiet_failed();
+    bool is_quiet_type(test_result_type type);
     bool is_quiet_summary();
 };

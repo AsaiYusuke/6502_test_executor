@@ -9,11 +9,9 @@ class test_assert : condition
 {
 private:
     test_result result;
-    vector<string> errors;
 
 public:
     test_assert(emulation_devices *device, json condition_json);
     void execute();
     test_result get_result();
-    vector<string> get_errors();
 };
