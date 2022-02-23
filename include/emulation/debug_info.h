@@ -22,6 +22,9 @@ private:
     map<uint16_t, string> address_label_map;
 
     void parse_debug_def(string line);
+
+    string get_substr(string value, string begin, string end);
+    int get_int_substr(string value, string begin, string end, int radix);
     void add_file(string line);
     void add_segment(string line);
     void add_span(string line);

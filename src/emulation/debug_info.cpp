@@ -4,6 +4,7 @@
 #include "emulation/debug_info.h"
 #include "exception/file_open.h"
 #include "util/value_convert.h"
+#include "exception/parse_ignore_entry.h"
 
 debug_info::debug_info(string path)
 {
@@ -20,7 +21,15 @@ debug_info::debug_info(string path)
 
     string line;
     while (getline(file, line))
-        parse_debug_def(line);
+    {
+        try
+        {
+            parse_debug_def(line);
+        }
+        catch (const parse_ignore_entry)
+        {
+        }
+    }
     file.close();
 
     make_address_source_map();
@@ -60,84 +69,42 @@ void debug_info::parse_debug_def(string line)
     }
 }
 
+string debug_info::get_substr(string value, string begin, string end)
+{
+    auto begin_pos = value.find(begin);
+    if (begin_pos == string::npos)
+        throw parse_ignore_entry();
+
+    begin_pos += begin.length();
+
+    auto end_pos = value.find(end, begin_pos);
+    if (end_pos == string::npos)
+        throw parse_ignore_entry();
+
+    return value.substr(begin_pos, end_pos - begin_pos);
+}
+
+int debug_info::get_int_substr(string value, string begin, string end, int radix)
+{
+    return stoi(get_substr(value, begin, end), 0, radix);
+}
+
 void debug_info::add_file(string line)
 {
-    auto id_pos = line.find("\tid=");
-    if (id_pos == string::npos)
-        return;
-
-    id_pos += 4;
-
-    auto id_end_pos = line.find(",", id_pos);
-    if (id_end_pos == string::npos)
-        return;
-
-    auto name_pos = line.find(",name=\"");
-    if (name_pos == string::npos)
-        return;
-
-    name_pos += 7;
-
-    auto name_end_pos = line.find("\"", name_pos);
-    if (name_end_pos == string::npos)
-        return;
-
-    auto id = stoi(line.substr(id_pos, id_end_pos - id_pos), 0, 10);
-    auto name = line.substr(name_pos, name_end_pos - name_pos);
+    auto id = get_int_substr(line, "\tid=", ",", 10);
+    auto name = get_substr(line, ",name=\"", "\"");
 
     source_file_map[id] = name;
 }
 
 void debug_info::add_segment(string line)
 {
-    auto id_pos = line.find("\tid=");
-    if (id_pos == string::npos)
-        return;
-
-    id_pos += 4;
-
-    auto id_end_pos = line.find(",", id_pos);
-    if (id_end_pos == string::npos)
-        return;
-
-    auto name_pos = line.find(",name=\"");
-    if (name_pos == string::npos)
-        return;
-
-    name_pos += 7;
-
-    auto name_end_pos = line.find("\"", name_pos);
-    if (name_end_pos == string::npos)
-        return;
-
-    auto start_pos = line.find(",start=0x");
-    if (start_pos == string::npos)
-        return;
-
-    start_pos += 9;
-
-    auto start_end_pos = line.find(",", start_pos);
-    if (start_end_pos == string::npos)
-        return;
-
-    auto size_pos = line.find(",size=0x");
-    if (size_pos == string::npos)
-        return;
-
-    size_pos += 8;
-
-    auto size_end_pos = line.find(",", size_pos);
-    if (size_end_pos == string::npos)
-        return;
-
+    auto id = get_int_substr(line, "\tid=", ",", 10);
+    auto name = get_substr(line, ",name=\"", "\"");
+    auto start = get_int_substr(line, ",start=0x", ",", 16);
+    auto size = get_int_substr(line, ",size=0x", ",", 16);
     bool writable = (line.find(",type=rw") != string::npos);
-
     bool file_exist = (line.find(",oname=") != string::npos);
-
-    auto id = stoi(line.substr(id_pos, id_end_pos - id_pos), 0, 10);
-    auto name = line.substr(name_pos, name_end_pos - name_pos);
-    auto start = stoi(line.substr(start_pos, start_end_pos - start_pos), 0, 16);
-    auto size = stoi(line.substr(size_pos, size_end_pos - size_pos), 0, 16);
 
     add_segment_def(id, start, size, writable);
 
@@ -147,90 +114,19 @@ void debug_info::add_segment(string line)
 
 void debug_info::add_span(string line)
 {
-    auto id_pos = line.find("\tid=");
-    if (id_pos == string::npos)
-        return;
-
-    id_pos += 4;
-
-    auto id_end_pos = line.find(",", id_pos);
-    if (id_end_pos == string::npos)
-        return;
-
-    auto segment_pos = line.find(",seg=");
-    if (segment_pos == string::npos)
-        return;
-
-    segment_pos += 5;
-
-    auto segment_end_pos = line.find(",", segment_pos);
-    if (segment_end_pos == string::npos)
-        return;
-
-    auto start_pos = line.find(",start=");
-    if (start_pos == string::npos)
-        return;
-
-    start_pos += 7;
-
-    auto start_end_pos = line.find(",", start_pos);
-    if (start_end_pos == string::npos)
-        return;
-
-    auto id = stoi(line.substr(id_pos, id_end_pos - id_pos), 0, 10);
-    auto segment = stoi(line.substr(segment_pos, segment_end_pos - segment_pos), 0, 10);
-    auto start = stoi(line.substr(start_pos, start_end_pos - start_pos), 0, 10);
+    auto id = get_int_substr(line, "\tid=", ",", 10);
+    auto segment = get_int_substr(line, ",seg=", ",", 10);
+    auto start = get_int_substr(line, ",start=", ",", 10);
 
     span_map[id] = make_pair(segment, start);
 }
 
 void debug_info::add_source_line(string line)
 {
-    auto id_pos = line.find("\tid=");
-    if (id_pos == string::npos)
-        return;
-
-    id_pos += 4;
-
-    auto id_end_pos = line.find(",", id_pos);
-    if (id_end_pos == string::npos)
-        return;
-
-    auto file_pos = line.find(",file=");
-    if (file_pos == string::npos)
-        return;
-
-    file_pos += 6;
-
-    auto file_end_pos = line.find(",", file_pos);
-    if (file_end_pos == string::npos)
-        return;
-
-    auto line_pos = line.find(",line=");
-    if (line_pos == string::npos)
-        return;
-
-    line_pos += 6;
-
-    auto line_end_pos = line.find(",", line_pos);
-    if (line_end_pos == string::npos)
-        return;
-
-    auto span_pos = line.find(",span=");
-    if (span_pos == string::npos)
-        return;
-
-    span_pos += 6;
-
-    auto span_end_pos = line.find(",", span_pos);
-    if (span_end_pos == string::npos)
-        span_end_pos = line.length();
-
-    auto id = stoi(line.substr(id_pos, id_end_pos - id_pos), 0, 10);
-    auto file = stoi(line.substr(file_pos, file_end_pos - file_pos), 0, 10);
-    auto line_number = stoi(line.substr(line_pos, line_end_pos - line_pos), 0, 10);
-
-    auto spans = line.substr(span_pos, span_end_pos - span_pos);
+    auto id = get_int_substr(line, "\tid=", ",", 10);
+    auto file = get_int_substr(line, ",file=", ",", 10);
+    auto line_number = get_int_substr(line, ",line=", ",", 10);
+    auto spans = get_substr(line, ",span=", ",");
 
     size_t pos;
     vector<int> span_ids;
@@ -246,28 +142,8 @@ void debug_info::add_source_line(string line)
 
 void debug_info::add_symbol(string line)
 {
-    auto name_pos = line.find(",name=\"");
-    if (name_pos == string::npos)
-        return;
-
-    name_pos += 7;
-
-    auto name_end_pos = line.find("\"", name_pos);
-    if (name_end_pos == string::npos)
-        return;
-
-    auto val_pos = line.find(",val=0x");
-    if (val_pos == string::npos)
-        return;
-
-    val_pos += 7;
-
-    auto val_end_pos = line.find(",", val_pos);
-    if (val_end_pos == string::npos)
-        return;
-
-    auto label = line.substr(name_pos, name_end_pos - name_pos);
-    auto value = stoi(line.substr(val_pos, val_end_pos - val_pos), 0, 16);
+    auto label = get_substr(line, ",name=\"", "\"");
+    auto value = get_int_substr(line, ",val=0x", ",", 16);
 
     label_address_map[label] = value;
     address_label_map[value] = label;

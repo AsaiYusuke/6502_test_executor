@@ -1,8 +1,5 @@
 #pragma once
 
-#include <stdexcept>
-#include <string>
-
 using namespace std;
 
 class parse_abort
