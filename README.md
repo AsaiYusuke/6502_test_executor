@@ -23,7 +23,7 @@ All tests passed.
 
 ## How to use
 
-### (Optional) Build the 6502 project with debug option
+### Build the 6502 project with debug option
 Build the 6502 project using the [CA65 assembler](https://cc65.github.io/doc/ca65.html) with debug option.
 By specifying the debug option, symbol definitions consisting of label/address pair will be output.
 

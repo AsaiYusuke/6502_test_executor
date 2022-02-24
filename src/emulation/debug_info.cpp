@@ -8,13 +8,6 @@
 
 debug_info::debug_info(string path)
 {
-    if (path.empty())
-    {
-        omit = true;
-        return;
-    }
-    omit = false;
-
     ifstream file(path);
     if (!file.is_open())
         throw file_open_error(path);
@@ -33,11 +26,6 @@ debug_info::debug_info(string path)
     file.close();
 
     make_address_source_map();
-}
-
-bool debug_info::is_omit()
-{
-    return omit;
 }
 
 void debug_info::parse_debug_def(string line)
