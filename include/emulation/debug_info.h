@@ -3,6 +3,8 @@
 #include <map>
 #include <string>
 
+#include "emulation/debug_segment.h"
+
 using namespace std;
 
 class debug_info
@@ -10,9 +12,7 @@ class debug_info
 private:
     bool omit;
     map<int, string> source_file_map;
-    map<int, tuple<uint16_t, int, bool>> segment_map;
-    map<string, int> segment_name_id_map;
-    map<string, bool> segment_name_file_exist_map;
+    map<int, debug_segment> segment_def_map;
     map<int, pair<int, int>> span_map;
     map<int, tuple<int, int, vector<int>>> source_line_map;
 
@@ -41,8 +41,9 @@ public:
     uint16_t get_address(string label);
     bool has_write_access(uint16_t address);
     bool has_read_access(uint16_t address);
-    tuple<uint16_t, int, bool> get_segment_def(uint16_t address);
-    void add_segment_def(int id, uint16_t start, int size, bool writable);
+    debug_segment get_segment_def(uint16_t address);
+    debug_segment get_segment_def(string name);
+    void add_segment_def(int id, string name, uint16_t start, int size, bool writable, bool image_file_exist = false, int image_file_offset = 0);
     void remove_segment_def(string name);
     void remove_detected_segment(string type);
 };

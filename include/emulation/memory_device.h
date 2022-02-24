@@ -37,7 +37,6 @@ private:
     bool assert_invalid_memory;
 
     void load_rom_image(string path);
-    uint16_t memory_offset(uint16_t address);
 
 public:
     memory_device(emulation_devices *_device, args_parser *args, json config);

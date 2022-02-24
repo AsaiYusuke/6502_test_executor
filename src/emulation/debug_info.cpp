@@ -71,17 +71,31 @@ void debug_info::parse_debug_def(string line)
 
 string debug_info::get_substr(string value, string begin, string end)
 {
-    auto begin_pos = value.find(begin);
-    if (begin_pos == string::npos)
-        throw parse_ignore_entry();
+    size_t begin_pos;
+    if (begin.empty())
+        begin_pos = 0;
+    else
+    {
+        begin_pos = value.find(begin);
+        if (begin_pos == string::npos)
+            throw parse_ignore_entry();
 
-    begin_pos += begin.length();
+        begin_pos += begin.length();
+    }
 
-    auto end_pos = value.find(end, begin_pos);
-    if (end_pos == string::npos)
-        throw parse_ignore_entry();
+    size_t str_size;
+    if (end.empty())
+        str_size = string::npos;
+    else
+    {
+        str_size = value.find(end, begin_pos);
+        if (str_size == string::npos)
+            throw parse_ignore_entry();
 
-    return value.substr(begin_pos, end_pos - begin_pos);
+        str_size -= begin_pos;
+    }
+
+    return value.substr(begin_pos, str_size);
 }
 
 int debug_info::get_int_substr(string value, string begin, string end, int radix)
@@ -105,11 +119,11 @@ void debug_info::add_segment(string line)
     auto size = get_int_substr(line, ",size=0x", ",", 16);
     bool writable = (line.find(",type=rw") != string::npos);
     bool file_exist = (line.find(",oname=") != string::npos);
+    auto ooffs = 0;
+    if (file_exist)
+        ooffs = get_int_substr(line, ",ooffs=", "", 10);
 
-    add_segment_def(id, start, size, writable);
-
-    segment_name_id_map[name] = id;
-    segment_name_file_exist_map[name] = file_exist;
+    add_segment_def(id, name, start, size, writable, file_exist, ooffs);
 }
 
 void debug_info::add_span(string line)
@@ -163,7 +177,9 @@ void debug_info::make_address_source_map()
             auto span_def = span_map[span_id];
             auto segment_id = span_def.first;
             uint16_t span_addr = span_def.second;
-            uint16_t segment_addr = get<0>(segment_map[segment_id]);
+            if (segment_def_map.count(segment_id) == 0)
+                continue;
+            uint16_t segment_addr = segment_def_map.at(segment_id).get_start();
             address_source_map[segment_addr + span_addr] = make_pair(file_name, line_number);
         }
     }
@@ -195,7 +211,7 @@ uint16_t debug_info::get_address(string label)
 
 bool debug_info::has_write_access(uint16_t address)
 {
-    return get<2>(get_segment_def(address));
+    return get_segment_def(address).is_writable();
 }
 
 bool debug_info::has_read_access(uint16_t address)
@@ -204,24 +220,36 @@ bool debug_info::has_read_access(uint16_t address)
     return true;
 }
 
-tuple<uint16_t, int, bool> debug_info::get_segment_def(uint16_t address)
+debug_segment debug_info::get_segment_def(uint16_t address)
 {
-    for (auto segment_def : segment_map)
+    for (auto element : segment_def_map)
     {
-        auto start = get<0>(segment_def.second);
-        auto size = get<1>(segment_def.second);
-        if (start <= address && address < start + size)
-            return segment_def.second;
+        auto segment_def = element.second;
+        if (segment_def.contains(address))
+            return segment_def;
     }
     throw out_of_range("address=" + value_convert::to_zero_filled_hex_string(address));
 }
 
-void debug_info::add_segment_def(int id, uint16_t start, int size, bool writable)
+debug_segment debug_info::get_segment_def(string name)
+{
+    for (auto element : segment_def_map)
+    {
+        if (element.second.get_name() == name)
+        {
+            return element.second;
+        }
+    }
+    throw out_of_range("name=" + name);
+}
+
+void debug_info::add_segment_def(
+    int id, string name, uint16_t start, int size, bool writable, bool image_file_exist, int image_file_offset)
 {
     if (id < 0)
     {
         int max_id = 0;
-        for (auto element : segment_map)
+        for (auto element : segment_def_map)
         {
             if (max_id < element.first)
                 max_id = element.first;
@@ -229,13 +257,21 @@ void debug_info::add_segment_def(int id, uint16_t start, int size, bool writable
         id = max_id + 1;
     }
 
-    segment_map[id] = make_tuple(start, size, writable);
+    segment_def_map.emplace(
+        id,
+        debug_segment(
+            id,
+            name,
+            start,
+            size,
+            writable,
+            image_file_exist,
+            image_file_offset));
 }
 
 void debug_info::remove_segment_def(string name)
 {
-    segment_map.erase(segment_name_id_map[name]);
-    segment_name_id_map.erase(name);
+    segment_def_map.erase(get_segment_def(name).get_id());
 }
 
 void debug_info::remove_detected_segment(string type)
@@ -243,18 +279,14 @@ void debug_info::remove_detected_segment(string type)
     if (type != "NES")
         return;
 
-    vector<string> remove_names;
-    for (auto segment_name_def : segment_name_id_map)
+    vector<int> remove_ids;
+    for (auto element : segment_def_map)
     {
-        auto name = segment_name_def.first;
-        auto id = segment_name_def.second;
-        auto segment_def = segment_map[id];
-        if (get<0>(segment_def) != 0x0)
+        auto segment_def = element.second;
+        if (segment_def.is_nes_cpu_memory())
             continue;
-        if (!segment_name_file_exist_map[name])
-            continue;
-        remove_names.push_back(name);
+        remove_ids.push_back(element.first);
     }
-    for (auto name : remove_names)
-        remove_segment_def(name);
+    for (auto id : remove_ids)
+        segment_def_map.erase(id);
 }

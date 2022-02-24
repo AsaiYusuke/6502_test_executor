@@ -19,11 +19,6 @@ void memory_device::load_rom_image(string path)
     file.close();
 }
 
-uint16_t memory_device::memory_offset(uint16_t address)
-{
-    return address - 0x8000 + 0x10;
-}
-
 memory_device::memory_device(emulation_devices *_device, args_parser *args, json config)
 {
     device = _device;
@@ -52,8 +47,8 @@ memory_device::memory_device(emulation_devices *_device, args_parser *args, json
 
     if (config["invalidMemory"]["ignoreList"].is_null())
     {
-        debug->add_segment_def(-1, 0x100, 0xFF, true);
-        debug->add_segment_def(-1, 0x2000, 0x2020, true);
+        debug->add_segment_def(-1, "CPU_STACK", 0x100, 0xFF, true);
+        debug->add_segment_def(-1, "PORT", 0x2000, 0x2020, true);
         debug->remove_detected_segment("NES");
     }
     else
@@ -63,6 +58,7 @@ memory_device::memory_device(emulation_devices *_device, args_parser *args, json
             if (ignore_def["start"].is_object() && !ignore_def["size"].is_null())
                 debug->add_segment_def(
                     -1,
+                    "USER_INFO",
                     value_convert::get_address(device, ignore_def["start"]),
                     value_convert::parse_json_number(device, ignore_def["size"]),
                     true);
@@ -132,42 +128,31 @@ uint8_t memory_device::read(uint16_t address)
 {
     read_counts[address]++;
 
-    uint8_t val;
-    if (address >= 0x8000)
+    try
     {
-        val = rom[memory_offset(address)];
+        debug_segment segment_def = debug->get_segment_def(address);
+        if (segment_def.is_readonly())
+            return rom[segment_def.get_image_file_address(address)];
     }
-    else
+    catch(const out_of_range &e)
     {
-        if (read_sequences.count(address) > 0)
+        device->add_error_reuslt(runtime_error_type::OUT_OF_SEGMENT, e.what());
+    }
+    
+    if (read_sequences.count(address) > 0)
+    {
+        ram[address] = read_sequences[address].front();
+
+        if (read_sequences[address].size() >= 2 || !read_permanent[address])
         {
-            ram[address] = read_sequences[address].front();
+            read_sequences[address].erase(read_sequences[address].begin());
 
-            if (read_sequences[address].size() >= 2 || !read_permanent[address])
-            {
-                read_sequences[address].erase(read_sequences[address].begin());
-
-                if (read_sequences[address].size() == 0)
-                    read_sequences.erase(address);
-            }
+            if (read_sequences[address].size() == 0)
+                read_sequences.erase(address);
         }
-
-        if (assert_invalid_memory)
-        {
-            try
-            {
-                debug->has_read_access(address);
-            }
-            catch (const out_of_range &e)
-            {
-                device->add_error_reuslt(runtime_error_type::OUT_OF_SEGMENT, e.what());
-            }
-        }
-
-        val = ram[address];
     }
 
-    return val;
+    return ram[address];
 }
 
 void memory_device::write(uint16_t address, uint8_t value)
