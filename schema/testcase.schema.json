@@ -159,10 +159,8 @@
                                         "type": "string"
                                     },
                                     "detect": {
-                                        "type": "string",
-                                        "enum": [
-                                            "NES"
-                                        ]
+                                        "type": "boolean",
+                                        "default": true
                                     }
                                 },
                                 "dependencies": {
@@ -228,7 +226,7 @@
                                     "size": "$2020"
                                 },
                                 {
-                                    "detect": "NES"
+                                    "detect": true
                                 }
                             ]
                         }

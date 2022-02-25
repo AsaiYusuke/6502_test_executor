@@ -43,10 +43,10 @@
                     "size": "$2020"
                 },
                 {
-                    "name": "CHARS"
+                    "detect": true
                 },
                 {
-                    "detect": "NES"
+                    "name": "CHARS"
                 }
             ]
         }

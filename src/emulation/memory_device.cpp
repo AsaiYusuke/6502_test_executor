@@ -4,6 +4,7 @@
 #include "exception/file_open.h"
 #include "util/value_convert.h"
 #include "exception/cpu_runtime_error.h"
+#include "enum/platform_type.h"
 
 void memory_device::load_rom_image(string path)
 {
@@ -47,11 +48,13 @@ memory_device::memory_device(emulation_devices *_device, args_parser *args, json
     if (config["invalidMemory"]["ignoreList"].is_null())
     {
         debug->add_segment_def(-1, "CPU_STACK", 0x100, 0xFF, true);
-        debug->add_segment_def(-1, "PORT", 0x2000, 0x2020, true);
-        debug->remove_detected_segment("NES");
+        debug->add_segment_def(-1, "NES_PPU_PORTS", 0x2000, 0x2020, true);
+        for (auto id : get_detected_remove_segment_ids())
+            debug->remove_segment_def(id);
     }
     else
     {
+        vector<int> remove_segment_ids;
         for (auto &ignore_def : config["invalidMemory"]["ignoreList"])
         {
             if (ignore_def["start"].is_object() && !ignore_def["size"].is_null())
@@ -62,12 +65,38 @@ memory_device::memory_device(emulation_devices *_device, args_parser *args, json
                     value_convert::parse_json_number(device, ignore_def["size"]),
                     true);
             else if (ignore_def["name"].is_string())
-                debug->remove_segment_def(
-                    ignore_def["name"].get<string>());
-            else if (ignore_def["detect"].is_string())
-                debug->remove_detected_segment(ignore_def["detect"].get<string>());
+                remove_segment_ids.push_back(
+                    debug->get_segment_def(ignore_def["name"].get<string>()).get_id());
+            else if (ignore_def["detect"].is_boolean() && ignore_def["detect"].get<bool>())
+            {
+                auto ids = get_detected_remove_segment_ids();
+                remove_segment_ids.insert(
+                    remove_segment_ids.end(), ids.begin(), ids.end());
+            }
+        }
+        for (auto id : remove_segment_ids)
+        {
+            debug->remove_segment_def(id);
         }
     }
+}
+
+vector<int> memory_device::get_detected_remove_segment_ids()
+{
+    platform_type image_type;
+    if (rom[0] == 'N' && rom[1] == 'E' && rom[2] == 'S' && rom[3] == 0x1A)
+        image_type = platform_type::NES;
+
+    vector<int> remove_ids;
+
+    if (image_type == platform_type::NES)
+    {
+        for (auto element : debug->get_segment_def_map())
+            if (!element.second.is_nes_cpu_memory())
+                remove_ids.push_back(element.first);
+    }
+
+    return remove_ids;
 }
 
 void memory_device::clear()
@@ -133,12 +162,12 @@ uint8_t memory_device::read(uint16_t address)
         if (segment_def.is_readonly())
             return rom[segment_def.get_image_file_address(address)];
     }
-    catch(const cpu_runtime_error &e)
+    catch (const cpu_runtime_error &e)
     {
         // When exception occurs, it is considered RAM access.
         device->add_error_reuslt(e.get_type(), e.what());
     }
-    
+
     if (read_sequences.count(address) > 0)
     {
         ram[address] = read_sequences[address].front();

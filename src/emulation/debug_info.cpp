@@ -209,6 +209,11 @@ bool debug_info::has_read_access(uint16_t address)
     return true;
 }
 
+map<int, debug_segment> debug_info::get_segment_def_map()
+{
+    return segment_def_map;
+}
+
 debug_segment debug_info::get_segment_def(uint16_t address)
 {
     for (auto element : segment_def_map)
@@ -258,24 +263,33 @@ void debug_info::add_segment_def(
             image_file_offset));
 }
 
+void debug_info::remove_segment_def(int id)
+{
+    segment_def_map.erase(id);
+}
+
 void debug_info::remove_segment_def(string name)
 {
     segment_def_map.erase(get_segment_def(name).get_id());
 }
 
-void debug_info::remove_detected_segment(string type)
-{
-    if (type != "NES")
-        return;
+// void debug_info::remove_detected_segment()
+// {
+//     for (auto element : segment_def_map)
+//     {
+//         auto segment_def = element.second;
+//         if (segment_def.is_readonly())
 
-    vector<int> remove_ids;
-    for (auto element : segment_def_map)
-    {
-        auto segment_def = element.second;
-        if (segment_def.is_nes_cpu_memory())
-            continue;
-        remove_ids.push_back(element.first);
-    }
-    for (auto id : remove_ids)
-        segment_def_map.erase(id);
-}
+//     }
+
+//     vector<int> remove_ids;
+//     for (auto element : segment_def_map)
+//     {
+//         auto segment_def = element.second;
+//         if (segment_def.is_nes_cpu_memory())
+//             continue;
+//         remove_ids.push_back(element.first);
+//     }
+//     for (auto id : remove_ids)
+//         segment_def_map.erase(id);
+// }

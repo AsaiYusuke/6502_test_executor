@@ -40,6 +40,7 @@ private:
 
 public:
     memory_device(emulation_devices *_device, args_parser *args, json config);
+    vector<int> get_detected_remove_segment_ids();
     void clear();
     string get_source_line(uint16_t address);
     uint16_t get_address(string label);
