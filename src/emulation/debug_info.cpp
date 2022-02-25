@@ -3,8 +3,9 @@
 
 #include "emulation/debug_info.h"
 #include "exception/file_open.h"
-#include "util/value_convert.h"
 #include "exception/parse_ignore_entry.h"
+#include "exception/cpu_runtime_error.h"
+#include "util/value_convert.h"
 
 debug_info::debug_info(string path)
 {
@@ -216,7 +217,7 @@ debug_segment debug_info::get_segment_def(uint16_t address)
         if (segment_def.contains(address))
             return segment_def;
     }
-    throw out_of_range("address=" + value_convert::to_zero_filled_hex_string(address));
+    throw cpu_runtime_error(runtime_error_type::OUT_OF_SEGMENT, "address=" + value_convert::to_zero_filled_hex_string(address));
 }
 
 debug_segment debug_info::get_segment_def(string name)
@@ -228,7 +229,7 @@ debug_segment debug_info::get_segment_def(string name)
             return element.second;
         }
     }
-    throw out_of_range("name=" + name);
+    throw cpu_runtime_error(runtime_error_type::OUT_OF_SEGMENT, "name=" + name);
 }
 
 void debug_info::add_segment_def(

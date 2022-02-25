@@ -3,6 +3,7 @@
 #include "emulation/emulation_devices.h"
 #include "exception/file_open.h"
 #include "util/value_convert.h"
+#include "exception/cpu_runtime_error.h"
 
 void memory_device::load_rom_image(string path)
 {
@@ -132,9 +133,10 @@ uint8_t memory_device::read(uint16_t address)
         if (segment_def.is_readonly())
             return rom[segment_def.get_image_file_address(address)];
     }
-    catch(const out_of_range &e)
+    catch(const cpu_runtime_error &e)
     {
-        device->add_error_reuslt(runtime_error_type::OUT_OF_SEGMENT, e.what());
+        // When exception occurs, it is considered RAM access.
+        device->add_error_reuslt(e.get_type(), e.what());
     }
     
     if (read_sequences.count(address) > 0)
