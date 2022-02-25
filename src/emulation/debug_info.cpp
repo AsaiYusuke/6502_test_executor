@@ -272,24 +272,3 @@ void debug_info::remove_segment_def(string name)
 {
     segment_def_map.erase(get_segment_def(name).get_id());
 }
-
-// void debug_info::remove_detected_segment()
-// {
-//     for (auto element : segment_def_map)
-//     {
-//         auto segment_def = element.second;
-//         if (segment_def.is_readonly())
-
-//     }
-
-//     vector<int> remove_ids;
-//     for (auto element : segment_def_map)
-//     {
-//         auto segment_def = element.second;
-//         if (segment_def.is_nes_cpu_memory())
-//             continue;
-//         remove_ids.push_back(element.first);
-//     }
-//     for (auto id : remove_ids)
-//         segment_def_map.erase(id);
-// }
