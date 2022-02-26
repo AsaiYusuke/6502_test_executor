@@ -200,7 +200,7 @@ void memory_device::write(uint16_t address, uint8_t value)
                     "address=" + value_convert::to_zero_filled_hex_string(address));
             }
         }
-        catch (const out_of_range &e)
+        catch (const cpu_runtime_error &e)
         {
             device->add_error_reuslt(runtime_error_type::OUT_OF_SEGMENT, e.what());
         }
