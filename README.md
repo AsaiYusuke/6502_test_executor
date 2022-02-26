@@ -66,6 +66,7 @@ You can check the available optional arguments by displaying the help:
       -t[TEST], --test=[TEST]           (REQUIRED)
                                         Specify the path of the test scinario
                                         file.
+      -i[ID], --id=[ID]                 Specify the test ID.
       --timeout=[TIMEOUT]               Specify the timeout period before the
                                         test becomes an error.
       -q, --quiet                       Do not show any output.
