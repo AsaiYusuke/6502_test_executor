@@ -9,6 +9,8 @@ args_parser::args_parser(int argc, char *argv[])
     debug_file_path = new args::ValueFlag<string>(parser, "DEBUG", "Specify the path of the debug information file used for testing.", {'d', "debug"});
     test_file_path = new args::ValueFlag<string>(parser, "TEST", "(REQUIRED)\nSpecify the path of the test scinario file.", {'t', "test"}, args::Options::Required);
 
+    test_id = new args::ValueFlag<string>(parser, "ID", "Specify the test ID.", {'i', "id"});
+
     test_timeout = new args::ValueFlag<int>(parser, "TIMEOUT", "Specify the timeout period before the test becomes an error.", {"timeout"}, 10000);
 
     quiet = new args::Flag(parser, "quiet", "Do not show any output.", {'q', "quiet"});
@@ -52,6 +54,11 @@ string args_parser::get_debug_path()
 string args_parser::get_test_path()
 {
     return args::get(*test_file_path);
+}
+
+string args_parser::get_test_id()
+{
+    return args::get(*test_id);
 }
 
 int args_parser::get_test_timeout()

@@ -25,8 +25,11 @@ bool test::execute()
 
     for (auto &element : test_scinario["cases"].items())
     {
-        auto name = element.key();
+        auto id = element.key();
         auto testcase = element.value();
+
+        if (!args->get_test_id().empty() && args->get_test_id() != id)
+            continue;
 
         test_result result;
 
@@ -42,7 +45,7 @@ bool test::execute()
         }
 
         test_result_map[result.get_result_type()]++;
-        print_test_result(name, result);
+        print_test_result(id, result);
     }
 
     print_summary(test_result_map, test_scinario["cases"].size());
@@ -92,7 +95,7 @@ void test::print_test_result(string test_name, test_result result)
 
 void test::print_summary(map<test_result_type, int> result_map, int total)
 {
-    if (args->is_quiet() || args->is_quiet_summary())
+    if (args->is_quiet() || args->is_quiet_summary() || !args->get_test_id().empty())
         return;
 
     cout << "----------------------------------------------------------------------" << endl;

@@ -12,6 +12,8 @@ private:
     args::ValueFlag<string> *debug_file_path;
     args::ValueFlag<string> *test_file_path;
     
+    args::ValueFlag<string> *test_id;
+
     args::ValueFlag<int> *test_timeout;
 
     args::Flag *quiet;
@@ -24,6 +26,7 @@ public:
     string get_program_path();
     string get_debug_path();
     string get_test_path();
+    string get_test_id();
     int get_test_timeout();
     bool is_quiet();
     bool is_quiet_type(test_result_type type);
