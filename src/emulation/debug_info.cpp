@@ -129,7 +129,7 @@ void debug_info::add_source_line(string line)
     auto id = get_int_substr(line, "\tid=", ",", 10);
     auto file = get_int_substr(line, ",file=", ",", 10);
     auto line_number = get_int_substr(line, ",line=", ",", 10);
-    auto spans = get_substr(line, ",span=", ",");
+    auto spans = get_substr(line, ",span=", "");
 
     size_t pos;
     vector<int> span_ids;
