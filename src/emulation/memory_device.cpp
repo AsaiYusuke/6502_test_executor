@@ -27,7 +27,7 @@ memory_device::memory_device(emulation_devices *_device, args_parser *args, json
         switch (rom->detect_platform())
         {
         case platform_type::NES:
-            debug->add_segment_def(-1, "CPU_STACK", 0x100, 0xFF, true);
+            debug->add_segment_def(-1, "CPU_STACK", 0x100, 0x100, true);
             debug->add_segment_def(-1, "NES_PPU_PORTS", 0x2000, 0x2020, true);
             break;
         }
