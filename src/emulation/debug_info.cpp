@@ -107,12 +107,14 @@ void debug_info::add_segment(string line)
     auto start = get_int_substr(line, ",start=0x", ",", 16);
     auto size = get_int_substr(line, ",size=0x", ",", 16);
     bool writable = (line.find(",type=rw") != string::npos);
-    bool file_exist = (line.find(",oname=") != string::npos);
+    auto image_file_name = string();
     auto ooffs = 0;
-    if (file_exist)
+    if (line.find(",oname=\"") != string::npos)
+    {
+        image_file_name = get_substr(line, ",oname=\"", "\"");
         ooffs = get_int_substr(line, ",ooffs=", "", 10);
-
-    add_segment_def(id, name, start, size, writable, file_exist, ooffs);
+    }
+    add_segment_def(id, name, start, size, writable, image_file_name, ooffs);
 }
 
 void debug_info::add_span(string line)
@@ -238,7 +240,7 @@ debug_segment debug_info::get_segment_def(string name)
 }
 
 void debug_info::add_segment_def(
-    int id, string name, uint16_t start, int size, bool writable, bool image_file_exist, int image_file_offset)
+    int id, string name, uint16_t start, int size, bool writable, string image_file_name, int image_file_offset)
 {
     if (id < 0)
     {
@@ -259,7 +261,7 @@ void debug_info::add_segment_def(
             start,
             size,
             writable,
-            image_file_exist,
+            image_file_name,
             image_file_offset));
 }
 

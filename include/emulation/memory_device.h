@@ -10,6 +10,7 @@
 #include "args_parser.h"
 #include "memory_access.h"
 #include "debug_info.h"
+#include "emulation/rom_image.h"
 
 using namespace std;
 
@@ -22,7 +23,9 @@ class memory_device : public i_memory_access
 private:
     emulation_devices *device;
 
-    char *rom;
+    debug_info *debug;
+    rom_image *rom;
+
     map<uint16_t, uint8_t> ram;
 
     map<uint16_t, vector<uint8_t>> read_sequences;
@@ -32,11 +35,7 @@ private:
     map<uint16_t, uint8_t> read_counts;
     map<uint16_t, uint8_t> write_counts;
 
-    debug_info *debug;
-
     bool assert_invalid_memory;
-
-    void load_rom_image(string path);
 
 public:
     memory_device(emulation_devices *_device, args_parser *args, json config);

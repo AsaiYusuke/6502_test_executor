@@ -1,35 +1,11 @@
-#include <fstream>
-
 #include "emulation/emulation_devices.h"
-#include "exception/file_open.h"
 #include "util/value_convert.h"
 #include "exception/cpu_runtime_error.h"
 #include "enum/platform_type.h"
 
-void memory_device::load_rom_image(string path)
-{
-    streampos size;
-
-    ifstream file(path, ios::in | ios::binary | ios::ate);
-    if (!file.is_open())
-        throw file_open_error(path);
-
-    size = file.tellg();
-    rom = new char[size];
-    file.seekg(0, ios::beg);
-    file.read(rom, size);
-    file.close();
-}
-
 memory_device::memory_device(emulation_devices *_device, args_parser *args, json config)
 {
     device = _device;
-
-    string program_path;
-    if (config["programFile"].is_string())
-        program_path = config["programFile"].get<string>();
-    else
-        program_path = args->get_program_path();
 
     string debug_path;
     if (config["debugFile"].is_string())
@@ -37,8 +13,8 @@ memory_device::memory_device(emulation_devices *_device, args_parser *args, json
     else
         debug_path = args->get_debug_path();
 
-    load_rom_image(program_path);
     debug = new debug_info(debug_path);
+    rom = new rom_image(debug);
 
     if (config["invalidMemory"]["enable"].is_null())
         assert_invalid_memory = true;
@@ -83,19 +59,14 @@ memory_device::memory_device(emulation_devices *_device, args_parser *args, json
 
 vector<int> memory_device::get_detected_remove_segment_ids()
 {
-    platform_type image_type;
-    if (rom[0] == 'N' && rom[1] == 'E' && rom[2] == 'S' && rom[3] == 0x1A)
-        image_type = platform_type::NES;
-
     vector<int> remove_ids;
-
-    if (image_type == platform_type::NES)
+    switch (rom->detect_platform())
     {
+    case platform_type::NES:
         for (auto element : debug->get_segment_def_map())
             if (!element.second.is_nes_cpu_memory())
                 remove_ids.push_back(element.first);
     }
-
     return remove_ids;
 }
 
@@ -160,7 +131,10 @@ uint8_t memory_device::read(uint16_t address)
     {
         debug_segment segment_def = debug->get_segment_def(address);
         if (segment_def.is_readonly())
-            return rom[segment_def.get_image_file_address(address)];
+        {
+            auto image = rom->get(segment_def.get_id());
+            return image[segment_def.get_image_file_address(address)];
+        }
     }
     catch (const cpu_runtime_error &e)
     {

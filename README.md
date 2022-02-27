@@ -15,8 +15,8 @@ mkdir -p build
 ca65 --cpu 6502 --target nes --debug-info -o build/example.o src/example.asm
 mkdir -p dist
 ld65  -o dist/example.nes --dbgfile dist/example.dbg --config cfg/nes.cfg --obj build/example.o
-../6502_tester -p dist/example.nes -d dist/example.dbg --quiet-ok --quiet-summary -t test/ok/customize.configurations.test.json
-../6502_tester -p dist/example.nes -d dist/example.dbg --quiet-ok --quiet-summary -t test/ok/error.timeout.test.json
+../6502_tester -d dist/example.dbg --quiet-ok --quiet-summary -t test/ok/customize.configurations.test.json
+../6502_tester -d dist/example.dbg --quiet-ok --quiet-summary -t test/ok/error.timeout.test.json
 :
 All tests passed.
 ```
@@ -42,10 +42,10 @@ The tool also provides a [JSON Schema](https://json-schema.org/) document that m
 If you use [Visual Studio Code](https://code.visualstudio.com/), it will tell you about formatting error based on JSON Schema without any extensions.
 
 ### Execute tester
-Run the tool by specifying the program image file, debug information file, and test scinario file:
+Run the tool by specifying the debug information file, and test scinario file:
 
 ```
-6502_tester -p <program iamge> -d <debug information> -t <test scinario>
+6502_tester -d <debug information> -t <test scinario>
 ```
 
 You can check the available optional arguments by displaying the help:
@@ -59,8 +59,6 @@ You can check the available optional arguments by displaying the help:
   OPTIONS:
 
       -h, --help                        Show this help menu.
-      -p[PROGRAM], --program=[PROGRAM]  Specify the path of the program image
-                                        file to be tested.
       -d[DEBUG], --debug=[DEBUG]        Specify the path of the debug
                                         information file used for testing.
       -t[TEST], --test=[TEST]           (REQUIRED)

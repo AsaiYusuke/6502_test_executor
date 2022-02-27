@@ -24,7 +24,6 @@
         }
     },
     "config": {
-        "programFile": "dist/example.nes",
         "debugFile": "dist/example.dbg",
         "timeout": 10000,
         "invalidMemory": {

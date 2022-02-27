@@ -5,5 +5,7 @@ using namespace std;
 enum class platform_type
 {
     // NES
-    NES
+    NES,
+    // UNKNOWN
+    UNKNOWN
 };

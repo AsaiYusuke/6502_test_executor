@@ -8,10 +8,9 @@ using namespace std;
 class args_parser
 {
 private:
-    args::ValueFlag<string> *program_file_path;
     args::ValueFlag<string> *debug_file_path;
     args::ValueFlag<string> *test_file_path;
-    
+
     args::ValueFlag<string> *test_id;
 
     args::ValueFlag<int> *test_timeout;
@@ -23,7 +22,6 @@ private:
 
 public:
     args_parser(int argc, char *argv[]);
-    string get_program_path();
     string get_debug_path();
     string get_test_path();
     string get_test_id();

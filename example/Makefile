@@ -44,10 +44,10 @@ $(TEST_EXEC) :
 	make -C ..
 
 $(TEST_OK_DIR)/%.test : $(TEST_OK_DIR)/%.test.json
-	$(TEST_EXEC) -p $(TARGET) -d $(DEBUG) --quiet-ok --quiet-summary -t $<
+	$(TEST_EXEC) -d $(DEBUG) --quiet-ok --quiet-summary -t $<
 
 $(TEST_FAIL_DIR)/%.test : $(TEST_FAIL_DIR)/%.test.json
-	$(TEST_EXEC) -p $(TARGET) -d $(DEBUG) --quiet-fail --quiet-summary -t $< && { exit 1; } || { exit 0; }
+	$(TEST_EXEC) -d $(DEBUG) --quiet-fail --quiet-summary -t $< && { exit 1; } || { exit 0; }
 
 clean :
 	rm -rf $(BUILD_DIR)

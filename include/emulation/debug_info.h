@@ -2,6 +2,7 @@
 
 #include <map>
 #include <string>
+#include <vector>
 
 #include "emulation/debug_segment.h"
 
@@ -42,7 +43,7 @@ public:
     map<int, debug_segment> get_segment_def_map();
     debug_segment get_segment_def(uint16_t address);
     debug_segment get_segment_def(string name);
-    void add_segment_def(int id, string name, uint16_t start, int size, bool writable, bool image_file_exist = false, int image_file_offset = 0);
+    void add_segment_def(int id, string name, uint16_t start, int size, bool writable, string image_file_name = string(), int image_file_offset = 0);
     void remove_segment_def(int id);
     void remove_segment_def(string name);
 };

@@ -100,11 +100,6 @@
                     "default": 10000,
                     "minimum": 1
                 },
-                "programFile": {
-                    "title": "Program file path",
-                    "description": "Program file path specifies the path of the program image file to be tested.",
-                    "type": "string"
-                },
                 "debugFile": {
                     "title": "Debug file path",
                     "description": "Debug file path specifies the path of the debug information file used for testing.",
