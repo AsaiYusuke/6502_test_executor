@@ -21,16 +21,21 @@ memory_device::memory_device(emulation_devices *_device, args_parser *args, json
     else
         assert_invalid_memory = config["invalidMemory"]["enable"].get<bool>();
 
+    vector<int> remove_segment_ids;
     if (config["invalidMemory"]["ignoreList"].is_null())
     {
-        debug->add_segment_def(-1, "CPU_STACK", 0x100, 0xFF, true);
-        debug->add_segment_def(-1, "NES_PPU_PORTS", 0x2000, 0x2020, true);
-        for (auto id : get_detected_remove_segment_ids())
-            debug->remove_segment_def(id);
+        switch (rom->detect_platform())
+        {
+        case platform_type::NES:
+            debug->add_segment_def(-1, "CPU_STACK", 0x100, 0xFF, true);
+            debug->add_segment_def(-1, "NES_PPU_PORTS", 0x2000, 0x2020, true);
+            break;
+        }
+
+        remove_segment_ids = get_detected_remove_segment_ids();
     }
     else
     {
-        vector<int> remove_segment_ids;
         for (auto &ignore_def : config["invalidMemory"]["ignoreList"])
         {
             if (ignore_def["start"].is_object() && !ignore_def["size"].is_null())
@@ -50,11 +55,9 @@ memory_device::memory_device(emulation_devices *_device, args_parser *args, json
                     remove_segment_ids.end(), ids.begin(), ids.end());
             }
         }
-        for (auto id : remove_segment_ids)
-        {
-            debug->remove_segment_def(id);
-        }
     }
+    for (auto id : remove_segment_ids)
+        debug->remove_segment_def(id);
 }
 
 vector<int> memory_device::get_detected_remove_segment_ids()
@@ -66,6 +69,7 @@ vector<int> memory_device::get_detected_remove_segment_ids()
         for (auto element : debug->get_segment_def_map())
             if (!element.second.is_nes_cpu_memory())
                 remove_ids.push_back(element.first);
+        break;
     }
     return remove_ids;
 }
