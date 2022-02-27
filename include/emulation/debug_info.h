@@ -11,6 +11,7 @@ using namespace std;
 class debug_info
 {
 private:
+    string path;
     map<int, string> source_file_map;
     map<int, debug_segment> segment_def_map;
     map<int, pair<int, int>> span_map;
@@ -34,6 +35,7 @@ private:
 
 public:
     debug_info(string debug_path);
+    string get_path();
     string get_source_line(uint16_t address);
     bool has_address(string label);
     string get_label(uint16_t address);

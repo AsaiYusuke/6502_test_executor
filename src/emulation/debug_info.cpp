@@ -7,8 +7,10 @@
 #include "exception/cpu_runtime_error.h"
 #include "util/value_convert.h"
 
-debug_info::debug_info(string path)
+debug_info::debug_info(string _path)
 {
+    path = _path;
+
     ifstream file(path);
     if (!file.is_open())
         throw file_open_error(path);
@@ -27,6 +29,11 @@ debug_info::debug_info(string path)
     file.close();
 
     make_address_source_map();
+}
+
+string debug_info::get_path()
+{
+    return path;
 }
 
 void debug_info::parse_debug_def(string line)

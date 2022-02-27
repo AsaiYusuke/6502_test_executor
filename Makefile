@@ -18,7 +18,7 @@ JSON_INC_DIR	:=	../json/single_include
 JSON_HEADER		:=	$(JSON_INC_DIR)/nlohmann/json.hpp
 JSON_URL		:=	https://github.com/nlohmann/json.git
 
-CFLAGS			:=	--std=c++11 -I $(INC_DIR) -I $(ARGS_INC_DIR) -I $(JSON_INC_DIR) -g
+CFLAGS			:=	--std=c++17 -I $(INC_DIR) -I $(ARGS_INC_DIR) -I $(JSON_INC_DIR) -g
 
 .PHONY : all clean test
 
