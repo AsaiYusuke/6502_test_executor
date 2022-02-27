@@ -11,12 +11,14 @@ using namespace std;
 class rom_image
 {
 private:
-    map<int, char *> rom_map;
+    map<int, int> segment_id_image_id_map;
+    vector<char *> images;
+    map<string, int> image_name_image_id_map;
 
     void load_rom_image(debug_segment segment_def);
 
 public:
     rom_image(debug_info *debug);
     platform_type detect_platform();
-    char *get(int id);
+    char *get(int segment_id);
 };
