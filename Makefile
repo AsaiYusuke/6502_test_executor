@@ -20,9 +20,9 @@ JSON_URL		:=	https://github.com/nlohmann/json.git
 
 CFLAGS			:=	--std=c++11 -I $(INC_DIR) -I $(ARGS_INC_DIR) -I $(JSON_INC_DIR) -g
 
-.PHONY : all clean
+.PHONY : all clean test
 
-all: $(BUILD_DIRS) $(TARGET)
+all: $(BUILD_DIRS) $(TARGET) test
 
 $(BUILD_DIRS) : % :
 	mkdir -p $@
@@ -38,6 +38,9 @@ $(ARGS_HEADER) :
 
 $(JSON_HEADER) :
 	(cd .. ; git clone $(JSON_URL))
+
+test :
+	make -C example
 
 clean :
 	rm -rf $(BUILD_DIR)
