@@ -12,6 +12,8 @@ void emulation_devices::clear(uint16_t target_program_counter)
 {
     memory->clear();
     cpu->clear(target_program_counter);
+
+    errors.clear();
 }
 
 cpu_device *emulation_devices::get_cpu()

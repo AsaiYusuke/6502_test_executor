@@ -17,13 +17,12 @@ cpu_device::cpu_device(emulation_devices *_device, args_parser *args, json confi
 void cpu_device::clear(uint16_t target_program_counter)
 {
     cpu->Reset();
-
-    cpu->setPC(target_program_counter);
-    cpu->StackPush(0xFF);
-    cpu->StackPush(0xFE);
+    cpu->SetPC(target_program_counter);
+    cpu->StackPush((TEST_RETURN_ADDRESS - 1) >> 8);
+    cpu->StackPush((TEST_RETURN_ADDRESS - 1) & 0xFF);
 
     call_stack.clear();
-    call_stack.push_back(0xFFFF);
+    call_stack.push_back(TEST_RETURN_ADDRESS);
     call_stack.push_back(target_program_counter);
 }
 
@@ -36,11 +35,11 @@ void cpu_device::execute()
     {
         bool isCallInstr = false;
 
-        currentPC = cpu->getPC();
+        currentPC = cpu->GetPC();
 
         if (cpu->isCallInstr())
         {
-            call_stack.push_back(cpu->getPC());
+            call_stack.push_back(cpu->GetPC());
             isCallInstr = true;
         }
         else if (cpu->isReturnInstr())
@@ -53,9 +52,9 @@ void cpu_device::execute()
         cpu->Run(cyclesRemaining, cycleCount, cpu->INST_COUNT);
 
         if (isCallInstr)
-            call_stack.push_back(cpu->getPC());
+            call_stack.push_back(cpu->GetPC());
 
-    } while (cpu->getPC() != 0xFFFF && ++count < get_timeout_threshold());
+    } while (cpu->GetPC() != TEST_RETURN_ADDRESS && ++count < get_timeout_threshold());
 
     if (count >= get_timeout_threshold())
         device->add_error_reuslt(runtime_error_type::TIMEOUT);
@@ -71,13 +70,13 @@ uint8_t cpu_device::get_register(register_type type)
     switch (type)
     {
     case register_type::A:
-        return cpu->getA();
+        return cpu->GetA();
     case register_type::X:
-        return cpu->getX();
+        return cpu->GetX();
     case register_type::Y:
-        return cpu->getY();
+        return cpu->GetY();
     case register_type::P:
-        return cpu->getP();
+        return cpu->GetP();
     }
     return 0;
 }
@@ -87,32 +86,32 @@ void cpu_device::set_register(register_type type, uint8_t value)
     switch (type)
     {
     case register_type::A:
-        return cpu->setA(value);
+        return cpu->SetResetA(value);
     case register_type::X:
-        return cpu->setX(value);
+        return cpu->SetResetX(value);
     case register_type::Y:
-        return cpu->setY(value);
+        return cpu->SetResetY(value);
     case register_type::P:
-        return cpu->setP(value);
+        return cpu->SetResetP(value);
     }
 }
 
 void cpu_device::print()
 {
     printf("Register result:\n");
-    printf("  A   $%X\n", cpu->getA());
-    printf("  X   $%X\n", cpu->getX());
-    printf("  Y   $%X\n", cpu->getY());
+    printf("  A   $%X\n", cpu->GetA());
+    printf("  X   $%X\n", cpu->GetX());
+    printf("  Y   $%X\n", cpu->GetY());
     printf("  P   $%X (N: %s, O: %s, B: %s, D: %s, I: %s, Z: %s, C: %s)\n",
-           cpu->getP(),
-           (cpu->getP() & NEGATIVE) > 0 ? "True" : "False",
-           (cpu->getP() & OVERFLOW) > 0 ? "True" : "False",
-           (cpu->getP() & BREAK) > 0 ? "True" : "False",
-           (cpu->getP() & DECIMAL) > 0 ? "True" : "False",
-           (cpu->getP() & INTERRUPT) > 0 ? "True" : "False",
-           (cpu->getP() & ZERO) > 0 ? "True" : "False",
-           (cpu->getP() & CARRY) > 0 ? "True" : "False");
-    printf("  PC  $%04X\n", cpu->getPC());
+           cpu->GetP(),
+           (cpu->GetP() & NEGATIVE) > 0 ? "True" : "False",
+           (cpu->GetP() & OVERFLOW) > 0 ? "True" : "False",
+           (cpu->GetP() & BREAK) > 0 ? "True" : "False",
+           (cpu->GetP() & DECIMAL) > 0 ? "True" : "False",
+           (cpu->GetP() & INTERRUPT) > 0 ? "True" : "False",
+           (cpu->GetP() & ZERO) > 0 ? "True" : "False",
+           (cpu->GetP() & CARRY) > 0 ? "True" : "False");
+    printf("  PC  $%04X\n", cpu->GetPC());
 }
 
 vector<uint16_t> cpu_device::get_call_stack()

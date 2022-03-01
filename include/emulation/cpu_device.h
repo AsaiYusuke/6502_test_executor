@@ -9,6 +9,8 @@
 #include "enum/runtime_error_type.h"
 #include "runtime_error_result.h"
 
+#define TEST_RETURN_ADDRESS  0xFFFF
+
 using namespace std;
 
 using json = nlohmann::json;

@@ -1,6 +1,6 @@
 #include <algorithm>
 
-#include "emulation/mos6502.h"
+#include "mos6502.h"
 
 mos6502::mos6502(i_memory_access *memory_access)
 {
@@ -819,19 +819,24 @@ uint16_t mos6502::Addr_INY()
 
 void mos6502::Reset()
 {
-	A = 0x00;
-	Y = 0x00;
-	X = 0x00;
+	A = reset_A;
+	Y = reset_Y;
+	X = reset_X;
 
 	pc = (memory_access->read(rstVectorH) << 8) + memory_access->read(rstVectorL); // load PC from reset vector
 
-	sp = 0xFD;
+	sp = reset_sp;
 
-	status |= CONSTANT;
+	status = reset_status | CONSTANT | BREAK;
 
 	illegalOpcode = false;
 
 	return;
+}
+
+void mos6502::SetPC(uint16_t address)
+{
+	pc = address;
 }
 
 void mos6502::StackPush(uint8_t byte)
@@ -852,10 +857,10 @@ void mos6502::IRQ()
 {
 	if(!IF_INTERRUPT())
 	{
-		SET_BREAK(0);
+		//SET_BREAK(0);
 		StackPush((pc >> 8) & 0xFF);
 		StackPush(pc & 0xFF);
-		StackPush(status);
+		StackPush((status & ~BREAK) | CONSTANT);
 		SET_INTERRUPT(1);
 		pc = (memory_access->read(irqVectorH) << 8) + memory_access->read(irqVectorL);
 	}
@@ -864,10 +869,10 @@ void mos6502::IRQ()
 
 void mos6502::NMI()
 {
-	SET_BREAK(0);
+	//SET_BREAK(0);
 	StackPush((pc >> 8) & 0xFF);
 	StackPush(pc & 0xFF);
-	StackPush(status);
+	StackPush((status & ~BREAK) | CONSTANT);
 	SET_INTERRUPT(1);
 	pc = (memory_access->read(nmiVectorH) << 8) + memory_access->read(nmiVectorL);
 	return;
@@ -881,24 +886,107 @@ void mos6502::Run(
 	uint8_t opcode;
 	Instr instr;
 
-	// fetch
-	opcode = memory_access->read(pc++);
+	while(cyclesRemaining > 0 && !illegalOpcode)
+	{
+		// fetch
+		opcode = memory_access->read(pc++);
 
-	// decode
-	instr = InstrTable[opcode];
+		// decode
+		instr = InstrTable[opcode];
 
-	// execute
-	Exec(instr);
-	cycleCount += instr.cycles;
-	cyclesRemaining -=
-		cycleMethod == CYCLE_COUNT        ? instr.cycles
-		/* cycleMethod == INST_COUNT */   : 1;
+		// execute
+		Exec(instr);
+		cycleCount += instr.cycles;
+		cyclesRemaining -=
+			cycleMethod == CYCLE_COUNT        ? instr.cycles
+			/* cycleMethod == INST_COUNT */   : 1;
+	}
 }
 
 void mos6502::Exec(Instr i)
 {
 	uint16_t src = (this->*i.addr)();
 	(this->*i.code)(src);
+}
+
+uint16_t mos6502::GetPC()
+{
+    return pc;
+}
+
+uint8_t mos6502::GetS()
+{
+    return sp;
+}
+
+uint8_t mos6502::GetP()
+{
+    return status;
+}
+
+uint8_t mos6502::GetA()
+{
+    return A;
+}
+
+uint8_t mos6502::GetX()
+{
+    return X;
+}
+
+uint8_t mos6502::GetY()
+{
+    return Y;
+}
+
+void mos6502::SetResetS(uint8_t value)
+{
+    reset_sp = value;
+}
+
+void mos6502::SetResetP(uint8_t value)
+{
+    reset_status = value | CONSTANT | BREAK;
+}
+
+void mos6502::SetResetA(uint8_t value)
+{
+    reset_A = value;
+}
+
+void mos6502::SetResetX(uint8_t value)
+{
+    reset_X = value;
+}
+
+void mos6502::SetResetY(uint8_t value)
+{
+    reset_Y = value;
+}
+
+uint8_t mos6502::GetResetS()
+{
+    return reset_sp;
+}
+
+uint8_t mos6502::GetResetP()
+{
+    return reset_status;
+}
+
+uint8_t mos6502::GetResetA()
+{
+    return reset_A;
+}
+
+uint8_t mos6502::GetResetX()
+{
+    return reset_X;
+}
+
+uint8_t mos6502::GetResetY()
+{
+    return reset_Y;
 }
 
 void mos6502::Op_ILLEGAL(uint16_t src)
@@ -1004,7 +1092,7 @@ void mos6502::Op_BIT(uint16_t src)
 	uint8_t m = memory_access->read(src);
 	uint8_t res = m & A;
 	SET_NEGATIVE(res & 0x80);
-	status = (status & 0x3F) | (uint8_t)(m & 0xC0);
+	status = (status & 0x3F) | (uint8_t)(m & 0xC0) | CONSTANT | BREAK;
 	SET_ZERO(!res);
 	return;
 }
@@ -1041,7 +1129,7 @@ void mos6502::Op_BRK(uint16_t src)
 	pc++;
 	StackPush((pc >> 8) & 0xFF);
 	StackPush(pc & 0xFF);
-	StackPush(status | BREAK);
+	StackPush(status | CONSTANT | BREAK);
 	SET_INTERRUPT(1);
 	pc = (memory_access->read(irqVectorH) << 8) + memory_access->read(irqVectorL);
 	return;
@@ -1261,7 +1349,7 @@ void mos6502::Op_PHA(uint16_t src)
 
 void mos6502::Op_PHP(uint16_t src)
 {
-	StackPush(status | BREAK);
+	StackPush(status | CONSTANT | BREAK);
 	return;
 }
 
@@ -1275,8 +1363,8 @@ void mos6502::Op_PLA(uint16_t src)
 
 void mos6502::Op_PLP(uint16_t src)
 {
-	status = StackPop();
-	SET_CONSTANT(1);
+	status = StackPop() | CONSTANT | BREAK;
+	//SET_CONSTANT(1);
 	return;
 }
 
@@ -1336,7 +1424,7 @@ void mos6502::Op_RTI(uint16_t src)
 {
 	uint8_t lo, hi;
 
-	status = StackPop();
+	status = StackPop() | CONSTANT | BREAK;
 
 	lo = StackPop();
 	hi = StackPop();
@@ -1462,56 +1550,6 @@ void mos6502::Op_TYA(uint16_t src)
 	SET_ZERO(!m);
 	A = m;
 	return;
-}
-
-uint8_t mos6502::getA()
-{
-	return A;
-}
-
-void mos6502::setA(uint8_t value)
-{
-	A = value;
-}
-
-uint8_t mos6502::getX()
-{
-	return X;
-}
-
-void mos6502::setX(uint8_t value)
-{
-	X = value;
-}
-
-uint8_t mos6502::getY()
-{
-	return Y;
-}
-
-void mos6502::setY(uint8_t value)
-{
-	Y= value;
-}
-
-uint16_t mos6502::getPC()
-{
-	return pc;
-}
-
-void mos6502::setPC(uint16_t value)
-{
-	pc = value;
-}
-
-uint8_t mos6502::getP()
-{
-	return status;
-}
-
-void mos6502::setP(uint8_t value)
-{
-	status = value;
 }
 
 bool mos6502::isCallInstr()

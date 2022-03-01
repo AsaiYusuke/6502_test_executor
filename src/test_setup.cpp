@@ -7,8 +7,6 @@ test_setup::test_setup(emulation_devices *device, json condition_json, json targ
 
 void test_setup::execute()
 {
-    get_device()->clear(get_pc_register_def()->get_address());
-
     cpu_device *cpu_dev = get_device()->get_cpu();
     for (auto register_def : get_register_defs())
         cpu_dev->set_register(register_def.get_type(), register_def.get_value());
@@ -17,6 +15,8 @@ void test_setup::execute()
     for (auto status_flag_def : get_status_flag_defs())
         status_bits |= ((uint8_t)status_flag_def.get_type() * status_flag_def.get_value());
     cpu_dev->set_register(register_type::P, status_bits);
+
+    get_device()->clear(get_pc_register_def()->get_address());
 
     memory_device *mem_dev = get_device()->get_memory();
     for (auto memory_def : get_memory_defs())

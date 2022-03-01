@@ -3,3 +3,4 @@
 example/build
 example/dist
 build
+third_party/mos6502/mos6502.o

@@ -9,8 +9,7 @@
 
 #include <iostream>
 #include <stdint.h>
-#include <vector>
-#include "memory_access.h"
+#include "emulation/memory_access.h"
 using namespace std;
 
 #define NEGATIVE  0x80
@@ -24,8 +23,8 @@ using namespace std;
 
 #define SET_NEGATIVE(x) (x ? (status |= NEGATIVE) : (status &= (~NEGATIVE)) )
 #define SET_OVERFLOW(x) (x ? (status |= OVERFLOW) : (status &= (~OVERFLOW)) )
-#define SET_CONSTANT(x) (x ? (status |= CONSTANT) : (status &= (~CONSTANT)) )
-#define SET_BREAK(x) (x ? (status |= BREAK) : (status &= (~BREAK)) )
+//#define SET_CONSTANT(x) (x ? (status |= CONSTANT) : (status &= (~CONSTANT)) )
+//#define SET_BREAK(x) (x ? (status |= BREAK) : (status &= (~BREAK)) )
 #define SET_DECIMAL(x) (x ? (status |= DECIMAL) : (status &= (~DECIMAL)) )
 #define SET_INTERRUPT(x) (x ? (status |= INTERRUPT) : (status &= (~INTERRUPT)) )
 #define SET_ZERO(x) (x ? (status |= ZERO) : (status &= (~ZERO)) )
@@ -45,6 +44,13 @@ using namespace std;
 class mos6502
 {
 private:
+    // register reset values
+    uint8_t reset_A = 0x00;
+    uint8_t reset_X = 0x00;
+    uint8_t reset_Y = 0x00;
+    uint8_t reset_sp = 0xFD;
+    uint8_t reset_status = CONSTANT;
+
 	// registers
 	uint8_t A; // accumulator
 	uint8_t X; // X-index
@@ -168,7 +174,18 @@ private:
 	static const uint16_t nmiVectorH = 0xFFFB;
 	static const uint16_t nmiVectorL = 0xFFFA;
 
-    i_memory_access *memory_access;
+	// // read/write callbacks
+	// typedef void (*BusWrite)(uint16_t, uint8_t);
+	// typedef uint8_t (*BusRead)(uint16_t);
+	// BusRead Read;
+	// BusWrite Write;
+
+	// // stack operations
+	// inline void StackPush(uint8_t byte);
+	// inline uint8_t StackPop();
+
+	i_memory_access *memory_access;
+
 	vector<CodeExec> callInstr{
 		&mos6502::Op_BRK,
 		&mos6502::Op_JSR
@@ -191,17 +208,24 @@ public:
 		int32_t cycles,
 		uint64_t& cycleCount,
 		CycleMethod cycleMethod = CYCLE_COUNT);
+    uint16_t GetPC();
+    uint8_t GetS();
+    uint8_t GetP();
+    uint8_t GetA();
+    uint8_t GetX();
+    uint8_t GetY();
+    void SetResetS(uint8_t value);
+    void SetResetP(uint8_t value);
+    void SetResetA(uint8_t value);
+    void SetResetX(uint8_t value);
+    void SetResetY(uint8_t value);
+    uint8_t GetResetS();
+    uint8_t GetResetP();
+    uint8_t GetResetA();
+    uint8_t GetResetX();
+    uint8_t GetResetY();
 
-	uint8_t getA();
-	void setA(uint8_t value);
-	uint8_t getX();
-	void setX(uint8_t value);
-	uint8_t getY();
-	void setY(uint8_t value);
-	uint16_t getPC();
-	void setPC(uint16_t value);
-	uint8_t getP();
-	void setP(uint8_t value);
+	void SetPC(uint16_t address);
 	void StackPush(uint8_t byte);
 	uint8_t StackPop();
 	bool isCallInstr();
