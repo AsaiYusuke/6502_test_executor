@@ -43,7 +43,6 @@ public:
     void clear();
     string get_source_line(uint16_t address);
     uint16_t get_address(string label);
-    string get_label(uint16_t address);
     void set_read_sequence(uint16_t address, vector<uint8_t> sequence, bool permanent);
     vector<uint8_t> get_write_sequence(uint16_t address, size_t length);
     uint8_t get_read_count(uint16_t address);

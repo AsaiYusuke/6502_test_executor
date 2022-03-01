@@ -96,11 +96,6 @@ uint16_t memory_device::get_address(string label)
     return debug->get_address(label);
 }
 
-string memory_device::get_label(uint16_t address)
-{
-    return debug->get_label(address);
-}
-
 void memory_device::set_read_sequence(uint16_t address, vector<uint8_t> sequence, bool permanent)
 {
     read_sequences[address] = sequence;
