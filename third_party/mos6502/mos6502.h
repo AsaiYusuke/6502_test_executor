@@ -9,6 +9,7 @@
 
 #include <iostream>
 #include <stdint.h>
+#include <vector>
 #include "emulation/memory_access.h"
 using namespace std;
 

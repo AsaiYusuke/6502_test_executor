@@ -45,6 +45,7 @@ test :
 
 clean :
 	rm -rf $(BUILD_DIR)
+	-rm $(MOS6502_OBJ)
 	-rm $(TARGET)
 
 $(foreach SOURCE,$(SOURCES),$(eval $(subst \,,$(shell $(CXX) $(CFLAGS) -MM $(SOURCE) | sed -e 's/^\([^ ]*\)\.o:/$(BUILD_DIR)\/\1.o:/'))))
