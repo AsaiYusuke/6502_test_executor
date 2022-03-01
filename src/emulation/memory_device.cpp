@@ -206,7 +206,7 @@ void memory_device::print()
             if (max_segment_len < length)
                 max_segment_len = length;
         }
-        catch (const exception)
+        catch (const cpu_runtime_error)
         {
         }
     }
@@ -223,12 +223,24 @@ void memory_device::print()
     {
         uint16_t address = ram_entry.first;
         uint8_t value = ram_entry.second;
+        string segment_name = "";
+        string segment_start = "     ";
+        try
+        {
+            auto segment_def = debug->get_segment_def(address);
+            segment_name = segment_def.get_name();
+            segment_start = value_convert::to_zero_filled_hex_string(segment_def.get_start());
+        }
+        catch(const cpu_runtime_error)
+        {
+        }
+        
         printf(
-            "  $%04X    %-*s ($%04X)  %-*s  $%X\n",
+            "  $%04X    %-*s (%s)  %-*s  $%X\n",
             address,
             max_segment_len,
-            debug->get_segment_def(address).get_name().c_str(),
-            debug->get_segment_def(address).get_start(),
+            segment_name.c_str(),
+            segment_start.c_str(),
             max_label_len,
             debug->get_label(address).c_str(),
             value);
