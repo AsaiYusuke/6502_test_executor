@@ -1,9 +1,11 @@
 # 6502 Unit Test executor
 This tool enables [unit testing](https://en.wikipedia.org/wiki/Unit_testing) for 6502 assembly programs on a cross-platform basis.
 
-This project is a fork of the following project:
-- [gianlucag's 6502 emulator](https://github.com/gianlucag/mos6502)
+This project uses following project:
+- [Gianluca Ghettini's 6502 emulator](https://github.com/gianlucag/mos6502)
   - [Erik Lothe's 6502 Unit test executor](https://github.com/89erik/6502_test_executor)
+- [Taylor C. Richberger's args](https://github.com/Taywee/args)
+- [Niels Lohmann's JSON for Modern C++](https://github.com/nlohmann/json)
 
 ## Getting started
 [A simple example project](https://github.com/AsaiYusuke/6502_test_executor/tree/master/example) that gives you everything you need for this tool is available.
