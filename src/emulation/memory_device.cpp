@@ -186,22 +186,51 @@ void memory_device::print()
 {
     printf("MEMORY result:\n");
 
-    int max_length = 0;
+    int max_label_len = 0;
     for (auto ram_entry : ram)
     {
         int length = debug->get_label(ram_entry.first).length();
-        if (max_length < length)
-            max_length = length;
+        if (max_label_len < length)
+            max_label_len = length;
     }
-    if (max_length < 5)
-        max_length = 5;
+    if (max_label_len < 5)
+        max_label_len = 5;
 
-    printf("  Address  %-*s  Value\n", max_length, "Label");
-    printf("  -------  %-*s  -----\n", max_length, "-----");
+    int max_segment_len = 0;
     for (auto ram_entry : ram)
     {
-        uint16_t k = ram_entry.first;
-        uint8_t v = ram_entry.second;
-        printf("  $%04X    %-*s  $%X\n", k, max_length, debug->get_label(k).c_str(), v);
+        uint16_t address = ram_entry.first;
+        try
+        {
+            int length = debug->get_segment_def(address).get_name().length();
+            if (max_segment_len < length)
+                max_segment_len = length;
+        }
+        catch (const exception)
+        {
+        }
+    }
+    if (max_segment_len < 7)
+        max_segment_len = 7;
+
+    printf("  Address  %-*s  %-*s  Value\n", max_segment_len + 8, "Segment", max_label_len, "Label");
+    printf(
+        "  -------  %-*s  %-*s  -----\n",
+        max_segment_len, string("------------------------").substr(0, max_segment_len + 8).c_str(),
+        max_label_len, string("------------------------").substr(0, max_label_len).c_str());
+
+    for (auto ram_entry : ram)
+    {
+        uint16_t address = ram_entry.first;
+        uint8_t value = ram_entry.second;
+        printf(
+            "  $%04X    %-*s ($%04X)  %-*s  $%X\n",
+            address,
+            max_segment_len,
+            debug->get_segment_def(address).get_name().c_str(),
+            debug->get_segment_def(address).get_start(),
+            max_label_len,
+            debug->get_label(address).c_str(),
+            value);
     }
 }
