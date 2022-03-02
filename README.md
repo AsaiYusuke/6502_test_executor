@@ -1,14 +1,9 @@
 # 6502 Unit Test executor
 This tool enables [unit testing](https://en.wikipedia.org/wiki/Unit_testing) for 6502 assembly programs on a cross-platform basis.
 
-This project uses following project:
-- [Gianluca Ghettini's 6502 emulator](https://github.com/gianlucag/mos6502)
-  - [Erik Lothe's 6502 Unit test executor](https://github.com/89erik/6502_test_executor)
-- [Taylor C. Richberger's args](https://github.com/Taywee/args)
-- [Niels Lohmann's JSON for Modern C++](https://github.com/nlohmann/json)
-
 ## Getting started
-[A simple example project](https://github.com/AsaiYusuke/6502_test_executor/tree/master/example) that gives you everything you need for this tool is available.
+[A simple example project](https://github.com/AsaiYusuke/6502_test_executor/tree/master/example) has everything you need for this tool.
+
 
 ```
 # cd example
@@ -25,9 +20,8 @@ All tests passed.
 
 ## How to use
 
-### Build the 6502 project with debug option
-Build the 6502 project using the [CA65 assembler](https://cc65.github.io/doc/ca65.html) with debug option.
-By specifying the debug option, symbol definitions consisting of label/address pair will be output.
+### Enable debug option
+Build your 6502 project using [CA65 assembler](https://cc65.github.io/doc/ca65.html)/[LD65 linker](https://cc65.github.io/doc/ld65.html) with *debug information generation* enabled.
 
 ### Create test scinario files
 Create test scinario files containing the three key items in JSON format:
@@ -44,13 +38,13 @@ The tool also provides a [JSON Schema](https://json-schema.org/) document that m
 If you use [Visual Studio Code](https://code.visualstudio.com/), it will tell you about formatting error based on JSON Schema without any extensions.
 
 ### Execute tester
-Run the tool by specifying the debug information file, and test scinario file:
+Run the tool with the prepared debug information file and test scenario file:
 
 ```
 6502_tester -d <debug information> -t <test scinario>
 ```
 
-You can check the available optional arguments by displaying the help:
+You can find all option arguments by displaying the help:
 
 ```
 # ./6502_tester --help
@@ -76,6 +70,10 @@ You can check the available optional arguments by displaying the help:
 
 ```
 
+Some options can be specified either as command line arguments or test scenario file.
+If both are specified, the values in the test scenario file are adopted.
+
+
 ## Test scinario examples
 
 ### Registers
@@ -97,3 +95,10 @@ You can check the available optional arguments by displaying the help:
 ### Misc
 - [Customize configurations](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/customize.configurations.test.json)
 - [Skip test (ignore)](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/skip.test.json)
+
+# Dependencies
+This project uses following project:
+- [Gianluca Ghettini's 6502 emulator](https://github.com/gianlucag/mos6502)
+  - [Erik Lothe's 6502 Unit test executor](https://github.com/89erik/6502_test_executor)
+- [Taylor C. Richberger's args](https://github.com/Taywee/args)
+- [Niels Lohmann's JSON for Modern C++](https://github.com/nlohmann/json)
