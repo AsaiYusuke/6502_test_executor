@@ -57,6 +57,35 @@
                     }
                 ]
             }
+        },
+        "value of the address pointed to by label": {
+            "setup": {
+                "memory": [
+                    {
+                        "label": "vector_addr",
+                        "value": 0
+                    },
+                    {
+                        "label": "pos",
+                        "value": 225
+                    },
+                    {
+                        "label": "old_pos",
+                        "value": 223
+                    }
+                ]
+            },
+            "expected": {
+                "memory": [
+                    {
+                        "label": "vector_addr",
+                        "value": {
+                            "label": "vector_dic_00",
+                            "offset": 2
+                        }
+                    }
+                ]
+            }
         }
     }
 }

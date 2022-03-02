@@ -303,7 +303,7 @@
             "type": "string",
             "pattern": "^\\$[0-9A-F]{1,4}$"
         },
-        "register": {
+        "value": {
             "oneOf": [
                 {
                     "$ref": "#/definitions/number_8bit"
@@ -325,15 +325,15 @@
                     "properties": {
                         "A": {
                             "title": "Accumulator",
-                            "$ref": "#/definitions/register"
+                            "$ref": "#/definitions/value"
                         },
                         "X": {
                             "title": "Index register X",
-                            "$ref": "#/definitions/register"
+                            "$ref": "#/definitions/value"
                         },
                         "Y": {
                             "title": "Index register Y",
-                            "$ref": "#/definitions/register"
+                            "$ref": "#/definitions/value"
                         },
                         "P": {
                             "title": "Processor status register",
@@ -415,13 +415,13 @@
                                 "description": "Memory value can be either the single value at the specified address or the values given in an array starting from the address.",
                                 "oneOf": [
                                     {
-                                        "$ref": "#/definitions/number_8bit"
+                                        "$ref": "#/definitions/value"
                                     },
                                     {
                                         "type": "array",
                                         "minItems": 1,
                                         "items": {
-                                            "$ref": "#/definitions/number_8bit"
+                                            "$ref": "#/definitions/value"
                                         }
                                     }
                                 ]
@@ -434,7 +434,7 @@
                                 "oneOf": [
                                     {
                                         "items": {
-                                            "$ref": "#/definitions/number_8bit"
+                                            "$ref": "#/definitions/value"
                                         }
                                     },
                                     {
@@ -442,7 +442,7 @@
                                             "type": "array",
                                             "minItems": 1,
                                             "items": {
-                                                "$ref": "#/definitions/number_8bit"
+                                                "$ref": "#/definitions/value"
                                             }
                                         }
                                     }
