@@ -9,13 +9,18 @@
 #include "test_assert.h"
 #include "util/value_convert.h"
 #include "condition/condition.h"
+#include "exception/file_open.h"
+#include "exception/cpu_runtime_error.h"
 
 test::test(args_parser *_args)
 {
     args = _args;
 
     ifstream in(args->get_test_path());
+    if (!in.is_open())
+        throw file_open_error(args->get_test_path());
     in >> test_scinario;
+    in.close();
 
     device = new emulation_devices(args, test_scinario["config"]);
 }
@@ -63,7 +68,7 @@ test_result test::do_test(string id, json testcase)
 
         return assert.get_result(id);
     }
-    catch (exception &e)
+    catch (cpu_runtime_error &e)
     {
         test_result result;
         result.set_id(id);
