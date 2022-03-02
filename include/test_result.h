@@ -8,6 +8,7 @@ using namespace std;
 class test_result
 {
 private:
+    string id;
     test_result_type result_type;
     vector<string> errors;
 
@@ -15,10 +16,11 @@ private:
 
 public:
     test_result();
+    void set_id(string id);
     void add_error(string error);
     test_result_type get_result_type();
     string get_result_name();
     vector<string> get_errors();
-    void print_error();
     static test_result skip();
+    void print_result(emulation_devices *device);
 };

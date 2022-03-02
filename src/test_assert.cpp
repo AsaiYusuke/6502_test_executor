@@ -52,7 +52,8 @@ void test_assert::execute()
     }
 }
 
-test_result test_assert::get_result()
+test_result test_assert::get_result(string id)
 {
+    result.set_id(id);
     return result;
 }

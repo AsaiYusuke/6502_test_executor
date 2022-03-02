@@ -16,9 +16,7 @@ private:
     emulation_devices *device;
     json test_scinario;
 
-    test_result do_test(json testcase);
-    void print_test_result(string test_name, test_result result);
-    void print_summary(map<test_result_type, int> result_map, int total);
+    test_result do_test(string id, json testcase);
     void print_call_stack();
 
 public:

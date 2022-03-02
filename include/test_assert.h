@@ -13,5 +13,5 @@ private:
 public:
     test_assert(emulation_devices *device, json condition_json);
     void execute();
-    test_result get_result();
+    test_result get_result(string id);
 };
