@@ -18,6 +18,16 @@ ld65  -o dist/example.nes --dbgfile dist/example.dbg --config cfg/nes.cfg --obj 
 All tests passed.
 ```
 
+## Supported test categories
+- Check expected register value
+- Check expected memory value
+- Check expected memory read/write access count
+- Check expected memory write value history
+- Check error
+  - Process timeout
+  - Write access to readonly memory
+  - Access to out of segment
+
 ## How to use
 
 ### Enable debug option
