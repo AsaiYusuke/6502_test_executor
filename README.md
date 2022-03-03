@@ -60,7 +60,7 @@ Run the tool with the prepared debug information file and test scenario file:
 6502_tester -d <debug information> -t <test scinario>
 ```
 
-You can find all option arguments by displaying the help:
+You can find all command line arguments in help:
 
 ```
 # ./6502_tester --help
@@ -86,7 +86,7 @@ You can find all option arguments by displaying the help:
 
 ```
 
-Some options can be specified either as command line arguments or test scenario file.
+Some options can be specified either as command line arguments or test scenario file ([See example](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/customize.configurations.test.json)).  
 If both are specified, the values in the test scenario file are adopted.
 
 
