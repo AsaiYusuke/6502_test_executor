@@ -23,10 +23,10 @@ All tests passed.
 - Testing device conditions
   | | Register | Memory |
   | :--- | :---:    | :---:  |
-  | Check value | <ul><li>- [x]</li></ul> | <ul><li>- [x]</li></ul> |
-  | Check read/write count | | <ul><li>- [x]</li></ul> |
-  | Check write value history | | <ul><li>- [x]</li></ul> |
-  | Mock read value history | | <ul><li>- [x]</li></ul> |
+  | Check value | :heavy_check_mark: | :heavy_check_mark: |
+  | Check read/write count | | :heavy_check_mark: |
+  | Check write value history | | :heavy_check_mark: |
+  | Mock read value history | | :heavy_check_mark: |
 
 - Error handling
   - Timeout
