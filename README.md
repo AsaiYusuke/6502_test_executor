@@ -18,15 +18,21 @@ ld65  -o dist/example.nes --dbgfile dist/example.dbg --config cfg/nes.cfg --obj 
 All tests passed.
 ```
 
-## Supported test categories
-- Check expected register value
-- Check expected memory value
-- Check expected memory read/write access count
-- Check expected memory write value history
-- Check error
-  - Process timeout
+## Supported testing feature
+
+- Testing device conditions
+  | | Register | Memory |
+  | :--- | :---:    | :---:  |
+  | Check value | <input type="checkbox" disabled checked/> | <input type="checkbox" disabled checked/> |
+  | Check read/write count | | <input type="checkbox" disabled checked/> |
+  | Check write value history | | <input type="checkbox" disabled checked/> |
+  | Mock read value history | | <input type="checkbox" disabled checked/> |
+
+- Error handling
+  - Timeout
   - Write access to readonly memory
   - Access to out of segment
+
 
 ## How to use
 
@@ -86,18 +92,18 @@ If both are specified, the values in the test scenario file are adopted.
 
 ## Test scinario examples
 
-### Registers
+### Register conditions
 - [Check the value of the A/X/Y registers](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/register.axy.value.test.json)
 - [Check the flags of the Processor status register](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/register.status.flag.test.json)
 
-### Memory
+### Memory conditions
 - [Memory addressing](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/memory.addressing.test.json)
 - [Check the value of the memory](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/memory.value.check.test.json)
 - [Check the read/write count](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/memory.count.check.test.json)
 - [Batch selection of continuous memory area](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/memory.contiguous.memory.area.test.json)
 - [Sequential change value](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/memory.sequential.change.value.test.json)
 
-### Error
+### Error handling
 - [Timeout](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/error.timeout.test.json)
 - [Write to readonly memory](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/fail/error.readonly.test.json)
 - [Access to out of segment](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/fail/error.out_of_segment.test.json)
