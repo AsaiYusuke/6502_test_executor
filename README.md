@@ -23,10 +23,10 @@ All tests passed.
 - Testing device conditions
   | | Register | Memory |
   | :--- | :---:    | :---:  |
-  | Check value | <input type="checkbox" disabled checked/> | <input type="checkbox" disabled checked/> |
-  | Check read/write count | | <input type="checkbox" disabled checked/> |
-  | Check write value history | | <input type="checkbox" disabled checked/> |
-  | Mock read value history | | <input type="checkbox" disabled checked/> |
+  | Check value | <ul><li>- [x]</li></ul> | <ul><li>- [x]</li></ul> |
+  | Check read/write count | | <ul><li>- [x]</li></ul> |
+  | Check write value history | | <ul><li>- [x]</li></ul> |
+  | Mock read value history | | <ul><li>- [x]</li></ul> |
 
 - Error handling
   - Timeout
