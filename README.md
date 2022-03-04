@@ -20,14 +20,17 @@ All tests passed.
 
 ## Supported testing feature
 
-- Testing device conditions
+- Setup device conditions before test
+  | | Register | Memory |
+  | :--- | :---:    | :---:  |
+  | Set value | :heavy_check_mark: | :heavy_check_mark: |
+  | Mock read value history | | :heavy_check_mark: |
+- Evaluate device conditions after test
   | | Register | Memory |
   | :--- | :---:    | :---:  |
   | Check value | :heavy_check_mark: | :heavy_check_mark: |
   | Check read/write count | | :heavy_check_mark: |
   | Check write value history | | :heavy_check_mark: |
-  | Mock read value history | | :heavy_check_mark: |
-
 - Error handling
   - Timeout
   - Write access to readonly memory
