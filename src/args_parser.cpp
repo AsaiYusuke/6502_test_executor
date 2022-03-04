@@ -1,3 +1,5 @@
+#include <sysexits.h>
+
 #include "args_parser.h"
 #include "exception/parse_abort.h"
 
@@ -24,19 +26,19 @@ args_parser::args_parser(int argc, char *argv[])
     catch (const args::Help)
     {
         cout << parser;
-        throw parse_abort(0);
+        throw parse_abort(EX_OK);
     }
     catch (const args::ParseError e)
     {
         cerr << e.what() << endl;
         cerr << parser;
-        throw parse_abort(1);
+        throw parse_abort(EX_USAGE);
     }
     catch (const args::ValidationError e)
     {
         cerr << e.what() << endl;
         cerr << parser;
-        throw parse_abort(1);
+        throw parse_abort(EX_USAGE);
     }
 }
 

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <map>
+#include <sysexits.h>
 
 #include "args_parser.h"
 #include "exception/parse_abort.h"
@@ -7,6 +8,8 @@
 #include "test.h"
 
 using namespace std;
+
+#define EX_TEST_FAILED 200
 
 int main(int argc, char *argv[])
 {
@@ -16,7 +19,7 @@ int main(int argc, char *argv[])
             test(new args_parser(argc, argv))
                 .execute();
 
-        return result ? 0 : 1;
+        return result ? EX_OK : EX_TEST_FAILED;
     }
     catch (parse_abort &e)
     {
@@ -25,6 +28,6 @@ int main(int argc, char *argv[])
     catch (exception &e)
     {
         cerr << e.what() << endl;
-        return 1;
+        return EX_SOFTWARE;
     }
 }
