@@ -31,7 +31,7 @@ all: $(BUILD_DIRS) $(TARGET) test
 $(BUILD_DIRS) : % :
 	mkdir -p $@
 
-$(TARGET): $(OBJECTS) $(MOS6502_OBJ)
+$(TARGET) : $(OBJECTS) $(MOS6502_OBJ)
 	$(CXX) $(CFLAGS) -o $(TARGET) $(OBJECTS) $(MOS6502_OBJ)
 
 $(BUILD_DIR)/%.o : $(SRC_DIR)/%.cpp
