@@ -31,8 +31,9 @@ All tests passed.
   | Check value | :heavy_check_mark: | :heavy_check_mark: |
   | Check read/write count | | :heavy_check_mark: |
   | Check write value history | | :heavy_check_mark: |
+- Evaluate processor information
+  - Cycle count
 - Error handling
-  - Timeout
   - Write access to readonly memory
   - Access to out of segment
 
@@ -89,6 +90,7 @@ You can find all command line arguments in help:
 
 ```
 
+### Note:
 Some options can be specified either as command line arguments or test scenario file ([See example](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/customize.configurations.test.json)).  
 If both are specified, the values in the test scenario file are adopted.
 
@@ -106,8 +108,9 @@ If both are specified, the values in the test scenario file are adopted.
 - [Batch selection of continuous memory area](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/memory.contiguous.memory.area.test.json)
 - [Sequential change value](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/memory.sequential.change.value.test.json)
 
+### Processor information
+- [Cycle count](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/error.timeout.test.json)
 ### Error handling
-- [Timeout](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/error.timeout.test.json)
 - [Write to readonly memory](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/fail/error.readonly.test.json)
 - [Access to out of segment](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/fail/error.out_of_segment.test.json)
 
