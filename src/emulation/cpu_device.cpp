@@ -9,11 +9,11 @@ cpu_device::cpu_device(emulation_devices *_device, args_parser *args, json confi
 
     cpu = new mos6502((i_memory_access *)_device->get_memory());
 
-    if (config["timeout"].is_number())
-        max_cycle_count = config["timeout"].get<uint64_t>();
-    else if (config["timeout"].is_string())
+    if (config["maxCycleCount"].is_number())
+        max_cycle_count = config["maxCycleCount"].get<uint64_t>();
+    else if (config["maxCycleCount"].is_string())
         max_cycle_count =
-            cycle_type_value_map[cycle_name_type_map[config["timeout"].get<string>()]];
+            cycle_type_value_map[cycle_name_type_map[config["maxCycleCount"].get<string>()]];
     else
         max_cycle_count = args->get_test_timeout();
 }

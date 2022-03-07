@@ -93,9 +93,9 @@
             "type": "object",
             "additionalProperties": false,
             "properties": {
-                "timeout": {
-                    "title": "Timeout threshold",
-                    "description": "Timeout threshold specifies the threshold before the test becomes an error.\nUnit : Number of execution instructions\nDefault: 10000",
+                "maxCycleCount": {
+                    "title": "Max cycle count",
+                    "description": "Max cycle count specifies the threshold before the test becomes an error.\nUnit : Number of execution instruction cycles\nDefault: 10000",
                     "oneOf": [
                         {
                             "type": "number",
@@ -103,6 +103,8 @@
                             "minimum": 1        
                         },
                         {
+                            "title": "NES NTSC Vsync",
+                            "description": "NES NTSC Vsync specifies the number of processor cycles per NTSC Vsync for NES platform.",
                             "type": "string",
                             "enum": [
                                 "NES_NTSC_VSYNC"
