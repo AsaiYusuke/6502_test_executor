@@ -96,9 +96,19 @@
                 "timeout": {
                     "title": "Timeout threshold",
                     "description": "Timeout threshold specifies the threshold before the test becomes an error.\nUnit : Number of execution instructions\nDefault: 10000",
-                    "type": "number",
-                    "default": 10000,
-                    "minimum": 1
+                    "oneOf": [
+                        {
+                            "type": "number",
+                            "default": 10000,
+                            "minimum": 1        
+                        },
+                        {
+                            "type": "string",
+                            "enum": [
+                                "NES_NTSC_VSYNC"
+                            ]
+                        }
+                    ]
                 },
                 "debugFile": {
                     "title": "Debug file path",

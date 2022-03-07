@@ -25,7 +25,7 @@
     },
     "config": {
         "debugFile": "dist/example.dbg",
-        "timeout": 10000,
+        "timeout": "NES_NTSC_VSYNC",
         "invalidMemory": {
             "enable": true,
             "ignoreList": [
