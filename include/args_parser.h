@@ -13,7 +13,7 @@ private:
 
     args::ValueFlag<string> *test_id;
 
-    args::ValueFlag<int> *test_timeout;
+    args::ValueFlag<uint64_t> *test_timeout;
 
     args::Flag *quiet;
     args::Flag *quiet_ok;
@@ -25,7 +25,7 @@ public:
     string get_debug_path();
     string get_test_path();
     string get_test_id();
-    int get_test_timeout();
+    uint64_t get_test_timeout();
     bool is_quiet();
     bool is_quiet_type(test_result_type type);
     bool is_quiet_summary();

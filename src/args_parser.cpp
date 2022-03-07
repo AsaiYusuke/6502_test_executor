@@ -12,7 +12,7 @@ args_parser::args_parser(int argc, char *argv[])
 
     test_id = new args::ValueFlag<string>(parser, "ID", "Specify the test ID.", {'i', "id"});
 
-    test_timeout = new args::ValueFlag<int>(parser, "TIMEOUT", "Specify the timeout period before the test becomes an error.", {"timeout"}, 10000);
+    test_timeout = new args::ValueFlag<uint64_t>(parser, "TIMEOUT", "Specify the timeout period before the test becomes an error.", {"timeout"}, 10000);
 
     quiet = new args::Flag(parser, "quiet", "Do not show any output.", {'q', "quiet"});
     quiet_ok = new args::Flag(parser, "quiet OK", "Do not show the successful output.", {"quiet-ok"});
@@ -57,7 +57,7 @@ string args_parser::get_test_id()
     return args::get(*test_id);
 }
 
-int args_parser::get_test_timeout()
+uint64_t args_parser::get_test_timeout()
 {
     return args::get(*test_timeout);
 }

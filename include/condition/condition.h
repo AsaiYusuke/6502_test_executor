@@ -18,12 +18,12 @@ private:
     vector<condition_register_a_x_y> register_defs;
     vector<condition_register_status_flag> status_flag_defs;
     vector<condition_memory> memory_defs;
-    condition_register_pc *register_pc;
+    condition_register_pc *register_pc_def;
     bool timeout_def;
 
 protected:
     emulation_devices *get_device();
-    condition_register_pc *get_pc_register_def();
+    condition_register_pc *get_register_pc_def();
     vector<condition_register_a_x_y> get_register_defs();
     vector<condition_register_status_flag> get_status_flag_defs();
     vector<condition_memory> get_memory_defs();

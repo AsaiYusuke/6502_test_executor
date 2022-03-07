@@ -23,7 +23,7 @@ private:
     emulation_devices *device;
 
     mos6502 *cpu;
-    int timeout_threshold;
+    uint64_t max_cycle_count;
     vector<uint16_t> call_stack;
     uint16_t currentPC;
 
@@ -32,7 +32,7 @@ public:
     void clear(uint16_t target_program_counter);
     void execute();
 
-    int get_timeout_threshold();
+    uint64_t get_max_cycle_count();
 
     uint8_t get_register(register_type type);
     void set_register(register_type type, uint8_t value);

@@ -89,7 +89,7 @@ string message::trace_timeout(emulation_devices *device, vector<uint16_t> call_s
     return trace_message(
         device,
         call_stack,
-        "Timeout [execution count >= " + to_string(device->get_cpu()->get_timeout_threshold()) + "]",
+        "Timeout [execution count >= " + to_string(device->get_cpu()->get_max_cycle_count()) + "]",
         expected,
         actual);
 }

@@ -9,9 +9,9 @@ cpu_device::cpu_device(emulation_devices *_device, args_parser *args, json confi
     cpu = new mos6502((i_memory_access *)_device->get_memory());
 
     if (config["timeout"].is_null())
-        timeout_threshold = args->get_test_timeout();
+        max_cycle_count = args->get_test_timeout();
     else
-        timeout_threshold = config["timeout"].get<int>();
+        max_cycle_count = config["timeout"].get<uint64_t>();
 }
 
 void cpu_device::clear(uint16_t target_program_counter)
@@ -28,9 +28,8 @@ void cpu_device::clear(uint16_t target_program_counter)
 
 void cpu_device::execute()
 {
-    int count = 0;
     int32_t cyclesRemaining;
-    uint64_t cycleCount = 0;
+    uint64_t cycle_count = 0;
     do
     {
         bool isCallInstr = false;
@@ -49,20 +48,20 @@ void cpu_device::execute()
         }
 
         cyclesRemaining = 1;
-        cpu->Run(cyclesRemaining, cycleCount, cpu->INST_COUNT);
+        cpu->Run(cyclesRemaining, cycle_count, cpu->INST_COUNT);
 
         if (isCallInstr)
             call_stack.push_back(cpu->GetPC());
 
-    } while (cpu->GetPC() != TEST_RETURN_ADDRESS && ++count < get_timeout_threshold());
+    } while (cpu->GetPC() != TEST_RETURN_ADDRESS && cycle_count <= get_max_cycle_count());
 
-    if (count >= get_timeout_threshold())
+    if (cycle_count > get_max_cycle_count())
         device->add_error_reuslt(runtime_error_type::TIMEOUT);
 }
 
-int cpu_device::get_timeout_threshold()
+uint64_t cpu_device::get_max_cycle_count()
 {
-    return timeout_threshold;
+    return max_cycle_count;
 }
 
 uint8_t cpu_device::get_register(register_type type)

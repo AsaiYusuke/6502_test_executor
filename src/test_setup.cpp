@@ -16,7 +16,7 @@ void test_setup::execute()
         status_bits |= ((uint8_t)status_flag_def.get_type() * status_flag_def.get_value());
     cpu_dev->set_register(register_type::P, status_bits);
 
-    get_device()->clear(get_pc_register_def()->get_address());
+    get_device()->clear(get_register_pc_def()->get_address());
 
     memory_device *mem_dev = get_device()->get_memory();
     for (auto memory_def : get_memory_defs())

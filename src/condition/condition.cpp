@@ -3,7 +3,7 @@
 condition::condition(emulation_devices *_device, json condition, json target)
     : condition::condition(_device, condition)
 {
-    register_pc = new condition_register_pc(_device, target);
+    register_pc_def = new condition_register_pc(_device, target);
 }
 
 condition::condition(emulation_devices *_device, json condition_json)
@@ -37,7 +37,7 @@ condition::condition(emulation_devices *_device, json condition_json)
                 condition_memory(
                     device,
                     memory_def));
-    
+
     if (condition_json["timeout"].is_boolean())
         timeout_def = condition_json["timeout"].get<bool>();
     else
@@ -64,9 +64,9 @@ vector<condition_memory> condition::get_memory_defs()
     return memory_defs;
 }
 
-condition_register_pc *condition::get_pc_register_def()
+condition_register_pc *condition::get_register_pc_def()
 {
-    return register_pc;
+    return register_pc_def;
 }
 
 bool condition::get_timeout_def()
