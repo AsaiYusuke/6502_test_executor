@@ -16,10 +16,10 @@ memory_device::memory_device(emulation_devices *_device, args_parser *args, json
     debug = new debug_info(debug_path);
     rom = new rom_image(debug);
 
-    if (config["invalidMemory"]["enable"].is_null())
-        assert_invalid_memory = true;
-    else
+    if (config["invalidMemory"]["enable"].is_boolean())
         assert_invalid_memory = config["invalidMemory"]["enable"].get<bool>();
+    else
+        assert_invalid_memory = true;
 
     vector<int> remove_segment_ids;
     if (config["invalidMemory"]["ignoreList"].is_null())
