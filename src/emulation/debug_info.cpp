@@ -17,7 +17,6 @@ debug_info::debug_info(string _path)
 
     string line;
     while (getline(file, line))
-    {
         try
         {
             parse_debug_def(line);
@@ -25,7 +24,7 @@ debug_info::debug_info(string _path)
         catch (const parse_ignore_entry)
         {
         }
-    }
+
     file.close();
 
     make_address_source_map();
@@ -39,30 +38,15 @@ string debug_info::get_path()
 void debug_info::parse_debug_def(string line)
 {
     if (line.substr(0, 5).compare("file\t") == 0)
-    {
         add_file(line);
-        return;
-    }
-    if (line.substr(0, 4).compare("seg\t") == 0)
-    {
+    else if (line.substr(0, 4).compare("seg\t") == 0)
         add_segment(line);
-        return;
-    }
-    if (line.substr(0, 5).compare("span\t") == 0)
-    {
+    else if (line.substr(0, 5).compare("span\t") == 0)
         add_span(line);
-        return;
-    }
-    if (line.substr(0, 5).compare("line\t") == 0)
-    {
+    else if (line.substr(0, 5).compare("line\t") == 0)
         add_source_line(line);
-        return;
-    }
-    if (line.substr(0, 4).compare("sym\t") == 0)
-    {
+    else if (line.substr(0, 4).compare("sym\t") == 0)
         add_symbol(line);
-        return;
-    }
 }
 
 string debug_info::get_substr(string value, string begin, string end)
@@ -226,23 +210,16 @@ map<int, debug_segment> debug_info::get_segment_def_map()
 debug_segment debug_info::get_segment_def(uint16_t address)
 {
     for (auto element : segment_def_map)
-    {
-        auto segment_def = element.second;
-        if (segment_def.contains(address))
-            return segment_def;
-    }
+        if (element.second.contains(address))
+            return element.second;
     throw cpu_runtime_error(runtime_error_type::OUT_OF_SEGMENT, "address=" + value_convert::to_zero_filled_hex_string(address));
 }
 
 debug_segment debug_info::get_segment_def(string name)
 {
     for (auto element : segment_def_map)
-    {
         if (element.second.get_name() == name)
-        {
             return element.second;
-        }
-    }
     throw cpu_runtime_error(runtime_error_type::OUT_OF_SEGMENT, "name=" + name);
 }
 
@@ -250,15 +227,7 @@ void debug_info::add_segment_def(
     int id, string name, uint16_t start, int size, bool writable, string image_file_name, int image_file_offset)
 {
     if (id < 0)
-    {
-        int max_id = 0;
-        for (auto element : segment_def_map)
-        {
-            if (max_id < element.first)
-                max_id = element.first;
-        }
-        id = max_id + 1;
-    }
+        id = segment_def_map.rbegin()->first + 1;
 
     segment_def_map.emplace(
         id,
