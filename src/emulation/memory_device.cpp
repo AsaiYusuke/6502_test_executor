@@ -186,17 +186,15 @@ void memory_device::print()
 {
     printf("MEMORY result:\n");
 
-    int max_label_len = 0;
+    int max_label_len = 5;
     for (auto ram_entry : ram)
     {
         int length = debug->get_label(ram_entry.first).length();
         if (max_label_len < length)
             max_label_len = length;
     }
-    if (max_label_len < 5)
-        max_label_len = 5;
 
-    int max_segment_len = 0;
+    int max_segment_len = 7;
     for (auto ram_entry : ram)
     {
         uint16_t address = ram_entry.first;
@@ -210,8 +208,6 @@ void memory_device::print()
         {
         }
     }
-    if (max_segment_len < 7)
-        max_segment_len = 7;
 
     printf("  Address  %-*s  %-*s  Value\n", max_segment_len + 8, "Segment", max_label_len, "Label");
     printf(
