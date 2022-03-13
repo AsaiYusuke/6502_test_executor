@@ -117,6 +117,7 @@ If both are specified, the values in the test scenario file are adopted.
 ### Misc
 - [Customize configurations](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/customize.configurations.test.json)
 - [Skip test (ignore)](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/skip.test.json)
+- [Evaluation type](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/evaluation.json)
 
 # Dependencies
 This project uses following project:

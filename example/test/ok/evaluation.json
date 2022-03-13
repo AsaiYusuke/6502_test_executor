@@ -1,0 +1,29 @@
+{
+    "$schema": "../../../schema/testcase.schema.json",
+    "target": {
+        "label": "check_collision"
+    },
+    "cases": {
+        "between the range": {
+            "setup": {
+                "memory": [
+                    {
+                        "label": "vector_addr",
+                        "value": 4
+                    }
+                ]
+            },
+            "expected": {
+                "memory": [
+                    {
+                        "label": "vector_addr",
+                        "value": {
+                            "gt": 3,
+                            "lt": 5
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}
