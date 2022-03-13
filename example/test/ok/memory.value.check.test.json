@@ -17,7 +17,9 @@
                 "memory": [
                     {
                         "label": "vector_addr",
-                        "value": 44
+                        "value": {
+                            "eq": 44
+                        }
                     }
                 ]
             }
@@ -35,7 +37,9 @@
                 "memory": [
                     {
                         "label": "vector_addr",
-                        "value": "$2C"
+                        "value": {
+                            "eq": "$2C"
+                        }
                     }
                 ]
             }
@@ -53,7 +57,9 @@
                 "memory": [
                     {
                         "label": "vector_addr",
-                        "value": "%101100"
+                        "value": {
+                            "eq": "%101100"
+                        }
                     }
                 ]
             }
@@ -80,8 +86,10 @@
                     {
                         "label": "vector_addr",
                         "value": {
-                            "label": "vector_dic_00",
-                            "offset": 2
+                            "eq": {
+                                "label": "vector_dic_00",
+                                "offset": 2
+                            }
                         }
                     }
                 ]

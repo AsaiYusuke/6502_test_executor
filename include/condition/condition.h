@@ -5,6 +5,7 @@
 #include "condition/condition_register_status_flag.h"
 #include "condition/condition_register_pc.h"
 #include "condition/condition_memory.h"
+#include "condition/condition_timeout.h"
 #include "nlohmann/json.hpp"
 
 using namespace std;
@@ -19,7 +20,7 @@ private:
     vector<condition_register_status_flag> status_flag_defs;
     vector<condition_memory> memory_defs;
     condition_register_pc *register_pc_def;
-    bool timeout_def;
+    condition_timeout *timeout_def;
 
 protected:
     emulation_devices *get_device();
@@ -27,7 +28,7 @@ protected:
     vector<condition_register_a_x_y> get_register_defs();
     vector<condition_register_status_flag> get_status_flag_defs();
     vector<condition_memory> get_memory_defs();
-    bool get_timeout_def();
+    condition_timeout *get_timeout_def();
 
 public:
     condition(emulation_devices *_device, json condition_json, json target);

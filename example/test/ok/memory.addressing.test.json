@@ -17,12 +17,14 @@
                 "memory": [
                     {
                         "address": "$5",
-                        "value": 4
+                        "value": {
+                            "eq": 4
+                        }
                     }
                 ]
             }
         },
-         "labeled address": {
+        "labeled address": {
             "setup": {
                 "memory": [
                     {
@@ -35,7 +37,9 @@
                 "memory": [
                     {
                         "address": "$5",
-                        "value": 4
+                        "value": {
+                            "eq": 4
+                        }
                     }
                 ]
             }
@@ -54,10 +58,12 @@
                 "memory": [
                     {
                         "address": "$6",
-                        "value": 4
+                        "value": {
+                            "eq": 4
+                        }
                     }
                 ]
             }
         }
-   }
+    }
 }

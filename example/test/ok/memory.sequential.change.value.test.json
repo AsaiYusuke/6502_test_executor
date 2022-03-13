@@ -26,7 +26,9 @@
                 "memory": [
                     {
                         "label": "vector_addr",
-                        "value": 4
+                        "value": {
+                            "eq": 4
+                        }
                     }
                 ]
             }
@@ -60,13 +62,19 @@
                 "memory": [
                     {
                         "label": "vector_addr",
-                        "value": 4
+                        "value": {
+                            "eq": 4
+                        }
                     },
                     {
                         "label": "APU_PAD1",
                         "readCount": [
-                            4,
-                            3
+                            {
+                                "eq": 4
+                            },
+                            {
+                                "eq": 3
+                            }
                         ]
                     }
                 ]

@@ -21,13 +21,27 @@
             "expected": {
                 "register": {
                     "P": {
-                        "Negative": true,
-                        "Overflow": true,
-                        "Decimal": true,
-                        "InterruptDisable": true,
-                        "Break": true,
-                        "Carry": true,
-                        "Zero": false
+                        "Negative": {
+                            "eq": true
+                        },
+                        "Overflow": {
+                            "eq": true
+                        },
+                        "Decimal": {
+                            "eq": true
+                        },
+                        "InterruptDisable": {
+                            "eq": true
+                        },
+                        "Break": {
+                            "eq": true
+                        },
+                        "Carry": {
+                            "eq": true
+                        },
+                        "Zero": {
+                            "eq": false
+                        }
                     }
                 }
             }
@@ -44,8 +58,12 @@
             "expected": {
                 "register": {
                     "P": {
-                        "Carry": true,
-                        "Zero": false
+                        "Carry": {
+                            "eq": true
+                        },
+                        "Zero": {
+                            "eq": false
+                        }
                     }
                 }
             }

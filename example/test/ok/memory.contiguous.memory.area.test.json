@@ -21,8 +21,12 @@
                     {
                         "label": "vector_addr",
                         "value": [
-                            4,
-                            5
+                            {
+                                "eq": 4
+                            },
+                            {
+                                "eq": 5
+                            }
                         ]
                     }
                 ]

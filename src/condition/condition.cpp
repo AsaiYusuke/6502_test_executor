@@ -30,7 +30,6 @@ condition::condition(emulation_devices *_device, json condition_json)
                         register_element.value()));
                 break;
             }
-
     if (condition_json["memory"].is_array())
         for (auto &memory_def : condition_json["memory"])
             memory_defs.push_back(
@@ -38,10 +37,7 @@ condition::condition(emulation_devices *_device, json condition_json)
                     device,
                     memory_def));
 
-    if (condition_json["timeout"].is_boolean())
-        timeout_def = condition_json["timeout"].get<bool>();
-    else
-        timeout_def = false;
+    timeout_def = new condition_timeout(condition_json["timeout"]);
 }
 
 emulation_devices *condition::get_device()
@@ -69,7 +65,7 @@ condition_register_pc *condition::get_register_pc_def()
     return register_pc_def;
 }
 
-bool condition::get_timeout_def()
+condition_timeout *condition::get_timeout_def()
 {
     return timeout_def;
 }

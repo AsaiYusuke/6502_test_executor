@@ -5,29 +5,39 @@
 #include "test_result.h"
 #include "message.h"
 #include "util/to_string.h"
+#include "util/expression_executer.h"
 
 using namespace std;
 
-template <typename T>
 class assert_memory_value
 {
 public:
     static bool test(emulation_devices *device, condition_memory_value memory_value_def, test_result *result)
     {
-        auto expected = memory_value_def.get_sequence();
-        auto actual = device->get_memory()->get_write_sequence(
+        bool total_result = true;
+        auto expression_sequences = memory_value_def.get_expressions();
+        auto actuals = device->get_memory()->get_write_sequence(
             memory_value_def.get_address(),
-            expected.size());
-
-        if (T::test(actual, expected))
-            return true;
-
-        result->add_error(
-            message::error_memory_data(
-                memory_value_def,
-                to_string(expected),
-                to_string(actual)));
-
-        return false;
+            expression_sequences.size());
+        for (decltype(expression_sequences.size()) offset = 0, size = expression_sequences.size(); offset < size; offset++)
+        {
+            auto actual = actuals.at(offset);
+            bool success = true;
+            for (auto expression : expression_sequences.at(offset))
+                if (!expression_executer::test(expression.first, actual, expression.second))
+                {
+                    success = false;
+                    break;
+                }
+            if (!success)
+                result->add_error(
+                    message::error_memory_data(
+                        memory_value_def,
+                        offset,
+                        to_string(expression_sequences),
+                        to_string(actuals)));
+            total_result &= success;
+        }
+        return total_result;
     }
 };

@@ -2,12 +2,13 @@
 
 #include "emulation/emulation_devices.h"
 #include "test_result.h"
+#include "enum/operator_type.h"
 #include "message.h"
 #include "util/to_string.h"
+#include "util/expression_executer.h"
 
 using namespace std;
 
-template <typename T>
 class assert_runtime_error
 {
 public:
@@ -16,7 +17,7 @@ public:
         auto expected = false;
         auto actual = true;
 
-        if (T::test(actual, expected))
+        if (expression_executer::test(operator_type::EQ, actual, expected))
             return true;
 
         switch (error_def.get_type())

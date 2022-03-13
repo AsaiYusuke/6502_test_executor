@@ -31,7 +31,7 @@ string message::trace_message(emulation_devices *device, vector<uint16_t> call_s
 
             if (prev_address == address)
                 continue;
-            
+
             prev_address = address;
 
             ss << "  " << index++ << ":  "
@@ -60,10 +60,16 @@ string message::error_register_status_flag_data(condition_register_status_flag s
         actual);
 }
 
-string message::error_memory_data(condition_memory_value memory_value_def, string expected, string actual)
+string message::error_memory_data(condition_memory_value memory_value_def, int index, string expected, string actual)
 {
+    string message;
+    if (memory_value_def.get_sequence().size() <= 1 && memory_value_def.get_expressions().size() <= 1)
+        message = "Memory data [" + memory_value_def.get_name() + ")]";
+    else
+        message = "Memory data [" + memory_value_def.get_name() + "(index:" + to_string(index) + ")]";
+
     return error_message(
-        "Memory data [" + memory_value_def.get_name() + "]",
+        message,
         expected,
         actual);
 }

@@ -17,7 +17,9 @@
                 "memory": [
                     {
                         "label": "vector_addr",
-                        "value": 4
+                        "value": {
+                            "eq": 4
+                        }
                     }
                 ]
             }

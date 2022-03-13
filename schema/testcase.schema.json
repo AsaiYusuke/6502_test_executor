@@ -21,7 +21,6 @@
             "type": "object",
             "minItems": 1,
             "patternProperties": {
-                "additionalProperties": false,
                 "^.*$": {
                     "title": "Test ID",
                     "description": "Test ID can be any string that uniquely identifies it in the file.",
@@ -38,46 +37,47 @@
                         "setup": {
                             "title": "Setup condition",
                             "description": "Setup condition specifies the initial settings of the registers and memory at the start of the test.",
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/conditions"
-                                }
-                            ],
+                            "type": "object",
+                            "additionalProperties": false,
                             "properties": {
-                                "register": {},
-                                "memory": {
-                                    "items": {
-                                        "properties": {
-                                            "readCount": {
-                                                "type": "null"
-                                            },
-                                            "writeCount": {
-                                                "type": "null"
-                                            }
-                                        }
-                                    }
+                                "register": {
+                                    "title": "Register",
+                                    "$ref": "#/definitions/setup/register"
                                 },
-                                "timeout": {
-                                    "type": "null"
+                                "memory": {
+                                    "title": "Memory",
+                                    "$ref": "#/definitions/setup/memory"
                                 }
                             }
                         },
                         "expected": {
                             "title": "Expected condition",
                             "description": "Expected Condition specifies the result of the registers and memory at the end of the test.",
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/conditions"
-                                }
-                            ],
+                            "type": "object",
+                            "additionalProperties": false,
                             "properties": {
-                                "register": {},
+                                "register": {
+                                    "title": "Register",
+                                    "$ref": "#/definitions/expected/register"
+                                },
                                 "memory": {
-                                    "items": {
-                                        "properties": {
-                                            "permanent": {
-                                                "type": "null"
-                                            }
+                                    "title": "Memory",
+                                    "$ref": "#/definitions/expected/memory"
+                                },
+                                "timeout": {
+                                    "title": "Timeout",
+                                    "description": "Timeout specifies whether or not the test will error on timeout.",
+                                    "$ref": "#/definitions/expected/expressionBoolean"
+                                }
+                            },
+                            "dependencies": {
+                                "timeout": {
+                                    "properties": {
+                                        "register": {
+                                            "type": "null"
+                                        },
+                                        "memory": {
+                                            "type": "null"
                                         }
                                     }
                                 }
@@ -100,7 +100,7 @@
                         {
                             "type": "number",
                             "default": 10000,
-                            "minimum": 1        
+                            "minimum": 1
                         },
                         {
                             "title": "NES NTSC Vsync",
@@ -325,216 +325,418 @@
                 }
             ]
         },
-        "conditions": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "register": {
-                    "title": "Register",
-                    "type": "object",
-                    "minItems": 1,
-                    "additionalProperties": false,
-                    "properties": {
-                        "A": {
-                            "title": "Accumulator",
-                            "$ref": "#/definitions/value"
-                        },
-                        "X": {
-                            "title": "Index register X",
-                            "$ref": "#/definitions/value"
-                        },
-                        "Y": {
-                            "title": "Index register Y",
-                            "$ref": "#/definitions/value"
-                        },
-                        "P": {
-                            "title": "Processor status register",
-                            "type": "object",
-                            "additionalProperties": false,
-                            "properties": {
-                                "Negative": {
-                                    "title": "Negative Flag",
-                                    "type": "boolean"
-                                },
-                                "Overflow": {
-                                    "title": "Overflow",
-                                    "type": "boolean"
-                                },
-                                "Break": {
-                                    "title": "Break Command",
-                                    "type": "boolean"
-                                },
-                                "Decimal": {
-                                    "title": "Decimal Mode Flag",
-                                    "type": "boolean"
-                                },
-                                "InterruptDisable": {
-                                    "title": "Interrupt Disable",
-                                    "type": "boolean"
-                                },
-                                "Zero": {
-                                    "title": "Zero Flag",
-                                    "type": "boolean"
-                                },
-                                "Carry": {
-                                    "title": "Carry Flag",
-                                    "type": "boolean"
-                                }
-                            }
-                        }
+        "setup": {
+            "register": {
+                "type": "object",
+                "minItems": 1,
+                "additionalProperties": false,
+                "properties": {
+                    "A": {
+                        "title": "Accumulator",
+                        "$ref": "#/definitions/value"
+                    },
+                    "X": {
+                        "title": "Index register X",
+                        "$ref": "#/definitions/value"
+                    },
+                    "Y": {
+                        "title": "Index register Y",
+                        "$ref": "#/definitions/value"
+                    },
+                    "P": {
+                        "title": "Processor status register",
+                        "$ref": "#/definitions/setup/statusFlag"
                     }
-                },
-                "memory": {
-                    "title": "Memory",
-                    "type": "array",
-                    "minItems": 1,
-                    "items": {
-                        "type": "object",
-                        "allOf": [
-                            {
-                                "$ref": "#/definitions/address"
-                            }
-                        ],
-                        "anyOf": [
-                            {
-                                "required": [
-                                    "value"
-                                ]
-                            },
-                            {
-                                "required": [
-                                    "sequence"
-                                ]
-                            },
-                            {
-                                "required": [
-                                    "readCount"
-                                ]
-                            },
-                            {
-                                "required": [
-                                    "writeCount"
-                                ]
-                            }
-                        ],
-                        "additionalProperties": false,
-                        "properties": {
-                            "address": {},
-                            "label": {},
-                            "offset": {},
-                            "value": {
-                                "title": "Memory value",
-                                "description": "Memory value can be either the single value at the specified address or the values given in an array starting from the address.",
-                                "oneOf": [
-                                    {
-                                        "$ref": "#/definitions/value"
-                                    },
-                                    {
-                                        "type": "array",
-                                        "minItems": 1,
-                                        "items": {
-                                            "$ref": "#/definitions/value"
-                                        }
-                                    }
-                                ]
-                            },
-                            "sequence": {
-                                "title": "Memory sequence",
-                                "description": "Memory sequence can be either the value array in the order of processing at the specified address, or the value arrays given in the two-dimensioned array starting from address.",
-                                "type": "array",
-                                "minItems": 1,
-                                "oneOf": [
-                                    {
-                                        "items": {
-                                            "$ref": "#/definitions/value"
-                                        }
-                                    },
-                                    {
-                                        "items": {
-                                            "type": "array",
-                                            "minItems": 1,
-                                            "items": {
-                                                "$ref": "#/definitions/value"
-                                            }
-                                        }
-                                    }
-                                ]
-                            },
-                            "readCount": {
-                                "title": "Read count",
-                                "description": "Read count specifies the number of times the read instruction(LDA, CMP, ...) for the specified address is executed.",
-                                "oneOf": [
-                                    {
-                                        "type": "number",
-                                        "minimum": 0
-                                    },
-                                    {
-                                        "type": "array",
-                                        "minItems": 1,
-                                        "items": {
-                                            "type": "number",
-                                            "minimum": 0
-                                        }
-                                    }
-                                ]
-                            },
-                            "writeCount": {
-                                "title": "Write count",
-                                "description": "Write count specifies the number of times the write instruction(STA, INC, ..) for the specified address is executed.",
-                                "oneOf": [
-                                    {
-                                        "type": "number",
-                                        "minimum": 0
-                                    },
-                                    {
-                                        "type": "array",
-                                        "minItems": 1,
-                                        "items": {
-                                            "type": "number",
-                                            "minimum": 0
-                                        }
-                                    }
-                                ]
-                            },
-                            "permanent": {
-                                "title": "Permanent value",
-                                "description": "Permanent value specifies whether or not the last value in read sequence queue will be used permanently.",
-                                "type": "boolean"
-                            }
-                        },
-                        "dependencies": {
-                            "value": {
-                                "properties": {
-                                    "sequence": {
-                                        "type": "null"
-                                    }
-                                }
-                            },
-                            "sequence": {
-                                "properties": {
-                                    "value": {
-                                        "type": "null"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "timeout": {
-                    "title": "Timeout",
-                    "description": "Timeout specifies whether or not the test will error on timeout.",
-                    "type": "boolean"
                 }
             },
-            "dependencies": {
-                "timeout": {
-                    "properties": {
-                        "register": {
-                            "type": "null"
-                        },
-                        "memory": {
-                            "type": "null"
+            "statusFlag": {
+                "type": "object",
+                "minItems": 1,
+                "additionalProperties": false,
+                "properties": {
+                    "Negative": {
+                        "title": "Negative Flag",
+                        "type": "boolean"
+                    },
+                    "Overflow": {
+                        "title": "Overflow",
+                        "type": "boolean"
+                    },
+                    "Break": {
+                        "title": "Break Command",
+                        "type": "boolean"
+                    },
+                    "Decimal": {
+                        "title": "Decimal Mode Flag",
+                        "type": "boolean"
+                    },
+                    "InterruptDisable": {
+                        "title": "Interrupt Disable",
+                        "type": "boolean"
+                    },
+                    "Zero": {
+                        "title": "Zero Flag",
+                        "type": "boolean"
+                    },
+                    "Carry": {
+                        "title": "Carry Flag",
+                        "type": "boolean"
+                    }
+                }
+            },
+            "memory": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                    "type": "object",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/address"
                         }
+                    ],
+                    "anyOf": [
+                        {
+                            "required": [
+                                "value"
+                            ]
+                        },
+                        {
+                            "required": [
+                                "sequence"
+                            ]
+                        }
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                        "address": {},
+                        "label": {},
+                        "offset": {},
+                        "value": {
+                            "$ref": "#/definitions/setup/memoryValue"
+                        },
+                        "sequence": {
+                            "$ref": "#/definitions/setup/memorySequence"
+                        },
+                        "permanent": {
+                            "title": "Permanent value",
+                            "description": "Permanent value specifies whether or not the last value in read sequence queue will be used permanently.",
+                            "type": "boolean"
+                        }
+                    },
+                    "dependencies": {
+                        "value": {
+                            "properties": {
+                                "sequence": {
+                                    "type": "null"
+                                }
+                            }
+                        },
+                        "sequence": {
+                            "properties": {
+                                "value": {
+                                    "type": "null"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "memoryValue": {
+                "title": "Memory value",
+                "description": "Memory value can be either the single value at the specified address or the values given in an array starting from the address.",
+                "oneOf": [
+                    {
+                        "$ref": "#/definitions/value"
+                    },
+                    {
+                        "type": "array",
+                        "minItems": 1,
+                        "items": {
+                            "$ref": "#/definitions/value"
+                        }
+                    }
+                ]
+            },
+            "memorySequence": {
+                "title": "Memory sequence",
+                "description": "Memory sequence can be either the value array in the order of processing at the specified address, or the value arrays given in the two-dimensioned array starting from address.",
+                "type": "array",
+                "minItems": 1,
+                "oneOf": [
+                    {
+                        "items": {
+                            "$ref": "#/definitions/value"
+                        }
+                    },
+                    {
+                        "items": {
+                            "type": "array",
+                            "minItems": 1,
+                            "items": {
+                                "$ref": "#/definitions/value"
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        "expected": {
+            "register": {
+                "type": "object",
+                "minItems": 1,
+                "additionalProperties": false,
+                "properties": {
+                    "A": {
+                        "title": "Accumulator",
+                        "$ref": "#/definitions/expected/expressionValue"
+                    },
+                    "X": {
+                        "title": "Index register X",
+                        "$ref": "#/definitions/expected/expressionValue"
+                    },
+                    "Y": {
+                        "title": "Index register Y",
+                        "$ref": "#/definitions/expected/expressionValue"
+                    },
+                    "P": {
+                        "title": "Processor status register",
+                        "$ref": "#/definitions/expected/statusFlag"
+                    }
+                }
+            },
+            "statusFlag": {
+                "type": "object",
+                "minItems": 1,
+                "additionalProperties": false,
+                "properties": {
+                    "Negative": {
+                        "title": "Negative Flag",
+                        "$ref": "#/definitions/expected/expressionBoolean"
+                    },
+                    "Overflow": {
+                        "title": "Overflow",
+                        "$ref": "#/definitions/expected/expressionBoolean"
+                    },
+                    "Break": {
+                        "title": "Break Command",
+                        "$ref": "#/definitions/expected/expressionBoolean"
+                    },
+                    "Decimal": {
+                        "title": "Decimal Mode Flag",
+                        "$ref": "#/definitions/expected/expressionBoolean"
+                    },
+                    "InterruptDisable": {
+                        "title": "Interrupt Disable",
+                        "$ref": "#/definitions/expected/expressionBoolean"
+                    },
+                    "Zero": {
+                        "title": "Zero Flag",
+                        "$ref": "#/definitions/expected/expressionBoolean"
+                    },
+                    "Carry": {
+                        "title": "Carry Flag",
+                        "$ref": "#/definitions/expected/expressionBoolean"
+                    }
+                }
+            },
+            "memory": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                    "type": "object",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/address"
+                        }
+                    ],
+                    "anyOf": [
+                        {
+                            "required": [
+                                "value"
+                            ]
+                        },
+                        {
+                            "required": [
+                                "sequence"
+                            ]
+                        },
+                        {
+                            "required": [
+                                "readCount"
+                            ]
+                        },
+                        {
+                            "required": [
+                                "writeCount"
+                            ]
+                        }
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                        "address": {},
+                        "label": {},
+                        "offset": {},
+                        "value": {
+                            "$ref": "#/definitions/expected/memoryValue"
+                        },
+                        "sequence": {
+                            "$ref": "#/definitions/expected/memorySequence"
+                        },
+                        "readCount": {
+                            "$ref": "#/definitions/expected/memoryReadCount"
+                        },
+                        "writeCount": {
+                            "$ref": "#/definitions/expected/memoryWriteCount"
+                        }
+                    },
+                    "dependencies": {
+                        "value": {
+                            "properties": {
+                                "sequence": {
+                                    "type": "null"
+                                }
+                            }
+                        },
+                        "sequence": {
+                            "properties": {
+                                "value": {
+                                    "type": "null"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "memoryValue": {
+                "title": "Memory value",
+                "description": "Memory value can be either the single value at the specified address or the values given in an array starting from the address.",
+                "oneOf": [
+                    {
+                        "$ref": "#/definitions/expected/expressionValue"
+                    },
+                    {
+                        "type": "array",
+                        "minItems": 1,
+                        "items": {
+                            "$ref": "#/definitions/expected/expressionValue"
+                        }
+                    }
+                ]
+            },
+            "memorySequence": {
+                "title": "Memory sequence",
+                "description": "Memory sequence can be either the value array in the order of processing at the specified address, or the value arrays given in the two-dimensioned array starting from address.",
+                "type": "array",
+                "minItems": 1,
+                "oneOf": [
+                    {
+                        "items": {
+                            "$ref": "#/definitions/expected/expressionValue"
+                        }
+                    },
+                    {
+                        "items": {
+                            "type": "array",
+                            "minItems": 1,
+                            "items": {
+                                "$ref": "#/definitions/expected/expressionValue"
+                            }
+                        }
+                    }
+                ]
+            },
+            "memoryReadCount": {
+                "title": "Read count",
+                "description": "Read count specifies the number of times the read instruction(LDA, CMP, ...) for the specified address is executed.",
+                "oneOf": [
+                    {
+                        "$ref": "#/definitions/expected/expressionCount"
+                    },
+                    {
+                        "type": "array",
+                        "minItems": 1,
+                        "items": {
+                            "$ref": "#/definitions/expected/expressionCount"
+                        }
+                    }
+                ]
+            },
+            "memoryWriteCount": {
+                "title": "Write count",
+                "description": "Write count specifies the number of times the write instruction(STA, INC, ..) for the specified address is executed.",
+                "oneOf": [
+                    {
+                        "$ref": "#/definitions/expected/expressionCount"
+                    },
+                    {
+                        "type": "array",
+                        "minItems": 1,
+                        "items": {
+                            "$ref": "#/definitions/expected/expressionCount"
+                        }
+                    }
+                ]
+            },
+            "expressionValue": {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": false,
+                "properties": {
+                    "eq": {
+                        "$ref": "#/definitions/value"
+                    },
+                    "ne": {
+                        "$ref": "#/definitions/value"
+                    },
+                    "gt": {
+                        "$ref": "#/definitions/value"
+                    },
+                    "ge": {
+                        "$ref": "#/definitions/value"
+                    },
+                    "lt": {
+                        "$ref": "#/definitions/value"
+                    },
+                    "le": {
+                        "$ref": "#/definitions/value"
+                    }
+                }
+            },
+            "expressionBoolean": {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": false,
+                "properties": {
+                    "eq": {
+                        "type": "boolean"
+                    },
+                    "ne": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "expressionCount": {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": false,
+                "properties": {
+                    "eq": {
+                        "type": "number"
+                    },
+                    "ne": {
+                        "type": "number"
+                    },
+                    "gt": {
+                        "type": "number"
+                    },
+                    "ge": {
+                        "type": "number"
+                    },
+                    "lt": {
+                        "type": "number"
+                    },
+                    "le": {
+                        "type": "number"
                     }
                 }
             }

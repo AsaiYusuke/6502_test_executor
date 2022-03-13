@@ -17,9 +17,9 @@ private:
     vector<condition_memory_count> write_counts;
 
     string create_address_name(emulation_devices *device, json memory_def, int offset);
-    vector<vector<uint8_t>> create_value_sequences(emulation_devices *_device, json memory_def);
-    vector<uint8_t> create_read_counts(emulation_devices *_device, json memory_def);
-    vector<uint8_t> create_write_counts(emulation_devices *_device, json memory_def);
+    json normalize_value_sequences(emulation_devices *_device, json memory_def);
+    json normalize_read_counts(emulation_devices *_device, json memory_def);
+    json normalize_write_counts(emulation_devices *_device, json memory_def);
 
 public:
     condition_memory(emulation_devices *_device, json condition);

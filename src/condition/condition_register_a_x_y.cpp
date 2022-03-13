@@ -1,11 +1,19 @@
 #include "condition/condition_register_a_x_y.h"
 #include "util/value_convert.h"
+#include "util/expression_executer.h"
 
 condition_register_a_x_y::condition_register_a_x_y(emulation_devices *device, string _name, json condition)
 {
     name = _name;
     type = register_name_type_map[name];
-    value = value_convert::to_two_complement_byte(device, condition);
+    if (expression_executer::find(condition))
+        for (auto &expression : expression_executer::get(condition))
+            expressions.push_back(
+                make_pair(
+                    expression.first,
+                    value_convert::to_two_complement_byte(device, expression.second)));
+    else
+        value = value_convert::to_two_complement_byte(device, condition);
 }
 
 string condition_register_a_x_y::get_name()
@@ -21,4 +29,9 @@ register_type condition_register_a_x_y::get_type()
 uint8_t condition_register_a_x_y::get_value()
 {
     return value;
+}
+
+vector<pair<operator_type, uint8_t>> condition_register_a_x_y::get_expressions()
+{
+    return expressions;
 }

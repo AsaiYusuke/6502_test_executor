@@ -33,13 +33,19 @@
                 "memory": [
                     {
                         "label": "vector_addr",
-                        "writeCount": 1
+                        "writeCount": {
+                            "eq": 1
+                        }
                     },
                     {
                         "label": "APU_PAD1",
                         "readCount": [
-                            4,
-                            3
+                            {
+                                "eq": 4
+                            },
+                            {
+                                "eq": 3
+                            }
                         ]
                     }
                 ]

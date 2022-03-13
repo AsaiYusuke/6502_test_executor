@@ -15,7 +15,9 @@
                 ]
             },
             "expected": {
-                "timeout": true
+                "timeout": {
+                    "eq": true
+                }
             }
         }
     }
