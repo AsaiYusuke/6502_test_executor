@@ -157,15 +157,19 @@
                                 "additionalProperties": false,
                                 "properties": {
                                     "start": {
+                                        "title": "range start address",
                                         "$ref": "#/definitions/address"
                                     },
                                     "size": {
+                                        "title": "range size",
                                         "$ref": "#/definitions/number_16bit"
                                     },
                                     "name": {
+                                        "title": "segment name",
                                         "type": "string"
                                     },
                                     "detect": {
+                                        "title": "detect platform",
                                         "type": "boolean",
                                         "default": true
                                     }
@@ -683,21 +687,27 @@
                 "additionalProperties": false,
                 "properties": {
                     "eq": {
+                        "title": "Equal to",
                         "$ref": "#/definitions/value"
                     },
                     "ne": {
+                        "title": "Not equal to",
                         "$ref": "#/definitions/value"
                     },
                     "gt": {
+                        "title": "Greater than",
                         "$ref": "#/definitions/value"
                     },
                     "ge": {
+                        "title": "Greater than or equal to",
                         "$ref": "#/definitions/value"
                     },
                     "lt": {
+                        "title": "Less than",
                         "$ref": "#/definitions/value"
                     },
                     "le": {
+                        "title": "Less than or equal to",
                         "$ref": "#/definitions/value"
                     }
                 }
@@ -708,9 +718,11 @@
                 "additionalProperties": false,
                 "properties": {
                     "eq": {
+                        "title": "Equal to",
                         "type": "boolean"
                     },
                     "ne": {
+                        "title": "Not equal to",
                         "type": "boolean"
                     }
                 }
@@ -721,21 +733,27 @@
                 "additionalProperties": false,
                 "properties": {
                     "eq": {
+                        "title": "Equal to",
                         "type": "number"
                     },
                     "ne": {
+                        "title": "Not equal to",
                         "type": "number"
                     },
                     "gt": {
+                        "title": "Greater than",
                         "type": "number"
                     },
                     "ge": {
+                        "title": "Greater than or equal to",
                         "type": "number"
                     },
                     "lt": {
+                        "title": "Less than",
                         "type": "number"
                     },
                     "le": {
+                        "title": "Less than or equal to",
                         "type": "number"
                     }
                 }
