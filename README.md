@@ -21,18 +21,26 @@ All tests passed.
 ## Supported testing feature
 
 - Setup device conditions before test
-  | | Register | Memory |
-  | :--- | :---:    | :---:  |
-  | Set value | :heavy_check_mark: | :heavy_check_mark: |
-  | Mock read value history | | :heavy_check_mark: |
+  |                         |      Register      |       Memory       |
+  | :---------------------- | :----------------: | :----------------: |
+  | Set value               | :heavy_check_mark: | :heavy_check_mark: |
+  | Mock read value history |                    | :heavy_check_mark: |
 - Evaluate device conditions after test
-  | | Register | Memory |
-  | :--- | :---:    | :---:  |
-  | Check value | :heavy_check_mark: | :heavy_check_mark: |
-  | Check read/write count | | :heavy_check_mark: |
-  | Check write value history | | :heavy_check_mark: |
+  |                           |      Register      |       Memory       |
+  | :------------------------ | :----------------: | :----------------: |
+  | Check value               | :heavy_check_mark: | :heavy_check_mark: |
+  | Check read/write count    |                    | :heavy_check_mark: |
+  | Check write value history |                    | :heavy_check_mark: |
 - Evaluate processor information
   - Cycle count
+- Assertion operator
+  - *"eq"* (Equal to)
+  - *"ne"* (Not equal to)
+  - *"gt"* (Greater than)
+  - *"ge"* (Greater than or equal to)
+  - *"lt"* (Less than)
+  - *"le"* (Less than or equal to)
+  - Composite operators - e.g. "*gt*"+"*lt*" for range selection
 - Error handling
   - Write access to readonly memory
   - Access to out of segment
