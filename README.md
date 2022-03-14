@@ -63,7 +63,7 @@ the expected responses of the register and memory after the test
 
 #### [JSON Schema file](https://github.com/AsaiYusuke/6502_test_executor/blob/master/schema/testcase.schema.json)
 The tool also provides a [JSON Schema](https://json-schema.org/) document that makes it easy to create test scinario files.
-If you use [Visual Studio Code](https://code.visualstudio.com/), it will tell you about formatting error based on JSON Schema without any extensions.
+If you use [Visual Studio Code](https://code.visualstudio.com/), it will tell you about formatting error and element completion candidates based on JSON Schema without any extensions.
 
 ### Execute tester
 Run the tool with the prepared debug information file and test scenario file:
