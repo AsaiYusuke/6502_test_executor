@@ -9,7 +9,6 @@
 #include "assert/assert_memory_value.h"
 #include "assert/assert_memory_read_count.h"
 #include "assert/assert_memory_write_count.h"
-#include "assert/op/assert_eq.h"
 
 test_assert::test_assert(emulation_devices *device, json condition_json)
     : condition(device, condition_json)
