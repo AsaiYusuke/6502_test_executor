@@ -22,7 +22,7 @@
         }
     },
     "config": {
-        "maxCycleCount": 1000000,
+        "maxCycleCount": "DISABLE",
         "invalidMemory": {
             "ignoreList": [
                 {

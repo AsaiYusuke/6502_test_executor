@@ -109,19 +109,21 @@
             "properties": {
                 "maxCycleCount": {
                     "title": "Max cycle count",
-                    "description": "Max cycle count specifies the threshold before the test becomes an error.\nUnit : Number of execution instruction cycles\nDefault: 10000",
+                    "description": "Max cycle count specifies the threshold before the test becomes an error.",
                     "oneOf": [
                         {
+                            "title": "Max cycle count (Number of execution instruction cycles)",
                             "type": "number",
                             "default": 10000,
                             "minimum": 1
                         },
                         {
-                            "title": "NES NTSC Vsync",
-                            "description": "NES NTSC Vsync specifies the number of processor cycles per NTSC Vsync for NES platform.",
+                            "title": "Max cycle count (pre-defined cycle types)",
+                            "description": "- NES_NTSC_VSYNC : number of processor cycles per NES NTSC Vsync.\n- DISABLE : disable max cycle check",
                             "type": "string",
                             "enum": [
-                                "NES_NTSC_VSYNC"
+                                "NES_NTSC_VSYNC",
+                                "DISABLE"
                             ]
                         }
                     ]
