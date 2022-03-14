@@ -18,16 +18,18 @@ cpu_device::cpu_device(emulation_devices *_device, args_parser *args, json confi
         max_cycle_count = args->get_test_timeout();
 }
 
-void cpu_device::clear(uint16_t target_program_counter)
+void cpu_device::clear(uint16_t startPC, uint16_t _endPC)
 {
     cpu->Reset();
-    cpu->SetPC(target_program_counter);
+    cpu->SetPC(startPC);
     cpu->StackPush((TEST_RETURN_ADDRESS - 1) >> 8);
     cpu->StackPush((TEST_RETURN_ADDRESS - 1) & 0xFF);
 
     call_stack.clear();
     call_stack.push_back(TEST_RETURN_ADDRESS);
-    call_stack.push_back(target_program_counter);
+    call_stack.push_back(startPC);
+
+    endPC = _endPC;
 }
 
 void cpu_device::execute()
@@ -57,7 +59,7 @@ void cpu_device::execute()
         if (isCallInstr)
             call_stack.push_back(cpu->GetPC());
 
-    } while (cpu->GetPC() != TEST_RETURN_ADDRESS && cycle_count <= get_max_cycle_count());
+    } while (cpu->GetPC() != TEST_RETURN_ADDRESS && cpu->GetPC() != endPC  && cycle_count <= get_max_cycle_count());
 
     if (cycle_count > get_max_cycle_count())
         device->add_error_reuslt(runtime_error_type::TIMEOUT);

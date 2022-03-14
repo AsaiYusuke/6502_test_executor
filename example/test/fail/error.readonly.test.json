@@ -1,7 +1,9 @@
 {
     "$schema": "../../../schema/testcase.schema.json",
     "target": {
-        "label": "write_rodata"
+        "start": {
+            "label": "write_rodata"
+        }
     },
     "cases": {
         "write readonly memory test": {

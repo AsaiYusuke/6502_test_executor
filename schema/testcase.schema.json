@@ -12,8 +12,22 @@
         },
         "target": {
             "title": "Test target",
-            "description": "Test target specifies the address to be set in the PC register at the start of the test.",
-            "$ref": "#/definitions/address"
+            "description": "Test target specifies the address to be set in the PC register.",
+            "type": "object",
+            "required": [
+                "start"
+            ],
+            "additionalProperties": false,
+            "properties": {
+                "start": {
+                    "title": "Test start address",
+                    "$ref": "#/definitions/address"
+                },
+                "end": {
+                    "title": "Test end address",
+                    "$ref": "#/definitions/address"
+                }
+            }
         },
         "cases": {
             "title": "Test cases",
@@ -228,7 +242,7 @@
                                     "start": {
                                         "address": "$100"
                                     },
-                                    "size": "$FF"
+                                    "size": "$100"
                                 },
                                 {
                                     "start": {

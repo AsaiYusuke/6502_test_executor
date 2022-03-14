@@ -100,9 +100,9 @@ palette:	.byte $0F, $11, $21, $31
 	lda #%00010000
 	sta PPU_CTRL2
 
-	:
+	main_loop:
 	jsr control
-	jmp :-
+	jmp main_loop
 .endproc
 
 .proc control

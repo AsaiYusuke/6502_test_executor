@@ -1,7 +1,9 @@
 {
     "$schema": "../../../schema/testcase.schema.json",
     "target": {
-        "label": "check_collision"
+        "start": {
+            "label": "check_collision"
+        }
     },
     "cases": {
         "flags of the Processor status register": {

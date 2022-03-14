@@ -1,7 +1,9 @@
 {
     "$schema": "../../../schema/testcase.schema.json",
     "target": {
-        "label": "control"
+        "start": {
+            "label": "control"
+        }
     },
     "cases": {
         "sequential change value test": {

@@ -26,10 +26,11 @@ private:
     uint64_t max_cycle_count;
     vector<uint16_t> call_stack;
     uint16_t currentPC;
+    uint16_t endPC;
 
 public:
     cpu_device(emulation_devices *_device, args_parser *args, json config);
-    void clear(uint16_t target_program_counter);
+    void clear(uint16_t startPC, uint16_t endPC);
     void execute();
 
     uint64_t get_max_cycle_count();

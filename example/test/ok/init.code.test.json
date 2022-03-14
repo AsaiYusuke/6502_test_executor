@@ -2,42 +2,34 @@
     "$schema": "../../../schema/testcase.schema.json",
     "target": {
         "start": {
-            "label": "check_collision"
+            "label": "reset"
+        },
+        "end": {
+            "label": "main_loop"
         }
     },
     "cases": {
-        "customize configurations test": {
+        "Complete initialize code": {
             "setup": {
                 "memory": [
                     {
-                        "label": "vector_addr",
-                        "value": 4
+                        "label": "PPU_STATUS",
+                        "value": "$80"
                     }
                 ]
             },
-            "expected": {
-                "memory": [
-                    {
-                        "label": "vector_addr",
-                        "value": {
-                            "eq": 4
-                        }
-                    }
-                ]
-            }
+            "expected": {}
         }
     },
     "config": {
-        "debugFile": "dist/example.dbg",
-        "maxCycleCount": "NES_NTSC_VSYNC",
+        "maxCycleCount": 1000000,
         "invalidMemory": {
-            "enable": true,
             "ignoreList": [
                 {
                     "start": {
-                        "address": "$100"
+                        "address": "$0"
                     },
-                    "size": "$100"
+                    "size": "$800"
                 },
                 {
                     "start": {
@@ -47,9 +39,6 @@
                 },
                 {
                     "detect": true
-                },
-                {
-                    "name": "CHARS"
                 }
             ]
         }
