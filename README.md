@@ -49,7 +49,7 @@ All tests passed.
 
 - When a test terminates with an error, its callback trace can be output.
 - Test evaluations can be executed at any address.
-- Test ROM image is detected from debug information file.
+- Test ROM images are detected from debug information file.
 
 ## How to use
 
