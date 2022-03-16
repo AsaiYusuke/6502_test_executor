@@ -3,6 +3,8 @@
 #include "emulation/emulation_devices.h"
 #include "enum/cycle_type.h"
 
+#define STACK_ADDRESS(addr) (0x0100 + addr)
+
 cpu_device::cpu_device(emulation_devices *_device, args_parser *args, json config)
 {
     device = _device;
@@ -18,7 +20,7 @@ cpu_device::cpu_device(emulation_devices *_device, args_parser *args, json confi
         max_cycle_count = args->get_test_timeout();
 }
 
-void cpu_device::clear(uint16_t startPC, uint16_t _endPC)
+void cpu_device::clear(uint16_t startPC, uint16_t _endPC, vector<uint8_t> stack)
 {
     cpu->Reset();
     cpu->SetPC(startPC);
@@ -27,6 +29,13 @@ void cpu_device::clear(uint16_t startPC, uint16_t _endPC)
 
     call_stack.clear();
     call_stack.push_back(TEST_RETURN_ADDRESS);
+
+    for (auto value : stack)
+    {
+        cpu->StackPush(value);
+        call_stack.push_back(value);
+    }
+
     call_stack.push_back(startPC);
 
     endPC = _endPC;
@@ -59,7 +68,7 @@ void cpu_device::execute()
         if (isCallInstr)
             call_stack.push_back(cpu->GetPC());
 
-    } while (cpu->GetPC() != TEST_RETURN_ADDRESS && cpu->GetPC() != endPC  && cycle_count <= get_max_cycle_count());
+    } while (cpu->GetPC() != TEST_RETURN_ADDRESS && cpu->GetPC() != endPC && cycle_count <= get_max_cycle_count());
 
     if (cycle_count > get_max_cycle_count())
         device->add_error_reuslt(runtime_error_type::TIMEOUT);
@@ -101,13 +110,23 @@ void cpu_device::set_register(register_type type, uint8_t value)
     }
 }
 
+vector<uint8_t> cpu_device::get_stack()
+{
+    vector<uint8_t> result_stack;
+    auto resetS = cpu->GetResetS();
+    auto curS = cpu->GetS();
+    for (auto address = resetS - 2; address > curS; address--)
+        result_stack.push_back(device->get_memory()->read_raw(STACK_ADDRESS(address)));
+    return result_stack;
+}
+
 void cpu_device::print()
 {
     printf("Register result:\n");
-    printf("  A   $%X\n", cpu->GetA());
-    printf("  X   $%X\n", cpu->GetX());
-    printf("  Y   $%X\n", cpu->GetY());
-    printf("  P   $%X (N: %s, O: %s, B: %s, D: %s, I: %s, Z: %s, C: %s)\n",
+    printf("  A   $%02X\n", cpu->GetA());
+    printf("  X   $%02X\n", cpu->GetX());
+    printf("  Y   $%02X\n", cpu->GetY());
+    printf("  P   $%02X (N: %s, O: %s, B: %s, D: %s, I: %s, Z: %s, C: %s)\n",
            cpu->GetP(),
            (cpu->GetP() & NEGATIVE) > 0 ? "True" : "False",
            (cpu->GetP() & OVERFLOW) > 0 ? "True" : "False",
@@ -117,6 +136,7 @@ void cpu_device::print()
            (cpu->GetP() & ZERO) > 0 ? "True" : "False",
            (cpu->GetP() & CARRY) > 0 ? "True" : "False");
     printf("  PC  $%04X\n", cpu->GetPC());
+    printf("  S   $%02X\n", cpu->GetS());
 }
 
 vector<uint16_t> cpu_device::get_call_stack()

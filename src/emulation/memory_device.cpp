@@ -157,6 +157,25 @@ uint8_t memory_device::read(uint16_t address)
     return ram[address];
 }
 
+uint8_t memory_device::read_raw(uint16_t address)
+{
+    try
+    {
+        debug_segment segment_def = debug->get_segment_def(address);
+        if (segment_def.is_readonly())
+        {
+            auto image = rom->get(segment_def.get_id());
+            return image[segment_def.get_image_file_address(address)];
+        }
+    }
+    catch (const cpu_runtime_error &e)
+    {
+        // When exception occurs, it is considered RAM access.
+    }
+
+    return ram[address];
+}
+
 void memory_device::write(uint16_t address, uint8_t value)
 {
     write_counts[address]++;
@@ -179,6 +198,11 @@ void memory_device::write(uint16_t address, uint8_t value)
         }
     }
 
+    ram[address] = value;
+}
+
+void memory_device::write_raw(uint16_t address, uint8_t value)
+{
     ram[address] = value;
 }
 

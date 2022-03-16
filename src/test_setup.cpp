@@ -18,7 +18,8 @@ void test_setup::execute()
 
     get_device()->clear(
         get_register_pc_def()->get_start_address(),
-        get_register_pc_def()->get_end_address());
+        get_register_pc_def()->get_end_address(),
+        get_stack_def()->get_stack());
 
     memory_device *mem_dev = get_device()->get_memory();
     for (auto memory_def : get_memory_defs())

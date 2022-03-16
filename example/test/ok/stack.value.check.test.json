@@ -1,0 +1,30 @@
+{
+    "$schema": "../../../schema/testcase.schema.json",
+    "target": {
+        "start": {
+            "label": "update_stack_value"
+        },
+        "end": {
+            "label": "end_update_stack"
+        }
+    },
+    "cases": {
+        "update stack test":{
+            "setup": {
+                "stack": [
+                    1
+                ]
+            },
+            "expected": {
+                "stack": [
+                    {
+                        "eq": 2
+                    },
+                    {
+                        "eq": 2
+                    }
+                ]
+            }
+        }
+    }
+}

@@ -90,6 +90,15 @@ string message::error_memory_write_count(condition_memory_count memory_count_def
         actual);
 }
 
+string message::error_stack_data(condition_stack *stack_def, int index, string expected, string actual)
+{
+    return error_message(
+        "Stack data [index: " + to_string(index) + "]",
+        expected,
+        actual
+    );
+}
+
 string message::trace_timeout(emulation_devices *device, vector<uint16_t> call_stack, string expected, string actual)
 {
     return trace_message(

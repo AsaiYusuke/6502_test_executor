@@ -61,6 +61,10 @@
                                 "memory": {
                                     "title": "Memory",
                                     "$ref": "#/definitions/setup/memory"
+                                },
+                                "stack": {
+                                    "title": "Stack",
+                                    "$ref": "#/definitions/setup/stack"
                                 }
                             }
                         },
@@ -77,6 +81,10 @@
                                 "memory": {
                                     "title": "Memory",
                                     "$ref": "#/definitions/expected/memory"
+                                },
+                                "stack": {
+                                    "title": "Stack",
+                                    "$ref": "#/definitions/expected/stack"
                                 },
                                 "timeout": {
                                     "title": "Timeout",
@@ -486,6 +494,13 @@
                         }
                     }
                 ]
+            },
+            "stack": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                    "$ref": "#/definitions/value"
+                }
             }
         },
         "expected": {
@@ -684,6 +699,13 @@
                         }
                     }
                 ]
+            },
+            "stack": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                    "$ref": "#/definitions/expected/expressionValue"
+                }
             },
             "expressionValue": {
                 "type": "object",

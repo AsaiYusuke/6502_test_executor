@@ -21,16 +21,16 @@ All tests passed.
 ## Supported testing feature
 
 - Setup device conditions before test
-  |                         |      Register      |       Memory       |
-  | :---------------------- | :----------------: | :----------------: |
-  | Set value               | :heavy_check_mark: | :heavy_check_mark: |
-  | Mock read value history |                    | :heavy_check_mark: |
+  |                         |      Register      |       Memory       |       Stack        |
+  | :---------------------- | :----------------: | :----------------: | :----------------: |
+  | Set value               | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+  | Mock read value history |                    | :heavy_check_mark: |                    |
 - Evaluate device conditions after test
-  |                           |      Register      |       Memory       |
-  | :------------------------ | :----------------: | :----------------: |
-  | Check value               | :heavy_check_mark: | :heavy_check_mark: |
-  | Check read/write count    |                    | :heavy_check_mark: |
-  | Check write value history |                    | :heavy_check_mark: |
+  |                           |      Register      |       Memory       |       Stack        |
+  | :------------------------ | :----------------: | :----------------: | :----------------: |
+  | Check value               | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+  | Check read/write count    |                    | :heavy_check_mark: |                    |
+  | Check write value history |                    | :heavy_check_mark: |                    |
 - Evaluate processor information
   - Cycle count
 - Assertion operator
@@ -45,6 +45,11 @@ All tests passed.
   - Write access to readonly memory
   - Access to out of segment
 
+### Additional useful feature
+
+- When a test terminates with an error, its callback trace can be output.
+- Test evaluations can be executed at any address.
+- Test ROM image is detected from debug information file.
 
 ## How to use
 
@@ -102,6 +107,12 @@ You can find all command line arguments in help:
 Some options can be specified either as command line arguments or test scenario file ([See example](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/customize.configurations.test.json)).  
 If both are specified, the values in the test scenario file are adopted.
 
+## Tested CA65 version
+
+```
+# ca65 --version
+ca65 V2.18 - Ubuntu 2.19-1
+```
 
 ## Test scinario examples
 

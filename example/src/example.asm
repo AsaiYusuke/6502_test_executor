@@ -226,3 +226,13 @@ palette:	.byte $0F, $11, $21, $31
 	sta $7fff
 	rts
 .endproc
+
+.proc update_stack_value
+	pla
+	clc
+	adc #1
+	pha
+	lda #2
+	pha
+	end_update_stack:
+.endproc

@@ -8,10 +8,10 @@ emulation_devices::emulation_devices(args_parser *args, json config)
     cpu = new cpu_device(this, args, config);
 }
 
-void emulation_devices::clear(uint16_t startPC, uint16_t endPC)
+void emulation_devices::clear(uint16_t startPC, uint16_t endPC, vector<uint8_t> stack)
 {
     memory->clear();
-    cpu->clear(startPC, endPC);
+    cpu->clear(startPC, endPC, stack);
 
     errors.clear();
 }

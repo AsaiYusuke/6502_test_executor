@@ -30,13 +30,14 @@ private:
 
 public:
     cpu_device(emulation_devices *_device, args_parser *args, json config);
-    void clear(uint16_t startPC, uint16_t endPC);
+    void clear(uint16_t startPC, uint16_t endPC, vector<uint8_t> stack);
     void execute();
 
     uint64_t get_max_cycle_count();
 
     uint8_t get_register(register_type type);
     void set_register(register_type type, uint8_t value);
+    vector<uint8_t> get_stack();
 
     void print();
     vector<uint16_t> get_call_stack();

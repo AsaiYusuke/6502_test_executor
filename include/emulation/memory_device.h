@@ -48,6 +48,8 @@ public:
     uint8_t get_read_count(uint16_t address);
     uint8_t get_write_count(uint16_t address);
     uint8_t read(uint16_t address);
+    uint8_t read_raw(uint16_t address);
     void write(uint16_t address, uint8_t value);
+    void write_raw(uint16_t address, uint8_t value);
     void print();
 };

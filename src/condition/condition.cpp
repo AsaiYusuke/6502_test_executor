@@ -37,6 +37,8 @@ condition::condition(emulation_devices *_device, json condition_json)
                     device,
                     memory_def));
 
+    stack_def = new condition_stack(device, condition_json["stack"]);
+
     timeout_def = new condition_timeout(condition_json["timeout"]);
 }
 
@@ -63,6 +65,11 @@ vector<condition_memory> condition::get_memory_defs()
 condition_register_pc *condition::get_register_pc_def()
 {
     return register_pc_def;
+}
+
+condition_stack *condition::get_stack_def()
+{
+    return stack_def;
 }
 
 condition_timeout *condition::get_timeout_def()

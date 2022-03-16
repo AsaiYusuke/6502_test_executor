@@ -9,6 +9,7 @@
 #include "assert/assert_memory_value.h"
 #include "assert/assert_memory_read_count.h"
 #include "assert/assert_memory_write_count.h"
+#include "assert/assert_stack_value.h"
 
 test_assert::test_assert(emulation_devices *device, json condition_json)
     : condition(device, condition_json)
@@ -52,6 +53,8 @@ void test_assert::execute()
             assert_memory_write_count::test(
                 get_device(), memory_write_count_def, &result);
     }
+
+    assert_stack_value::test(get_device(), get_stack_def(), &result);
 }
 
 test_result test_assert::get_result(string id)
