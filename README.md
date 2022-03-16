@@ -20,12 +20,12 @@ All tests passed.
 
 ## Supported testing feature
 
-- Setup device conditions before test
+- Setup device conditions before test  
   |                         |      Register      |       Memory       |       Stack        |
   | :---------------------- | :----------------: | :----------------: | :----------------: |
   | Set value               | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
   | Mock read value history |                    | :heavy_check_mark: |                    |
-- Evaluate device conditions after test
+- Evaluate device conditions after test  
   |                           |      Register      |       Memory       |       Stack        |
   | :------------------------ | :----------------: | :----------------: | :----------------: |
   | Check value               | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
