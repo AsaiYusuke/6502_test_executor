@@ -9,7 +9,7 @@
 #include "enum/runtime_error_type.h"
 #include "runtime_error_result.h"
 
-#define TEST_RETURN_ADDRESS  0xFFFF
+#define TEST_RETURN_ADDRESS 0xFFFF
 
 using namespace std;
 
@@ -24,7 +24,12 @@ private:
 
     mos6502 *cpu;
     uint64_t max_cycle_count;
-    vector<uint16_t> call_stack;
+    enum class inst_type
+    {
+        call,
+        retern
+    };
+    vector<pair<inst_type, uint16_t>> call_stack;
     uint16_t currentPC;
     uint16_t endPC;
 

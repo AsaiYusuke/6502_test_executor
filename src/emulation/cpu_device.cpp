@@ -28,15 +28,12 @@ void cpu_device::clear(uint16_t startPC, uint16_t _endPC, vector<uint8_t> stack)
     cpu->StackPush((TEST_RETURN_ADDRESS - 1) & 0xFF);
 
     call_stack.clear();
-    call_stack.push_back(TEST_RETURN_ADDRESS);
+    call_stack.push_back(make_pair(inst_type::call, TEST_RETURN_ADDRESS));
 
     for (auto value : stack)
-    {
         cpu->StackPush(value);
-        call_stack.push_back(value);
-    }
 
-    call_stack.push_back(startPC);
+    call_stack.push_back(make_pair(inst_type::call, startPC));
 
     endPC = _endPC;
 }
@@ -48,25 +45,36 @@ void cpu_device::execute()
     do
     {
         bool isCallInstr = false;
+        bool isReternInstr = false;
 
         currentPC = cpu->GetPC();
 
         if (cpu->isCallInstr())
         {
-            call_stack.push_back(cpu->GetPC());
+            call_stack.push_back(make_pair(inst_type::call, cpu->GetPC()));
             isCallInstr = true;
         }
         else if (cpu->isReturnInstr())
         {
-            call_stack.pop_back();
-            call_stack.pop_back();
+            if (call_stack.back().first == inst_type::call)
+            {
+                call_stack.pop_back();
+                call_stack.pop_back();
+            }
+            else
+            {
+                call_stack.push_back(make_pair(inst_type::retern, cpu->GetPC()));
+                isReternInstr = true;
+            }
         }
 
         cyclesRemaining = 1;
         cpu->Run(cyclesRemaining, cycle_count, cpu->INST_COUNT);
 
         if (isCallInstr)
-            call_stack.push_back(cpu->GetPC());
+            call_stack.push_back(make_pair(inst_type::call, cpu->GetPC()));
+        if (isReternInstr)
+            call_stack.push_back(make_pair(inst_type::retern, cpu->GetPC()));
 
     } while (cpu->GetPC() != TEST_RETURN_ADDRESS && cpu->GetPC() != endPC && cycle_count <= get_max_cycle_count());
 
@@ -141,7 +149,9 @@ void cpu_device::print()
 
 vector<uint16_t> cpu_device::get_call_stack()
 {
-    vector<uint16_t> current_call_stack = call_stack;
+    vector<uint16_t> current_call_stack;
+    for (auto entry : call_stack)
+        current_call_stack.push_back(entry.second);
     current_call_stack.push_back(currentPC);
     return current_call_stack;
 }
