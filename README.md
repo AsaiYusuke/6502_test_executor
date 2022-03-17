@@ -129,6 +129,7 @@ ca65 V2.18 - Ubuntu 2.19-1
 
 ### Stack conditions
 - [Check value of stack](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/stack.value.check.test.json)
+- [rts to caller](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/stack.rts.check.test.json)
 
 ### Processor information
 - [Cycle count](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/error.timeout.test.json)

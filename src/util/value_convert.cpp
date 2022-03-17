@@ -1,4 +1,5 @@
 #include <sstream>
+#include "enum/value_type.h"
 #include "util/value_convert.h"
 
 uint16_t value_convert::get_address(emulation_devices *device, json value)
@@ -27,7 +28,22 @@ uint16_t value_convert::parse_json_number(emulation_devices *device, json value)
             return stoi(str.substr(1), 0, 2);
     }
     case json::value_t::object:
-        return device->get_memory()->read(get_address(device, value));
+        auto address = get_address(device, value);
+        if (value["type"].is_null())
+            return device->get_memory()->read(address);
+        switch(value_name_type_map[value["type"].get<string>()])
+        {
+            case value_type::VALUE:
+                return device->get_memory()->read(address);
+            case value_type::HIBYTE:
+                return address >> 8;
+            case value_type::LOBYTE:
+                return address & 0xFF;
+            case value_type::RTS_HIBYTE:
+                return (address - 1) >> 8;
+            case value_type::RTS_LOBYTE:
+                return (address - 1) & 0xFF;
+        }
     }
     return 0;
 }

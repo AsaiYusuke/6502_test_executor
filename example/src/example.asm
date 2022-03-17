@@ -236,3 +236,18 @@ palette:	.byte $0F, $11, $21, $31
 	pha
 	end_update_stack:
 .endproc
+
+.proc call_subproc
+	jsr subproc
+	rts_from_subproc:
+	beq end_call_subproc
+	ldx #3
+	end_call_subproc:
+	rts
+.endproc
+
+.proc subproc
+	ldx #2
+	cmp #1
+	rts
+.endproc

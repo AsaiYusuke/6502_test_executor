@@ -337,7 +337,28 @@
                     "$ref": "#/definitions/number_8bit"
                 },
                 {
-                    "$ref": "#/definitions/address"
+                    "type": "object",
+                    "allOf": [
+                        {
+                        "$ref": "#/definitions/address"
+                        }
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                        "type": {
+                            "type": "string",
+                            "enum": [
+                                "value",
+                                "hibyte",
+                                "lobyte",
+                                "rts_hibyte",
+                                "rts_lobyte"
+                            ]
+                        },
+                        "address": {},
+                        "label": {},
+                        "offset": {}
+                    }
                 }
             ]
         },

@@ -1,0 +1,58 @@
+{
+    "$schema": "../../../schema/testcase.schema.json",
+    "target": {
+        "start": {
+            "label": "subproc"
+        }
+    },
+    "cases": {
+        "pass value to the caller : A=1": {
+            "setup": {
+                "register": {
+                    "A": 1
+                },
+                "stack": [
+                    {
+                        "type": "rts_hibyte",
+                        "label": "rts_from_subproc"
+                    },
+                    {
+                        "type": "rts_lobyte",
+                        "label": "rts_from_subproc"
+                    }
+                ]
+            },
+            "expected": {
+                "register": {
+                    "X": {
+                        "eq": 2
+                    }
+                }
+            }
+        },
+        "pass value to the caller : A=2": {
+            "setup": {
+                "register": {
+                    "A": 2
+                },
+                "stack": [
+                    {
+                        "type": "rts_hibyte",
+                        "label": "rts_from_subproc"
+                    },
+                    {
+                        "type": "rts_lobyte",
+                        "label": "rts_from_subproc"
+                    }
+                ]
+            },
+            "expected": {
+                "register": {
+                    "X": {
+                        "eq": 3
+                    }
+                }
+            }
+        }
+    }
+}

@@ -9,7 +9,7 @@
         }
     },
     "cases": {
-        "update stack test":{
+        "update stack test": {
             "setup": {
                 "stack": [
                     1
