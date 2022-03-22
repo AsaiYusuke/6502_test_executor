@@ -40,10 +40,11 @@ All tests passed.
   - *"ge"* (Greater than or equal to)
   - *"lt"* (Less than)
   - *"le"* (Less than or equal to)
-  - Composite operators - e.g. "*gt*"+"*lt*" for range selection
+  - *"anyOf"* (Any of) -- Representing logical OR operator
+  - Composite operators -- e.g. "*gt*"+"*lt*" for range selection
 - Error handling
   - Write access to readonly memory
-  - Access to out of segment
+  - Access to undefined memory - out of segment
 
 ### Additional useful feature
 
@@ -140,7 +141,7 @@ ca65 V2.18 - Ubuntu 2.19-1
 ### Misc
 - [Customize configurations](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/customize.configurations.test.json)
 - [Skip test (ignore)](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/skip.test.json)
-- [Evaluation type](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/evaluation.json)
+- [Complex evaluation](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/evaluation.test.json)
 
 # Dependencies
 This project uses following project:

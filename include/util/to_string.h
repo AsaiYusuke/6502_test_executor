@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include "enum/operator_type.h"
+#include "condition/condition_expression.h"
 
 using namespace std;
 
@@ -31,6 +32,22 @@ template <typename T, typename U>
 string to_string(pair<T, U> value)
 {
     stringstream ss;
-    ss << "(" << to_string(value.first) << ", " << to_string(value.second) << ")";
+    ss << to_string(value.first) << ":" << to_string(value.second);
+    return ss.str();
+}
+
+template <typename T, typename U>
+string to_string(condition_expression<T, U> value)
+{
+    stringstream ss;
+    if (value.get_and_expressions().size() > 0)
+        ss << to_string(value.get_and_expressions());
+    if (value.get_or_expressions().size() > 0)
+    {
+        if (value.get_and_expressions().size() > 0)
+            ss << ", ";
+        ss << "anyOf:";
+        ss << to_string(value.get_or_expressions());
+    }
     return ss.str();
 }

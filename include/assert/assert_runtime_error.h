@@ -17,9 +17,6 @@ public:
         auto expected = false;
         auto actual = true;
 
-        if (expression_executer::test(operator_type::EQ, actual, expected))
-            return true;
-
         switch (error_def.get_type())
         {
         case runtime_error_type::READONLY_MEMORY:

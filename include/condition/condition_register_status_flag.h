@@ -1,7 +1,8 @@
 #pragma once
 
-#include "enum/operator_type.h"
 #include "enum/status_flag_type.h"
+#include "condition/condition_expression.h"
+#include "condition/expression_value.h"
 #include "emulation/emulation_devices.h"
 #include "nlohmann/json.hpp"
 
@@ -15,12 +16,12 @@ private:
     string name;
     status_flag_type type;
     bool value;
-    vector<pair<operator_type, bool>> expressions;
+    condition_expression<expression_value, bool> *expression;
 
 public:
-    condition_register_status_flag(emulation_devices *_device, string _name, json condition);
+    condition_register_status_flag(emulation_devices *device, string _name, json condition);
     string get_name();
     status_flag_type get_type();
     bool get_value();
-    vector<pair<operator_type, bool>> get_expressions();
+    condition_expression<expression_value, bool> *get_expression();
 };

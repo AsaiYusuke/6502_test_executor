@@ -1,16 +1,15 @@
 #include "condition/condition_memory_count.h"
 #include "util/expression_executer.h"
+#include "condition/condition_expression.h"
+#include "condition/expression_value.h"
 
-condition_memory_count::condition_memory_count(uint16_t _address, json condition, string _name)
+condition_memory_count::condition_memory_count(emulation_devices *device, uint16_t _address, json condition, string _name)
 {
     name = _name;
     address = _address;
     if (expression_executer::find(condition))
-        for (auto &expression : expression_executer::get(condition))
-            expressions.push_back(
-                make_pair(
-                    expression.first,
-                    expression.second.get<uint8_t>()));
+        expression =
+            new condition_expression<expression_value, uint8_t>(device, condition);
     else
         count = condition.get<uint8_t>();
 }
@@ -30,7 +29,7 @@ string condition_memory_count::get_name()
     return name;
 }
 
-vector<pair<operator_type, uint8_t>> condition_memory_count::get_expressions()
+condition_expression<expression_value, uint8_t> *condition_memory_count::get_expression()
 {
-    return expressions;
+    return expression;
 }

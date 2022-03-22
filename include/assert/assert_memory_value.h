@@ -22,30 +22,19 @@ public:
         auto actuals = device->get_memory()->get_write_sequence(
             memory_value_def.get_address(),
             expression_sequences.size());
-        for (decltype(expression_sequences.size()) offset = 0, size = expression_sequences.size(); offset < size; offset++)
-        {
-            bool success = true;
+        for (decltype(expression_sequences.size()) offset = 0, size = expression_sequences.size(); offset < size && total_result; offset++)
             if (actuals.size() <= offset)
-                success = false;
+                total_result = false;
             else
-            {
-                auto actual = actuals.at(offset);
-                for (auto expression : expression_sequences.at(offset))
-                    if (!expression_executer::test(expression.first, actual, expression.second))
-                    {
-                        success = false;
-                        break;
-                    }
-            }
-            if (!success)
-                result->add_error(
-                    message::error_memory_data(
-                        memory_value_def,
-                        offset,
-                        to_string(expression_sequences),
-                        to_string(actuals)));
-            total_result &= success;
-        }
+                total_result &= expression_sequences.at(offset).test(actuals.at(offset));
+
+        if (!total_result)
+            result->add_error(
+                message::error_memory_data(
+                    memory_value_def,
+                    to_string(expression_sequences),
+                    to_string(actuals)));
+
         return total_result;
     }
 };

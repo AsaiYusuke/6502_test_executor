@@ -60,16 +60,10 @@ string message::error_register_status_flag_data(condition_register_status_flag s
         actual);
 }
 
-string message::error_memory_data(condition_memory_value memory_value_def, int index, string expected, string actual)
+string message::error_memory_data(condition_memory_value memory_value_def, string expected, string actual)
 {
-    string message;
-    if (memory_value_def.get_sequence().size() <= 1 && memory_value_def.get_expressions().size() <= 1)
-        message = "Memory data [" + memory_value_def.get_name() + ")]";
-    else
-        message = "Memory data [" + memory_value_def.get_name() + "(index:" + to_string(index) + ")]";
-
     return error_message(
-        message,
+        "Memory data [" + memory_value_def.get_name() + ")]",
         expected,
         actual);
 }
@@ -90,10 +84,10 @@ string message::error_memory_write_count(condition_memory_count memory_count_def
         actual);
 }
 
-string message::error_stack_data(condition_stack *stack_def, int index, string expected, string actual)
+string message::error_stack_data(condition_stack *stack_def, string expected, string actual)
 {
     return error_message(
-        "Stack data [index: " + to_string(index) + "]",
+        "Stack data",
         expected,
         actual
     );

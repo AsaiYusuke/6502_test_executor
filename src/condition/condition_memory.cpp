@@ -2,45 +2,47 @@
 #include "util/value_convert.h"
 #include "condition/condition_memory.h"
 
-condition_memory::condition_memory(emulation_devices *_device, json condition)
+condition_memory::condition_memory(emulation_devices *device, json condition)
 {
-    auto address = value_convert::get_address(_device, condition);
+    auto address = value_convert::get_address(device, condition);
 
     bool is_permanent = condition.value("permanent", false);
 
-    auto sequences = normalize_value_sequences(_device, condition);
+    auto sequences = normalize_value_sequences(device, condition);
     for (decltype(sequences.size()) offset = 0, size = sequences.size(); offset < size; offset++)
     {
         auto sequence = sequences.at(offset);
         value_sequences.push_back(
             condition_memory_value(
-                _device,
+                device,
                 address + offset,
                 sequence,
                 is_permanent,
-                create_address_name(_device, condition, offset)));
+                create_address_name(device, condition, offset)));
     }
 
-    auto r_counts = normalize_read_counts(_device, condition);
+    auto r_counts = normalize_read_counts(device, condition);
     for (decltype(r_counts.size()) offset = 0, size = r_counts.size(); offset < size; offset++)
     {
         auto read_count = r_counts.at(offset);
         read_counts.push_back(
             condition_memory_count(
+                device,
                 address + offset,
                 read_count,
-                create_address_name(_device, condition, offset)));
+                create_address_name(device, condition, offset)));
     }
 
-    auto w_counts = normalize_write_counts(_device, condition);
+    auto w_counts = normalize_write_counts(device, condition);
     for (decltype(w_counts.size()) offset = 0, size = w_counts.size(); offset < size; offset++)
     {
         auto write_count = w_counts.at(offset);
         write_counts.push_back(
             condition_memory_count(
+                device,
                 address + offset,
                 write_count,
-                create_address_name(_device, condition, offset)));
+                create_address_name(device, condition, offset)));
     }
 }
 
@@ -89,7 +91,7 @@ string condition_memory::create_address_name(emulation_devices *device, json mem
     return ss.str();
 }
 
-json condition_memory::normalize_value_sequences(emulation_devices *_device, json memory_def)
+json condition_memory::normalize_value_sequences(emulation_devices *device, json memory_def)
 {
     if (memory_def.contains("sequence"))
         if (memory_def["sequence"].at(0).is_array())
@@ -111,7 +113,7 @@ json condition_memory::normalize_value_sequences(emulation_devices *_device, jso
     return {};
 }
 
-json condition_memory::normalize_read_counts(emulation_devices *_device, json memory_def)
+json condition_memory::normalize_read_counts(emulation_devices *device, json memory_def)
 {
     if (!memory_def.contains("readCount"))
         return {};
@@ -122,7 +124,7 @@ json condition_memory::normalize_read_counts(emulation_devices *_device, json me
         return {memory_def["readCount"]};
 }
 
-json condition_memory::normalize_write_counts(emulation_devices *_device, json memory_def)
+json condition_memory::normalize_write_counts(emulation_devices *device, json memory_def)
 {
     if (!memory_def.contains("writeCount"))
         return {};

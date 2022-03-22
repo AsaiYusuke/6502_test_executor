@@ -1,6 +1,8 @@
 #pragma once
 
-#include "enum/operator_type.h"
+#include "condition/condition_expression.h"
+#include "condition/expression_value.h"
+#include "emulation/emulation_devices.h"
 #include "nlohmann/json.hpp"
 
 using namespace std;
@@ -10,9 +12,9 @@ using json = nlohmann::json;
 class condition_timeout
 {
 private:
-    vector<pair<operator_type, bool>> expressions;
+    condition_expression<expression_value, bool> *expression;
 
 public:
-    condition_timeout(json condition);
-    vector<pair<operator_type, bool>> get_expressions();
+    condition_timeout(emulation_devices *device, json condition);
+    condition_expression<expression_value, bool> *get_expression();
 };

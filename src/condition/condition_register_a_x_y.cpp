@@ -7,11 +7,8 @@ condition_register_a_x_y::condition_register_a_x_y(emulation_devices *device, st
     name = _name;
     type = register_name_type_map[name];
     if (expression_executer::find(condition))
-        for (auto &expression : expression_executer::get(condition))
-            expressions.push_back(
-                make_pair(
-                    expression.first,
-                    value_convert::to_two_complement_byte(device, expression.second)));
+        expression =
+            new condition_expression<expression_two_complement_byte, uint8_t>(device, condition);
     else
         value = value_convert::to_two_complement_byte(device, condition);
 }
@@ -31,7 +28,7 @@ uint8_t condition_register_a_x_y::get_value()
     return value;
 }
 
-vector<pair<operator_type, uint8_t>> condition_register_a_x_y::get_expressions()
+condition_expression<expression_two_complement_byte, uint8_t> *condition_register_a_x_y::get_expression()
 {
-    return expressions;
+    return expression;
 }

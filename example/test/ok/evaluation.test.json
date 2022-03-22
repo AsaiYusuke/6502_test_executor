@@ -1,0 +1,70 @@
+{
+    "$schema": "../../../schema/testcase.schema.json",
+    "target": {
+        "start": {
+            "label": "check_collision"
+        }
+    },
+    "cases": {
+        "between the range": {
+            "setup": {
+                "memory": [
+                    {
+                        "label": "vector_addr",
+                        "value": 4
+                    }
+                ]
+            },
+            "expected": {
+                "memory": [
+                    {
+                        "label": "vector_addr",
+                        "value": {
+                            "gt": 3,
+                            "lt": 5
+                        }
+                    }
+                ]
+            }
+        },
+        "more complex conditions":{
+            "setup": {
+                "memory": [
+                    {
+                        "label": "vector_addr",
+                        "value": 4
+                    }
+                ]
+            },
+            "expected": {
+                "memory": [
+                    {
+                        "label": "vector_addr",
+                        "value": {
+                            "gt": 3,
+                            "lt": 5,
+                            "anyOf": [
+                                {
+                                    "lt": 4
+                                },
+                                {
+                                    "gt": 4
+                                },
+                                {
+                                    "anyOf": [
+                                        {
+                                            "eq": 2
+                                        },
+                                        {
+                                            "eq": 4
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}

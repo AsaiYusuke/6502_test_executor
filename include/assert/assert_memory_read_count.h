@@ -14,23 +14,16 @@ class assert_memory_read_count
 public:
     static bool test(emulation_devices *device, condition_memory_count memory_count_def, test_result *result)
     {
-        bool total_result = true;
-        for (auto expression : memory_count_def.get_expressions())
-        {
-            auto actual = device->get_memory()->get_read_count(
-                memory_count_def.get_address());
-
-            if (expression_executer::test(expression.first, actual, expression.second))
-                continue;
-
+        auto actual = device->get_memory()->get_read_count(
+            memory_count_def.get_address());
+        bool total_result = memory_count_def.get_expression()->test(actual);
+        if (!total_result)
             result->add_error(
                 message::error_memory_read_count(
                     memory_count_def,
-                    to_string(expression.second),
+                    to_string(memory_count_def.get_expression()),
                     to_string(actual)));
 
-            total_result = false;
-        }
         return total_result;
     }
 };

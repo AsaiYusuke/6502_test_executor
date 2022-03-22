@@ -13,23 +13,17 @@ class assert_timeout
 public:
     static bool test(emulation_devices *device, condition_timeout *timeout_def, test_result *result)
     {
-        bool total_result = true;
         auto error_defs = device->get_filtered_errors({runtime_error_type::TIMEOUT});
         auto actual = !error_defs.empty();
-        for (auto expression : timeout_def->get_expressions())
-        {
-            if (expression_executer::test(expression.first, actual, expression.second))
-                continue;
-
+        bool total_result = timeout_def->get_expression()->test(actual);
+        if (!total_result)
             result->add_error(
                 message::trace_timeout(
                     device,
                     actual ? error_defs.front().get_call_stack() : vector<uint16_t>{},
-                    to_string(expression.second),
+                    to_string(timeout_def->get_expression()),
                     to_string(actual)));
 
-            total_result = false;
-        }
         return total_result;
     }
 };

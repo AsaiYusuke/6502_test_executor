@@ -1,22 +1,16 @@
 #include "condition/condition_timeout.h"
 #include "util/expression_executer.h"
 
-condition_timeout::condition_timeout(json condition)
+condition_timeout::condition_timeout(emulation_devices *device, json condition)
 {
-    if (expression_executer::find(condition))
-        for (auto &expression : expression_executer::get(condition))
-            expressions.push_back(
-                make_pair(
-                    expression.first,
-                    expression.second.get<bool>()));
-    else
-        expressions.push_back(
-            make_pair(
-                operator_type::EQ,
-                false));
+    if (!expression_executer::find(condition))
+        condition = {{operator_type_name_map[operator_type::EQ], false}};
+
+    expression =
+        new condition_expression<expression_value, bool>(device, condition);
 }
 
-vector<pair<operator_type, bool>> condition_timeout::get_expressions()
+condition_expression<expression_value, bool> *condition_timeout::get_expression()
 {
-    return expressions;
+    return expression;
 }

@@ -1,16 +1,13 @@
 #include "condition/condition_register_status_flag.h"
 #include "util/expression_executer.h"
 
-condition_register_status_flag::condition_register_status_flag(emulation_devices *_device, string _name, json condition)
+condition_register_status_flag::condition_register_status_flag(emulation_devices *device, string _name, json condition)
 {
     name = _name;
     type = status_flag_name_type_map[name];
     if (expression_executer::find(condition))
-        for (auto &expression : expression_executer::get(condition))
-            expressions.push_back(
-                make_pair(
-                    expression.first,
-                    expression.second.get<bool>()));
+        expression =
+            new condition_expression<expression_value, bool>(device, condition);
     else
         value = condition.get<bool>();
 }
@@ -30,7 +27,7 @@ bool condition_register_status_flag::get_value()
     return value;
 }
 
-vector<pair<operator_type, bool>> condition_register_status_flag::get_expressions()
+condition_expression<expression_value, bool> *condition_register_status_flag::get_expression()
 {
-    return expressions;
+    return expression;
 }

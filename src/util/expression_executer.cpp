@@ -5,15 +5,11 @@ bool expression_executer::find(json value)
     if (!value.is_object())
         return false;
 
-    bool is_expression = true;
     for (auto &element : value.items())
         if (operator_name_type_map.count(element.key()) == 0)
-        {
-            is_expression = false;
-            break;
-        }
+            return false;
 
-    return is_expression;
+    return true;
 }
 
 vector<pair<operator_type, json>> expression_executer::get(json value)

@@ -1,6 +1,7 @@
 #pragma once
 
-#include "enum/operator_type.h"
+#include "condition/condition_expression.h"
+#include "condition/expression_two_complement_byte.h"
 #include "emulation/emulation_devices.h"
 
 using namespace std;
@@ -12,7 +13,7 @@ private:
     uint16_t address;
     vector<uint8_t> sequence;
     bool permanent;
-    vector<vector<pair<operator_type, uint8_t>>> expression_sequence;
+    vector<condition_expression<expression_two_complement_byte, uint8_t>> expression_sequence;;
 
 public:
     condition_memory_value(emulation_devices *device, uint16_t _address, json condition, bool _permanent, string _name);
@@ -20,5 +21,5 @@ public:
     uint16_t get_address();
     vector<uint8_t> get_sequence();
     string get_name();
-    vector<vector<pair<operator_type, uint8_t>>> get_expressions();
+    vector<condition_expression<expression_two_complement_byte, uint8_t>> get_expressions();
 };

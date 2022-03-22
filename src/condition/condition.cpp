@@ -30,6 +30,7 @@ condition::condition(emulation_devices *_device, json condition_json)
                         register_element.value()));
                 break;
             }
+
     if (condition_json["memory"].is_array())
         for (auto &memory_def : condition_json["memory"])
             memory_defs.push_back(
@@ -39,7 +40,7 @@ condition::condition(emulation_devices *_device, json condition_json)
 
     stack_def = new condition_stack(device, condition_json["stack"]);
 
-    timeout_def = new condition_timeout(condition_json["timeout"]);
+    timeout_def = new condition_timeout(device, condition_json["timeout"]);
 }
 
 emulation_devices *condition::get_device()
