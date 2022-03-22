@@ -33,6 +33,9 @@ All tests passed.
   | Check write value history |                    | :heavy_check_mark: |                    |
 - Evaluate processor information
   - Cycle count
+- Simulate interrupt at any memory addresses
+  - NMI
+  - IRQ
 - Assertion operator
   - *"eq"* (Equal to)
   - *"ne"* (Not equal to)
@@ -134,8 +137,10 @@ ca65 V2.18 - Ubuntu 2.19-1
 - [Check value of stack](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/stack.value.check.test.json)
 - [rts to caller](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/stack.rts.check.test.json)
 
-### Processor information
-- [Cycle count](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/error.timeout.test.json)
+### Processor conditions
+- [Cycle count information](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/error.timeout.test.json)
+- [Interrupt hooks](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/interrupt.test.json)
+
 ### Error handling
 - [Write to readonly memory](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/fail/error.readonly.test.json)
 - [Access to out of segment](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/fail/error.out_of_segment.test.json)

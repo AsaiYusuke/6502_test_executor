@@ -1,0 +1,53 @@
+{
+    "$schema": "../../../schema/testcase.schema.json",
+    "target": {
+        "start": {
+            "label": "control"
+        }
+    },
+    "cases": {
+        "NMI interrupt": {
+            "setup": {
+                "memory": [
+                    {
+                        "label": "vector_addr",
+                        "value": 0
+                    },
+                    {
+                        "label": "APU_PAD1",
+                        "sequence": [
+                            0,
+                            1,
+                            1,
+                            0
+                        ]
+                    }
+                ],
+                "interrupt": [
+                    {
+                        "type": "NMI",
+                        "hook": {
+                            "label": "save_id"
+                        }
+                    }
+                ]
+            },
+            "expected": {
+                "memory": [
+                    {
+                        "label": "vector_addr",
+                        "value": {
+                            "eq": 4
+                        }
+                    },
+                    {
+                        "label": "nmi_lock",
+                        "readCount": {
+                            "gt": 0
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}

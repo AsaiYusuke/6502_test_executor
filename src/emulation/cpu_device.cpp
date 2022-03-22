@@ -46,6 +46,7 @@ void cpu_device::execute()
     {
         bool isCallInstr = false;
         bool isReternInstr = false;
+        bool isReterned = false;
 
         currentPC = cpu->GetPC();
 
@@ -60,6 +61,7 @@ void cpu_device::execute()
             {
                 call_stack.pop_back();
                 call_stack.pop_back();
+                isReterned = true;
             }
             else
             {
@@ -75,6 +77,21 @@ void cpu_device::execute()
             call_stack.push_back(make_pair(inst_type::call, cpu->GetPC()));
         if (isReternInstr)
             call_stack.push_back(make_pair(inst_type::retern, cpu->GetPC()));
+
+        if (interrupt_defs.count(cpu->GetPC()) > 0 && !isReterned)
+        {
+            call_stack.push_back(make_pair(inst_type::call, cpu->GetPC()));
+            switch(interrupt_defs[cpu->GetPC()])
+            {
+                case interrupt_type::NMI:
+                    cpu->NMI();
+                    break;
+                case interrupt_type::IRQ:
+                    cpu->IRQ();
+                    break;
+            }
+            call_stack.push_back(make_pair(inst_type::call, cpu->GetPC()));
+        }
 
     } while (cpu->GetPC() != TEST_RETURN_ADDRESS && cpu->GetPC() != endPC && cycle_count <= get_max_cycle_count());
 
@@ -126,6 +143,11 @@ vector<uint8_t> cpu_device::get_stack()
     for (auto address = resetS - 2; address > curS; address--)
         result_stack.push_back(device->get_memory()->read_raw(STACK_ADDRESS(address)));
     return result_stack;
+}
+
+void cpu_device::add_interrupt_hook(interrupt_type type, uint8_t address)
+{
+    interrupt_defs[address] = type;
 }
 
 void cpu_device::print()

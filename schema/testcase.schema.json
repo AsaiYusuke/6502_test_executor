@@ -65,6 +65,32 @@
                                 "stack": {
                                     "title": "Stack",
                                     "$ref": "#/definitions/setup/stack"
+                                },
+                                "interrupt": {
+                                    "title": "Interrupt",
+                                    "type": "array",
+                                    "minItems": 1,
+                                    "items": {
+                                        "type": "object",
+                                        "required": [
+                                            "type",
+                                            "hook"
+                                        ],
+                                        "additionalProperties": false,
+                                        "properties": {
+                                            "type": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "NMI",
+                                                    "IRQ"
+                                                ]
+                                            },
+                                            "hook": {
+                                                "title": "Hook address",
+                                                "$ref": "#/definitions/address"
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         },
@@ -340,7 +366,7 @@
                     "type": "object",
                     "allOf": [
                         {
-                        "$ref": "#/definitions/address"
+                            "$ref": "#/definitions/address"
                         }
                     ],
                     "additionalProperties": false,

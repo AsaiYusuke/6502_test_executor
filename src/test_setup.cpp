@@ -21,6 +21,9 @@ void test_setup::execute()
         get_register_pc_def()->get_end_address(),
         get_stack_def()->get_stack());
 
+    for (auto interrupt_def : get_interrupt_defs())
+        cpu_dev->add_interrupt_hook(interrupt_def.get_type(), interrupt_def.get_hook_address());
+
     memory_device *mem_dev = get_device()->get_memory();
     for (auto memory_def : get_memory_defs())
         for (auto memory_value_def : memory_def.get_value_sequences())

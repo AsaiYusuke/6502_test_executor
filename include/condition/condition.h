@@ -6,6 +6,7 @@
 #include "condition/condition_register_pc.h"
 #include "condition/condition_memory.h"
 #include "condition/condition_stack.h"
+#include "condition/condition_interrupt.h"
 #include "condition/condition_timeout.h"
 #include "nlohmann/json.hpp"
 
@@ -22,6 +23,7 @@ private:
     vector<condition_memory> memory_defs;
     condition_register_pc *register_pc_def;
     condition_stack *stack_def;
+    vector<condition_interrupt> interrupt_defs;
     condition_timeout *timeout_def;
 
 protected:
@@ -31,6 +33,7 @@ protected:
     vector<condition_register_status_flag> get_status_flag_defs();
     vector<condition_memory> get_memory_defs();
     condition_stack *get_stack_def();
+    vector<condition_interrupt> get_interrupt_defs();
     condition_timeout *get_timeout_def();
 
 public:

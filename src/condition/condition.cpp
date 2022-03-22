@@ -40,6 +40,13 @@ condition::condition(emulation_devices *_device, json condition_json)
 
     stack_def = new condition_stack(device, condition_json["stack"]);
 
+    if (condition_json["interrupt"].is_array())
+        for (auto &interrupt_def : condition_json["interrupt"])
+            interrupt_defs.push_back(
+                condition_interrupt(
+                    device,
+                    interrupt_def));
+
     timeout_def = new condition_timeout(device, condition_json["timeout"]);
 }
 
@@ -71,6 +78,11 @@ condition_register_pc *condition::get_register_pc_def()
 condition_stack *condition::get_stack_def()
 {
     return stack_def;
+}
+
+vector<condition_interrupt> condition::get_interrupt_defs()
+{
+    return interrupt_defs;
 }
 
 condition_timeout *condition::get_timeout_def()
