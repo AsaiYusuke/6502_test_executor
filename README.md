@@ -40,11 +40,13 @@ All tests passed.
   - *"ge"* (Greater than or equal to)
   - *"lt"* (Less than)
   - *"le"* (Less than or equal to)
-  - *"anyOf"* (Any of) -- Representing logical OR operator
-  - Composite operators -- e.g. "*gt*"+"*lt*" for range selection
+  - *"anyOf"* (Any of)  
+    Representing logical OR operator
+  - Composite operators  
+    Same as logical AND operator. e.g. "*gt*"+"*lt*" for range selection
 - Error handling
   - Write access to readonly memory
-  - Access to undefined memory - out of segment
+  - Access to undefined memory
 
 ### Additional useful feature
 
