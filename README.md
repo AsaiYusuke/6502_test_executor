@@ -33,10 +33,10 @@ All tests passed.
   | Check write value history |                    | :heavy_check_mark: |                    |
 - Evaluate processor information
   - Cycle count
-- Simulate interrupt at any memory addresses
+- Types of interrupts that can occur during testing
   - NMI
   - IRQ
-- Assertion operator
+- Assertion operator how test is evaluated
   - *"eq"* (Equal to)
   - *"ne"* (Not equal to)
   - *"gt"* (Greater than)
