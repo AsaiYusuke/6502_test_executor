@@ -21,7 +21,7 @@ public:
             result->add_error(
                 message::error_register_status_flag_data(
                     status_flag_def,
-                    to_string(status_flag_def.get_expression()),
+                    to_string(*status_flag_def.get_expression()),
                     to_string(actual)));
 
         return total_result;

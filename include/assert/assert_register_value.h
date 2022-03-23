@@ -21,7 +21,7 @@ public:
             result->add_error(
                 message::error_register_data(
                     register_def,
-                    to_string(register_def.get_expression()),
+                    to_string(*register_def.get_expression()),
                     to_string(actual)));
 
         return total_result;

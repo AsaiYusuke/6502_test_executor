@@ -21,7 +21,7 @@ public:
             result->add_error(
                 message::error_memory_write_count(
                     memory_count_def,
-                    to_string(memory_count_def.get_expression()),
+                    to_string(*memory_count_def.get_expression()),
                     to_string(actual)));
 
         return total_result;
