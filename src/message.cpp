@@ -1,6 +1,8 @@
 #include "message.h"
+#include "emulation/emulation_devices.h"
 #include "util/to_string.h"
 #include "util/value_convert.h"
+#include "util/constant.h"
 
 string message::error_message(string message, string expected, string actual)
 {

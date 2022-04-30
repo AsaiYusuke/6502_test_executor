@@ -1,10 +1,14 @@
 #include <sstream>
 #include "enum/value_type.h"
 #include "util/value_convert.h"
+#include "emulation/emulation_devices.h"
 
 uint16_t value_convert::get_address(emulation_devices *device, json value)
 {
     uint16_t address;
+    if (value.is_null())
+        return 0;
+
     if (!value["address"].is_null())
         return parse_json_number(device, value["address"]);
 

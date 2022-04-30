@@ -1,10 +1,11 @@
 #pragma once
 
 #include "enum/operator_type.h"
-#include "emulation/emulation_devices.h"
 #include "util/expression_executer.h"
 
 using namespace std;
+
+class emulation_devices;
 
 template <typename T, typename U>
 class condition_expression

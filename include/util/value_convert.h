@@ -1,12 +1,13 @@
 #pragma once
 
 #include <stdint.h>
-#include "emulation/emulation_devices.h"
 #include "nlohmann/json.hpp"
 
 using namespace std;
 
 using json = nlohmann::json;
+
+class emulation_devices;
 
 class value_convert
 {

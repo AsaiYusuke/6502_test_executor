@@ -3,12 +3,13 @@
 #include "enum/register_type.h"
 #include "condition/condition_expression.h"
 #include "condition/expression_two_complement_byte.h"
-#include "emulation/emulation_devices.h"
 #include "nlohmann/json.hpp"
 
 using namespace std;
 
 using json = nlohmann::json;
+
+class emulation_devices;
 
 class condition_register_a_x_y
 {

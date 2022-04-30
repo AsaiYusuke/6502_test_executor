@@ -74,7 +74,7 @@
                                         "type": "object",
                                         "required": [
                                             "type",
-                                            "hook"
+                                            "entryPoint"
                                         ],
                                         "additionalProperties": false,
                                         "properties": {
@@ -85,9 +85,54 @@
                                                     "IRQ"
                                                 ]
                                             },
-                                            "hook": {
-                                                "title": "Hook address",
+                                            "entryPoint": {
+                                                "title": "Entry point address",
                                                 "$ref": "#/definitions/address"
+                                            }
+                                        }
+                                    }
+                                },
+                                "mockedProc": {
+                                    "title": "Mocked proc",
+                                    "type": "array",
+                                    "minItems": 1,
+                                    "items": {
+                                        "type": "object",
+                                        "required": [
+                                            "entryPoint"
+                                        ],
+                                        "additionalProperties": false,
+                                        "properties": {
+                                            "entryPoint": {
+                                                "title": "Entry point address",
+                                                "$ref": "#/definitions/address"
+                                            },
+                                            "action": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "rts",
+                                                    "jmp"
+                                                ]
+                                            },
+                                            "jmpDest": {
+                                                "$ref": "#/definitions/address"
+                                            },
+                                            "setValue": {
+                                                "type": "array",
+                                                "minItems": 1,
+                                                "items": {
+                                                    "type": "object",
+                                                    "additionalProperties": false,
+                                                    "properties": {
+                                                        "register": {
+                                                            "$ref": "#/definitions/setup/register"
+                                                        },
+                                                        "memory": {
+                                                            "title": "Memory",
+                                                            "$ref": "#/definitions/setup/mockedMemory"
+                                                        }
+                                                    }
+                                                }
                                             }
                                         }
                                     }
@@ -541,6 +586,28 @@
                         }
                     }
                 ]
+            },
+            "mockedMemory": {
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/definitions/address"
+                    },
+                    {
+                        "required": [
+                            "value"
+                        ]
+                    }
+                ],
+                "additionalProperties": false,
+                "properties": {
+                    "address": {},
+                    "label": {},
+                    "offset": {},
+                    "value": {
+                        "$ref": "#/definitions/value"
+                    }
+                }
             },
             "stack": {
                 "type": "array",

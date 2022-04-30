@@ -1,12 +1,13 @@
 #pragma once
 
 #include "nlohmann/json.hpp"
-#include "emulation/emulation_devices.h"
 #include "util/value_convert.h"
 
 using namespace std;
 
 using json = nlohmann::json;
+
+class emulation_devices;
 
 class expression_two_complement_byte
 {

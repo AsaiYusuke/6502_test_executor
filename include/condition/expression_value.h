@@ -1,11 +1,12 @@
 #pragma once
 
 #include "nlohmann/json.hpp"
-#include "emulation/emulation_devices.h"
 
 using namespace std;
 
 using json = nlohmann::json;
+
+class emulation_devices;
 
 class expression_value
 {

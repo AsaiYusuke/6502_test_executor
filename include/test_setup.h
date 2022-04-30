@@ -4,6 +4,8 @@
 
 using namespace std;
 
+class emulation_devices;
+
 class test_setup : condition
 {
 public:

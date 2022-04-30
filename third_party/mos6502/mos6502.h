@@ -226,9 +226,15 @@ public:
     uint8_t GetResetX();
     uint8_t GetResetY();
 
-	void SetPC(uint16_t address);
+    void SetP(uint8_t value);
+    void SetA(uint8_t value);
+    void SetX(uint8_t value);
+    void SetY(uint8_t value);
+	void SetPC(uint16_t value);
 	void StackPush(uint8_t byte);
 	uint8_t StackPop();
 	bool isCallInstr();
 	bool isReturnInstr();
+	void forceRts();
+	void forceJmp(uint16_t address);
 };

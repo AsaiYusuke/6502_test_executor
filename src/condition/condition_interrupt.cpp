@@ -4,7 +4,7 @@
 condition_interrupt::condition_interrupt(emulation_devices *device, json condition)
 {
     type = interrupt_name_type_map[condition["type"]];
-    hook_address = value_convert::get_address(device, condition["hook"]);
+    entryPoint = value_convert::get_address(device, condition["entryPoint"]);
 }
 
 interrupt_type condition_interrupt::get_type()
@@ -12,7 +12,7 @@ interrupt_type condition_interrupt::get_type()
     return type;
 }
 
-uint8_t condition_interrupt::get_hook_address()
+uint16_t condition_interrupt::get_entry_point()
 {
-    return hook_address;
+    return entryPoint;
 }

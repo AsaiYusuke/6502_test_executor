@@ -1,3 +1,4 @@
+#include "condition/condition_mocked_value.h"
 #include "condition/condition.h"
 
 condition::condition(emulation_devices *_device, json condition, json target)
@@ -47,6 +48,13 @@ condition::condition(emulation_devices *_device, json condition_json)
                     device,
                     interrupt_def));
 
+    if (condition_json["mockedProc"].is_array())
+        for (auto &mocked_proc_def : condition_json["mockedProc"])
+            mocked_proc_defs.push_back(
+                condition_mocked_proc(
+                    device,
+                    mocked_proc_def));
+                    
     timeout_def = new condition_timeout(device, condition_json["timeout"]);
 }
 
@@ -83,6 +91,11 @@ condition_stack *condition::get_stack_def()
 vector<condition_interrupt> condition::get_interrupt_defs()
 {
     return interrupt_defs;
+}
+
+vector<condition_mocked_proc> condition::get_mocked_proc_defs()
+{
+    return mocked_proc_defs;
 }
 
 condition_timeout *condition::get_timeout_def()

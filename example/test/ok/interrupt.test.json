@@ -26,7 +26,7 @@
                 "interrupt": [
                     {
                         "type": "NMI",
-                        "hook": {
+                        "entryPoint": {
                             "label": "save_id"
                         }
                     }

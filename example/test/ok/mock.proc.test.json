@@ -1,0 +1,50 @@
+{
+    "$schema": "../../../schema/testcase.schema.json",
+    "target": {
+        "start": {
+            "label": "control"
+        }
+    },
+    "cases": {
+        "call mocked proc read_joypad_a_key": {
+            "setup": {
+                "mockedProc": [
+                    {
+                        "entryPoint": {
+                            "label": "read_joypad_a_key"
+                        },
+                        "action": "rts",
+                        "setValue": [
+                            {
+                                "register": {
+                                    "P": {
+                                        "Carry": true
+                                    }
+                                }    
+                            },
+                            {
+                                "register": {
+                                    "P": {
+                                        "Carry": false
+                                    }
+                                },
+                                "memory": {
+                                    "label": "test",
+                                    "value": {
+                                        "type": "value",
+                                        "label": "test"
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            "expected": {
+                "timeout": {
+                    "eq": false
+                }
+            }
+        }
+    }
+}

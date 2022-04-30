@@ -1,18 +1,20 @@
 #pragma once
 
-#include "emulation/emulation_devices.h"
 #include "condition/condition_register_a_x_y.h"
 #include "condition/condition_register_status_flag.h"
 #include "condition/condition_register_pc.h"
 #include "condition/condition_memory.h"
 #include "condition/condition_stack.h"
 #include "condition/condition_interrupt.h"
+#include "condition/condition_mocked_proc.h"
 #include "condition/condition_timeout.h"
 #include "nlohmann/json.hpp"
 
 using namespace std;
 
 using json = nlohmann::json;
+
+class emulation_devices;
 
 class condition
 {
@@ -24,6 +26,7 @@ private:
     condition_register_pc *register_pc_def;
     condition_stack *stack_def;
     vector<condition_interrupt> interrupt_defs;
+    vector<condition_mocked_proc> mocked_proc_defs;
     condition_timeout *timeout_def;
 
 protected:
@@ -34,6 +37,7 @@ protected:
     vector<condition_memory> get_memory_defs();
     condition_stack *get_stack_def();
     vector<condition_interrupt> get_interrupt_defs();
+    vector<condition_mocked_proc> get_mocked_proc_defs();
     condition_timeout *get_timeout_def();
 
 public:

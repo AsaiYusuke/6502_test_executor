@@ -5,6 +5,8 @@
 
 using namespace std;
 
+class emulation_devices;
+
 class test_result
 {
 private:

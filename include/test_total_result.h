@@ -1,5 +1,6 @@
 #pragma once
 
+#include "args_parser.h"
 #include "test_result.h"
 
 using namespace std;

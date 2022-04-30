@@ -8,6 +8,8 @@
 
 using namespace std;
 
+class emulation_devices;
+
 class message
 {
 public:

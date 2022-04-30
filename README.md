@@ -33,6 +33,9 @@ All tests passed.
   | Check write value history |                    | :heavy_check_mark: |                    |
 - Evaluate processor information
   - Cycle count
+- Mockable call instructions that can output results to each register and memory
+  - JSR
+  - JMP
 - Types of interrupts that can occur during testing
   - NMI
   - IRQ
@@ -140,6 +143,7 @@ ca65 V2.18 - Ubuntu 2.19-1
 ### Processor conditions
 - [Cycle count information](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/error.timeout.test.json)
 - [Interrupt hooks](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/interrupt.test.json)
+- [Call mocked proc](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/mock.proc.test.json)
 
 ### Error handling
 - [Write to readonly memory](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/fail/error.readonly.test.json)

@@ -2,12 +2,13 @@
 
 #include "condition/condition_expression.h"
 #include "condition/expression_value.h"
-#include "emulation/emulation_devices.h"
 #include "nlohmann/json.hpp"
 
 using namespace std;
 
 using json = nlohmann::json;
+
+class emulation_devices;
 
 class condition_timeout
 {

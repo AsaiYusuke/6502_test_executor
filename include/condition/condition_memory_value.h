@@ -2,9 +2,10 @@
 
 #include "condition/condition_expression.h"
 #include "condition/expression_two_complement_byte.h"
-#include "emulation/emulation_devices.h"
 
 using namespace std;
+
+class emulation_devices;
 
 class condition_memory_value
 {

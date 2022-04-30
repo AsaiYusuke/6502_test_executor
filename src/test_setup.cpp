@@ -1,4 +1,5 @@
 #include "test_setup.h"
+#include "emulation/emulation_devices.h"
 
 test_setup::test_setup(emulation_devices *device, json condition_json, json target)
     : condition(device, condition_json, target)
@@ -7,6 +8,11 @@ test_setup::test_setup(emulation_devices *device, json condition_json, json targ
 
 void test_setup::execute()
 {
+    get_device()->clear(
+        get_register_pc_def()->get_start_address(),
+        get_register_pc_def()->get_end_address(),
+        get_stack_def()->get_stack());
+
     cpu_device *cpu_dev = get_device()->get_cpu();
     for (auto register_def : get_register_defs())
         cpu_dev->set_register(register_def.get_type(), register_def.get_value());
@@ -16,13 +22,11 @@ void test_setup::execute()
         status_bits |= ((uint8_t)status_flag_def.get_type() * status_flag_def.get_value());
     cpu_dev->set_register(register_type::P, status_bits);
 
-    get_device()->clear(
-        get_register_pc_def()->get_start_address(),
-        get_register_pc_def()->get_end_address(),
-        get_stack_def()->get_stack());
-
     for (auto interrupt_def : get_interrupt_defs())
-        cpu_dev->add_interrupt_hook(interrupt_def.get_type(), interrupt_def.get_hook_address());
+        cpu_dev->add_interrupt_hook(interrupt_def.get_type(), interrupt_def.get_entry_point());
+
+    for (auto mocked_proc_def : get_mocked_proc_defs())
+        cpu_dev->add_mocked_proc_hook(mocked_proc_def);
 
     memory_device *mem_dev = get_device()->get_memory();
     for (auto memory_def : get_memory_defs())

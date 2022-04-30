@@ -834,9 +834,29 @@ void mos6502::Reset()
 	return;
 }
 
-void mos6502::SetPC(uint16_t address)
+void mos6502::SetP(uint8_t value)
 {
-	pc = address;
+	status = value;
+}
+
+void mos6502::SetA(uint8_t value)
+{
+	A = value;
+}
+
+void mos6502::SetX(uint8_t value)
+{
+	X = value;
+}
+
+void mos6502::SetY(uint8_t value)
+{
+	Y = value;
+}
+
+void mos6502::SetPC(uint16_t value)
+{
+	pc = value;
 }
 
 void mos6502::StackPush(uint8_t byte)
@@ -1562,4 +1582,14 @@ bool mos6502::isReturnInstr()
 {
 	auto instr = InstrTable[memory_access->read(pc)].code;
 	return find(returnInstr.begin(), returnInstr.end(), instr) != returnInstr.end();
+}
+
+void mos6502::forceRts()
+{
+	Op_RTS(0);
+}
+
+void mos6502::forceJmp(uint16_t address)
+{
+	Op_JMP(address);
 }

@@ -2,6 +2,7 @@
 
 #include "emulation/emulation_devices.h"
 #include "enum/cycle_type.h"
+#include "util/constant.h"
 
 #define STACK_ADDRESS(addr) (0x0100 + addr)
 
@@ -46,7 +47,7 @@ void cpu_device::execute()
     {
         bool isCallInstr = false;
         bool isReternInstr = false;
-        bool isReterned = false;
+        bool isReturned = false;
 
         currentPC = cpu->GetPC();
 
@@ -61,7 +62,7 @@ void cpu_device::execute()
             {
                 call_stack.pop_back();
                 call_stack.pop_back();
-                isReterned = true;
+                isReturned = true;
             }
             else
             {
@@ -78,19 +79,55 @@ void cpu_device::execute()
         if (isReternInstr)
             call_stack.push_back(make_pair(inst_type::retern, cpu->GetPC()));
 
-        if (interrupt_defs.count(cpu->GetPC()) > 0 && !isReterned)
+        if (!isReturned)
         {
-            call_stack.push_back(make_pair(inst_type::call, cpu->GetPC()));
-            switch(interrupt_defs[cpu->GetPC()])
+            auto it = interrupt_defs.find(cpu->GetPC());
+            if (it != interrupt_defs.end())
             {
+                call_stack.push_back(make_pair(inst_type::call, cpu->GetPC()));
+                switch (it->second)
+                {
                 case interrupt_type::NMI:
                     cpu->NMI();
                     break;
                 case interrupt_type::IRQ:
                     cpu->IRQ();
                     break;
+                }
+                call_stack.push_back(make_pair(inst_type::call, cpu->GetPC()));
             }
-            call_stack.push_back(make_pair(inst_type::call, cpu->GetPC()));
+        }
+
+        auto it = mocked_proc_defs.find(cpu->GetPC());
+        if (it != mocked_proc_defs.end())
+        {
+            auto mocked_proc_def = &it->second;
+            auto mocked_value_def = mocked_proc_def->get_erased_front_mock_value_def();
+
+            for (auto register_def : mocked_value_def.get_register_defs())
+                set_register(register_def.get_type(), register_def.get_value());
+
+            uint8_t status_bits = 0;
+            for (auto status_flag_def : mocked_value_def.get_status_flag_defs())
+                status_bits |= ((uint8_t)status_flag_def.get_type() * status_flag_def.get_value());
+            set_register(register_type::P, status_bits);
+
+            memory_device *mem_dev = device->get_memory();
+            for (auto memory_def : mocked_value_def.get_memory_defs())
+                for (auto memory_value_def : memory_def.get_value_sequences())
+                    mem_dev->write_raw(memory_value_def.get_address(), memory_value_def.get_sequence().front());
+
+            switch (mocked_proc_def->get_action())
+            {
+            case mock_action_type::RTS:
+                call_stack.pop_back();
+                call_stack.pop_back();
+                cpu->forceRts();
+                break;
+            case mock_action_type::JMP:
+                cpu->forceJmp(mocked_proc_def->get_jmp_dest());
+                break;
+            }
         }
 
     } while (cpu->GetPC() != TEST_RETURN_ADDRESS && cpu->GetPC() != endPC && cycle_count <= get_max_cycle_count());
@@ -125,13 +162,13 @@ void cpu_device::set_register(register_type type, uint8_t value)
     switch (type)
     {
     case register_type::A:
-        return cpu->SetResetA(value);
+        return cpu->SetA(value);
     case register_type::X:
-        return cpu->SetResetX(value);
+        return cpu->SetX(value);
     case register_type::Y:
-        return cpu->SetResetY(value);
+        return cpu->SetY(value);
     case register_type::P:
-        return cpu->SetResetP(value);
+        return cpu->SetP(value);
     }
 }
 
@@ -145,9 +182,15 @@ vector<uint8_t> cpu_device::get_stack()
     return result_stack;
 }
 
-void cpu_device::add_interrupt_hook(interrupt_type type, uint8_t address)
+void cpu_device::add_interrupt_hook(interrupt_type type, uint16_t address)
 {
-    interrupt_defs[address] = type;
+    interrupt_defs.insert(make_pair(address, type));
+}
+
+void cpu_device::add_mocked_proc_hook(condition_mocked_proc mocked_proc_def)
+{
+    mocked_proc_defs.insert(
+        make_pair(mocked_proc_def.get_entry_point(), mocked_proc_def));
 }
 
 void cpu_device::print()
