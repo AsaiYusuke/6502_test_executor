@@ -24,9 +24,11 @@ MOS6502_OBJ		:=	$(MOS6502_DIR)/mos6502.o
 
 CFLAGS			:=	--std=c++17 -I $(INC_DIR) -I $(ARGS_DIR) -I $(JSON_DIR) -I $(MOS6502_DIR) -g
 
-.PHONY : all clean test
+.PHONY : all exec clean test
 
-all: $(BUILD_DIRS) $(TARGET) test
+all: exec test
+
+exec: $(BUILD_DIRS) $(TARGET)
 
 $(BUILD_DIRS) : % :
 	mkdir -p $@
