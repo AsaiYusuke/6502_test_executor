@@ -16,5 +16,4 @@ public:
     vector<condition_register_a_x_y> get_register_defs();
     vector<condition_register_status_flag> get_status_flag_defs();
     vector<condition_memory> get_memory_defs();
-    void execute();
 };

@@ -43,6 +43,4 @@ protected:
 public:
     condition(emulation_devices *_device, json condition_json, json target);
     condition(emulation_devices *_device, json condition_json);
-
-    virtual void execute() = 0;
 };

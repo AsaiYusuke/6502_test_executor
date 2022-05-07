@@ -19,7 +19,3 @@ vector<condition_memory> condition_mocked_value::get_memory_defs()
 {
     return condition::get_memory_defs();
 }
-
-void condition_mocked_value::execute()
-{
-}
