@@ -1,8 +1,10 @@
 #include <vector>
+#include <typeinfo>
 
 #include "emulation/emulation_devices.h"
 #include "enum/cycle_type.h"
 #include "util/constant.h"
+#include "emulation/cpu_filter/call_stack_filter.h"
 
 #define STACK_ADDRESS(addr) (0x0100 + addr)
 
@@ -19,6 +21,9 @@ cpu_device::cpu_device(emulation_devices *_device, args_parser *args, json confi
             cycle_type_value_map[cycle_name_type_map[config["maxCycleCount"].get<string>()]];
     else
         max_cycle_count = args->get_test_timeout();
+
+    call_stack = new call_stack_filter(this);
+    filters.push_back(call_stack);
 }
 
 void cpu_device::clear(uint16_t startPC, uint16_t _endPC, vector<uint8_t> stack)
@@ -28,107 +33,33 @@ void cpu_device::clear(uint16_t startPC, uint16_t _endPC, vector<uint8_t> stack)
     cpu->StackPush((TEST_RETURN_ADDRESS - 1) >> 8);
     cpu->StackPush((TEST_RETURN_ADDRESS - 1) & 0xFF);
 
-    call_stack.clear();
-    call_stack.push_back(make_pair(inst_type::call, TEST_RETURN_ADDRESS));
-
     for (auto value : stack)
         cpu->StackPush(value);
 
-    call_stack.push_back(make_pair(inst_type::call, startPC));
-
     endPC = _endPC;
+
+    for (auto filter : filters)
+        filter->clear();
 }
 
 void cpu_device::execute()
 {
-    int32_t cyclesRemaining;
     uint64_t cycle_count = 0;
     do
     {
-        bool isCallInstr = false;
-        bool isReternInstr = false;
-        bool isReturned = false;
+        for (auto filter : filters)
+            filter->pre();
 
-        currentPC = cpu->GetPC();
-
-        if (cpu->isCallInstr())
-        {
-            call_stack.push_back(make_pair(inst_type::call, cpu->GetPC()));
-            isCallInstr = true;
-        }
-        else if (cpu->isReturnInstr())
-        {
-            if (call_stack.back().first == inst_type::call)
-            {
-                call_stack.pop_back();
-                call_stack.pop_back();
-                isReturned = true;
-            }
+        if (!is_previous_returned_instruction() && is_interrupt_instruction())
+            execute_interrupt();
+        else
+            if (is_mocked_proc_instruction())
+                execute_mocked_proc();
             else
-            {
-                call_stack.push_back(make_pair(inst_type::retern, cpu->GetPC()));
-                isReternInstr = true;
-            }
-        }
+                execute_standard_instruction(cycle_count);
 
-        cyclesRemaining = 1;
-        cpu->Run(cyclesRemaining, cycle_count, cpu->INST_COUNT);
-
-        if (isCallInstr)
-            call_stack.push_back(make_pair(inst_type::call, cpu->GetPC()));
-        if (isReternInstr)
-            call_stack.push_back(make_pair(inst_type::retern, cpu->GetPC()));
-
-        if (!isReturned)
-        {
-            auto it = interrupt_defs.find(cpu->GetPC());
-            if (it != interrupt_defs.end())
-            {
-                call_stack.push_back(make_pair(inst_type::call, cpu->GetPC()));
-                switch (it->second)
-                {
-                case interrupt_type::NMI:
-                    cpu->NMI();
-                    break;
-                case interrupt_type::IRQ:
-                    cpu->IRQ();
-                    break;
-                }
-                call_stack.push_back(make_pair(inst_type::call, cpu->GetPC()));
-            }
-        }
-
-        auto it = mocked_proc_defs.find(cpu->GetPC());
-        if (it != mocked_proc_defs.end())
-        {
-            auto mocked_proc_def = &it->second;
-            auto mocked_value_def = mocked_proc_def->get_erased_front_mock_value_def();
-
-            for (auto register_def : mocked_value_def.get_register_defs())
-                set_register(register_def.get_type(), register_def.get_value());
-
-            uint8_t status_bits = 0;
-            for (auto status_flag_def : mocked_value_def.get_status_flag_defs())
-                status_bits |= ((uint8_t)status_flag_def.get_type() * status_flag_def.get_value());
-            set_register(register_type::P, status_bits);
-
-            memory_device *mem_dev = device->get_memory();
-            for (auto memory_def : mocked_value_def.get_memory_defs())
-                for (auto memory_value_def : memory_def.get_value_sequences())
-                    mem_dev->write_raw(memory_value_def.get_address(), memory_value_def.get_sequence().front());
-
-            switch (mocked_proc_def->get_action())
-            {
-            case mock_action_type::RTS:
-                call_stack.pop_back();
-                call_stack.pop_back();
-                cpu->forceRts();
-                break;
-            case mock_action_type::JMP:
-                cpu->forceJmp(mocked_proc_def->get_jmp_dest());
-                break;
-            }
-        }
+        for (auto filter : filters)
+            filter->post();
 
     } while (cpu->GetPC() != TEST_RETURN_ADDRESS && cpu->GetPC() != endPC && cycle_count <= get_max_cycle_count());
 
@@ -172,6 +103,40 @@ void cpu_device::set_register(register_type type, uint8_t value)
     }
 }
 
+bool cpu_device::is_call_instrunction()
+{
+    return cpu->isCallInstr();
+}
+
+bool cpu_device::is_return_instruction()
+{
+    auto it_mocked_proc = mocked_proc_defs.find(cpu->GetPC());
+    if (it_mocked_proc != mocked_proc_defs.end())
+    {
+        auto mocked_proc_def = &it_mocked_proc->second;
+        return mocked_proc_def->get_action() == mock_action_type::RTS;
+    }
+
+    return cpu->isReturnInstr();
+}
+
+bool cpu_device::is_previous_returned_instruction()
+{
+    return call_stack->is_returned_instruction();
+}
+
+bool cpu_device::is_interrupt_instruction()
+{
+    auto it = interrupt_defs.find(cpu->GetPC());
+    return it != interrupt_defs.end();
+}
+
+bool cpu_device::is_mocked_proc_instruction()
+{
+    auto it_mocked_proc = mocked_proc_defs.find(cpu->GetPC());
+    return it_mocked_proc != mocked_proc_defs.end();
+}
+
 vector<uint8_t> cpu_device::get_stack()
 {
     vector<uint8_t> result_stack;
@@ -191,6 +156,54 @@ void cpu_device::add_mocked_proc_hook(condition_mocked_proc mocked_proc_def)
 {
     mocked_proc_defs.insert(
         make_pair(mocked_proc_def.get_entry_point(), mocked_proc_def));
+}
+
+void cpu_device::execute_interrupt()
+{
+    switch (interrupt_defs.find(cpu->GetPC())->second)
+    {
+    case interrupt_type::NMI:
+        cpu->NMI();
+        break;
+    case interrupt_type::IRQ:
+        cpu->IRQ();
+        break;
+    }
+}
+
+void cpu_device::execute_mocked_proc()
+{
+    auto it_mocked_proc = mocked_proc_defs.find(cpu->GetPC());
+    auto mocked_proc_def = &it_mocked_proc->second;
+    auto mocked_value_def = mocked_proc_def->get_erased_front_mock_value_def();
+
+    for (auto register_def : mocked_value_def.get_register_defs())
+        set_register(register_def.get_type(), register_def.get_value());
+
+    uint8_t status_bits = 0;
+    for (auto status_flag_def : mocked_value_def.get_status_flag_defs())
+        status_bits |= ((uint8_t)status_flag_def.get_type() * status_flag_def.get_value());
+    set_register(register_type::P, status_bits);
+
+    memory_device *mem_dev = device->get_memory();
+    for (auto memory_def : mocked_value_def.get_memory_defs())
+        for (auto memory_value_def : memory_def.get_value_sequences())
+            mem_dev->write_raw(memory_value_def.get_address(), memory_value_def.get_sequence().front());
+
+    switch (mocked_proc_def->get_action())
+    {
+    case mock_action_type::RTS:
+        cpu->forceRts();
+        break;
+    case mock_action_type::JMP:
+        cpu->forceJmp(mocked_proc_def->get_jmp_dest());
+        break;
+    }
+}
+
+void cpu_device::execute_standard_instruction(uint64_t& cycle_count)
+{
+    cpu->Run(1, cycle_count, cpu->INST_COUNT);
 }
 
 void cpu_device::print()
@@ -214,9 +227,5 @@ void cpu_device::print()
 
 vector<uint16_t> cpu_device::get_call_stack()
 {
-    vector<uint16_t> current_call_stack;
-    for (auto entry : call_stack)
-        current_call_stack.push_back(entry.second);
-    current_call_stack.push_back(currentPC);
-    return current_call_stack;
+    return call_stack->get_call_stack();
 }
