@@ -24,8 +24,8 @@ private:
 public:
     call_stack_filter(cpu_device *cpu);
     void clear();
-    void pre();
-    void post();
+    bool pre();
+    bool post();
     bool is_returned_instruction();
     vector<uint16_t> get_call_stack();
 };

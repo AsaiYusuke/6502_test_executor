@@ -13,7 +13,7 @@ void call_stack_filter::clear()
     call_stack.push_back(make_pair(inst_type::call, cpu->get_register(register_type::PC)));
 }
 
-void call_stack_filter::pre()
+bool call_stack_filter::pre()
 {
     isCallInstr = false;
     isReternInstr = false;
@@ -45,9 +45,11 @@ void call_stack_filter::pre()
     }
 
     willReturn = cpu->is_return_instruction() && call_stack.back().first == inst_type::call;
+
+    return true;
 }
 
-void call_stack_filter::post()
+bool call_stack_filter::post()
 {
     if (isCallInstr)
     {
@@ -63,6 +65,8 @@ void call_stack_filter::post()
     }
 
     isReturned = willReturn;
+
+    return true;
 }
 
 bool call_stack_filter::is_returned_instruction()

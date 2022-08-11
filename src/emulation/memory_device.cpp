@@ -138,7 +138,7 @@ uint8_t memory_device::read(uint16_t address)
     catch (const cpu_runtime_error &e)
     {
         // When exception occurs, it is considered RAM access.
-        device->add_error_reuslt(e.get_type(), e.what());
+        device->add_error_result(e.get_type(), e.what());
     }
 
     if (read_sequences.count(address) > 0)
@@ -187,14 +187,14 @@ void memory_device::write(uint16_t address, uint8_t value)
         {
             if (!debug->has_write_access(address))
             {
-                device->add_error_reuslt(
+                device->add_error_result(
                     runtime_error_type::READONLY_MEMORY,
                     "address=" + value_convert::to_zero_filled_hex_string(address));
             }
         }
         catch (const cpu_runtime_error &e)
         {
-            device->add_error_reuslt(runtime_error_type::OUT_OF_SEGMENT, e.what());
+            device->add_error_result(runtime_error_type::OUT_OF_SEGMENT, e.what());
         }
     }
 

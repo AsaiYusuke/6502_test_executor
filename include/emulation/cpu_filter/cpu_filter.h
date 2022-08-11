@@ -10,6 +10,6 @@ public:
     i_cpu_filter() {}
     virtual ~i_cpu_filter() {}
     virtual void clear() = 0;
-    virtual void pre() = 0;
-    virtual void post() = 0;
+    virtual bool pre() = 0;
+    virtual bool post() = 0;
 };

@@ -37,12 +37,12 @@ void emulation_devices::print()
     memory->print();
 }
 
-void emulation_devices::add_error_reuslt(runtime_error_type type)
+void emulation_devices::add_error_result(runtime_error_type type)
 {
-    add_error_reuslt(type, "");
+    add_error_result(type, "");
 }
 
-void emulation_devices::add_error_reuslt(runtime_error_type type, string message)
+void emulation_devices::add_error_result(runtime_error_type type, string message)
 {
     errors.push_back(
         runtime_error_result(type, message, cpu->get_call_stack()));

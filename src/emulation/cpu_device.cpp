@@ -5,6 +5,7 @@
 #include "enum/cycle_type.h"
 #include "util/constant.h"
 #include "emulation/cpu_filter/call_stack_filter.h"
+#include "emulation/cpu_filter/timeout_check_filter.h"
 
 #define STACK_ADDRESS(addr) (0x0100 + addr)
 
@@ -24,6 +25,7 @@ cpu_device::cpu_device(emulation_devices *_device, args_parser *args, json confi
 
     call_stack = new call_stack_filter(this);
     filters.push_back(call_stack);
+    filters.push_back(new timeout_check_filter(this));
 }
 
 void cpu_device::clear(uint16_t startPC, uint16_t _endPC, vector<uint8_t> stack)
@@ -44,11 +46,12 @@ void cpu_device::clear(uint16_t startPC, uint16_t _endPC, vector<uint8_t> stack)
 
 void cpu_device::execute()
 {
-    uint64_t cycle_count = 0;
+    cycle_count = 0;
     do
     {
         for (auto filter : filters)
-            filter->pre();
+            if (!filter->pre())
+                return;
 
         if (!is_previous_returned_instruction() && is_interrupt_instruction())
             execute_interrupt();
@@ -59,17 +62,25 @@ void cpu_device::execute()
                 execute_standard_instruction(cycle_count);
 
         for (auto filter : filters)
-            filter->post();
+            if (!filter->post())
+                return;
 
-    } while (cpu->GetPC() != TEST_RETURN_ADDRESS && cpu->GetPC() != endPC && cycle_count <= get_max_cycle_count());
+    } while (cpu->GetPC() != TEST_RETURN_ADDRESS && cpu->GetPC() != endPC);
+}
 
-    if (cycle_count > get_max_cycle_count())
-        device->add_error_reuslt(runtime_error_type::TIMEOUT);
+void cpu_device::add_error_result(runtime_error_type type)
+{
+    device->add_error_result(type);
 }
 
 uint64_t cpu_device::get_max_cycle_count()
 {
     return max_cycle_count;
+}
+
+uint64_t cpu_device::get_cycle_count()
+{
+    return cycle_count;
 }
 
 uint8_t cpu_device::get_register(register_type type)
