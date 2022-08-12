@@ -59,7 +59,7 @@ void cpu_device::execute()
             if (is_mocked_proc_instruction())
                 execute_mocked_proc();
             else
-                execute_standard_instruction(cycle_count);
+                execute_standard_instruction();
 
         for (auto filter : filters)
             if (!filter->post())
@@ -212,9 +212,9 @@ void cpu_device::execute_mocked_proc()
     }
 }
 
-void cpu_device::execute_standard_instruction(uint64_t& cycle_count)
+void cpu_device::execute_standard_instruction()
 {
-    cpu->Run(1, cycle_count, cpu->INST_COUNT);
+    cpu->Run(1, get_cycle_count(), cpu->INST_COUNT);
 }
 
 void cpu_device::print()

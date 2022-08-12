@@ -59,7 +59,7 @@ public:
     void add_mocked_proc_hook(condition_mocked_proc mocked_proc_def);
     void execute_interrupt();
     void execute_mocked_proc();
-    void execute_standard_instruction(uint64_t& cycle_count);
+    void execute_standard_instruction();
     void print();
     vector<uint16_t> get_call_stack();
 };
