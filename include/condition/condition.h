@@ -41,6 +41,6 @@ protected:
     condition_timeout *get_timeout_def();
 
 public:
-    condition(emulation_devices *_device, json condition_json, json target);
-    condition(emulation_devices *_device, json condition_json);
+    condition(emulation_devices *_device, json definitions_def, json condition_json, json target);
+    condition(emulation_devices *_device, json definitions_def, json condition_json);
 };

@@ -7,7 +7,8 @@ class parse_abort
 private:
     int return_value;
 public:
-    parse_abort(int _return_value) {
+    parse_abort(int _return_value)
+    {
         return_value = _return_value;
     }
 

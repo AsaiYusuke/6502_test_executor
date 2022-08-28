@@ -1,7 +1,7 @@
 #include "condition/condition_mocked_value.h"
 
-condition_mocked_value::condition_mocked_value(emulation_devices *_device, json condition_json)
-    : condition(_device, condition_json)
+condition_mocked_value::condition_mocked_value(emulation_devices *_device, json definitions_def, json condition_json)
+    : condition(_device, definitions_def, condition_json)
 {
 }
 

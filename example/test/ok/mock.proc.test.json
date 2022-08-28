@@ -27,13 +27,6 @@
                                     "P": {
                                         "Carry": false
                                     }
-                                },
-                                "memory": {
-                                    "label": "test",
-                                    "value": {
-                                        "type": "value",
-                                        "label": "test"
-                                    }
                                 }
                             }
                         ]

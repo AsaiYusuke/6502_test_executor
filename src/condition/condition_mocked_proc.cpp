@@ -2,7 +2,7 @@
 #include "condition/condition_mocked_value.h"
 #include "condition/condition_mocked_proc.h"
 
-condition_mocked_proc::condition_mocked_proc(emulation_devices *device, json condition)
+condition_mocked_proc::condition_mocked_proc(emulation_devices *device, json definitions_def, json condition)
 {
     entry_point = value_convert::get_address(device, condition["entryPoint"]);
     action = mock_action_name_type_map[condition["action"]];
@@ -13,6 +13,7 @@ condition_mocked_proc::condition_mocked_proc(emulation_devices *device, json con
             mock_value_defs.push_back(
                 condition_mocked_value(
                     device,
+                    definitions_def,
                     mock_value_def));
 }
 

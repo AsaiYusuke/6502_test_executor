@@ -55,6 +55,7 @@ test_result test::do_test(string id, json testcase)
     {
         test_setup(
             device,
+            test_scinario["definitions"]["setup"],
             testcase["setup"],
             test_scinario["target"])
             .execute();
@@ -63,6 +64,7 @@ test_result test::do_test(string id, json testcase)
 
         test_assert assert = test_assert(
             device,
+            test_scinario["definitions"]["expected"],
             testcase["expected"]);
         assert.execute();
 

@@ -1,8 +1,8 @@
 #include "test_setup.h"
 #include "emulation/emulation_devices.h"
 
-test_setup::test_setup(emulation_devices *device, json condition_json, json target)
-    : condition(device, condition_json, target)
+test_setup::test_setup(emulation_devices *device, json definitions_def, json condition_json, json target)
+    : condition(device, definitions_def, condition_json, target)
 {
 }
 

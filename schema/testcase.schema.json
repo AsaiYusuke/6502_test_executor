@@ -29,6 +29,134 @@
                 }
             }
         },
+        "definitions": {
+            "title": "Definitions",
+            "description": "The value definitions for register or memory.",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "setup": {
+                    "title": "Setup condition",
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "registerAXY": {
+                            "title": "Register",
+                            "type": "object",
+                            "minItems": 1,
+                            "additionalProperties": false,
+                            "patternProperties": {
+                                "^.*$": {
+                                    "$ref": "#/definitions/value"
+                                }
+                            }
+                        },
+                        "registerP": {
+                            "type": "object",
+                            "minItems": 1,
+                            "additionalProperties": false,
+                            "patternProperties": {
+                                "^.*$": {
+                                    "$ref": "#/definitions/setup/statusFlag"
+                                }
+                            }
+                        },
+                        "memory": {
+                            "type": "object",
+                            "minItems": 1,
+                            "additionalProperties": false,
+                            "properties": {
+                                "value": {
+                                    "type": "object",
+                                    "minItems": 1,
+                                    "additionalProperties": false,
+                                    "patternProperties": {
+                                        "^.*$": {
+                                            "$ref": "#/definitions/setup/memoryValue"
+                                        }
+                                    }
+                                },
+                                "sequence": {
+                                    "type": "object",
+                                    "minItems": 1,
+                                    "additionalProperties": false,
+                                    "patternProperties": {
+                                        "^.*$": {
+                                            "$ref": "#/definitions/setup/memorySequence"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "expected": {
+                    "title": "Expected condition",
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "registerAXY": {
+                            "title": "Register",
+                            "type": "object",
+                            "minItems": 1,
+                            "additionalProperties": false,
+                            "patternProperties": {
+                                "^.*$": {
+                                    "$ref": "#/definitions/expected/expressionValue"
+                                }
+                            }
+                        },
+                        "registerP": {
+                            "type": "object",
+                            "minItems": 1,
+                            "additionalProperties": false,
+                            "patternProperties": {
+                                "^.*$": {
+                                    "$ref": "#/definitions/expected/statusFlag"
+                                }
+                            }
+                        },
+                        "memory": {
+                            "type": "object",
+                            "minItems": 1,
+                            "additionalProperties": false,
+                            "properties": {
+                                "value": {
+                                    "type": "object",
+                                    "minItems": 1,
+                                    "additionalProperties": false,
+                                    "patternProperties": {
+                                        "^.*$": {
+                                            "$ref": "#/definitions/expected/memoryValue"
+                                        }
+                                    }
+                                },
+                                "sequence": {
+                                    "type": "object",
+                                    "minItems": 1,
+                                    "additionalProperties": false,
+                                    "patternProperties": {
+                                        "^.*$": {
+                                            "$ref": "#/definitions/expected/memorySequence"
+                                        }
+                                    }
+                                },
+                                "count": {
+                                    "type": "object",
+                                    "minItems": 1,
+                                    "additionalProperties": false,
+                                    "patternProperties": {
+                                        "^.*$": {
+                                            "$ref": "#/definitions/expected/memoryCount"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "cases": {
             "title": "Test cases",
             "description": "Test cases specify, for each test, the setup conditions and the expected conditions.",
@@ -402,6 +530,10 @@
             "type": "string",
             "pattern": "^\\$[0-9A-F]{1,4}$"
         },
+        "reference": {
+            "type": "string",
+            "pattern": "^@"
+        },
         "value": {
             "oneOf": [
                 {
@@ -430,6 +562,9 @@
                         "label": {},
                         "offset": {}
                     }
+                },
+                {
+                    "$ref": "#/definitions/reference"
                 }
             ]
         },
@@ -458,39 +593,46 @@
                 }
             },
             "statusFlag": {
-                "type": "object",
-                "minItems": 1,
-                "additionalProperties": false,
-                "properties": {
-                    "Negative": {
-                        "title": "Negative Flag",
-                        "type": "boolean"
+                "oneOf": [
+                    {
+                        "type": "object",
+                        "minItems": 1,
+                        "additionalProperties": false,
+                        "properties": {
+                            "Negative": {
+                                "title": "Negative Flag",
+                                "type": "boolean"
+                            },
+                            "Overflow": {
+                                "title": "Overflow",
+                                "type": "boolean"
+                            },
+                            "Break": {
+                                "title": "Break Command",
+                                "type": "boolean"
+                            },
+                            "Decimal": {
+                                "title": "Decimal Mode Flag",
+                                "type": "boolean"
+                            },
+                            "InterruptDisable": {
+                                "title": "Interrupt Disable",
+                                "type": "boolean"
+                            },
+                            "Zero": {
+                                "title": "Zero Flag",
+                                "type": "boolean"
+                            },
+                            "Carry": {
+                                "title": "Carry Flag",
+                                "type": "boolean"
+                            }
+                        }
                     },
-                    "Overflow": {
-                        "title": "Overflow",
-                        "type": "boolean"
-                    },
-                    "Break": {
-                        "title": "Break Command",
-                        "type": "boolean"
-                    },
-                    "Decimal": {
-                        "title": "Decimal Mode Flag",
-                        "type": "boolean"
-                    },
-                    "InterruptDisable": {
-                        "title": "Interrupt Disable",
-                        "type": "boolean"
-                    },
-                    "Zero": {
-                        "title": "Zero Flag",
-                        "type": "boolean"
-                    },
-                    "Carry": {
-                        "title": "Carry Flag",
-                        "type": "boolean"
+                    {
+                        "$ref": "#/definitions/reference"
                     }
-                }
+                ]
             },
             "memory": {
                 "type": "array",
@@ -568,22 +710,29 @@
             "memorySequence": {
                 "title": "Memory sequence",
                 "description": "Memory sequence can be either the value array in the order of processing at the specified address, or the value arrays given in the two-dimensioned array starting from address.",
-                "type": "array",
-                "minItems": 1,
                 "oneOf": [
                     {
-                        "items": {
-                            "$ref": "#/definitions/value"
-                        }
+                        "type": "array",
+                        "minItems": 1,
+                        "oneOf": [
+                            {
+                                "items": {
+                                    "$ref": "#/definitions/value"
+                                }
+                            },
+                            {
+                                "items": {
+                                    "type": "array",
+                                    "minItems": 1,
+                                    "items": {
+                                        "$ref": "#/definitions/value"
+                                    }
+                                }
+                            }
+                        ]
                     },
                     {
-                        "items": {
-                            "type": "array",
-                            "minItems": 1,
-                            "items": {
-                                "$ref": "#/definitions/value"
-                            }
-                        }
+                        "$ref": "#/definitions/reference"
                     }
                 ]
             },
@@ -642,39 +791,46 @@
                 }
             },
             "statusFlag": {
-                "type": "object",
-                "minItems": 1,
-                "additionalProperties": false,
-                "properties": {
-                    "Negative": {
-                        "title": "Negative Flag",
-                        "$ref": "#/definitions/expected/expressionBoolean"
+                "oneOf": [
+                    {
+                        "type": "object",
+                        "minItems": 1,
+                        "additionalProperties": false,
+                        "properties": {
+                            "Negative": {
+                                "title": "Negative Flag",
+                                "$ref": "#/definitions/expected/expressionBoolean"
+                            },
+                            "Overflow": {
+                                "title": "Overflow",
+                                "$ref": "#/definitions/expected/expressionBoolean"
+                            },
+                            "Break": {
+                                "title": "Break Command",
+                                "$ref": "#/definitions/expected/expressionBoolean"
+                            },
+                            "Decimal": {
+                                "title": "Decimal Mode Flag",
+                                "$ref": "#/definitions/expected/expressionBoolean"
+                            },
+                            "InterruptDisable": {
+                                "title": "Interrupt Disable",
+                                "$ref": "#/definitions/expected/expressionBoolean"
+                            },
+                            "Zero": {
+                                "title": "Zero Flag",
+                                "$ref": "#/definitions/expected/expressionBoolean"
+                            },
+                            "Carry": {
+                                "title": "Carry Flag",
+                                "$ref": "#/definitions/expected/expressionBoolean"
+                            }
+                        }
                     },
-                    "Overflow": {
-                        "title": "Overflow",
-                        "$ref": "#/definitions/expected/expressionBoolean"
-                    },
-                    "Break": {
-                        "title": "Break Command",
-                        "$ref": "#/definitions/expected/expressionBoolean"
-                    },
-                    "Decimal": {
-                        "title": "Decimal Mode Flag",
-                        "$ref": "#/definitions/expected/expressionBoolean"
-                    },
-                    "InterruptDisable": {
-                        "title": "Interrupt Disable",
-                        "$ref": "#/definitions/expected/expressionBoolean"
-                    },
-                    "Zero": {
-                        "title": "Zero Flag",
-                        "$ref": "#/definitions/expected/expressionBoolean"
-                    },
-                    "Carry": {
-                        "title": "Carry Flag",
-                        "$ref": "#/definitions/expected/expressionBoolean"
+                    {
+                        "$ref": "#/definitions/reference"
                     }
-                }
+                ]
             },
             "memory": {
                 "type": "array",
@@ -720,10 +876,10 @@
                             "$ref": "#/definitions/expected/memorySequence"
                         },
                         "readCount": {
-                            "$ref": "#/definitions/expected/memoryReadCount"
+                            "$ref": "#/definitions/expected/memoryCount"
                         },
                         "writeCount": {
-                            "$ref": "#/definitions/expected/memoryWriteCount"
+                            "$ref": "#/definitions/expected/memoryCount"
                         }
                     },
                     "dependencies": {
@@ -763,28 +919,35 @@
             "memorySequence": {
                 "title": "Memory sequence",
                 "description": "Memory sequence can be either the value array in the order of processing at the specified address, or the value arrays given in the two-dimensioned array starting from address.",
-                "type": "array",
-                "minItems": 1,
                 "oneOf": [
                     {
-                        "items": {
-                            "$ref": "#/definitions/expected/expressionValue"
-                        }
-                    },
-                    {
-                        "items": {
-                            "type": "array",
-                            "minItems": 1,
-                            "items": {
-                                "$ref": "#/definitions/expected/expressionValue"
+                        "type": "array",
+                        "minItems": 1,
+                        "oneOf": [
+                            {
+                                "items": {
+                                    "$ref": "#/definitions/expected/expressionValue"
+                                }
+                            },
+                            {
+                                "items": {
+                                    "type": "array",
+                                    "minItems": 1,
+                                    "items": {
+                                        "$ref": "#/definitions/expected/expressionValue"
+                                    }
+                                }
                             }
-                        }
+                        ]
+                    },
+                    {
+                        "$ref": "#/definitions/reference"
                     }
                 ]
             },
-            "memoryReadCount": {
-                "title": "Read count",
-                "description": "Read count specifies the number of times the read instruction(LDA, CMP, ...) for the specified address is executed.",
+            "memoryCount": {
+                "title": "Count",
+                "description": "Count specifies the number of times the instructions for the specified address are executed.",
                 "oneOf": [
                     {
                         "$ref": "#/definitions/expected/expressionCount"
@@ -795,22 +958,9 @@
                         "items": {
                             "$ref": "#/definitions/expected/expressionCount"
                         }
-                    }
-                ]
-            },
-            "memoryWriteCount": {
-                "title": "Write count",
-                "description": "Write count specifies the number of times the write instruction(STA, INC, ..) for the specified address is executed.",
-                "oneOf": [
-                    {
-                        "$ref": "#/definitions/expected/expressionCount"
                     },
                     {
-                        "type": "array",
-                        "minItems": 1,
-                        "items": {
-                            "$ref": "#/definitions/expected/expressionCount"
-                        }
+                        "$ref": "#/definitions/reference"
                     }
                 ]
             },
@@ -822,42 +972,49 @@
                 }
             },
             "expressionValue": {
-                "type": "object",
-                "minProperties": 1,
-                "additionalProperties": false,
-                "properties": {
-                    "eq": {
-                        "title": "Equal to",
-                        "$ref": "#/definitions/value"
-                    },
-                    "ne": {
-                        "title": "Not equal to",
-                        "$ref": "#/definitions/value"
-                    },
-                    "gt": {
-                        "title": "Greater than",
-                        "$ref": "#/definitions/value"
-                    },
-                    "ge": {
-                        "title": "Greater than or equal to",
-                        "$ref": "#/definitions/value"
-                    },
-                    "lt": {
-                        "title": "Less than",
-                        "$ref": "#/definitions/value"
-                    },
-                    "le": {
-                        "title": "Less than or equal to",
-                        "$ref": "#/definitions/value"
-                    },
-                    "anyOf": {
-                        "type": "array",
-                        "minItems": 1,
-                        "items": {
-                            "$ref": "#/definitions/expected/expressionValue"
+                "oneOf": [
+                    {
+                        "type": "object",
+                        "minProperties": 1,
+                        "additionalProperties": false,
+                        "properties": {
+                            "eq": {
+                                "title": "Equal to",
+                                "$ref": "#/definitions/value"
+                            },
+                            "ne": {
+                                "title": "Not equal to",
+                                "$ref": "#/definitions/value"
+                            },
+                            "gt": {
+                                "title": "Greater than",
+                                "$ref": "#/definitions/value"
+                            },
+                            "ge": {
+                                "title": "Greater than or equal to",
+                                "$ref": "#/definitions/value"
+                            },
+                            "lt": {
+                                "title": "Less than",
+                                "$ref": "#/definitions/value"
+                            },
+                            "le": {
+                                "title": "Less than or equal to",
+                                "$ref": "#/definitions/value"
+                            },
+                            "anyOf": {
+                                "type": "array",
+                                "minItems": 1,
+                                "items": {
+                                    "$ref": "#/definitions/expected/expressionValue"
+                                }
+                            }
                         }
+                    },
+                    {
+                        "$ref": "#/definitions/reference"
                     }
-                }
+                ]
             },
             "expressionBoolean": {
                 "type": "object",

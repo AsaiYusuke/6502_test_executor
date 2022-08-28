@@ -19,7 +19,7 @@ private:
     vector<condition_mocked_value> mock_value_defs;
 
 public:
-    condition_mocked_proc(emulation_devices *device, json condition);
+    condition_mocked_proc(emulation_devices *device, json definitions_def, json condition);
     uint16_t get_entry_point();
     mock_action_type get_action();
     uint16_t get_jmp_dest();

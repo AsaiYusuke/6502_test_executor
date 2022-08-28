@@ -1,0 +1,188 @@
+{
+    "$schema": "../../../schema/testcase.schema.json",
+    "target": {
+        "start": {
+            "label": "control"
+        }
+    },
+    "definitions": {
+        "setup": {
+            "registerAXY": {
+                "INITIAL_AXY": 100
+            },
+            "registerP": {
+                "SETUP_ALL_FALSE": {
+                    "Carry": false,
+                    "Decimal": false,
+                    "InterruptDisable": false,
+                    "Negative": false,
+                    "Overflow": false,
+                    "Zero": false
+                },
+                "SET_CARRY_TRUE": {
+                    "Carry": true
+                },
+                "SET_CARRY_FALSE": {
+                    "Carry": false
+                }
+            },
+            "memory": {
+                "value": {
+                    "INITIAL_VECTOR": 0
+                },
+                "sequence": {
+                    "PAD1_INPUT_A_OFF_ON_OFF": [
+                        0,
+                        1,
+                        0
+                    ]
+                }
+            }
+        },
+        "expected": {
+            "registerAXY": {
+                "STAY_INITIAL": {
+                    "eq": 100
+                },
+                "SUCCESSFULLY_ADDED": {
+                    "eq": 4
+                }
+            },
+            "registerP": {
+                "EXPECTED_ALL_FALSE_EXCEPT_N": {
+                    "Carry": {
+                        "eq": false
+                    },
+                    "Decimal": {
+                        "eq": false
+                    },
+                    "InterruptDisable": {
+                        "eq": false
+                    },
+                    "Negative": {
+                        "eq": true
+                    },
+                    "Overflow": {
+                        "eq": false
+                    },
+                    "Zero": {
+                        "eq": false
+                    }
+                }
+            },
+            "memory": {
+                "value": {
+                    "UPDATED_VECTOR_IS_4": [
+                        {
+                            "eq": 4
+                        }
+                    ]
+                },
+                "count": {
+                    "NMI_LOCK_EXECUTED": {
+                        "gt": 0
+                    }
+                }
+            }
+        }
+    },
+    "cases": {
+        "NMI interrupt (definitions)": {
+            "setup": {
+                "memory": [
+                    {
+                        "label": "vector_addr",
+                        "value": "@INITIAL_VECTOR"
+                    },
+                    {
+                        "label": "APU_PAD1",
+                        "sequence": "@PAD1_INPUT_A_OFF_ON_OFF"
+                    }
+                ],
+                "interrupt": [
+                    {
+                        "type": "NMI",
+                        "entryPoint": {
+                            "label": "save_id"
+                        }
+                    }
+                ]
+
+            },
+            "expected": {
+                "memory": [
+                    {
+                        "label": "vector_addr",
+                        "value": "@UPDATED_VECTOR_IS_4"
+                    },
+                    {
+                        "label": "nmi_lock",
+                        "readCount": "@NMI_LOCK_EXECUTED"
+                    }
+                ]
+            }
+        },
+        "call mocked proc read_joypad_a_key (definitions)": {
+            "setup": {
+                "register": {
+                    "P": "@SETUP_ALL_FALSE"
+                },
+                "mockedProc": [
+                    {
+                        "entryPoint": {
+                            "label": "read_joypad_a_key"
+                        },
+                        "action": "rts",
+                        "setValue": [
+                            {
+                                "register": {
+                                    "P": "@SET_CARRY_TRUE"
+                                }
+                            },
+                            {
+                                "register": {
+                                    "P": "@SET_CARRY_FALSE"
+                                }
+                            }
+
+                        ]
+                    }
+                ]
+            },
+            "expected": {
+                "timeout": {
+                    "eq": false
+                },
+                "register": {
+                    "P": "@EXPECTED_ALL_FALSE_EXCEPT_N"
+                }
+            }
+        },
+        "accessed only A": {
+            "setup": {
+                "register": {
+                    "A": "@INITIAL_AXY",
+                    "X": "@INITIAL_AXY",
+                    "Y": "@INITIAL_AXY"
+                },
+                "memory": [
+                    {
+                        "label": "vector_addr",
+                        "value": "@INITIAL_VECTOR"
+                    },
+                    {
+                        "label": "APU_PAD1",
+                        "sequence": "@PAD1_INPUT_A_OFF_ON_OFF"
+                    }
+                ]
+            },
+            "expected": {
+                "register": {
+                    "A": "@SUCCESSFULLY_ADDED",
+                    "X": "@STAY_INITIAL",
+                    "Y": "@STAY_INITIAL"
+                }
+            }
+        }
+    }
+}

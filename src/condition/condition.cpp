@@ -1,14 +1,17 @@
 #include "condition/condition_mocked_value.h"
 #include "condition/condition.h"
+#include "util/value_convert.h"
 
-condition::condition(emulation_devices *_device, json condition, json target)
-    : condition::condition(_device, condition)
+condition::condition(emulation_devices *_device, json definitions_def, json condition, json target)
+    : condition::condition(_device, definitions_def, condition)
 {
     register_pc_def = new condition_register_pc(_device, target);
 }
 
-condition::condition(emulation_devices *_device, json condition_json)
+condition::condition(emulation_devices *_device, json definitions_def, json condition_json)
 {
+    json status_elements;
+
     device = _device;
 
     if (condition_json["register"].is_object())
@@ -16,19 +19,20 @@ condition::condition(emulation_devices *_device, json condition_json)
             switch (register_name_type_map[register_element.key()])
             {
             case register_type::P:
-                for (auto &status_element : register_element.value().items())
+                status_elements = value_convert::parse_variable(definitions_def["registerP"], register_element.value());
+                for (auto &status_element : status_elements.items())
                     status_flag_defs.push_back(
                         condition_register_status_flag(
                             device,
                             status_element.key(),
-                            status_element.value()));
+                            value_convert::parse_variable(definitions_def["registerP"], status_element.value())));
                 break;
             default:
                 register_defs.push_back(
                     condition_register_a_x_y(
                         device,
                         register_element.key(),
-                        register_element.value()));
+                        value_convert::parse_variable(definitions_def["registerAXY"], register_element.value())));
                 break;
             }
 
@@ -37,6 +41,7 @@ condition::condition(emulation_devices *_device, json condition_json)
             memory_defs.push_back(
                 condition_memory(
                     device,
+                    definitions_def["memory"],
                     memory_def));
 
     stack_def = new condition_stack(device, condition_json["stack"]);
@@ -53,6 +58,7 @@ condition::condition(emulation_devices *_device, json condition_json)
             mocked_proc_defs.push_back(
                 condition_mocked_proc(
                     device,
+                    definitions_def,
                     mocked_proc_def));
                     
     timeout_def = new condition_timeout(device, condition_json["timeout"]);

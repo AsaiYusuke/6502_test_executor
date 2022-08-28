@@ -214,7 +214,7 @@ void cpu_device::execute_mocked_proc()
 
 void cpu_device::execute_standard_instruction()
 {
-    cpu->Run(1, get_cycle_count(), cpu->INST_COUNT);
+    cpu->Run(1, cycle_count, cpu->INST_COUNT);
 }
 
 void cpu_device::print()

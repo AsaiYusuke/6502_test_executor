@@ -11,8 +11,8 @@
 #include "assert/assert_memory_write_count.h"
 #include "assert/assert_stack_value.h"
 
-test_assert::test_assert(emulation_devices *device, json condition_json)
-    : condition(device, condition_json)
+test_assert::test_assert(emulation_devices *device, json definitions_def, json condition_json)
+    : condition(device, definitions_def, condition_json)
 {
 }
 

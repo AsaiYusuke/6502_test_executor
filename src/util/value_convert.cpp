@@ -2,6 +2,7 @@
 #include "enum/value_type.h"
 #include "util/value_convert.h"
 #include "emulation/emulation_devices.h"
+#include "exception/parse_abort.h"
 
 uint16_t value_convert::get_address(emulation_devices *device, json value)
 {
@@ -72,4 +73,20 @@ string value_convert::to_zero_filled_hex_string(uint16_t value)
     stringstream ss;
     ss << "$" << uppercase << hex << setw(4) << setfill('0') << value;
     return ss.str();
+}
+
+json value_convert::parse_variable(json definitions_def, json value)
+{
+    if (value.is_string() && definitions_def.is_object())
+    {
+        auto valueStr = value.get<string>();
+        if (valueStr.front() == '@')
+        {
+            if (definitions_def.contains(valueStr.substr(1)))
+                return definitions_def[valueStr.substr(1)];
+
+            throw invalid_argument("Definition not found: " + valueStr.substr(1));
+        }
+    }
+    return value;
 }
