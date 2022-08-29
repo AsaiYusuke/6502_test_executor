@@ -65,7 +65,7 @@ void cpu_device::execute()
             if (!filter->post())
                 return;
 
-    } while (cpu->GetPC() != TEST_RETURN_ADDRESS && cpu->GetPC() != endPC);
+    } while (cpu->GetPC() != endPC);
 }
 
 void cpu_device::add_error_result(runtime_error_type type)
