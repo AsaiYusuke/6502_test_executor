@@ -1,7 +1,7 @@
 #pragma once
 
 #include "args_parser.h"
-#include "test_result.h"
+#include "test/test_result.h"
 #include "emulation/emulation_devices.h"
 #include "nlohmann/json.hpp"
 

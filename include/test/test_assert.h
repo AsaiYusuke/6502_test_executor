@@ -1,7 +1,7 @@
 #pragma once
 
 #include "condition/condition.h"
-#include "test_result.h"
+#include "test/test_result.h"
 
 using namespace std;
 

@@ -2,7 +2,7 @@
 
 #include "emulation/emulation_devices.h"
 #include "condition/condition_stack.h"
-#include "test_result.h"
+#include "test/test_result.h"
 #include "message.h"
 #include "util/to_string.h"
 #include "util/expression_executer.h"

@@ -1,6 +1,6 @@
 #include <sstream>
 
-#include "test_assert.h"
+#include "test/test_assert.h"
 #include "util/value_convert.h"
 #include "assert/assert_timeout.h"
 #include "assert/assert_runtime_error.h"

@@ -5,7 +5,7 @@
 #include "args_parser.h"
 #include "exception/parse_abort.h"
 #include "emulation/emulation_devices.h"
-#include "test.h"
+#include "test/test.h"
 
 using namespace std;
 

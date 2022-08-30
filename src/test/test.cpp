@@ -2,11 +2,11 @@
 #include <fstream>
 #include <string>
 
-#include "test.h"
-#include "test_total_result.h"
-#include "test_result.h"
-#include "test_setup.h"
-#include "test_assert.h"
+#include "test/test.h"
+#include "test/test_total_result.h"
+#include "test/test_result.h"
+#include "test/test_setup.h"
+#include "test/test_assert.h"
 #include "util/value_convert.h"
 #include "condition/condition.h"
 #include "exception/file_open.h"
