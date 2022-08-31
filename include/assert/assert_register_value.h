@@ -3,7 +3,7 @@
 #include "emulation/emulation_devices.h"
 #include "condition/condition_register_a_x_y.h"
 #include "test/test_result.h"
-#include "message.h"
+#include "assert/message.h"
 #include "util/to_string.h"
 #include "util/expression_executer.h"
 

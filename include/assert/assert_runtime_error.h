@@ -3,7 +3,7 @@
 #include "emulation/emulation_devices.h"
 #include "test/test_result.h"
 #include "enum/operator_type.h"
-#include "message.h"
+#include "assert/message.h"
 #include "util/to_string.h"
 #include "util/expression_executer.h"
 
