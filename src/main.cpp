@@ -6,10 +6,9 @@
 #include "exception/parse_abort.h"
 #include "emulation/emulation_devices.h"
 #include "test/test.h"
+#include "util/constant.h"
 
 using namespace std;
-
-#define EX_TEST_FAILED 200
 
 int main(int argc, char *argv[])
 {

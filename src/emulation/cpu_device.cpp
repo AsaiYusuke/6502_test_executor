@@ -7,8 +7,6 @@
 #include "emulation/cpu_filter/call_stack_filter.h"
 #include "emulation/cpu_filter/timeout_check_filter.h"
 
-#define STACK_ADDRESS(addr) (0x0100 + addr)
-
 cpu_device::cpu_device(emulation_devices *_device, args_parser *args, json config)
 {
     device = _device;
