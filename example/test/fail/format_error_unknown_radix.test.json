@@ -1,0 +1,20 @@
+{
+    "$schema": "../../../schema/testcase.schema.json",
+    "target": {
+        "start": {
+            "label": "check_collision"
+        }
+    },
+    "cases": {
+        "unknown radix": {
+            "setup": {
+                "register": {
+                    "A": {
+                        "address": "#address"
+                    }
+                }
+            },
+            "expected": {}
+        }
+    }
+}

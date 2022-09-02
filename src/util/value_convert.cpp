@@ -21,36 +21,45 @@ uint16_t value_convert::parse_json_number(emulation_devices *device, json value)
 {
     switch (value.type())
     {
-    case json::value_t::number_integer:
-    case json::value_t::number_unsigned:
-        return value.get<uint16_t>();
-    case json::value_t::string:
-    {
-        string str = value.get<string>();
-        if (str.compare(0, 1, "$") == 0)
-            return stoi(str.substr(1), 0, 16);
-        else if (str.compare(0, 1, "%") == 0)
-            return stoi(str.substr(1), 0, 2);
-    }
-    case json::value_t::object:
-        auto address = get_address(device, value);
-        if (value["type"].is_null())
-            return device->get_memory()->read(address);
-        switch(value_name_type_map[value["type"].get<string>()])
+        case json::value_t::number_integer:
+        case json::value_t::number_unsigned:
+            return value.get<uint16_t>();
+        case json::value_t::string:
         {
-            case value_type::VALUE:
-                return device->get_memory()->read(address);
-            case value_type::HIBYTE:
-                return address >> 8;
-            case value_type::LOBYTE:
-                return address & 0xFF;
-            case value_type::RTS_HIBYTE:
-                return (address - 1) >> 8;
-            case value_type::RTS_LOBYTE:
-                return (address - 1) & 0xFF;
+            string str = value.get<string>();
+            if (str.compare(0, 1, "$") == 0)
+                return stoi(str.substr(1), 0, 16);
+            else if (str.compare(0, 1, "%") == 0)
+                return stoi(str.substr(1), 0, 2);
+            break;
         }
+        case json::value_t::object:
+        {
+            auto address = get_address(device, value);
+            if (value["type"].is_null())
+                return device->get_memory()->read(address);
+
+            if (value["type"].is_string())
+                switch (value_name_type_map[value["type"].get<string>()])
+                {
+                    case value_type::VALUE:
+                        return device->get_memory()->read(address);
+                    case value_type::HIBYTE:
+                        return address >> 8;
+                    case value_type::LOBYTE:
+                        return address & 0xFF;
+                    case value_type::RTS_HIBYTE:
+                        return (address - 1) >> 8;
+                    case value_type::RTS_LOBYTE:
+                        return (address - 1) & 0xFF;
+                }
+            break;
+        }
+        case json::value_t::null:
+            return 0;
     }
-    return 0;
+    
+    throw invalid_argument("Invalid format: " + to_string(value));
 }
 
 uint16_t value_convert::to_two_complement_byte(emulation_devices *device, json value)

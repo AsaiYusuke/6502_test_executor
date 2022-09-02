@@ -1,0 +1,20 @@
+{
+    "$schema": "../../../schema/testcase.schema.json",
+    "target": {
+        "start": {
+            "label": "check_collision"
+        }
+    },
+    "cases": {
+        "array as number": {
+            "setup": {
+                "register": {
+                    "A": {
+                        "address": []
+                    }
+                }
+            },
+            "expected": {}
+        }
+    }
+}

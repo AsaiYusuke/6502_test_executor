@@ -8,7 +8,7 @@ using namespace std;
 enum class value_type
 {
     // Value
-    VALUE,
+    VALUE = 1,
     // High byte
     HIBYTE,
     // Low byte

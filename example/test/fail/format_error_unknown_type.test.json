@@ -1,0 +1,24 @@
+{
+    "$schema": "../../../schema/testcase.schema.json",
+    "target": {
+        "start": {
+            "label": "check_collision"
+        }
+    },
+    "cases": {
+        "unknown type": {
+            "setup": {
+                "memory": [
+                    {
+                        "address": "$00",
+                        "value": {
+                            "address": "$00",
+                            "type": "xxx"
+                        }
+                    }
+                ]
+            },
+            "expected": {}
+        }
+    }
+}

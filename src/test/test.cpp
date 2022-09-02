@@ -70,12 +70,23 @@ test_result test::do_test(string id, json testcase)
 
         return assert.get_result(id);
     }
+    catch (invalid_argument &e)
+    {
+        test_result result;
+        result.set_id(id);
+        stringstream ss;
+        ss << e.what() << endl;
+        ss << endl;
+        result.add_error(ss.str());
+        return result;
+    }
     catch (cpu_runtime_error &e)
     {
         test_result result;
         result.set_id(id);
         stringstream ss;
         ss << e.what() << endl;
+        ss << endl;
         result.add_error(ss.str());
         return result;
     }
