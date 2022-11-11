@@ -9,7 +9,9 @@
         "pass value to the caller : A=1": {
             "setup": {
                 "register": {
-                    "A": 1
+                    "A": {
+                        "value": 1
+                    }
                 },
                 "stack": [
                     {
@@ -25,7 +27,9 @@
             "expected": {
                 "register": {
                     "X": {
-                        "eq": 2
+                        "value": {
+                            "eq": 2
+                        }
                     }
                 }
             }
@@ -33,7 +37,9 @@
         "pass value to the caller : A=2": {
             "setup": {
                 "register": {
-                    "A": 2
+                    "A": {
+                        "value": 2
+                    }
                 },
                 "stack": [
                     {
@@ -49,7 +55,9 @@
             "expected": {
                 "register": {
                     "X": {
-                        "eq": 3
+                        "value": {
+                            "eq": 3
+                        }
                     }
                 }
             }

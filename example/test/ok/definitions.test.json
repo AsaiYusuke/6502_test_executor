@@ -6,82 +6,175 @@
         }
     },
     "definitions": {
-        "setup": {
-            "registerAXY": {
-                "INITIAL_AXY": 100
-            },
-            "registerP": {
-                "SETUP_ALL_FALSE": {
-                    "Carry": false,
-                    "Decimal": false,
-                    "InterruptDisable": false,
-                    "Negative": false,
-                    "Overflow": false,
-                    "Zero": false
-                },
-                "SET_CARRY_TRUE": {
-                    "Carry": true
-                },
-                "SET_CARRY_FALSE": {
-                    "Carry": false
-                }
-            },
-            "memory": {
-                "value": {
-                    "INITIAL_VECTOR": 0
-                },
-                "sequence": {
-                    "PAD1_INPUT_A_OFF_ON_OFF": [
-                        0,
-                        1,
-                        0
-                    ]
-                }
+        "primitives": {
+            "value": {
+                "AXY_INIT_VALUE": 100,
+                "MEM_PAD1_A_ON": 1,
+                "MEM_PAD1_A_OFF": 0,
+                "MEM_VECTOR_INIT_VALUE": 0
             }
         },
-        "expected": {
-            "registerAXY": {
-                "STAY_INITIAL": {
-                    "eq": 100
-                },
-                "SUCCESSFULLY_ADDED": {
-                    "eq": 4
-                }
-            },
-            "registerP": {
-                "EXPECTED_ALL_FALSE_EXCEPT_N": {
-                    "Carry": {
-                        "eq": false
-                    },
-                    "Decimal": {
-                        "eq": false
-                    },
-                    "InterruptDisable": {
-                        "eq": false
-                    },
-                    "Negative": {
-                        "eq": true
-                    },
-                    "Overflow": {
-                        "eq": false
-                    },
-                    "Zero": {
-                        "eq": false
+        "templates": {
+            "setup": {
+                "AXY_INIT": {
+                    "register": {
+                        "A": {
+                            "value": "@AXY_INIT_VALUE"
+                        },
+                        "X": {
+                            "value": "@AXY_INIT_VALUE"
+                        },
+                        "Y": {
+                            "value": "@AXY_INIT_VALUE"
+                        }
                     }
-                }
-            },
-            "memory": {
-                "value": {
-                    "UPDATED_VECTOR_IS_4": [
+                },
+                "P_ALL_FALSE": {
+                    "register": {
+                        "P": {
+                            "Carry": {
+                                "value": false
+                            },
+                            "Decimal": {
+                                "value": false
+                            },
+                            "InterruptDisable": {
+                                "value": false
+                            },
+                            "Negative": {
+                                "value": false
+                            },
+                            "Overflow": {
+                                "value": false
+                            },
+                            "Zero": {
+                                "value": false
+                            }
+                        }
+                    }
+                },
+                "P_CARRY_TRUE": {
+                    "register": {
+                        "P": {
+                            "Carry": {
+                                "value": true
+                            }
+                        }
+                    }
+                },
+                "P_CARRY_FALSE": {
+                    "register": {
+                        "P": {
+                            "Carry": {
+                                "value": false
+                            }
+                        }
+                    }
+                },
+                "MEM_PAD1_INPUT_A_OFF_ON_OFF": {
+                    "memory": [
                         {
-                            "eq": 4
+                            "label": "APU_PAD1",
+                            "sequence": [
+                                "@MEM_PAD1_A_OFF",
+                                "@MEM_PAD1_A_ON",
+                                "@MEM_PAD1_A_OFF"
+                            ]
                         }
                     ]
                 },
-                "count": {
-                    "NMI_LOCK_EXECUTED": {
-                        "gt": 0
+                "MEM_VECTOR_INIT": {
+                    "memory": [
+                        {
+                            "label": "vector_addr",
+                            "value": "@MEM_VECTOR_INIT_VALUE"
+                        }
+                    ]
+                }
+            },
+            "expected": {
+                "X_STAY_INITIAL": {
+                    "register": {
+                        "X": {
+                            "value": {
+                                "eq": "@AXY_INIT_VALUE"
+                            }
+                        }
                     }
+                },
+                "Y_STAY_INITIAL": {
+                    "register": {
+                        "Y": {
+                            "value": {
+                                "eq": "@AXY_INIT_VALUE"
+                            }
+                        }
+                    }
+                },
+                "A_SUCCESSFULLY_ADDED": {
+                    "register": {
+                        "A": {
+                            "value": {
+                                "eq": 4
+                            }
+                        }
+                    }
+                },
+                "P_EXPECTED_ALL_FALSE_EXCEPT_N": {
+                    "register": {
+                        "P": {
+                            "Carry": {
+                                "value": {
+                                    "eq": false
+                                }
+                            },
+                            "Decimal": {
+                                "value": {
+                                    "eq": false
+                                }
+                            },
+                            "InterruptDisable": {
+                                "value": {
+                                    "eq": false
+                                }
+                            },
+                            "Negative": {
+                                "value": {
+                                    "eq": true
+                                }
+                            },
+                            "Overflow": {
+                                "value": {
+                                    "eq": false
+                                }
+                            },
+                            "Zero": {
+                                "value": {
+                                    "eq": false
+                                }
+                            }
+                        }
+                    }
+                },
+                "MEM_UPDATED_VECTOR_IS_4": {
+                    "memory": [
+                        {
+                            "label": "vector_addr",
+                            "value": {
+                                "eq": 4
+                            }
+                        }
+                    ]
+                },
+                "MEM_NMI_LOCK_EXECUTED": {
+                    "memory": [
+                        {
+                            "label": "nmi_lock",
+                            "readCount": {
+                                "gt": 0
+                            }
+                        }
+                    ]
                 }
             }
         }
@@ -89,15 +182,9 @@
     "cases": {
         "NMI interrupt (definitions)": {
             "setup": {
-                "memory": [
-                    {
-                        "label": "vector_addr",
-                        "value": "@INITIAL_VECTOR"
-                    },
-                    {
-                        "label": "APU_PAD1",
-                        "sequence": "@PAD1_INPUT_A_OFF_ON_OFF"
-                    }
+                "template": [
+                    "@MEM_PAD1_INPUT_A_OFF_ON_OFF",
+                    "@MEM_VECTOR_INIT"
                 ],
                 "interrupt": [
                     {
@@ -107,26 +194,19 @@
                         }
                     }
                 ]
-
             },
             "expected": {
-                "memory": [
-                    {
-                        "label": "vector_addr",
-                        "value": "@UPDATED_VECTOR_IS_4"
-                    },
-                    {
-                        "label": "nmi_lock",
-                        "readCount": "@NMI_LOCK_EXECUTED"
-                    }
+                "template": [
+                    "@MEM_UPDATED_VECTOR_IS_4",
+                    "@MEM_NMI_LOCK_EXECUTED"
                 ]
             }
         },
         "call mocked proc read_joypad_a_key (definitions)": {
             "setup": {
-                "register": {
-                    "P": "@SETUP_ALL_FALSE"
-                },
+                "template": [
+                    "@P_ALL_FALSE"
+                ],
                 "mockedProc": [
                     {
                         "entryPoint": {
@@ -135,53 +215,42 @@
                         "action": "rts",
                         "setValue": [
                             {
-                                "register": {
-                                    "P": "@SET_CARRY_TRUE"
-                                }
+                                "template": [
+                                    "@P_CARRY_TRUE"
+                                ]
                             },
                             {
-                                "register": {
-                                    "P": "@SET_CARRY_FALSE"
-                                }
+                                "template": [
+                                    "@P_CARRY_FALSE"
+                                ]
                             }
-
                         ]
                     }
                 ]
             },
             "expected": {
+                "template": [
+                    "@P_EXPECTED_ALL_FALSE_EXCEPT_N"
+                ],
                 "timeout": {
                     "eq": false
-                },
-                "register": {
-                    "P": "@EXPECTED_ALL_FALSE_EXCEPT_N"
                 }
             }
         },
         "accessed only A": {
             "setup": {
-                "register": {
-                    "A": "@INITIAL_AXY",
-                    "X": "@INITIAL_AXY",
-                    "Y": "@INITIAL_AXY"
-                },
-                "memory": [
-                    {
-                        "label": "vector_addr",
-                        "value": "@INITIAL_VECTOR"
-                    },
-                    {
-                        "label": "APU_PAD1",
-                        "sequence": "@PAD1_INPUT_A_OFF_ON_OFF"
-                    }
+                "template": [
+                    "@AXY_INIT",
+                    "@MEM_PAD1_INPUT_A_OFF_ON_OFF",
+                    "@MEM_VECTOR_INIT"
                 ]
             },
             "expected": {
-                "register": {
-                    "A": "@SUCCESSFULLY_ADDED",
-                    "X": "@STAY_INITIAL",
-                    "Y": "@STAY_INITIAL"
-                }
+                "template": [
+                    "@A_SUCCESSFULLY_ADDED",
+                    "@X_STAY_INITIAL",
+                    "@Y_STAY_INITIAL"
+                ]
             }
         }
     }

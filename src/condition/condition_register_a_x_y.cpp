@@ -1,16 +1,15 @@
 #include "condition/condition_register_a_x_y.h"
 #include "util/value_convert.h"
 #include "util/expression_executer.h"
+#include <iostream>
 
 condition_register_a_x_y::condition_register_a_x_y(emulation_devices *device, string _name, json condition)
 {
     name = _name;
     type = register_name_type_map[name];
-    if (expression_executer::find(condition))
-        expression =
-            new condition_expression<expression_two_complement_byte, uint8_t>(device, condition);
-    else
-        value = value_convert::to_two_complement_byte(device, condition);
+    value = new condition_register_a_x_y_value(device, condition["value"]);
+    read_count = new condition_register_a_x_y_count(device, condition["readCount"]);
+    write_count = new condition_register_a_x_y_count(device, condition["writeCount"]);
 }
 
 string condition_register_a_x_y::get_name()
@@ -23,12 +22,17 @@ register_type condition_register_a_x_y::get_type()
     return type;
 }
 
-uint8_t condition_register_a_x_y::get_value()
+condition_register_a_x_y_value *condition_register_a_x_y::get_value()
 {
     return value;
 }
 
-condition_expression<expression_two_complement_byte, uint8_t> *condition_register_a_x_y::get_expression()
+condition_register_a_x_y_count *condition_register_a_x_y::get_read_count()
 {
-    return expression;
+    return read_count;
+}
+
+condition_register_a_x_y_count *condition_register_a_x_y::get_write_count()
+{
+    return write_count;
 }

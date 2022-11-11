@@ -7,6 +7,7 @@
 #include "args_parser.h"
 #include "emulation/cpu_filter/cpu_filter.h"
 #include "emulation/cpu_filter/call_stack_filter.h"
+#include "emulation/cpu_filter/register_counter_filter.h"
 #include "condition/condition_mocked_proc.h"
 #include "condition/condition_mocked_value.h"
 #include "enum/register_type.h"
@@ -20,6 +21,8 @@ using json = nlohmann::json;
 class emulation_devices;
 
 class call_stack_filter;
+
+class register_counter_filter;
 
 class cpu_device
 {
@@ -35,6 +38,7 @@ private:
         retern
     };
     call_stack_filter *call_stack;
+    register_counter_filter *register_counter;
     vector<i_cpu_filter *> filters;
     uint16_t endPC;
     map<uint16_t, interrupt_type> interrupt_defs;
@@ -49,8 +53,16 @@ public:
     uint64_t get_cycle_count();
     uint8_t get_register(register_type type);
     void set_register(register_type type, uint8_t value);
+    uint8_t get_read_count(register_type type);
+    uint8_t get_write_count(register_type type);
+    uint8_t get_read_count(status_flag_type type);
+    uint8_t get_write_count(status_flag_type type);
     bool is_call_instrunction();
     bool is_return_instruction();
+    bool is_read_register_instruction(register_type type);
+    bool is_write_register_instruction(register_type type);
+    bool is_read_status_instruction(status_flag_type type);
+    bool is_write_status_instruction(status_flag_type type);
     bool is_previous_returned_instruction();
     bool is_interrupt_instruction();
     bool is_mocked_proc_instruction();

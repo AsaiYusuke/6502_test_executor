@@ -1,8 +1,8 @@
 #include "test/test_setup.h"
 #include "emulation/emulation_devices.h"
 
-test_setup::test_setup(emulation_devices *device, json definitions_def, json condition_json, json target)
-    : condition(device, definitions_def, condition_json, target)
+test_setup::test_setup(emulation_devices *device, json condition_json, json target)
+    : condition(device, condition_json, target)
 {
 }
 
@@ -15,11 +15,11 @@ void test_setup::execute()
 
     cpu_device *cpu_dev = get_device()->get_cpu();
     for (auto register_def : get_register_defs())
-        cpu_dev->set_register(register_def.get_type(), register_def.get_value());
+        cpu_dev->set_register(register_def.get_type(), register_def.get_value()->get_value());
 
     uint8_t status_bits = 0;
     for (auto status_flag_def : get_status_flag_defs())
-        status_bits |= ((uint8_t)status_flag_def.get_type() * status_flag_def.get_value());
+        status_bits |= ((uint8_t)status_flag_def.get_type() * status_flag_def.get_value()->get_value());
     cpu_dev->set_register(register_type::P, status_bits);
 
     for (auto interrupt_def : get_interrupt_defs())

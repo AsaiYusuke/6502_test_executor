@@ -9,14 +9,14 @@
 
 using namespace std;
 
-class assert_register_value
+class assert_register_write_count
 {
 public:
     static bool test(emulation_devices *device, condition_register_a_x_y register_def, test_result *result)
     {
-        auto actual = device->get_cpu()->get_register(register_def.get_type());
+        auto actual = device->get_cpu()->get_write_count(register_def.get_type());
         
-        auto expression = register_def.get_value()->get_expression();
+        auto expression = register_def.get_write_count()->get_expression();
         if (!expression)
             return true;
 
@@ -24,7 +24,7 @@ public:
         if (!total_result)
             result->add_error(
                 message::error_register_data(
-                    "Value",
+                    "Write count",
                     register_def,
                     to_string(*expression),
                     to_string(actual)));

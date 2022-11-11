@@ -1,5 +1,6 @@
 #include "assert/message.h"
 #include "emulation/emulation_devices.h"
+#include "condition/message_name.h"
 #include "util/to_string.h"
 #include "util/value_convert.h"
 #include "util/constant.h"
@@ -46,42 +47,26 @@ string message::trace_message(emulation_devices *device, vector<uint16_t> call_s
     return ss.str();
 }
 
-string message::error_register_data(condition_register_a_x_y register_def, string expected, string actual)
+string message::error_register_data(string type, i_message_name &register_def, string expected, string actual)
 {
     return error_message(
-        "Register [" + register_def.get_name() + "]",
+        "Register (" + type + ") [" + register_def.get_name() + "]",
         expected,
         actual);
 }
 
-string message::error_register_status_flag_data(condition_register_status_flag status_flag_def, string expected, string actual)
+string message::error_register_status_flag_data(string type, i_message_name &status_flag_def, string expected, string actual)
 {
     return error_message(
-        "Register [P (" + status_flag_def.get_name() + ")]",
+        "Register (" + type + ") [P (" + status_flag_def.get_name() + ")]",
         expected,
         actual);
 }
 
-string message::error_memory_data(condition_memory_value memory_value_def, string expected, string actual)
+string message::error_memory_data(string type, i_message_name &memory_def, string expected, string actual)
 {
     return error_message(
-        "Memory data [" + memory_value_def.get_name() + ")]",
-        expected,
-        actual);
-}
-
-string message::error_memory_read_count(condition_memory_count memory_count_def, string expected, string actual)
-{
-    return error_message(
-        "Memory read count [" + memory_count_def.get_name() + "]",
-        expected,
-        actual);
-}
-
-string message::error_memory_write_count(condition_memory_count memory_count_def, string expected, string actual)
-{
-    return error_message(
-        "Memory write count [" + memory_count_def.get_name() + "]",
+        "Memory (" + type + ") [" + memory_def.get_name() + "]",
         expected,
         actual);
 }
@@ -91,8 +76,7 @@ string message::error_stack_data(condition_stack *stack_def, string expected, st
     return error_message(
         "Stack data",
         expected,
-        actual
-    );
+        actual);
 }
 
 string message::trace_timeout(emulation_devices *device, vector<uint16_t> call_stack, string expected, string actual)

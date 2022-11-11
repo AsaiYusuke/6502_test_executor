@@ -23,6 +23,10 @@ cpu_device::cpu_device(emulation_devices *_device, args_parser *args, json confi
 
     call_stack = new call_stack_filter(this);
     filters.push_back(call_stack);
+
+    register_counter = new register_counter_filter(this);
+    filters.push_back(register_counter);
+
     filters.push_back(new timeout_check_filter(this));
 }
 
@@ -112,6 +116,26 @@ void cpu_device::set_register(register_type type, uint8_t value)
     }
 }
 
+uint8_t cpu_device::get_read_count(register_type type)
+{
+    return register_counter->get_read_count(type);
+}
+
+uint8_t cpu_device::get_write_count(register_type type)
+{
+    return register_counter->get_write_count(type);
+}
+
+uint8_t cpu_device::get_read_count(status_flag_type type)
+{
+    return register_counter->get_read_count(type);
+}
+
+uint8_t cpu_device::get_write_count(status_flag_type type)
+{
+    return register_counter->get_write_count(type);
+}
+
 bool cpu_device::is_call_instrunction()
 {
     return cpu->isCallInstr();
@@ -127,6 +151,94 @@ bool cpu_device::is_return_instruction()
     }
 
     return cpu->isReturnInstr();
+}
+
+bool cpu_device::is_read_register_instruction(register_type type)
+{
+    switch(type)
+    {
+    case register_type::A:
+        return cpu->isReadInstrA();
+    case register_type::X:
+        return cpu->isReadInstrX();
+    case register_type::Y:
+        return cpu->isReadInstrY();
+    case register_type::S:
+        return cpu->isReadInstrS();
+    case register_type::PC:
+        return cpu->isReadInstrPC();
+    }
+
+    throw invalid_argument("Internal error");
+}
+
+bool cpu_device::is_write_register_instruction(register_type type)
+{
+    switch(type)
+    {
+    case register_type::A:
+        return cpu->isWriteInstrA();
+    case register_type::X:
+        return cpu->isWriteInstrX();
+    case register_type::Y:
+        return cpu->isWriteInstrY();
+    case register_type::S:
+        return cpu->isWriteInstrS();
+    case register_type::PC:
+        return cpu->isWriteInstrPC();
+    }
+
+    throw invalid_argument("Internal error");
+}
+
+bool cpu_device::is_read_status_instruction(status_flag_type type)
+{
+    switch(type)
+    {
+    case status_flag_type::Negative:
+        return cpu->isReadInstrNegative();
+    case status_flag_type::Overflow:
+        return cpu->isReadInstrOverflow();
+    case status_flag_type::Constant:
+        return cpu->isReadInstrConstant();
+    case status_flag_type::Break:
+        return cpu->isReadInstrBreak();
+    case status_flag_type::Decimal:
+        return cpu->isReadInstrDecimal();
+    case status_flag_type::InterruptDisable:
+        return cpu->isReadInstrInterrupt();
+    case status_flag_type::Zero:
+        return cpu->isReadInstrZero();
+    case status_flag_type::Carry:
+        return cpu->isReadInstrCarry();
+    }
+
+    throw invalid_argument("Internal error");
+}
+
+bool cpu_device::is_write_status_instruction(status_flag_type type)
+{
+    switch(type)
+    {
+    case status_flag_type::Negative:
+        return cpu->isWriteInstrNegative();
+    case status_flag_type::Overflow:
+        return cpu->isWriteInstrOverflow();
+    case status_flag_type::Constant:
+        return cpu->isWriteInstrConstant();
+    case status_flag_type::Break:
+        return cpu->isWriteInstrBreak();
+    case status_flag_type::Decimal:
+        return cpu->isWriteInstrDecimal();
+    case status_flag_type::InterruptDisable:
+        return cpu->isWriteInstrInterrupt();
+    case status_flag_type::Zero:
+        return cpu->isWriteInstrZero();
+    case status_flag_type::Carry:
+        return cpu->isWriteInstrCarry();
+    }
+
+    throw invalid_argument("Internal error");
 }
 
 bool cpu_device::is_previous_returned_instruction()
@@ -187,11 +299,11 @@ void cpu_device::execute_mocked_proc()
     auto mocked_value_def = mocked_proc_def->get_erased_front_mock_value_def();
 
     for (auto register_def : mocked_value_def.get_register_defs())
-        set_register(register_def.get_type(), register_def.get_value());
+        set_register(register_def.get_type(), register_def.get_value()->get_value());
 
     uint8_t status_bits = 0;
     for (auto status_flag_def : mocked_value_def.get_status_flag_defs())
-        status_bits |= ((uint8_t)status_flag_def.get_type() * status_flag_def.get_value());
+        status_bits |= ((uint8_t)status_flag_def.get_type() * status_flag_def.get_value()->get_value());
     set_register(register_type::P, status_bits);
 
     memory_device *mem_dev = device->get_memory();

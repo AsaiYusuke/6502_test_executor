@@ -1,0 +1,41 @@
+{
+    "$schema": "../../../schema/testcase.schema.json",
+    "target": {
+        "start": {
+            "label": "check_collision"
+        }
+    },
+    "cases": {
+        "count test for register A/X/Y": {
+            "setup": {},
+            "expected": {
+                "register": {
+                    "A": {
+                        "readCount": {
+                            "eq": 4
+                        },
+                        "writeCount": {
+                            "eq": 4
+                        }
+                    },
+                    "X": {
+                        "readCount": {
+                            "eq": 0
+                        },
+                        "writeCount": {
+                            "eq": 2
+                        }
+                    },
+                    "Y": {
+                        "readCount": {
+                            "eq": 0
+                        },
+                        "writeCount": {
+                            "eq": 0
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

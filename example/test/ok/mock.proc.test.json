@@ -18,14 +18,18 @@
                             {
                                 "register": {
                                     "P": {
-                                        "Carry": true
+                                        "Carry": {
+                                            "value": true
+                                        }
                                     }
                                 }    
                             },
                             {
                                 "register": {
                                     "P": {
-                                        "Carry": false
+                                        "Carry": {
+                                            "value": false
+                                        }
                                     }
                                 }
                             }

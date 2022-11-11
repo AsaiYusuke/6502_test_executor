@@ -1,0 +1,110 @@
+{
+    "$schema": "../../../schema/testcase.schema.json",
+    "target": {
+        "start": {
+            "label": "check_collision"
+        }
+    },
+    "cases": {
+        "flags of the Processor status register": {
+            "setup": {
+                "register": {
+                    "P": {
+                        "Negative": {
+                            "value": true
+                        },
+                        "Overflow": {
+                            "value": true
+                        },
+                        "Decimal": {
+                            "value": true
+                        },
+                        "InterruptDisable": {
+                            "value": true
+                        },
+                        "Break": {
+                            "value": true
+                        },
+                        "Carry": {
+                            "value": false
+                        },
+                        "Zero": {
+                            "value": true
+                        }
+                    }
+                }
+            },
+            "expected": {
+                "register": {
+                    "P": {
+                        "Negative": {
+                            "value": {
+                                "eq": true
+                            }
+                        },
+                        "Overflow": {
+                            "value": {
+                                "eq": true
+                            }
+                        },
+                        "Decimal": {
+                            "value": {
+                                "eq": true
+                            }
+                        },
+                        "InterruptDisable": {
+                            "value": {
+                                "eq": true
+                            }
+                        },
+                        "Break": {
+                            "value": {
+                                "eq": true
+                            }
+                        },
+                        "Carry": {
+                            "value": {
+                                "eq": true
+                            }
+                        },
+                        "Zero": {
+                            "value": {
+                                "eq": false
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "check only part of the flags": {
+            "setup": {
+                "register": {
+                    "P": {
+                        "Carry": {
+                            "value": false
+                        },
+                        "Zero": {
+                            "value": true
+                        }
+                    }
+                }
+            },
+            "expected": {
+                "register": {
+                    "P": {
+                        "Carry": {
+                            "value": {
+                                "eq": true
+                            }
+                        },
+                        "Zero": {
+                            "value": {
+                                "eq": false
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

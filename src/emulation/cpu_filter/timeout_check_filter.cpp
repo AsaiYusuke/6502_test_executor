@@ -14,7 +14,7 @@ bool timeout_check_filter::pre()
     return true;
 }
 
-bool timeout_check_filter:: post()
+bool timeout_check_filter::post()
 {
     if (cpu->get_cycle_count() > cpu->get_max_cycle_count())
     {

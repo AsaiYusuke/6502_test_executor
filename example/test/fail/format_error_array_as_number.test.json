@@ -10,7 +10,9 @@
             "setup": {
                 "register": {
                     "A": {
-                        "address": []
+                        "value": {
+                            "address": []
+                        }
                     }
                 }
             },

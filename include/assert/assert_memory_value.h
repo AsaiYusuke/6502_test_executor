@@ -31,6 +31,7 @@ public:
         if (!total_result)
             result->add_error(
                 message::error_memory_data(
+                    "Value",
                     memory_value_def,
                     to_string(expression_sequences),
                     to_string(actuals)));

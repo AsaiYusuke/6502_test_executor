@@ -19,7 +19,8 @@ public:
         bool total_result = memory_count_def.get_expression()->test(actual);
         if (!total_result)
             result->add_error(
-                message::error_memory_write_count(
+                message::error_memory_data(
+                    "Write count",
                     memory_count_def,
                     to_string(*memory_count_def.get_expression()),
                     to_string(actual)));

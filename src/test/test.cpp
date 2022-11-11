@@ -22,6 +22,9 @@ test::test(args_parser *_args)
     in >> test_scinario;
     in.close();
 
+    test_scinario = value_convert::parse_all_variable(
+        test_scinario["definitions"]["primitives"]["value"], test_scinario);
+
     device = new emulation_devices(args, test_scinario["config"]);
 }
 
@@ -55,8 +58,9 @@ test_result test::do_test(string id, json testcase)
     {
         test_setup(
             device,
-            test_scinario["definitions"]["setup"],
-            testcase["setup"],
+            value_convert::merge_template(
+                test_scinario["definitions"]["templates"]["setup"],
+                testcase["setup"]),
             test_scinario["target"])
             .execute();
 
@@ -64,8 +68,9 @@ test_result test::do_test(string id, json testcase)
 
         test_assert assert = test_assert(
             device,
-            test_scinario["definitions"]["expected"],
-            testcase["expected"]);
+            value_convert::merge_template(
+                test_scinario["definitions"]["templates"]["expected"],
+                testcase["expected"]));
         assert.execute();
 
         return assert.get_result(id);

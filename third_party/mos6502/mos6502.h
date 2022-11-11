@@ -195,6 +195,319 @@ private:
 		&mos6502::Op_RTI,
 		&mos6502::Op_RTS
 	};
+	vector<CodeExec> readInstrA{
+		&mos6502::Op_ADC,
+		&mos6502::Op_AND,
+		&mos6502::Op_ASL_ACC,
+		&mos6502::Op_BIT,
+		&mos6502::Op_CMP,
+		&mos6502::Op_EOR,
+		&mos6502::Op_LSR_ACC,
+		&mos6502::Op_ORA,
+		&mos6502::Op_PHA,
+		&mos6502::Op_PLA,
+		&mos6502::Op_ROL_ACC,
+		&mos6502::Op_ROR_ACC,
+		&mos6502::Op_SBC,
+		&mos6502::Op_STA,
+		&mos6502::Op_TAX,
+		&mos6502::Op_TAY
+	};
+	vector<CodeExec> writeInstrA{
+		&mos6502::Op_ADC,
+		&mos6502::Op_AND,
+		&mos6502::Op_ASL_ACC,
+		&mos6502::Op_EOR,
+		&mos6502::Op_LDA,
+		&mos6502::Op_LSR_ACC,
+		&mos6502::Op_ORA,
+		&mos6502::Op_ROL_ACC,
+		&mos6502::Op_ROR_ACC,
+		&mos6502::Op_SBC,
+		&mos6502::Op_TXA,
+		&mos6502::Op_TYA
+	};
+	vector<CodeExec> readInstrX{
+		&mos6502::Op_CPX,
+		&mos6502::Op_DEX,
+		&mos6502::Op_INX,
+		&mos6502::Op_STX,
+		&mos6502::Op_TXA,
+		&mos6502::Op_TXS
+	};
+	vector<CodeExec> writeInstrX{
+		&mos6502::Op_DEX,
+		&mos6502::Op_INX,
+		&mos6502::Op_LDX,
+		&mos6502::Op_TAX,
+		&mos6502::Op_TSX
+	};
+	vector<CodeExec> readInstrY{
+		&mos6502::Op_CPY,
+		&mos6502::Op_DEY,
+		&mos6502::Op_INY,
+		&mos6502::Op_STY,
+		&mos6502::Op_TYA
+	};
+	vector<CodeExec> writeInstrY{
+		&mos6502::Op_DEY,
+		&mos6502::Op_INY,
+		&mos6502::Op_LDY,
+		&mos6502::Op_TAY
+	};
+	vector<CodeExec> readInstrNegative{
+		&mos6502::Op_ADC,
+		&mos6502::Op_AND,
+		&mos6502::Op_ASL,
+		&mos6502::Op_ASL_ACC,
+		&mos6502::Op_BIT,
+		&mos6502::Op_BMI,
+		&mos6502::Op_BPL,
+		&mos6502::Op_CMP,
+		&mos6502::Op_CPX,
+		&mos6502::Op_CPY,
+		&mos6502::Op_DEC,
+		&mos6502::Op_DEX,
+		&mos6502::Op_DEY,
+		&mos6502::Op_EOR,
+		&mos6502::Op_INC,
+		&mos6502::Op_INX,
+		&mos6502::Op_INY,
+		&mos6502::Op_LDA,
+		&mos6502::Op_LDX,
+		&mos6502::Op_LDY,
+		&mos6502::Op_LSR,
+		&mos6502::Op_LSR_ACC,
+		&mos6502::Op_ORA,
+		&mos6502::Op_PLA,
+		&mos6502::Op_ROL,
+		&mos6502::Op_ROL_ACC,
+		&mos6502::Op_ROR,
+		&mos6502::Op_ROR_ACC,
+		&mos6502::Op_SBC,
+		&mos6502::Op_TAX,
+		&mos6502::Op_TAY,
+		&mos6502::Op_TSX,
+		&mos6502::Op_TXA,
+		&mos6502::Op_TYA
+	};
+	vector<CodeExec> readInstrOverflow{
+		&mos6502::Op_ADC,
+		&mos6502::Op_BVC,
+		&mos6502::Op_BVS,
+		&mos6502::Op_CLV,
+		&mos6502::Op_SBC
+	};
+	vector<CodeExec> readInstrConstant{
+	};
+	vector<CodeExec> readInstrBreak{
+	};
+	vector<CodeExec> readInstrDecimal{
+		&mos6502::Op_ADC,
+		&mos6502::Op_CLD,
+		&mos6502::Op_SBC,
+		&mos6502::Op_SED
+	};
+	vector<CodeExec> readInstrInterrupt{
+		&mos6502::Op_BRK,
+		&mos6502::Op_CLI,
+		&mos6502::Op_SEI
+	};
+	vector<CodeExec> readInstrZero{
+		&mos6502::Op_ADC,
+		&mos6502::Op_AND,
+		&mos6502::Op_ASL,
+		&mos6502::Op_ASL_ACC,
+		&mos6502::Op_BEQ,
+		&mos6502::Op_BIT,
+		&mos6502::Op_BNE,
+		&mos6502::Op_CMP,
+		&mos6502::Op_CPX,
+		&mos6502::Op_CPY,
+		&mos6502::Op_DEC,
+		&mos6502::Op_DEX,
+		&mos6502::Op_DEY,
+		&mos6502::Op_EOR,
+		&mos6502::Op_INC,
+		&mos6502::Op_INX,
+		&mos6502::Op_INY,
+		&mos6502::Op_LDA,
+		&mos6502::Op_LDX,
+		&mos6502::Op_LDY,
+		&mos6502::Op_LSR,
+		&mos6502::Op_LSR_ACC,
+		&mos6502::Op_ORA,
+		&mos6502::Op_PHA,
+		&mos6502::Op_PLA,
+		&mos6502::Op_ROL,
+		&mos6502::Op_ROL_ACC,
+		&mos6502::Op_ROR,
+		&mos6502::Op_ROR_ACC,
+		&mos6502::Op_SBC,
+		&mos6502::Op_TAX,
+		&mos6502::Op_TAY,
+		&mos6502::Op_TSX,
+		&mos6502::Op_TXA,
+		&mos6502::Op_TYA
+	};
+	vector<CodeExec> readInstrCarry{
+		&mos6502::Op_ADC,
+		&mos6502::Op_AND,
+		&mos6502::Op_ASL,
+		&mos6502::Op_ASL_ACC,
+		&mos6502::Op_BCC,
+		&mos6502::Op_BCS,
+		&mos6502::Op_CLC,
+		&mos6502::Op_CMP,
+		&mos6502::Op_CPX,
+		&mos6502::Op_CPY,
+		&mos6502::Op_LSR,
+		&mos6502::Op_LSR_ACC,
+		&mos6502::Op_ROL,
+		&mos6502::Op_ROL_ACC,
+		&mos6502::Op_ROR,
+		&mos6502::Op_ROR_ACC,
+		&mos6502::Op_SBC,
+		&mos6502::Op_SEC
+	};
+	vector<CodeExec> writeInstrNegative{
+		&mos6502::Op_ADC,
+		&mos6502::Op_AND,
+		&mos6502::Op_ASL,
+		&mos6502::Op_ASL_ACC,
+		&mos6502::Op_BIT,
+		&mos6502::Op_CMP,
+		&mos6502::Op_CPX,
+		&mos6502::Op_CPY,
+		&mos6502::Op_DEC,
+		&mos6502::Op_DEX,
+		&mos6502::Op_DEY,
+		&mos6502::Op_EOR,
+		&mos6502::Op_INC,
+		&mos6502::Op_INX,
+		&mos6502::Op_INY,
+		&mos6502::Op_LDA,
+		&mos6502::Op_LDX,
+		&mos6502::Op_LDY,
+		&mos6502::Op_LSR,
+		&mos6502::Op_LSR_ACC,
+		&mos6502::Op_ORA,
+		&mos6502::Op_PLA,
+		&mos6502::Op_ROL,
+		&mos6502::Op_ROL_ACC,
+		&mos6502::Op_ROR,
+		&mos6502::Op_ROR_ACC,
+		&mos6502::Op_SBC,
+		&mos6502::Op_TAX,
+		&mos6502::Op_TAY,
+		&mos6502::Op_TSX,
+		&mos6502::Op_TXA,
+		&mos6502::Op_TYA
+	};
+	vector<CodeExec> writeInstrOverflow{
+		&mos6502::Op_ADC,
+		&mos6502::Op_CLV,
+		&mos6502::Op_SBC
+	};
+	vector<CodeExec> writeInstrConstant{
+	};
+	vector<CodeExec> writeInstrBreak{
+	};
+	vector<CodeExec> writeInstrDecimal{
+		&mos6502::Op_CLD,
+		&mos6502::Op_SED
+	};
+	vector<CodeExec> writeInstrInterrupt{
+		&mos6502::Op_BRK,
+		&mos6502::Op_CLI,
+		&mos6502::Op_SEI
+	};
+	vector<CodeExec> writeInstrZero{
+		&mos6502::Op_ADC,
+		&mos6502::Op_AND,
+		&mos6502::Op_ASL,
+		&mos6502::Op_ASL_ACC,
+		&mos6502::Op_BIT,
+		&mos6502::Op_CMP,
+		&mos6502::Op_CPX,
+		&mos6502::Op_CPY,
+		&mos6502::Op_DEC,
+		&mos6502::Op_DEX,
+		&mos6502::Op_DEY,
+		&mos6502::Op_EOR,
+		&mos6502::Op_INC,
+		&mos6502::Op_INX,
+		&mos6502::Op_INY,
+		&mos6502::Op_LDA,
+		&mos6502::Op_LDX,
+		&mos6502::Op_LDY,
+		&mos6502::Op_LSR,
+		&mos6502::Op_LSR_ACC,
+		&mos6502::Op_ORA,
+		&mos6502::Op_PHA,
+		&mos6502::Op_PLA,
+		&mos6502::Op_ROL,
+		&mos6502::Op_ROL_ACC,
+		&mos6502::Op_ROR,
+		&mos6502::Op_ROR_ACC,
+		&mos6502::Op_SBC,
+		&mos6502::Op_TAX,
+		&mos6502::Op_TAY,
+		&mos6502::Op_TSX,
+		&mos6502::Op_TXA,
+		&mos6502::Op_TYA
+	};
+	vector<CodeExec> writeInstrCarry{
+		&mos6502::Op_ADC,
+		&mos6502::Op_AND,
+		&mos6502::Op_ASL,
+		&mos6502::Op_ASL_ACC,
+		&mos6502::Op_CLC,
+		&mos6502::Op_CMP,
+		&mos6502::Op_CPX,
+		&mos6502::Op_CPY,
+		&mos6502::Op_LSR,
+		&mos6502::Op_LSR_ACC,
+		&mos6502::Op_ROL,
+		&mos6502::Op_ROL_ACC,
+		&mos6502::Op_ROR,
+		&mos6502::Op_ROR_ACC,
+		&mos6502::Op_SBC,
+		&mos6502::Op_SEC
+	};
+	vector<CodeExec> readInstrS{
+		&mos6502::Op_PLA,
+		&mos6502::Op_PLP,
+		&mos6502::Op_RTI,
+		&mos6502::Op_RTS,
+		&mos6502::Op_TSX
+	};
+	vector<CodeExec> writeInstrS{
+		&mos6502::Op_BRK,
+		&mos6502::Op_JSR,
+		&mos6502::Op_PHA,
+		&mos6502::Op_PHP,
+		&mos6502::Op_TXS
+	};
+	vector<CodeExec> readInstrPC{
+		&mos6502::Op_BRK,
+		&mos6502::Op_JSR,
+	};
+	vector<CodeExec> writeInstrPC{
+		&mos6502::Op_BCC,
+		&mos6502::Op_BCS,
+		&mos6502::Op_BEQ,
+		&mos6502::Op_BMI,
+		&mos6502::Op_BNE,
+		&mos6502::Op_BPL,
+		&mos6502::Op_BRK,
+		&mos6502::Op_BVC,
+		&mos6502::Op_BVS,
+		&mos6502::Op_JMP,
+		&mos6502::Op_JSR,
+		&mos6502::Op_RTI,
+		&mos6502::Op_RTS
+	};
 
 public:
 	enum CycleMethod {
@@ -235,6 +548,32 @@ public:
 	uint8_t StackPop();
 	bool isCallInstr();
 	bool isReturnInstr();
+	bool isReadInstrA();
+	bool isWriteInstrA();
+	bool isReadInstrX();
+	bool isWriteInstrX();
+	bool isReadInstrY();
+	bool isWriteInstrY();
+	bool isReadInstrNegative();
+	bool isWriteInstrNegative();
+	bool isReadInstrOverflow();
+	bool isWriteInstrOverflow();
+	bool isReadInstrConstant();
+	bool isWriteInstrConstant();
+	bool isReadInstrBreak();
+	bool isWriteInstrBreak();
+	bool isReadInstrDecimal();
+	bool isWriteInstrDecimal();
+	bool isReadInstrInterrupt();
+	bool isWriteInstrInterrupt();
+	bool isReadInstrZero();
+	bool isWriteInstrZero();
+	bool isReadInstrCarry();
+	bool isWriteInstrCarry();
+	bool isReadInstrS();
+	bool isWriteInstrS();
+	bool isReadInstrPC();
+	bool isWriteInstrPC();
 	void forceRts();
 	void forceJmp(uint16_t address);
 };

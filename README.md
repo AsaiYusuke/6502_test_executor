@@ -1,5 +1,5 @@
 # 6502 Unit Test executor
-This tool enables [unit testing](https://en.wikipedia.org/wiki/Unit_testing) for 6502 assembly programs on a cross-platform basis.
+This tool enables [unit testing](https://en.wikipedia.org/wiki/Unit_testing) for [MOS Technology 6502](https://en.wikipedia.org/wiki/MOS_Technology_6502) assembly programs on a cross-platform basis.
 
 ## Getting started
 [A simple example project](https://github.com/AsaiYusuke/6502_test_executor/tree/master/example) has everything you need for this tool.
@@ -29,7 +29,7 @@ All tests passed.
   |                           |      Register      |       Memory       |       Stack        |
   | :------------------------ | :----------------: | :----------------: | :----------------: |
   | Check value               | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-  | Check read/write count    |                    | :heavy_check_mark: |                    |
+  | Check read/write count    | :heavy_check_mark: | :heavy_check_mark: |                    |
   | Check write value history |                    | :heavy_check_mark: |                    |
 - Evaluate processor information
   - Cycle count

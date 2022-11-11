@@ -9,15 +9,14 @@
 
 using namespace std;
 
-class assert_status_flag_value
+class assert_status_flag_write_count
 {
 public:
     static bool test(emulation_devices *device, condition_register_status_flag status_flag_def, test_result *result)
     {
-        uint8_t status = device->get_cpu()->get_register(register_type::P);
-        auto actual = (status & (uint8_t)status_flag_def.get_type()) > 0;
-
-        auto expression = status_flag_def.get_value()->get_expression();
+        auto actual = device->get_cpu()->get_write_count(status_flag_def.get_type());
+        
+        auto expression = status_flag_def.get_write_count()->get_expression();
         if (!expression)
             return true;
 
@@ -25,7 +24,7 @@ public:
         if (!total_result)
             result->add_error(
                 message::error_register_status_flag_data(
-                    "Value",
+                    "Write count",
                     status_flag_def,
                     to_string(*expression),
                     to_string(actual)));

@@ -1,0 +1,35 @@
+{
+    "$schema": "../../../schema/testcase.schema.json",
+    "target": {
+        "start": {
+            "label": "check_collision"
+        }
+    },
+    "cases": {
+        "count test for flags of the Processor status register": {
+            "setup": {},
+            "expected": {
+                "register": {
+                    "P": {
+                        "Carry": {
+                            "readCount": {
+                                "eq": 4
+                            },
+                            "writeCount": {
+                                "eq": 4
+                            }
+                        },
+                        "Zero": {
+                            "readCount": {
+                                "eq": 10
+                            },
+                            "writeCount": {
+                                "eq": 10
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -9,21 +9,33 @@
         "decimal value": {
             "setup": {
                 "register": {
-                    "A": 100,
-                    "X": 100,
-                    "Y": 100
+                    "A": {
+                        "value": 100
+                    },
+                    "X": {
+                        "value": 100
+                    },
+                    "Y": {
+                        "value": 100
+                    }
                 }
             },
             "expected": {
                 "register": {
                     "A": {
-                        "eq": 223
+                        "value": {
+                            "eq": 223
+                        }
                     },
                     "X": {
-                        "eq": 0
+                        "value": {
+                            "eq": 0
+                        }
                     },
                     "Y": {
-                        "eq": 100
+                        "value": {
+                            "eq": 100
+                        }
                     }
                 }
             }
@@ -31,21 +43,33 @@
         "hexadecimal value": {
             "setup": {
                 "register": {
-                    "A": 100,
-                    "X": 100,
-                    "Y": 100
+                    "A": {
+                        "value": 100
+                    },
+                    "X": {
+                        "value": 100
+                    },
+                    "Y": {
+                        "value": 100
+                    }
                 }
             },
             "expected": {
                 "register": {
                     "A": {
-                        "eq": "$DF"
+                        "value": {
+                            "eq": "$DF"
+                        }
                     },
                     "X": {
-                        "eq": "$0"
+                        "value": {
+                            "eq": "$0"
+                        }
                     },
                     "Y": {
-                        "eq": "$64"
+                        "value": {
+                            "eq": "$64"
+                        }
                     }
                 }
             }
@@ -53,21 +77,33 @@
         "binary value": {
             "setup": {
                 "register": {
-                    "A": 100,
-                    "X": 100,
-                    "Y": 100
+                    "A": {
+                        "value": 100
+                    },
+                    "X": {
+                        "value": 100
+                    },
+                    "Y": {
+                        "value": 100
+                    }
                 }
             },
             "expected": {
                 "register": {
                     "A": {
-                        "eq": "%11011111"
+                        "value": {
+                            "eq": "%11011111"
+                        }
                     },
                     "X": {
-                        "eq": "%0"
+                        "value": {
+                            "eq": "%0"
+                        }
                     },
                     "Y": {
-                        "eq": "%01100100"
+                        "value": {
+                            "eq": "%01100100"
+                        }
                     }
                 }
             }
@@ -76,15 +112,19 @@
             "setup": {
                 "register": {
                     "Y": {
-                        "label": "vector_dic",
-                        "offset": 4
+                        "value": {
+                            "label": "vector_dic",
+                            "offset": 4
+                        }
                     }
                 }
             },
             "expected": {
                 "register": {
                     "Y": {
-                        "eq": 5
+                        "value": {
+                            "eq": 5
+                        }
                     }
                 }
             }
