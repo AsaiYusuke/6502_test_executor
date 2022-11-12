@@ -753,10 +753,10 @@
                         "$ref": "#/definitions/expected/expressionValue"
                     },
                     "readCount": {
-                        "$ref": "#/definitions/expected/count"
+                        "$ref": "#/definitions/expected/expressionCount"
                     },
                     "writeCount": {
-                        "$ref": "#/definitions/expected/count"
+                        "$ref": "#/definitions/expected/expressionCount"
                     }
                 }
             },
@@ -803,10 +803,10 @@
                         "$ref": "#/definitions/expected/expressionBoolean"
                     },
                     "readCount": {
-                        "$ref": "#/definitions/expected/count"
+                        "$ref": "#/definitions/expected/expressionCount"
                     },
                     "writeCount": {
-                        "$ref": "#/definitions/expected/count"
+                        "$ref": "#/definitions/expected/expressionCount"
                     }
                 }
             },
@@ -854,10 +854,10 @@
                             "$ref": "#/definitions/expected/memorySequence"
                         },
                         "readCount": {
-                            "$ref": "#/definitions/expected/count"
+                            "$ref": "#/definitions/expected/memoryCount"
                         },
                         "writeCount": {
-                            "$ref": "#/definitions/expected/count"
+                            "$ref": "#/definitions/expected/memoryCount"
                         }
                     },
                     "dependencies": {
@@ -916,8 +916,8 @@
                     }
                 ]
             },
-            "count": {
-                "title": "Count",
+            "memoryCount": {
+                "title": "Memory count",
                 "description": "Count specifies the number of times the instructions for the specified address are executed.",
                 "oneOf": [
                     {
