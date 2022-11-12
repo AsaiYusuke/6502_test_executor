@@ -4,24 +4,26 @@ BUILD_DIR		:=		build
 DIST_DIR		:=		dist
 TEST_DIR		:=		test
 TEST_OK_DIR		:=		$(TEST_DIR)/ok
-TEST_FAIL_DIR	:=		$(TEST_DIR)/fail
+TEST_FAIL_DIR		:=		$(TEST_DIR)/fail
+TEST_EXEC_DIR		:=		..
 
-PROJECT		:=		example
-TARGET		:=		$(DIST_DIR)/$(PROJECT).nes
-DEBUG		:=		$(DIST_DIR)/$(PROJECT).dbg
-SOURCES		:=		$(shell find $(SRC_DIR) -type f -name '*.asm')
-OBJECTS		:=		$(SOURCES:$(SRC_DIR)/%.asm=$(BUILD_DIR)/%.o)
-NES_CFG		:=		$(CONFIG_DIR)/nes.cfg
+PROJECT			:=		example
+TARGET			:=		$(DIST_DIR)/$(PROJECT).nes
+DEBUG			:=		$(DIST_DIR)/$(PROJECT).dbg
+SOURCES			:=		$(shell find $(SRC_DIR) -type f -name '*.asm')
+OBJECTS			:=		$(SOURCES:$(SRC_DIR)/%.asm=$(BUILD_DIR)/%.o)
+NES_CFG			:=		$(CONFIG_DIR)/nes.cfg
 
-TEST_OK		:=		$(shell find $(TEST_OK_DIR) -type f -name '*.test.json' | sort)
-TEST_FAIL	:=		$(shell find $(TEST_FAIL_DIR) -type f -name '*.test.json' | sort)
-TEST_IDS	:=		$(TEST_OK:%.test.json=%.test) $(TEST_FAIL:%.test.json=%.test)
+TEST_OK			:=		$(shell find $(TEST_OK_DIR) -type f -name '*.test.json' | sort)
+TEST_FAIL		:=		$(shell find $(TEST_FAIL_DIR) -type f -name '*.test.json' | sort)
+TEST_IDS		:=		$(TEST_OK:%.test.json=%.test) $(TEST_FAIL:%.test.json=%.test)
 
 AS			:=		ca65
-ASFLAGS		:=		--cpu 6502 --target nes --debug-info
+ASFLAGS			:=		--cpu 6502 --target nes --debug-info
 LD			:=		ld65
-LDFLAGS		:=		
-TEST_EXEC	:=		../6502_tester
+LDFLAGS			:=		
+TEST_EXEC		:=		$(TEST_EXEC_DIR)/6502_tester
+TEST_FAILED_CODE	:=		200
 
 .PHONY : all build test clean
 
@@ -41,13 +43,13 @@ test : $(TEST_EXEC) $(TEST_IDS)
 	@echo "All tests passed."
 
 $(TEST_EXEC) :
-	make -C ..
+	make -C $(TEST_EXEC_DIR)
 
 $(TEST_OK_DIR)/%.test : $(TEST_OK_DIR)/%.test.json
 	$(TEST_EXEC) -d $(DEBUG) --quiet-ok --quiet-summary -t $<
 
 $(TEST_FAIL_DIR)/%.test : $(TEST_FAIL_DIR)/%.test.json
-	$(TEST_EXEC) -d $(DEBUG) --quiet-fail --quiet-summary -t $< && { exit 1; } || { [ $$? -eq 200 ] && exit 0 || exit 1; }
+	$(TEST_EXEC) -d $(DEBUG) --quiet-fail --quiet-summary -t $< && { exit 1; } || { [ $$? -eq $(TEST_FAILED_CODE) ] && exit 0 || exit 1; }
 
 clean :
 	rm -rf $(BUILD_DIR)
