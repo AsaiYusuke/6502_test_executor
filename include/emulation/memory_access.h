@@ -1,7 +1,5 @@
 #pragma once
 
-#include <stdint.h>
-
 using namespace std;
 
 class i_memory_access

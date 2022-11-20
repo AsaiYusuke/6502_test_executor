@@ -1,7 +1,6 @@
 #pragma once
 
 #include <vector>
-#include <stdint.h>
 #include "enum/runtime_error_type.h"
 
 using namespace std;

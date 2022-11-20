@@ -12,7 +12,7 @@
 #include "condition/condition_mocked_value.h"
 #include "enum/register_type.h"
 #include "enum/interrupt_type.h"
-#include "runtime_error_result.h"
+#include "enum/runtime_error_type.h"
 
 using namespace std;
 

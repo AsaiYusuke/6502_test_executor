@@ -1,7 +1,6 @@
 #pragma once
 
 #include <vector>
-#include <stdint.h>
 
 #include "emulation/cpu_filter/cpu_filter.h"
 #include "emulation/cpu_device.h"
