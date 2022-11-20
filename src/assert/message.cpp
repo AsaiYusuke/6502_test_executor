@@ -5,6 +5,13 @@
 #include "util/value_convert.h"
 #include "util/constant.h"
 
+string message::error_message(exception e)
+{
+    stringstream ss;
+    ss << e.what() << endl << endl;
+    return ss.str();
+}
+
 string message::error_message(string message, string expected, string actual)
 {
     stringstream ss;

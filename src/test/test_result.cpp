@@ -15,10 +15,10 @@ void test_result::set_id(string _id)
     id = _id;
 }
 
-void test_result::add_error(string error)
+void test_result::add_error(string message)
 {
     result_type = test_result_type::FAIL;
-    errors.push_back(error);
+    errors.push_back(message);
 }
 
 test_result_type test_result::get_result_type()

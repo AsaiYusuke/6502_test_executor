@@ -7,6 +7,7 @@
 #include "test/test_result.h"
 #include "test/test_setup.h"
 #include "test/test_assert.h"
+#include "assert/message.h"
 #include "util/value_convert.h"
 #include "condition/condition.h"
 #include "exception/file_open.h"
@@ -79,20 +80,14 @@ test_result test::do_test(string id, json testcase)
     {
         test_result result;
         result.set_id(id);
-        stringstream ss;
-        ss << e.what() << endl;
-        ss << endl;
-        result.add_error(ss.str());
+        result.add_error(message::error_message(e));
         return result;
     }
     catch (cpu_runtime_error &e)
     {
         test_result result;
         result.set_id(id);
-        stringstream ss;
-        ss << e.what() << endl;
-        ss << endl;
-        result.add_error(ss.str());
+        result.add_error(message::error_message(e));
         return result;
     }
 }

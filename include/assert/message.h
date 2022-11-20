@@ -13,9 +13,12 @@ class emulation_devices;
 
 class message
 {
-public:
+private:
     static string error_message(string message, string expected, string actual);
     static string trace_message(emulation_devices *device, vector<uint16_t> call_stack, string message, string expected, string actual);
+
+public:
+    static string error_message(exception e);
 
     static string error_register_data(string type, i_message_name &register_def, string expected, string actual);
     static string error_register_status_flag_data(string type, i_message_name &status_flag_def, string expected, string actual);
