@@ -129,15 +129,6 @@ json value_convert::parse_all_variable(json definitions_def, json condition)
 
 json value_convert::merge_template(json templates, json testcase)
 {
-    if (testcase["mockedProc"].is_array())
-        for (decltype(testcase["mockedProc"].size()) proc_offset = 0, proc_size = testcase["mockedProc"].size(); proc_offset < proc_size; proc_offset++)
-        {
-            auto mocked_proc_def = testcase["mockedProc"][proc_offset]["setValue"];
-            for (decltype(mocked_proc_def.size()) value_offset = 0, value_size = mocked_proc_def.size(); value_offset < value_size; value_offset++)
-                testcase["mockedProc"][proc_offset]["setValue"][value_offset] =
-                    merge_template(templates, mocked_proc_def[value_offset]);
-        }
-
     if (testcase["template"].is_array())
         for (auto &template_ref : testcase["template"])
         {
@@ -150,6 +141,15 @@ json value_convert::merge_template(json templates, json testcase)
                 for (auto &memory_def : template_def["memory"])
                     testcase_memory_def.push_back(memory_def);
             testcase["memory"] = testcase_memory_def;
+        }
+
+    if (testcase["mockedProc"].is_array())
+        for (decltype(testcase["mockedProc"].size()) proc_offset = 0, proc_size = testcase["mockedProc"].size(); proc_offset < proc_size; proc_offset++)
+        {
+            auto mocked_proc_def = testcase["mockedProc"][proc_offset]["setValue"];
+            for (decltype(mocked_proc_def.size()) value_offset = 0, value_size = mocked_proc_def.size(); value_offset < value_size; value_offset++)
+                testcase["mockedProc"][proc_offset]["setValue"][value_offset] =
+                    merge_template(templates, mocked_proc_def[value_offset]);
         }
 
     return testcase;

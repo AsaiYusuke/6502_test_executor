@@ -90,6 +90,38 @@
                             "value": "@MEM_VECTOR_INIT_VALUE"
                         }
                     ]
+                },
+                "NMI_CALL_SAVE_ID": {
+                    "interrupt": [
+                        {
+                            "type": "NMI",
+                            "entryPoint": {
+                                "label": "save_id"
+                            }
+                        }
+                    ]
+                },
+                "MOCK_READ_JOYPAD_PUSH_A_KEY": {
+                    "mockedProc": [
+                        {
+                            "entryPoint": {
+                                "label": "read_joypad_a_key"
+                            },
+                            "action": "rts",
+                            "setValue": [
+                                {
+                                    "template": [
+                                        "@P_CARRY_TRUE"
+                                    ]
+                                },
+                                {
+                                    "template": [
+                                        "@P_CARRY_FALSE"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]    
                 }
             },
             "expected": {
@@ -184,15 +216,8 @@
             "setup": {
                 "template": [
                     "@MEM_PAD1_INPUT_A_OFF_ON_OFF",
-                    "@MEM_VECTOR_INIT"
-                ],
-                "interrupt": [
-                    {
-                        "type": "NMI",
-                        "entryPoint": {
-                            "label": "save_id"
-                        }
-                    }
+                    "@MEM_VECTOR_INIT",
+                    "@NMI_CALL_SAVE_ID"
                 ]
             },
             "expected": {
@@ -205,27 +230,8 @@
         "call mocked proc read_joypad_a_key (definitions)": {
             "setup": {
                 "template": [
-                    "@P_ALL_FALSE"
-                ],
-                "mockedProc": [
-                    {
-                        "entryPoint": {
-                            "label": "read_joypad_a_key"
-                        },
-                        "action": "rts",
-                        "setValue": [
-                            {
-                                "template": [
-                                    "@P_CARRY_TRUE"
-                                ]
-                            },
-                            {
-                                "template": [
-                                    "@P_CARRY_FALSE"
-                                ]
-                            }
-                        ]
-                    }
+                    "@P_ALL_FALSE",
+                    "@MOCK_READ_JOYPAD_PUSH_A_KEY"
                 ]
             },
             "expected": {
