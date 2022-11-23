@@ -86,10 +86,10 @@ All tests passed.
 
 ## How to use
 
-### Enable debug option
+### Build CA65 project with debug option
 Build your 6502 project using [CA65 assembler](https://cc65.github.io/doc/ca65.html)/[LD65 linker](https://cc65.github.io/doc/ld65.html) with *debug information generation* enabled.
 
-### Create test scinario files
+### Create unit test
 Create test scinario files containing the three key items in JSON format:
 
 - *Test target*  
@@ -103,7 +103,7 @@ the expected responses of the register and memory after the test
 The tool also provides a [JSON Schema](https://json-schema.org/) document that makes it easy to create test scinario files.
 If you use [Visual Studio Code](https://code.visualstudio.com/), it will tell you about formatting error and element completion candidates based on JSON Schema without any extensions.
 
-### Execute tester
+### Run test
 Run the tool with the prepared debug information file and test scenario file:
 
 ```
