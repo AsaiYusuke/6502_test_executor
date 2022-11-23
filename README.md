@@ -1,9 +1,33 @@
 # 6502 Unit Test executor
 This tool enables [unit testing](https://en.wikipedia.org/wiki/Unit_testing) for [MOS Technology 6502](https://en.wikipedia.org/wiki/MOS_Technology_6502) assembly programs on a cross-platform basis.
 
+``` mermaid
+flowchart LR;
+  A(Assembly program);
+  C[[CA65]];
+  B(Binary);
+  D(Debug information);
+  V[[Visual Studio Code]];
+  S(Test scinario);
+  U[[6502 Unit Test executor]];
+  R[(Test result)];
+
+  subgraph Build CA65 project
+    A --> C;
+    C --> B & D;
+  end
+
+  subgraph Create unit test
+    V -- Json schema --> S;
+  end
+
+  subgraph Run test
+    B & D & S --> U --> R;
+  end
+```
+
 ## Getting started
 [A simple example project](https://github.com/AsaiYusuke/6502_test_executor/tree/master/example) has everything you need for this tool.
-
 
 ```
 # cd example
