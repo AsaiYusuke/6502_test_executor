@@ -6,7 +6,7 @@
 #include "args_parser.h"
 #include "cpu_device.h"
 #include "memory_device.h"
-#include "runtime_error_result.h"
+#include "assert/runtime_error_result.h"
 
 using namespace std;
 
