@@ -352,11 +352,6 @@
                 },
                 {
                     "type": "object",
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/address"
-                        }
-                    ],
                     "additionalProperties": false,
                     "properties": {
                         "type": {
@@ -366,12 +361,39 @@
                                 "hibyte",
                                 "lobyte",
                                 "rts_hibyte",
-                                "rts_lobyte"
+                                "rts_lobyte",
+                                "register_a",
+                                "register_x",
+                                "register_y",
+                                "register_p"
                             ]
                         },
-                        "address": {},
-                        "label": {},
-                        "offset": {}
+                        "address": true,
+                        "label": true,
+                        "offset": true
+                    },
+                    "if": {
+                        "properties": {
+                            "type": {
+                                "not": {
+                                    "pattern": "^register_"
+                                }
+                            }
+                        }
+                    },
+                    "then": {
+                        "allOf": [
+                            {
+                                "$ref": "#/definitions/address"
+                            }
+                        ]
+                    },
+                    "else": {
+                        "properties": {
+                            "address": false,
+                            "label": false,
+                            "offset": false
+                        }
                     }
                 },
                 {
@@ -469,7 +491,7 @@
                                             "minItems": 1,
                                             "items": {
                                                 "$ref": "#/definitions/reference"
-                                            }                        
+                                            }
                                         },
                                         "register": {
                                             "$ref": "#/definitions/setup/register"
@@ -620,9 +642,9 @@
                     ],
                     "additionalProperties": false,
                     "properties": {
-                        "address": {},
-                        "label": {},
-                        "offset": {},
+                        "address": true,
+                        "label": true,
+                        "offset": true,
                         "value": {
                             "$ref": "#/definitions/setup/memoryValue"
                         },
@@ -705,9 +727,9 @@
                 ],
                 "additionalProperties": false,
                 "properties": {
-                    "address": {},
-                    "label": {},
-                    "offset": {},
+                    "address": true,
+                    "label": true,
+                    "offset": true,
                     "value": {
                         "$ref": "#/definitions/value"
                     }
@@ -844,9 +866,9 @@
                     ],
                     "additionalProperties": false,
                     "properties": {
-                        "address": {},
-                        "label": {},
-                        "offset": {},
+                        "address": true,
+                        "label": true,
+                        "offset": true,
                         "value": {
                             "$ref": "#/definitions/expected/memoryValue"
                         },

@@ -55,6 +55,14 @@ uint16_t value_convert::parse_json_number(emulation_devices *device, json value)
                 return (address - 1) >> 8;
             case value_type::RTS_LOBYTE:
                 return (address - 1) & 0xFF;
+            case value_type::REGISTER_A:
+                return device->get_cpu()->get_register(register_type::A);
+            case value_type::REGISTER_X:
+                return device->get_cpu()->get_register(register_type::X);
+            case value_type::REGISTER_Y:
+                return device->get_cpu()->get_register(register_type::Y);
+            case value_type::REGISTER_P:
+                return device->get_cpu()->get_register(register_type::P);
             }
         break;
     }

@@ -128,6 +128,32 @@
                     }
                 }
             }
+        },
+        "value of the register": {
+            "setup": {
+                "register": {
+                    "A": {
+                        "value": 100
+                    },
+                    "X": {
+                        "value": 100
+                    },
+                    "Y": {
+                        "value": 223
+                    }
+                }
+            },
+            "expected": {
+                "register": {
+                    "Y": {
+                        "value": {
+                            "eq": {
+                                "type": "register_a"
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
