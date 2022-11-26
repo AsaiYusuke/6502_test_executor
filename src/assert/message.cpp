@@ -8,7 +8,8 @@
 string message::error_message(exception e)
 {
     stringstream ss;
-    ss << e.what() << endl << endl;
+    ss << e.what() << endl
+       << endl;
     return ss.str();
 }
 

@@ -20,6 +20,7 @@ private:
     bool isReturned;
     bool willReturn;
     vector<pair<inst_type, uint16_t>> call_stack;
+
 public:
     call_stack_filter(cpu_device *cpu);
     void clear();

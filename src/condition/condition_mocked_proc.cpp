@@ -33,7 +33,7 @@ uint16_t condition_mocked_proc::get_jmp_dest()
 
 condition_mocked_value condition_mocked_proc::get_erased_front_mock_value_def()
 {
-    auto value =  mock_value_defs.front();
+    auto value = mock_value_defs.front();
     if (mock_value_defs.size() > 1)
         mock_value_defs.erase(cbegin(mock_value_defs));
     return value;

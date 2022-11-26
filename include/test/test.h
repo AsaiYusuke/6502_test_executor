@@ -22,4 +22,4 @@ private:
 public:
     test(args_parser *args);
     bool execute();
-}; 
+};

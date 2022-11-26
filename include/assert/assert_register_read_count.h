@@ -15,7 +15,7 @@ public:
     static bool test(emulation_devices *device, condition_register_a_x_y register_def, test_result *result)
     {
         auto actual = device->get_cpu()->get_read_count(register_def.get_type());
-        
+
         auto expression = register_def.get_read_count()->get_expression();
         if (!expression)
             return true;

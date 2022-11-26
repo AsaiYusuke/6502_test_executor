@@ -27,7 +27,7 @@
                 ]
             }
         },
-        "more complex conditions":{
+        "more complex conditions": {
             "setup": {
                 "memory": [
                     {

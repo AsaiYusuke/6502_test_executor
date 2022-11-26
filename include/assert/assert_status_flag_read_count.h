@@ -15,7 +15,7 @@ public:
     static bool test(emulation_devices *device, condition_register_status_flag status_flag_def, test_result *result)
     {
         auto actual = device->get_cpu()->get_read_count(status_flag_def.get_type());
-        
+
         auto expression = status_flag_def.get_read_count()->get_expression();
         if (!expression)
             return true;

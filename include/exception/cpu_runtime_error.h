@@ -14,7 +14,7 @@ private:
 
 public:
     cpu_runtime_error(runtime_error_type _type, string message)
-    : runtime_error(message)
+        : runtime_error(message)
     {
         type = _type;
     }

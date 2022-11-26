@@ -57,11 +57,10 @@ void cpu_device::execute()
 
         if (!is_previous_returned_instruction() && is_interrupt_instruction())
             execute_interrupt();
+        else if (is_mocked_proc_instruction())
+            execute_mocked_proc();
         else
-            if (is_mocked_proc_instruction())
-                execute_mocked_proc();
-            else
-                execute_standard_instruction();
+            execute_standard_instruction();
 
         for (auto filter : filters)
             if (!filter->post())
@@ -155,7 +154,7 @@ bool cpu_device::is_return_instruction()
 
 bool cpu_device::is_read_register_instruction(register_type type)
 {
-    switch(type)
+    switch (type)
     {
     case register_type::A:
         return cpu->isReadInstrA();
@@ -174,7 +173,7 @@ bool cpu_device::is_read_register_instruction(register_type type)
 
 bool cpu_device::is_write_register_instruction(register_type type)
 {
-    switch(type)
+    switch (type)
     {
     case register_type::A:
         return cpu->isWriteInstrA();
@@ -193,7 +192,7 @@ bool cpu_device::is_write_register_instruction(register_type type)
 
 bool cpu_device::is_read_status_instruction(status_flag_type type)
 {
-    switch(type)
+    switch (type)
     {
     case status_flag_type::Negative:
         return cpu->isReadInstrNegative();
@@ -218,7 +217,7 @@ bool cpu_device::is_read_status_instruction(status_flag_type type)
 
 bool cpu_device::is_write_status_instruction(status_flag_type type)
 {
-    switch(type)
+    switch (type)
     {
     case status_flag_type::Negative:
         return cpu->isWriteInstrNegative();

@@ -9,6 +9,7 @@ class timeout_check_filter : public i_cpu_filter
 {
 private:
     cpu_device *cpu;
+
 public:
     timeout_check_filter(cpu_device *cpu);
     void clear();

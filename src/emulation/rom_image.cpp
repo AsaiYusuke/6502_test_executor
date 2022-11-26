@@ -18,7 +18,7 @@ void rom_image::load_rom_image(filesystem::path debug_path, debug_segment segmen
 
     debug_path = absolute(debug_path.parent_path());
     ifstream *file;
-    while(1)
+    while (1)
     {
         auto append_path = debug_path / path;
         file = new ifstream(append_path, ios::in | ios::binary | ios::ate);

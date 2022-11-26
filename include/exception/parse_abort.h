@@ -6,6 +6,7 @@ class parse_abort
 {
 private:
     int return_value;
+
 public:
     parse_abort(int _return_value)
     {
