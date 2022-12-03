@@ -10,7 +10,7 @@ void call_stack_filter::clear()
 {
     call_stack.clear();
     call_stack.push_back(make_pair(inst_type::call, TEST_RETURN_ADDRESS));
-    call_stack.push_back(make_pair(inst_type::call, cpu->get_register(register_type::PC)));
+    call_stack.push_back(make_pair(inst_type::call, cpu->get_register16(register_type::PC)));
 }
 
 bool call_stack_filter::pre()
@@ -21,7 +21,7 @@ bool call_stack_filter::pre()
 
     if (cpu->is_call_instrunction())
     {
-        call_stack.push_back(make_pair(inst_type::call, cpu->get_register(register_type::PC)));
+        call_stack.push_back(make_pair(inst_type::call, cpu->get_register16(register_type::PC)));
         isCallInstr = true;
     }
     else if (cpu->is_return_instruction())
@@ -33,14 +33,14 @@ bool call_stack_filter::pre()
         }
         else
         {
-            call_stack.push_back(make_pair(inst_type::retern, cpu->get_register(register_type::PC)));
+            call_stack.push_back(make_pair(inst_type::retern, cpu->get_register16(register_type::PC)));
             isReternInstr = true;
         }
     }
 
     if (!isReturned && cpu->is_interrupt_instruction())
     {
-        call_stack.push_back(make_pair(inst_type::call, cpu->get_register(register_type::PC)));
+        call_stack.push_back(make_pair(inst_type::call, cpu->get_register16(register_type::PC)));
         isInterruptInstr = true;
     }
 
@@ -53,15 +53,15 @@ bool call_stack_filter::post()
 {
     if (isCallInstr)
     {
-        call_stack.push_back(make_pair(inst_type::call, cpu->get_register(register_type::PC)));
+        call_stack.push_back(make_pair(inst_type::call, cpu->get_register16(register_type::PC)));
     }
     if (isReternInstr)
     {
-        call_stack.push_back(make_pair(inst_type::retern, cpu->get_register(register_type::PC)));
+        call_stack.push_back(make_pair(inst_type::retern, cpu->get_register16(register_type::PC)));
     }
     if (!isReturned && isInterruptInstr)
     {
-        call_stack.push_back(make_pair(inst_type::call, cpu->get_register(register_type::PC)));
+        call_stack.push_back(make_pair(inst_type::call, cpu->get_register16(register_type::PC)));
     }
 
     isReturned = willReturn;
@@ -79,6 +79,6 @@ vector<uint16_t> call_stack_filter::get_call_stack()
     vector<uint16_t> current_call_stack;
     for (auto entry : call_stack)
         current_call_stack.push_back(entry.second);
-    current_call_stack.push_back(cpu->get_register(register_type::PC));
+    current_call_stack.push_back(cpu->get_register16(register_type::PC));
     return current_call_stack;
 }

@@ -84,7 +84,7 @@ uint64_t cpu_device::get_cycle_count()
     return cycle_count;
 }
 
-uint8_t cpu_device::get_register(register_type type)
+uint8_t cpu_device::get_register8(register_type type)
 {
     switch (type)
     {
@@ -97,10 +97,22 @@ uint8_t cpu_device::get_register(register_type type)
     case register_type::P:
         return cpu->GetP();
     }
-    return 0;
+
+    throw logic_error("Invalid register type");
 }
 
-void cpu_device::set_register(register_type type, uint8_t value)
+uint16_t cpu_device::get_register16(register_type type)
+{
+    switch (type)
+    {
+    case register_type::PC:
+        return cpu->GetPC();
+    }
+
+    throw logic_error("Invalid register type");
+}
+
+void cpu_device::set_register8(register_type type, uint8_t value)
 {
     switch (type)
     {
@@ -113,6 +125,8 @@ void cpu_device::set_register(register_type type, uint8_t value)
     case register_type::P:
         return cpu->SetP(value);
     }
+
+    throw logic_error("Invalid register type");
 }
 
 uint8_t cpu_device::get_read_count(register_type type)
@@ -168,7 +182,7 @@ bool cpu_device::is_read_register_instruction(register_type type)
         return cpu->isReadInstrPC();
     }
 
-    throw invalid_argument("Internal error");
+    throw logic_error("Invalid register type");
 }
 
 bool cpu_device::is_write_register_instruction(register_type type)
@@ -187,7 +201,7 @@ bool cpu_device::is_write_register_instruction(register_type type)
         return cpu->isWriteInstrPC();
     }
 
-    throw invalid_argument("Internal error");
+    throw logic_error("Invalid register type");
 }
 
 bool cpu_device::is_read_status_instruction(status_flag_type type)
@@ -212,7 +226,7 @@ bool cpu_device::is_read_status_instruction(status_flag_type type)
         return cpu->isReadInstrCarry();
     }
 
-    throw invalid_argument("Internal error");
+    throw logic_error("Invalid register type");
 }
 
 bool cpu_device::is_write_status_instruction(status_flag_type type)
@@ -237,7 +251,7 @@ bool cpu_device::is_write_status_instruction(status_flag_type type)
         return cpu->isWriteInstrCarry();
     }
 
-    throw invalid_argument("Internal error");
+    throw logic_error("Invalid register type");
 }
 
 bool cpu_device::is_previous_returned_instruction()
@@ -298,12 +312,12 @@ void cpu_device::execute_mocked_proc()
     auto mocked_value_def = mocked_proc_def->get_erased_front_mock_value_def();
 
     for (auto register_def : mocked_value_def.get_register_defs())
-        set_register(register_def.get_type(), register_def.get_value()->get_value());
+        set_register8(register_def.get_type(), register_def.get_value()->get_value());
 
     uint8_t status_bits = 0;
     for (auto status_flag_def : mocked_value_def.get_status_flag_defs())
         status_bits |= ((uint8_t)status_flag_def.get_type() * status_flag_def.get_value()->get_value());
-    set_register(register_type::P, status_bits);
+    set_register8(register_type::P, status_bits);
 
     memory_device *mem_dev = device->get_memory();
     for (auto memory_def : mocked_value_def.get_memory_defs())

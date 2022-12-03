@@ -15,12 +15,12 @@ void test_setup::execute()
 
     cpu_device *cpu_dev = get_device()->get_cpu();
     for (auto register_def : get_register_defs())
-        cpu_dev->set_register(register_def.get_type(), register_def.get_value()->get_value());
+        cpu_dev->set_register8(register_def.get_type(), register_def.get_value()->get_value());
 
     uint8_t status_bits = 0;
     for (auto status_flag_def : get_status_flag_defs())
         status_bits |= ((uint8_t)status_flag_def.get_type() * status_flag_def.get_value()->get_value());
-    cpu_dev->set_register(register_type::P, status_bits);
+    cpu_dev->set_register8(register_type::P, status_bits);
 
     for (auto interrupt_def : get_interrupt_defs())
         cpu_dev->add_interrupt_hook(interrupt_def.get_type(), interrupt_def.get_entry_point());

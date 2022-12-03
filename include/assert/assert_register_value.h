@@ -14,7 +14,7 @@ class assert_register_value
 public:
     static bool test(emulation_devices *device, condition_register_a_x_y register_def, test_result *result)
     {
-        auto actual = device->get_cpu()->get_register(register_def.get_type());
+        auto actual = device->get_cpu()->get_register8(register_def.get_type());
 
         auto expression = register_def.get_value()->get_expression();
         if (!expression)
