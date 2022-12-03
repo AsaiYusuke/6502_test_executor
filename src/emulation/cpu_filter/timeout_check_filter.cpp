@@ -18,7 +18,9 @@ bool timeout_check_filter::post()
 {
     if (cpu->get_cycle_count() > cpu->get_max_cycle_count())
     {
-        cpu->add_error_result(runtime_error_type::TIMEOUT);
+        cpu->add_error_result(
+            runtime_error_type::TIMEOUT,
+            "address=" + value_convert::to_zero_filled_hex_string(cpu->get_register16(register_type::PC)));
         return false;
     }
 

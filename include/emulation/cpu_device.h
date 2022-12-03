@@ -48,7 +48,7 @@ public:
     cpu_device(emulation_devices *_device, args_parser *args, json config);
     void clear(uint16_t startPC, uint16_t endPC, vector<uint8_t> stack);
     void execute();
-    void add_error_result(runtime_error_type type);
+    void add_error_result(runtime_error_type type, string message);
     uint64_t get_max_cycle_count();
     uint64_t get_cycle_count();
     uint8_t get_register8(register_type type);
@@ -58,6 +58,7 @@ public:
     uint8_t get_write_count(register_type type);
     uint8_t get_read_count(status_flag_type type);
     uint8_t get_write_count(status_flag_type type);
+    bool is_illegal_instruction();
     bool is_call_instrunction();
     bool is_return_instruction();
     bool is_read_register_instruction(register_type type);

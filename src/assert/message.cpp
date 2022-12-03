@@ -87,12 +87,12 @@ string message::error_stack_data(condition_stack *stack_def, string expected, st
         actual);
 }
 
-string message::trace_timeout(emulation_devices *device, vector<uint16_t> call_stack, string expected, string actual)
+string message::trace_timeout(emulation_devices *device, vector<uint16_t> call_stack, string detail, string expected, string actual)
 {
     return trace_message(
         device,
         call_stack,
-        "Timeout [execution count >= " + to_string(device->get_cpu()->get_max_cycle_count()) + "]",
+        "Timeout [" + detail + ", execution count >= " + to_string(device->get_cpu()->get_max_cycle_count()) + "]",
         expected,
         actual);
 }
@@ -113,6 +113,16 @@ string message::trace_out_of_segment(emulation_devices *device, vector<uint16_t>
         device,
         call_stack,
         "Out of segment [" + detail + "]",
+        expected,
+        actual);
+}
+
+string message::trace_illegal_instruction(emulation_devices *device, vector<uint16_t> call_stack, string detail, string expected, string actual)
+{
+    return trace_message(
+        device,
+        call_stack,
+        "Illegal instruction [" + detail + "]",
         expected,
         actual);
 }

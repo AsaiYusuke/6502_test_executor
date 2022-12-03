@@ -546,6 +546,7 @@ public:
 	void SetPC(uint16_t value);
 	void StackPush(uint8_t byte);
 	uint8_t StackPop();
+	bool isIllegalInstr();
 	bool isCallInstr();
 	bool isReturnInstr();
 	bool isReadInstrA();

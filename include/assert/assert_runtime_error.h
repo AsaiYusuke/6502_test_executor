@@ -37,6 +37,15 @@ public:
                     to_string(expected),
                     to_string(actual)));
             break;
+        case runtime_error_type::ILLEGAL_INSTRUCTION:
+            result->add_error(
+                message::trace_illegal_instruction(
+                    device,
+                    error_def.get_call_stack(),
+                    error_def.get_message(),
+                    to_string(expected),
+                    to_string(actual)));
+            break;
         }
 
         return false;

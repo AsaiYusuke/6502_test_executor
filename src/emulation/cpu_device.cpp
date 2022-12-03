@@ -6,6 +6,7 @@
 #include "util/constant.h"
 #include "emulation/cpu_filter/call_stack_filter.h"
 #include "emulation/cpu_filter/timeout_check_filter.h"
+#include "emulation/cpu_filter/instruction_check_filter.h"
 
 cpu_device::cpu_device(emulation_devices *_device, args_parser *args, json config)
 {
@@ -28,6 +29,7 @@ cpu_device::cpu_device(emulation_devices *_device, args_parser *args, json confi
     filters.push_back(register_counter);
 
     filters.push_back(new timeout_check_filter(this));
+    filters.push_back(new instruction_check_filter(this));
 }
 
 void cpu_device::clear(uint16_t startPC, uint16_t _endPC, vector<uint8_t> stack)
@@ -66,12 +68,12 @@ void cpu_device::execute()
             if (!filter->post())
                 return;
 
-    } while (cpu->GetPC() != endPC);
+    } while (cpu->GetPC() != endPC && !cpu->isIllegalInstr());
 }
 
-void cpu_device::add_error_result(runtime_error_type type)
+void cpu_device::add_error_result(runtime_error_type type, string message)
 {
-    device->add_error_result(type);
+    device->add_error_result(type, message);
 }
 
 uint64_t cpu_device::get_max_cycle_count()
@@ -147,6 +149,11 @@ uint8_t cpu_device::get_read_count(status_flag_type type)
 uint8_t cpu_device::get_write_count(status_flag_type type)
 {
     return register_counter->get_write_count(type);
+}
+
+bool cpu_device::is_illegal_instruction()
+{
+    return cpu->isIllegalInstr();
 }
 
 bool cpu_device::is_call_instrunction()

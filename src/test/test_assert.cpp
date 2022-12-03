@@ -29,7 +29,8 @@ void test_assert::execute()
     for (auto error_def :
          get_device()->get_filtered_errors(
              {runtime_error_type::OUT_OF_SEGMENT,
-              runtime_error_type::READONLY_MEMORY}))
+              runtime_error_type::READONLY_MEMORY,
+              runtime_error_type::ILLEGAL_INSTRUCTION}))
     {
         assert_runtime_error::test(
             get_device(), error_def, &result);

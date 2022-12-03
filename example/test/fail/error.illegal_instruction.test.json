@@ -1,0 +1,14 @@
+{
+    "$schema": "../../../schema/testcase.schema.json",
+    "target": {
+        "start": {
+            "label": "illegal_instruction"
+        }
+    },
+    "cases": {
+        "illegal instruction test": {
+            "setup": {},
+            "expected": {}
+        }
+    }
+}

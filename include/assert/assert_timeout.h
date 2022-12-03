@@ -21,6 +21,7 @@ public:
                 message::trace_timeout(
                     device,
                     actual ? error_defs.front().get_call_stack() : vector<uint16_t>{},
+                    error_defs.front().get_message(),
                     to_string(*timeout_def->get_expression()),
                     to_string(actual)));
 

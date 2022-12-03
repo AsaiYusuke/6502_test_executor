@@ -1572,6 +1572,11 @@ void mos6502::Op_TYA(uint16_t src)
 	return;
 }
 
+bool mos6502::isIllegalInstr()
+{
+	return illegalOpcode;
+}
+
 bool mos6502::isCallInstr()
 {
 	auto instr = InstrTable[memory_access->read_raw(pc)].code;
