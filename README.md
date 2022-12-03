@@ -77,6 +77,7 @@ All tests passed.
 - Error handling
   - Write access to readonly memory
   - Access to undefined memory
+  - Illegal instruction
 
 ### Additional useful feature
 
