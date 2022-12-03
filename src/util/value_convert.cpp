@@ -40,13 +40,13 @@ uint16_t value_convert::parse_json_number(emulation_devices *device, json value)
     {
         auto address = get_address(device, value);
         if (value["type"].is_null())
-            return device->get_memory()->read(address);
+            return device->get_memory()->read_raw(address);
 
         if (value["type"].is_string())
             switch (value_name_type_map[value["type"].get<string>()])
             {
             case value_type::VALUE:
-                return device->get_memory()->read(address);
+                return device->get_memory()->read_raw(address);
             case value_type::HIBYTE:
                 return address >> 8;
             case value_type::LOBYTE:
