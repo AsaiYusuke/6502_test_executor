@@ -13,7 +13,15 @@
     "cases": {
         "address range": {
             "setup": {},
-            "expected": {}
+            "expected": {
+                "register": {
+                    "X": {
+                        "writeCount": {
+                            "eq": 1
+                        }
+                    }
+                }
+            }
         }
     },
     "config": {

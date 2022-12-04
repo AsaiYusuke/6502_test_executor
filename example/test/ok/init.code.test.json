@@ -3,7 +3,7 @@
     "target": {
         "testType": "address",
         "start": {
-            "label": "reset"
+            "label": "reset_vector"
         },
         "end": {
             "label": "main_loop"

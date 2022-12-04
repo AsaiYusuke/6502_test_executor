@@ -46,6 +46,10 @@ void cpu_device::clear(condition_register_pc *pc, vector<uint8_t> stack)
         cpu->SetPC(pc->get_end_address());
         cpu->NMI();
         break;
+    case test_type::IRQ:
+        cpu->SetPC(pc->get_end_address());
+        cpu->IRQ();
+        break;
     case test_type::ADDRESS:
         cpu->SetPC(DEFAULT_TEST_RETURN_ADDRESS);
         cpu->forceJsr(pc->get_start_address());

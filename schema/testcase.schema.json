@@ -22,6 +22,7 @@
                     "enum": [
                         "jsr",
                         "nmi",
+                        "irq",
                         "address"
                     ]
                 },
@@ -48,7 +49,7 @@
                     "properties": {
                         "testType": {
                             "not": {
-                                "const": "nmi"
+                                "pattern": "nmi|irq"
                             }
                         }
                     }

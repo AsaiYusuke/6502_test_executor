@@ -10,9 +10,9 @@
 	.byte	$00, $00, $00, $00
 
 .segment "VECTORS"
-	.word	nmi
-	.word	reset
-	.word	$0000
+	.word	nmi_vector
+	.word	reset_vector
+	.word	irq_vector
 
 .segment "CHARS"
 	.repeat 8
@@ -23,10 +23,11 @@
 oam:		.res 256
 
 .segment "ZEROPAGE"
-pos:		.res 2
-old_pos:	.res 2
-nmi_lock:	.res 1
-vector_addr:	.res 1
+pos:			.res 2
+old_pos:		.res 2
+nmi_lock:		.res 1
+irq_lock:		.res 1
+vector_addr:	.res 2
 
 .segment "RODATA"
 .define M(val) 		.lobyte(val * -1)
@@ -49,7 +50,7 @@ vector_dic_44:	.byte	5,	M(3),	VADDR(vector_dic_28),	VADDR(vector_dic_04)
 palette:	.byte $0F, $11, $21, $31
 
 .segment "CODE"
-.proc reset
+.proc reset_vector
 	sei
 	lda #$40
 	sta APU_PAD2
@@ -139,7 +140,7 @@ palette:	.byte $0F, $11, $21, $31
 	rts
 .endproc
 
-.proc nmi
+.proc nmi_vector
 	pha
 	txa
 	pha
@@ -215,6 +216,26 @@ palette:	.byte $0F, $11, $21, $31
 	rts
 .endproc
 
+.proc irq_vector
+	pha
+	txa
+	pha
+	tya
+	pha
+	lda irq_lock
+	bne irq_end
+	inc irq_lock
+	ldy #0
+	dec irq_lock
+	irq_end:
+	pla
+	tay
+	pla
+	tax
+	pla
+	rti
+.endproc
+
 .proc write_rodata
 	lda #$55
 	sta vector_dic
@@ -237,7 +258,7 @@ palette:	.byte $0F, $11, $21, $31
 	clc
 	adc #1
 	pha
-	lda #2
+	lda #3
 	pha
 	end_update_stack:
 .endproc

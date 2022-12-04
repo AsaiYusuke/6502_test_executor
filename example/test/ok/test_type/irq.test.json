@@ -1,20 +1,19 @@
 {
     "$schema": "../../../../schema/testcase.schema.json",
     "target": {
-        "testType": "nmi"
+        "testType": "irq"
     },
     "cases": {
-        "NMI test": {
+        "IRQ test": {
             "setup": {},
             "expected": {
-                "memory": [
-                    {
-                        "label": "oam",
+                "register": {
+                    "Y": {
                         "writeCount": {
-                            "eq": 1
+                            "eq": 2
                         }
                     }
-                ]
+                }
             }
         }
     }

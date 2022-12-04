@@ -60,6 +60,7 @@ All tests passed.
 - Testable procedures
   - JSR
   - NMI
+  - IRQ
   - Address range
 - Mockable call instructions that can output results to each register and memory
   - JSR
@@ -176,9 +177,10 @@ ca65 V2.18 - Ubuntu 2.19-1
 - [Interrupt hooks](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/interrupt.test.json)
 - [Call mocked proc](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/mock.proc.test.json)
 
-### Test procedures
+### Testable procedures
   - [JSR proc](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/test_type/jsr.test.json)
   - [NMI proc](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/test_type/nmi.test.json)
+  - [IRQ proc](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/test_type/irq.test.json)
   - [Address range](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/test_type/address.test.json)
 
 ### Error handling
