@@ -57,6 +57,10 @@ All tests passed.
   | Check write value history |                    | :heavy_check_mark: |                    |
 - Evaluate processor information
   - Cycle count
+- Testable procedures
+  - JSR
+  - NMI
+  - Address range
 - Mockable call instructions that can output results to each register and memory
   - JSR
   - JMP
@@ -171,6 +175,11 @@ ca65 V2.18 - Ubuntu 2.19-1
 - [Cycle count information](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/error.timeout.test.json)
 - [Interrupt hooks](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/interrupt.test.json)
 - [Call mocked proc](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/mock.proc.test.json)
+
+### Test procedures
+  - [JSR proc](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/test_type/jsr.test.json)
+  - [NMI proc](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/test_type/nmi.test.json)
+  - [Address range](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/test_type/address.test.json)
 
 ### Error handling
 - [Write to readonly memory](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/fail/error.readonly.test.json)

@@ -1754,3 +1754,8 @@ void mos6502::forceJmp(uint16_t address)
 {
 	Op_JMP(address);
 }
+
+void mos6502::forceJsr(uint16_t address)
+{
+	Op_JSR(address);
+}

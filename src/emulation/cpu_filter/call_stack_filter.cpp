@@ -9,7 +9,7 @@ call_stack_filter::call_stack_filter(cpu_device *cpu)
 void call_stack_filter::clear()
 {
     call_stack.clear();
-    call_stack.push_back(make_pair(inst_type::call, TEST_RETURN_ADDRESS));
+    call_stack.push_back(make_pair(inst_type::call, DEFAULT_TEST_RETURN_ADDRESS));
     call_stack.push_back(make_pair(inst_type::call, cpu->get_register16(register_type::PC)));
 }
 

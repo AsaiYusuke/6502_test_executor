@@ -9,8 +9,7 @@ test_setup::test_setup(emulation_devices *device, json condition_json, json targ
 void test_setup::execute()
 {
     get_device()->clear(
-        get_register_pc_def()->get_start_address(),
-        get_register_pc_def()->get_end_address(),
+        get_register_pc_def(),
         get_stack_def()->get_stack());
 
     cpu_device *cpu_dev = get_device()->get_cpu();

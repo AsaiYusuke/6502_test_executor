@@ -32,17 +32,30 @@ cpu_device::cpu_device(emulation_devices *_device, args_parser *args, json confi
     filters.push_back(new instruction_check_filter(this));
 }
 
-void cpu_device::clear(uint16_t startPC, uint16_t _endPC, vector<uint8_t> stack)
+void cpu_device::clear(condition_register_pc *pc, vector<uint8_t> stack)
 {
     cpu->Reset();
-    cpu->SetPC(startPC);
-    cpu->StackPush((TEST_RETURN_ADDRESS - 1) >> 8);
-    cpu->StackPush((TEST_RETURN_ADDRESS - 1) & 0xFF);
+
+    switch (pc->get_test_type())
+    {
+    case test_type::JSR:
+        cpu->SetPC(pc->get_end_address());
+        cpu->forceJsr(pc->get_start_address());
+        break;
+    case test_type::NMI:
+        cpu->SetPC(pc->get_end_address());
+        cpu->NMI();
+        break;
+    case test_type::ADDRESS:
+        cpu->SetPC(DEFAULT_TEST_RETURN_ADDRESS);
+        cpu->forceJsr(pc->get_start_address());
+        break;
+    }
+
+    endPC = pc->get_end_address();
 
     for (auto value : stack)
         cpu->StackPush(value);
-
-    endPC = _endPC;
 
     for (auto filter : filters)
         filter->clear();

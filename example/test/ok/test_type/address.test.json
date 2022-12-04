@@ -1,0 +1,22 @@
+{
+    "$schema": "../../../../schema/testcase.schema.json",
+    "target": {
+        "testType": "address",
+        "start": {
+            "label": "check_collision"
+        },
+        "end": {
+            "label": "check_collision",
+            "offset": 2
+        }
+    },
+    "cases": {
+        "address range": {
+            "setup": {},
+            "expected": {}
+        }
+    },
+    "config": {
+        "maxCycleCount": 3
+    }
+}

@@ -46,7 +46,7 @@ private:
 
 public:
     cpu_device(emulation_devices *_device, args_parser *args, json config);
-    void clear(uint16_t startPC, uint16_t endPC, vector<uint8_t> stack);
+    void clear(condition_register_pc *pc, vector<uint8_t> stack);
     void execute();
     void add_error_result(runtime_error_type type, string message);
     uint64_t get_max_cycle_count();

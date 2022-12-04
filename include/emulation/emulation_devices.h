@@ -21,7 +21,7 @@ private:
 
 public:
     emulation_devices(args_parser *args, json config);
-    void clear(uint16_t startPC, uint16_t endPC, vector<uint8_t> stack);
+    void clear(condition_register_pc *pc, vector<uint8_t> stack);
     cpu_device *get_cpu();
     memory_device *get_memory();
 

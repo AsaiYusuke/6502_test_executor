@@ -14,11 +14,17 @@
             "title": "Test target",
             "description": "Test target specifies the address to be set in the PC register.",
             "type": "object",
-            "required": [
-                "start"
-            ],
             "additionalProperties": false,
             "properties": {
+                "testType": {
+                    "title": "Test end type",
+                    "type": "string",
+                    "enum": [
+                        "jsr",
+                        "nmi",
+                        "address"
+                    ]
+                },
                 "start": {
                     "title": "Test start address",
                     "$ref": "#/definitions/address"
@@ -27,6 +33,46 @@
                     "title": "Test end address",
                     "$ref": "#/definitions/address"
                 }
+            },
+            "if": {
+                "properties": {
+                    "testType": {
+                        "not": {
+                            "pattern": "^address$"
+                        }
+                    }
+                }
+            },
+            "then": {
+                "if": {
+                    "properties": {
+                        "testType": {
+                            "not": {
+                                "const": "nmi"
+                            }
+                        }
+                    }
+                },
+                "then": {
+                    "required": [
+                        "start"
+                    ],
+                    "properties": {
+                        "end": false
+                    }
+                },
+                "else": {
+                    "properties": {
+                        "start": false,
+                        "end": false
+                    }
+                }
+            },
+            "else": {
+                "required": [
+                    "start",
+                    "end"
+                ]
             }
         },
         "definitions": {

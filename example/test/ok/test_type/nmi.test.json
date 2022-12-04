@@ -1,0 +1,12 @@
+{
+    "$schema": "../../../../schema/testcase.schema.json",
+    "target": {
+        "testType": "nmi"
+    },
+    "cases": {
+        "NMI test": {
+            "setup": {},
+            "expected": {}
+        }
+    }
+}

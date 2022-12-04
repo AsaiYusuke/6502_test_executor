@@ -1,6 +1,7 @@
 {
     "$schema": "../../../schema/testcase.schema.json",
     "target": {
+        "testType": "address",
         "start": {
             "label": "reset"
         },

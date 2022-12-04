@@ -577,4 +577,5 @@ public:
 	bool isWriteInstrPC();
 	void forceRts();
 	void forceJmp(uint16_t address);
+	void forceJsr(uint16_t address);
 };

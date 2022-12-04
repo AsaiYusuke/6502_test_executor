@@ -37,7 +37,7 @@ string message::trace_message(emulation_devices *device, vector<uint16_t> call_s
         int index = 0;
         for (auto address : call_stack)
         {
-            if (address == TEST_RETURN_ADDRESS)
+            if (address == DEFAULT_TEST_RETURN_ADDRESS)
                 continue;
 
             if (prev_address == address)
