@@ -33,7 +33,7 @@ static map<string, value_type> value_name_type_map = {
     {"lobyte", value_type::LOBYTE},
     {"rts_hibyte", value_type::RTS_HIBYTE},
     {"rts_lobyte", value_type::RTS_LOBYTE},
-    {"register_a", value_type::REGISTER_A},
-    {"register_x", value_type::REGISTER_X},
-    {"register_y", value_type::REGISTER_Y},
-    {"register_p", value_type::REGISTER_P}};
+    {"register_A", value_type::REGISTER_A},
+    {"register_X", value_type::REGISTER_X},
+    {"register_Y", value_type::REGISTER_Y},
+    {"register_P", value_type::REGISTER_P}};

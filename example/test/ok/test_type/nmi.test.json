@@ -1,7 +1,7 @@
 {
     "$schema": "../../../../schema/testcase.schema.json",
     "target": {
-        "testType": "nmi"
+        "testType": "NMI"
     },
     "cases": {
         "NMI test": {

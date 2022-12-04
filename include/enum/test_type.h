@@ -18,7 +18,7 @@ enum class test_type
 };
 
 static map<string, test_type> test_end_name_type_map = {
-    {"jsr", test_type::JSR},
-    {"nmi", test_type::NMI},
-    {"irq", test_type::IRQ},
+    {"JSR", test_type::JSR},
+    {"NMI", test_type::NMI},
+    {"IRQ", test_type::IRQ},
     {"address", test_type::ADDRESS}};

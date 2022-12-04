@@ -1,7 +1,7 @@
 {
     "$schema": "../../../../schema/testcase.schema.json",
     "target": {
-        "testType": "jsr",
+        "testType": "JSR",
         "start": {
             "label": "check_collision"
         }

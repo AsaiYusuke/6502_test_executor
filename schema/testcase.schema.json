@@ -20,9 +20,9 @@
                     "title": "Test end type",
                     "type": "string",
                     "enum": [
-                        "jsr",
-                        "nmi",
-                        "irq",
+                        "JSR",
+                        "NMI",
+                        "IRQ",
                         "address"
                     ]
                 },
@@ -49,7 +49,7 @@
                     "properties": {
                         "testType": {
                             "not": {
-                                "pattern": "nmi|irq"
+                                "pattern": "NMI|IRQ"
                             }
                         }
                     }
@@ -246,48 +246,28 @@
                                 "dependencies": {
                                     "start": {
                                         "properties": {
-                                            "name": {
-                                                "type": "null"
-                                            },
-                                            "detect": {
-                                                "type": "null"
-                                            }
+                                            "name": false,
+                                            "detect": false
                                         }
                                     },
                                     "size": {
                                         "properties": {
-                                            "name": {
-                                                "type": "null"
-                                            },
-                                            "detect": {
-                                                "type": "null"
-                                            }
+                                            "name": false,
+                                            "detect": false
                                         }
                                     },
                                     "name": {
                                         "properties": {
-                                            "start": {
-                                                "type": "null"
-                                            },
-                                            "size": {
-                                                "type": "null"
-                                            },
-                                            "detect": {
-                                                "type": "null"
-                                            }
+                                            "start": false,
+                                            "size": false,
+                                            "detect": false
                                         }
                                     },
                                     "detect": {
                                         "properties": {
-                                            "start": {
-                                                "type": "null"
-                                            },
-                                            "size": {
-                                                "type": "null"
-                                            },
-                                            "name": {
-                                                "type": "null"
-                                            }
+                                            "start": false,
+                                            "size": false,
+                                            "name": false
                                         }
                                     }
                                 }
@@ -350,19 +330,13 @@
             "dependencies": {
                 "address": {
                     "properties": {
-                        "offset": {
-                            "type": "null"
-                        },
-                        "label": {
-                            "type": "null"
-                        }
+                        "offset": false,
+                        "label": false
                     }
                 },
                 "label": {
                     "properties": {
-                        "address": {
-                            "type": "null"
-                        }
+                        "address": false
                     }
                 }
             }
@@ -409,10 +383,10 @@
                                 "lobyte",
                                 "rts_hibyte",
                                 "rts_lobyte",
-                                "register_a",
-                                "register_x",
-                                "register_y",
-                                "register_p"
+                                "register_A",
+                                "register_X",
+                                "register_Y",
+                                "register_P"
                             ]
                         },
                         "address": true,
@@ -707,16 +681,12 @@
                     "dependencies": {
                         "value": {
                             "properties": {
-                                "sequence": {
-                                    "type": "null"
-                                }
+                                "sequence": false
                             }
                         },
                         "sequence": {
                             "properties": {
-                                "value": {
-                                    "type": "null"
-                                }
+                                "value": false
                             }
                         }
                     }
@@ -932,16 +902,12 @@
                     "dependencies": {
                         "value": {
                             "properties": {
-                                "sequence": {
-                                    "type": "null"
-                                }
+                                "sequence": false
                             }
                         },
                         "sequence": {
                             "properties": {
-                                "value": {
-                                    "type": "null"
-                                }
+                                "value": false
                             }
                         }
                     }

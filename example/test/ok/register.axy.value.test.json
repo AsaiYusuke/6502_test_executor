@@ -148,7 +148,7 @@
                     "Y": {
                         "value": {
                             "eq": {
-                                "type": "register_a"
+                                "type": "register_A"
                             }
                         }
                     }
