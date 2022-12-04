@@ -1,0 +1,14 @@
+{
+    "$schema": "${SCHEMA}",
+    "target": {
+        "start": {
+            "label": "${LABEL}"
+        }
+    },
+    "cases": {
+        "Test ID": {
+            "setup": {},
+            "expected": {}
+        }
+    }
+}
