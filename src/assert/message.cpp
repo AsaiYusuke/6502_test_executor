@@ -5,7 +5,7 @@
 #include "util/value_convert.h"
 #include "util/constant.h"
 
-string message::error_message(exception e)
+string message::error_message(exception &e)
 {
     stringstream ss;
     ss << e.what() << endl
