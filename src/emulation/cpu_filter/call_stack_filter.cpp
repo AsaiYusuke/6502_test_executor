@@ -19,9 +19,11 @@ bool call_stack_filter::pre()
     isReternInstr = false;
     isInterruptInstr = false;
 
+    pre_pc = cpu->get_register16(register_type::PC);
+
     if (cpu->is_call_instrunction())
     {
-        call_stack.push_back(make_pair(inst_type::call, cpu->get_register16(register_type::PC)));
+        call_stack.push_back(make_pair(inst_type::call, pre_pc));
         isCallInstr = true;
     }
     else if (cpu->is_return_instruction())
@@ -33,14 +35,14 @@ bool call_stack_filter::pre()
         }
         else
         {
-            call_stack.push_back(make_pair(inst_type::retern, cpu->get_register16(register_type::PC)));
+            call_stack.push_back(make_pair(inst_type::retern, pre_pc));
             isReternInstr = true;
         }
     }
 
     if (!isReturned && cpu->is_interrupt_instruction())
     {
-        call_stack.push_back(make_pair(inst_type::call, cpu->get_register16(register_type::PC)));
+        call_stack.push_back(make_pair(inst_type::call, pre_pc));
         isInterruptInstr = true;
     }
 
@@ -79,6 +81,6 @@ vector<uint16_t> call_stack_filter::get_call_stack()
     vector<uint16_t> current_call_stack;
     for (auto entry : call_stack)
         current_call_stack.push_back(entry.second);
-    current_call_stack.push_back(cpu->get_register16(register_type::PC));
+    current_call_stack.push_back(pre_pc);
     return current_call_stack;
 }
