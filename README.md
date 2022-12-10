@@ -1,31 +1,6 @@
 # 6502 Unit Test executor
 This tool enables [unit testing](https://en.wikipedia.org/wiki/Unit_testing) for [MOS Technology 6502](https://en.wikipedia.org/wiki/MOS_Technology_6502) assembly programs on a cross-platform basis.
 
-``` mermaid
-flowchart LR;
-  A(Assembly program);
-  C[[CA65]];
-  B(Binary);
-  D(Debug information);
-  V[[Visual Studio Code]];
-  S(Test scinario);
-  U[[6502 Unit Test executor]];
-  R[(Test result)];
-
-  subgraph Build CA65 project
-    A --> C;
-    C --> B & D;
-  end
-
-  subgraph Create unit test
-    V -- Json schema --> S;
-  end
-
-  subgraph Run test
-    B & D & S --> U --> R;
-  end
-```
-
 ## Getting started
 [A simple example project](https://github.com/AsaiYusuke/6502_test_executor/tree/master/example) has everything you need for this tool.
 
@@ -83,6 +58,8 @@ All tests passed.
   - Write access to readonly memory
   - Access to undefined memory
   - Illegal instruction
+- Testable coverage
+  - [LCOV](https://github.com/linux-test-project/lcov) format
 
 ### Additional useful feature
 
@@ -91,6 +68,31 @@ All tests passed.
 - Test ROM images are detected from debug information file.
 
 ## How to use
+
+``` mermaid
+flowchart LR;
+  A(Assembly program);
+  C[[CA65]];
+  B(Binary);
+  D(Debug information);
+  V[[Visual Studio Code]];
+  S(Test scinario);
+  U[[6502 Unit Test executor]];
+  R[(Test result)];
+  L[(Test coverage)];
+
+  subgraph Build CA65 project
+    A --> C --> B & D;
+  end
+
+  subgraph Create unit test
+    V -- Json schema --> S;
+  end
+
+  subgraph Run test
+    B & D & S --> U --> R & L;
+  end
+```
 
 ### Build CA65 project with debug option
 Build your 6502 project using [CA65 assembler](https://cc65.github.io/doc/ca65.html)/[LD65 linker](https://cc65.github.io/doc/ld65.html) with *debug information generation* enabled.
@@ -116,6 +118,17 @@ Run the tool with the prepared debug information file and test scenario file:
 6502_tester -d <debug information> -t <test scinario>
 ```
 
+Test coverage can also be measured.
+Both the coverage file and the segment names used in the debug information file must be specified to enable.
+
+```
+6502_tester -d <debug information> -t <test scinario> -c <coverage> -s <segment names>
+```
+
+The coverage file can be used to populate [Coveralls GitHub Action](https://github.com/marketplace/actions/coveralls-github-action), etc.
+The results of the example project can be seen in [Coveralls](https://coveralls.io/github/AsaiYusuke/6502_test_executor).
+
+
 You can find all command line arguments in help:
 
 ```
@@ -132,6 +145,9 @@ You can find all command line arguments in help:
       -t[TEST], --test=[TEST]           (REQUIRED)
                                         Specify the path of the test scinario
                                         file.
+      -c[COVERAGE],
+      --coverage=[COVERAGE]             Specify the path of the coverage file.
+      -s[SEGMENT], --segment=[SEGMENT]  Specify the segment names for coverage.
       -i[ID], --id=[ID]                 Specify the test ID.
       --timeout=[TIMEOUT]               Specify the timeout period before the
                                         test becomes an error.
