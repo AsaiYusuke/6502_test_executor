@@ -250,7 +250,6 @@ palette:	.byte $0F, $11, $21, $31
 
 .proc illegal_instruction
 	.byte	$ff
-	rts
 .endproc
 
 .proc update_stack_value
