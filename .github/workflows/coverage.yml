@@ -1,0 +1,15 @@
+name: Test Coveralls
+
+on: ["push", "pull_request"]
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+    - name: Coveralls
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        path-to-lcov: "./example/coverage/lcov.info"
+        base-path: "./example"
