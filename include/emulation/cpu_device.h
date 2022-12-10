@@ -5,6 +5,7 @@
 #include "mos6502.h"
 #include "nlohmann/json.hpp"
 #include "args_parser.h"
+#include "emulation/debug_info.h"
 #include "emulation/cpu_filter/cpu_filter.h"
 #include "emulation/cpu_filter/call_stack_filter.h"
 #include "emulation/cpu_filter/register_counter_filter.h"
@@ -45,7 +46,7 @@ private:
     map<uint16_t, condition_mocked_proc> mocked_proc_defs;
 
 public:
-    cpu_device(emulation_devices *_device, args_parser *args, json config);
+    cpu_device(emulation_devices *_device, args_parser *args, json config, debug_info *debug);
     void clear(condition_register_pc *pc, vector<uint8_t> stack);
     void execute();
     void add_error_result(runtime_error_type type, string message);

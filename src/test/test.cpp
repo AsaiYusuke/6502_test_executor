@@ -45,6 +45,8 @@ bool test::execute()
             do_test(id, testcase));
     }
 
+    device->save_coverage();
+
     total_result.print_summary();
 
     return total_result.is_success();

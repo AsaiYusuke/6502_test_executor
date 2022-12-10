@@ -9,10 +9,10 @@ rom_image::rom_image(debug_info *debug)
         load_rom_image(debug->get_path(), element.second);
 }
 
-void rom_image::load_rom_image(filesystem::path debug_path, debug_segment segment_def)
+void rom_image::load_rom_image(filesystem::path debug_path, debug_segment *segment_def)
 {
-    int segment_id = segment_def.get_id();
-    string path = segment_def.get_image_file_name();
+    int segment_id = segment_def->get_id();
+    string path = segment_def->get_image_file_name();
     if (path.empty() || segment_id_image_id_map.count(segment_id) != 0)
         return;
 

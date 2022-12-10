@@ -18,6 +18,7 @@ private:
     cpu_device *cpu;
     memory_device *memory;
     vector<runtime_error_result> errors;
+    debug_info *debug;
 
 public:
     emulation_devices(args_parser *args, json config);
@@ -32,5 +33,6 @@ public:
     void add_error_result(runtime_error_type type, string message);
     vector<runtime_error_result> get_filtered_errors(vector<runtime_error_type> types);
 
+    void save_coverage();
     void print();
 };
