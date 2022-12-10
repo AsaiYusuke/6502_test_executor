@@ -4,8 +4,9 @@
 
 emulation_devices::emulation_devices(args_parser *args, json config)
 {
-    memory = new memory_device(this, args, config);
-    cpu = new cpu_device(this, args, config);
+    debug = new debug_info(args, config);
+    memory = new memory_device(this, args, config, debug);
+    cpu = new cpu_device(this, args, config, debug);
 }
 
 void emulation_devices::clear(condition_register_pc *pc, vector<uint8_t> stack)
@@ -28,6 +29,11 @@ memory_device *emulation_devices::get_memory()
 uint16_t emulation_devices::get_address(string label)
 {
     return memory->get_address(label);
+}
+
+void emulation_devices::save_coverage()
+{
+    debug->save_coverage();
 }
 
 void emulation_devices::print()

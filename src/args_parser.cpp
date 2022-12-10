@@ -10,6 +10,9 @@ args_parser::args_parser(int argc, char *argv[])
     debug_file_path = new args::ValueFlag<string>(parser, "DEBUG", "Specify the path of the debug information file used for testing.", {'d', "debug"});
     test_file_path = new args::ValueFlag<string>(parser, "TEST", "(REQUIRED)\nSpecify the path of the test scinario file.", {'t', "test"}, args::Options::Required);
 
+    coverage_file_path = new args::ValueFlag<string>(parser, "COVERAGE", "Specify the path of the coverage file.", {'c', "coverage"});
+    coverage_segment_names = new args::ValueFlag<string>(parser, "SEGMENT", "Specify the segment names for coverage.", {'s', "segment"});
+
     test_id = new args::ValueFlag<string>(parser, "ID", "Specify the test ID.", {'i', "id"});
 
     test_timeout = new args::ValueFlag<uint64_t>(parser, "TIMEOUT", "Specify the timeout period before the test becomes an error.", {"timeout"}, 10000);
@@ -50,6 +53,16 @@ string args_parser::get_debug_path()
 string args_parser::get_test_path()
 {
     return args::get(*test_file_path);
+}
+
+string args_parser::get_coverage_path()
+{
+    return args::get(*coverage_file_path);
+}
+
+string args_parser::get_coverage_segment_names()
+{
+    return args::get(*coverage_segment_names);
 }
 
 string args_parser::get_test_id()

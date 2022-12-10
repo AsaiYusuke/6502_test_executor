@@ -3,17 +3,11 @@
 #include "exception/cpu_runtime_error.h"
 #include "enum/platform_type.h"
 
-memory_device::memory_device(emulation_devices *_device, args_parser *args, json config)
+memory_device::memory_device(emulation_devices *_device, args_parser *args, json config, debug_info *_debug)
 {
     device = _device;
 
-    string debug_path;
-    if (config["debugFile"].is_string())
-        debug_path = config["debugFile"].get<string>();
-    else
-        debug_path = args->get_debug_path();
-
-    debug = new debug_info(debug_path);
+    debug = _debug;
     rom = new rom_image(debug);
 
     if (config["invalidMemory"]["enable"].is_boolean())
@@ -47,7 +41,7 @@ memory_device::memory_device(emulation_devices *_device, args_parser *args, json
                     true);
             else if (ignore_def["name"].is_string())
                 remove_segment_ids.push_back(
-                    debug->get_segment_def(ignore_def["name"].get<string>()).get_id());
+                    debug->get_segment_def(ignore_def["name"].get<string>())->get_id());
             else if (ignore_def["detect"].is_boolean() && ignore_def["detect"].get<bool>())
             {
                 auto ids = get_detected_remove_segment_ids();
@@ -67,7 +61,7 @@ vector<int> memory_device::get_detected_remove_segment_ids()
     {
     case platform_type::NES:
         for (auto element : debug->get_segment_def_map())
-            if (!element.second.is_nes_cpu_memory())
+            if (!element.second->is_nes_cpu_memory())
                 remove_ids.push_back(element.first);
         break;
     }
@@ -128,11 +122,11 @@ uint8_t memory_device::read(uint16_t address)
 
     try
     {
-        debug_segment segment_def = debug->get_segment_def(address);
-        if (segment_def.is_readonly())
+        debug_segment *segment_def = debug->get_segment_def(address);
+        if (segment_def->is_readonly())
         {
-            auto image = rom->get(segment_def.get_id());
-            return image[segment_def.get_image_file_address(address)];
+            auto image = rom->get(segment_def->get_id());
+            return image[segment_def->get_image_file_address(address)];
         }
     }
     catch (const cpu_runtime_error &e)
@@ -161,11 +155,11 @@ uint8_t memory_device::read_raw(uint16_t address)
 {
     try
     {
-        debug_segment segment_def = debug->get_segment_def(address);
-        if (segment_def.is_readonly())
+        debug_segment *segment_def = debug->get_segment_def(address);
+        if (segment_def->is_readonly())
         {
-            auto image = rom->get(segment_def.get_id());
-            return image[segment_def.get_image_file_address(address)];
+            auto image = rom->get(segment_def->get_id());
+            return image[segment_def->get_image_file_address(address)];
         }
     }
     catch (const cpu_runtime_error &e)
@@ -224,7 +218,7 @@ void memory_device::print()
         uint16_t address = ram_entry.first;
         try
         {
-            int length = debug->get_segment_def(address).get_name().length();
+            int length = debug->get_segment_def(address)->get_name().length();
             if (max_segment_len < length)
                 max_segment_len = length;
         }
@@ -248,13 +242,13 @@ void memory_device::print()
         try
         {
             auto segment_def = debug->get_segment_def(address);
-            segment_name = segment_def.get_name();
-            segment_start = value_convert::to_zero_filled_hex_string(segment_def.get_start());
+            segment_name = segment_def->get_name();
+            segment_start = value_convert::to_zero_filled_hex_string(segment_def->get_start());
         }
-        catch(const cpu_runtime_error)
+        catch (const cpu_runtime_error)
         {
         }
-        
+
         printf(
             "  $%04X    %-*s (%s)  %-*s  $%X\n",
             address,

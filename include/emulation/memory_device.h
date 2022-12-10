@@ -36,7 +36,7 @@ private:
     bool assert_invalid_memory;
 
 public:
-    memory_device(emulation_devices *_device, args_parser *args, json config);
+    memory_device(emulation_devices *_device, args_parser *args, json config, debug_info *debug);
     vector<int> get_detected_remove_segment_ids();
     void clear();
     string get_source_line(uint16_t address);

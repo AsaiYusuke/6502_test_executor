@@ -7,9 +7,20 @@
 #include "exception/cpu_runtime_error.h"
 #include "util/value_convert.h"
 
-debug_info::debug_info(string _path)
+debug_info::debug_info(args_parser *args, json config)
 {
-    path = _path;
+    if (config["debugFile"].is_string())
+        path = config["debugFile"].get<string>();
+    else
+        path = args->get_debug_path();
+    
+    test_path = args->get_test_path();
+
+    coverage_path = args->get_coverage_path();
+    stringstream segment_stringstream{args->get_coverage_segment_names()};
+    string buf;
+    while (getline(segment_stringstream, buf, ':'))
+        coverage_segment_names.emplace(buf);
 
     ifstream file(path);
     if (!file.is_open())
@@ -152,7 +163,6 @@ void debug_info::make_address_source_map()
         auto file_id = get<0>(line_def.second);
         auto line_number = get<1>(line_def.second);
         auto span_ids = get<2>(line_def.second);
-        auto file_name = source_file_map[file_id];
 
         for (auto span_id : span_ids)
         {
@@ -161,10 +171,27 @@ void debug_info::make_address_source_map()
             uint16_t span_addr = span_def.second;
             if (segment_def_map.count(segment_id) == 0)
                 continue;
-            uint16_t segment_addr = segment_def_map.at(segment_id).get_start();
-            address_source_map[segment_addr + span_addr] = make_pair(file_name, line_number);
+            uint16_t segment_addr = segment_def_map.at(segment_id)->get_start();
+            uint16_t address = segment_addr + span_addr;
+
+            if (address_source_map.count(address) > 0)
+                continue;
+
+            if (file_segment_line_source_map[file_id][segment_id].count(line_number) == 0)
+                address_source_map[address] = new debug_source_line(file_id, segment_id, line_number);
+            else
+                address_source_map[address] = file_segment_line_source_map[file_id][segment_id][line_number];
+
+            file_segment_line_source_map[file_id][segment_id][line_number] = address_source_map[address];
         }
     }
+}
+
+void debug_info::activate_line_coverage(uint16_t address)
+{
+    if (address_source_map.count(address) == 0)
+        return;
+    address_source_map[address]->set_cover();
 }
 
 string debug_info::get_source_line(uint16_t address)
@@ -173,7 +200,7 @@ string debug_info::get_source_line(uint16_t address)
         return "";
 
     auto line_def = address_source_map[address];
-    return line_def.first + ":" + to_string(line_def.second);
+    return source_file_map[line_def->get_file_id()] + ":" + to_string(line_def->get_line_number());
 }
 
 bool debug_info::has_address(string label)
@@ -193,7 +220,7 @@ uint16_t debug_info::get_address(string label)
 
 bool debug_info::has_write_access(uint16_t address)
 {
-    return get_segment_def(address).is_writable();
+    return get_segment_def(address)->is_writable();
 }
 
 bool debug_info::has_read_access(uint16_t address)
@@ -202,23 +229,23 @@ bool debug_info::has_read_access(uint16_t address)
     return true;
 }
 
-map<int, debug_segment> debug_info::get_segment_def_map()
+map<int, debug_segment *> debug_info::get_segment_def_map()
 {
     return segment_def_map;
 }
 
-debug_segment debug_info::get_segment_def(uint16_t address)
+debug_segment *debug_info::get_segment_def(uint16_t address)
 {
     for (auto element : segment_def_map)
-        if (element.second.contains(address))
+        if (element.second->contains(address))
             return element.second;
     throw cpu_runtime_error(runtime_error_type::OUT_OF_SEGMENT, "address=" + value_convert::to_zero_filled_hex_string(address));
 }
 
-debug_segment debug_info::get_segment_def(string name)
+debug_segment *debug_info::get_segment_def(string name)
 {
     for (auto element : segment_def_map)
-        if (element.second.get_name() == name)
+        if (element.second->get_name() == name)
             return element.second;
     throw cpu_runtime_error(runtime_error_type::OUT_OF_SEGMENT, "name=" + name);
 }
@@ -231,7 +258,7 @@ void debug_info::add_segment_def(
 
     segment_def_map.emplace(
         id,
-        debug_segment(
+        new debug_segment(
             id,
             name,
             start,
@@ -248,5 +275,41 @@ void debug_info::remove_segment_def(int id)
 
 void debug_info::remove_segment_def(string name)
 {
-    segment_def_map.erase(get_segment_def(name).get_id());
+    segment_def_map.erase(get_segment_def(name)->get_id());
+}
+
+void debug_info::save_coverage()
+{
+    if (test_path.empty() || coverage_path.empty() || coverage_segment_names.empty())
+        return;
+
+    ofstream file(coverage_path, ios::app);
+
+    if (!file.is_open())
+        throw file_open_error(coverage_path);
+
+    file << "TN:" << test_path << endl;
+    for (auto file_pair : file_segment_line_source_map)
+    {
+        file << "SF:" << source_file_map[file_pair.first] << endl;
+
+        for (auto segment_pair : file_pair.second)
+        {
+            if (segment_def_map.count(segment_pair.first) == 0)
+                continue;
+
+            if (coverage_segment_names.count(segment_def_map[segment_pair.first]->get_name()) == 0)
+                continue;
+
+            for (auto debug_line : segment_pair.second)
+                file << "DA:"
+                     << debug_line.second->get_line_number()
+                     << ","
+                     << (debug_line.second->is_cover() ? 1 : 0)
+                     << endl;
+        }
+    }
+    file << "end_of_record" << endl;
+
+    file.close();
 }

@@ -7,8 +7,9 @@
 #include "emulation/cpu_filter/call_stack_filter.h"
 #include "emulation/cpu_filter/timeout_check_filter.h"
 #include "emulation/cpu_filter/instruction_check_filter.h"
+#include "emulation/cpu_filter/coverage_filter.h"
 
-cpu_device::cpu_device(emulation_devices *_device, args_parser *args, json config)
+cpu_device::cpu_device(emulation_devices *_device, args_parser *args, json config, debug_info *debug)
 {
     device = _device;
 
@@ -27,6 +28,10 @@ cpu_device::cpu_device(emulation_devices *_device, args_parser *args, json confi
 
     register_counter = new register_counter_filter(this);
     filters.push_back(register_counter);
+
+    auto coverage = new coverage_filter(this);
+    coverage->set_debug(debug);
+    filters.push_back(coverage);
 
     filters.push_back(new timeout_check_filter(this));
     filters.push_back(new instruction_check_filter(this));
