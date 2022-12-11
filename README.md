@@ -1,6 +1,6 @@
 # 6502 Unit Test executor
 
-![example workflow](https://github.com/AsaiYusuke/6502_test_executor/actions/workflows/make.yml/badge.svg)
+[![example workflow](https://github.com/AsaiYusuke/6502_test_executor/actions/workflows/make.yml/badge.svg)](https://github.com/AsaiYusuke/6502_test_executor/actions/workflows/make.yml)
 
 This tool enables [unit testing](https://en.wikipedia.org/wiki/Unit_testing) for [MOS Technology 6502](https://en.wikipedia.org/wiki/MOS_Technology_6502) assembly programs on a cross-platform basis.
 
