@@ -1,0 +1,16 @@
+name: Make project
+
+on: ["push", "pull_request"]
+
+jobs:
+  make:
+    name: Make
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Install dependent commands
+      run: sudo apt-get install cc65
+
+    - name: Build
+      run: make
