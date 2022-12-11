@@ -18,9 +18,10 @@ JSON_DIR		:=	$(THIRD_PARTY_DIR)/json/single_include
 JSON_HEADER		:=	$(JSON_DIR)/nlohmann/json.hpp
 
 MOS6502_DIR		:=	$(THIRD_PARTY_DIR)/mos6502
-MOS6502_HEADER		:=	$(MOS6502_DIR)/mos6502.h
 MOS6502_CXX		:=	$(MOS6502_DIR)/mos6502.cpp
-MOS6502_OBJ		:=	$(MOS6502_DIR)/mos6502.o
+MOS6502_PATCH_DIR	:=	$(THIRD_PARTY_DIR)/mos6502_patch
+MOS6502_PATCH		:=	$(MOS6502_PATCH_DIR)/mos6502.patch
+MOS6502_OBJ		:=	$(BUILD_DIR)/mos6502.o
 
 CFLAGS			:=	--std=c++17 -I $(INC_DIR) -I $(ARGS_DIR) -I $(JSON_DIR) -I $(MOS6502_DIR) -g
 
@@ -33,21 +34,22 @@ exec: $(BUILD_DIRS) $(TARGET)
 $(BUILD_DIRS) : % :
 	mkdir -p $@
 
-$(TARGET) : $(OBJECTS) $(MOS6502_OBJ)
+$(TARGET) : $(MOS6502_OBJ) $(OBJECTS)
 	$(CXX) $(CFLAGS) -o $(TARGET) $(OBJECTS) $(MOS6502_OBJ)
 
 $(BUILD_DIR)/%.o : $(SRC_DIR)/%.cpp
 	$(CXX) $(CFLAGS) -c -o $@ $<
 
-$(MOS6502_DIR)/%.o : $(MOS6502_DIR)/%.cpp
-	$(CXX) $(CFLAGS) -c -o $@ $<
+$(MOS6502_OBJ) : $(MOS6502_PATCH)
+	git -C $(MOS6502_DIR) checkout .
+	patch --directory=$(MOS6502_DIR) --input=$(shell realpath --relative-to=$(MOS6502_DIR) $(MOS6502_PATCH))
+	$(CXX) $(CFLAGS) -c -o $@ $(MOS6502_CXX)
 
 test :
 	make -C example
 
 clean :
-	rm -rf $(BUILD_DIR)
-	-rm $(MOS6502_OBJ)
-	-rm $(TARGET)
+	git -C $(MOS6502_DIR) checkout .
+	-rm -r $(BUILD_DIR)
 
 $(foreach SOURCE,$(SOURCES),$(eval $(subst \,,$(shell $(CXX) $(CFLAGS) -MM $(SOURCE) | sed -e 's/^\([^ ]*\)\.o:/$(BUILD_DIR)\/\1.o:/'))))
