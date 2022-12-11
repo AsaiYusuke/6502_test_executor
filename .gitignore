@@ -1,6 +1,7 @@
 .vscode
 6502_tester
 example/build
+example/coverage
 example/dist
 build
 third_party/mos6502/mos6502.o

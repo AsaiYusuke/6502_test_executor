@@ -7,7 +7,9 @@ jobs:
     name: Make
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v3
+      with:
+        submodules: true
 
     - name: Install dependent commands
       run: sudo apt-get install cc65
