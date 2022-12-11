@@ -1,6 +1,10 @@
 name: Test Coveralls
 
-on: ["push", "pull_request"]
+on:
+  workflow_run:
+      workflows: [Make project]
+      types:
+        - completed
 
 jobs:
   test:
