@@ -22,12 +22,12 @@ This tool enables [unit testing](https://en.wikipedia.org/wiki/Unit_testing) for
 * [Dependencies](#Dependencies)
 
 ## Basic design
-- Execute test on embedded emulator \
-  Built-in [6502 emulation by Gianluca Ghettini](https://github.com/gianlucag/mos6502) enables stand-alone testing on Linux, etc.
-- Write test with JSON Schema \
-  The tool provides [JSON Schema](https://json-schema.org/) document that makes it easy to create test.
-- Evaluate test like modern frameworks \
-  It comes with many useful evaluation methods found in [the modern UNIT testing framework](https://en.wikipedia.org/wiki/List_of_unit_testing_frameworks).
+### *Execute test on embedded emulator*
+- Built-in [6502 emulation by Gianluca Ghettini](https://github.com/gianlucag/mos6502) enables stand-alone testing on Linux, etc.
+### *Write test with JSON Schema*
+- The tool provides [JSON Schema](https://json-schema.org/) document that makes it easy to create test.
+### *Evaluate test like modern frameworks*
+- It comes with many useful evaluation methods found in [the modern UNIT testing frameworks](https://en.wikipedia.org/wiki/List_of_unit_testing_frameworks).
 
 ## Supported testing feature
 
