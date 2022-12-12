@@ -4,21 +4,30 @@
 
 This tool enables [unit testing](https://en.wikipedia.org/wiki/Unit_testing) for [MOS Technology 6502](https://en.wikipedia.org/wiki/MOS_Technology_6502) assembly programs on a cross-platform basis.
 
-## Getting started
-[A simple example project](https://github.com/AsaiYusuke/6502_test_executor/tree/master/example) has everything you need for this tool.
+## Table of Contents
+* [Basic design](#Basic-design)
+* [Supported testing feature](#Supported-testing-feature)
+* [Getting started](#getting-started)
+  * [Prerequisites](#Prerequisites)
+  * [Install](#Install)
+  * [Test example project](#Test-example-project)
+    * [Unit testing](#Unit-testing)
+    * [Coverage](#Coverage)
+* [Usage](#Usage)
+  * [Build CA65 project with debug option](#Build-CA65-project-with-debug-option)
+  * [Create unit test](#Create-unit-test)
+  * [Run test](#Run-test)
+* [Tested CA65 version](#Tested-CA65-version)
+* [Test scinario examples](#Test-scinario-examples)
+* [Dependencies](#Dependencies)
 
-```
-# cd example
-# make
-mkdir -p build
-ca65 --cpu 6502 --target nes --debug-info -o build/example.o src/example.asm
-mkdir -p dist
-ld65  -o dist/example.nes --dbgfile dist/example.dbg --config cfg/nes.cfg --obj build/example.o
-../6502_tester -d dist/example.dbg --quiet-ok --quiet-summary -t test/ok/customize.configurations.test.json
-../6502_tester -d dist/example.dbg --quiet-ok --quiet-summary -t test/ok/error.timeout.test.json
-:
-All tests passed.
-```
+## Basic design
+- Execute test on embedded emulator \
+  Built-in [6502 emulation by Gianluca Ghettini](https://github.com/gianlucag/mos6502) enables stand-alone testing.
+- Write test with JSON Schema \
+  The tool provides [JSON Schema](https://json-schema.org/) document that makes it easy to create test.
+- Evaluate test like modern frameworks \
+  It comes with many useful evaluation methods found in the modern UNIT testing framework.
 
 ## Supported testing feature
 
@@ -70,7 +79,57 @@ All tests passed.
 - Test evaluations can be executed at any address.
 - Test ROM images are detected from debug information file.
 
-## How to use
+## Getting started
+
+### Prerequisites
+This tool is intended for the projects based on [CC65](https://cc65.github.io/).
+
+The easiest way to install CC65 on [Ubuntu](https://ubuntu.com/) linux is by running:
+
+```
+# sudo apt-get install cc65
+```
+
+### Install
+Since the tool repository has the submodules, the `--recurse-submodules` option must be specified when cloning:
+
+```
+# git clone --recurse-submodules https://github.com/AsaiYusuke/6502_test_executor.git
+# cd 6502_test_executor
+# make
+# ./6502_tester --help
+```
+
+### Test example project
+
+#### Unit testing
+[Simple example project](https://github.com/AsaiYusuke/6502_test_executor/tree/master/example) includes many test cases that demonstrate the features:
+
+```
+# cd example
+# make
+mkdir -p build
+ca65 --cpu 6502 --target nes --debug-info -o build/example.o src/example.asm
+mkdir -p dist
+ld65  -o dist/example.nes --dbgfile dist/example.dbg --config cfg/nes.cfg --obj build/example.o
+rm coverage/lcov.info
+../6502_tester --debug=dist/example.dbg --coverage=coverage/lcov.info --segment="CODE" --quiet-summary --quiet-ok -t test/ok/customize.configurations.test.json
+../6502_tester --debug=dist/example.dbg --coverage=coverage/lcov.info --segment="CODE" --quiet-summary --quiet-ok -t test/ok/definitions.test.json
+../6502_tester --debug=dist/example.dbg --coverage=coverage/lcov.info --segment="CODE" --quiet-summary --quiet-ok -t test/ok/error.timeout.test.json
+:
+All tests passed.
+```
+
+#### Coverage
+When the project is built, the coverage file is saved.
+It is located on `example/coverage/lcov.info` in case of example project.
+
+The coverage file can be used to populate [Coveralls GitHub Action](https://github.com/marketplace/actions/coveralls-github-action), etc.
+
+The results of the example project can be seen in [Coveralls](https://coveralls.io/github/AsaiYusuke/6502_test_executor).\
+[![Coverage Status](https://coveralls.io/repos/github/AsaiYusuke/6502_test_executor/badge.svg?branch=master)](https://coveralls.io/github/AsaiYusuke/6502_test_executor?branch=master)
+
+## Usage
 
 ``` mermaid
 flowchart LR;
@@ -127,11 +186,6 @@ Both the coverage file and the segment names used in the debug information file 
 ```
 6502_tester -d <debug information> -t <test scinario> -c <coverage> -s <segment names>
 ```
-
-The coverage file can be used to populate [Coveralls GitHub Action](https://github.com/marketplace/actions/coveralls-github-action), etc.
-
-The results of the example project can be seen in [Coveralls](https://coveralls.io/github/AsaiYusuke/6502_test_executor).\
-[![Coverage Status](https://coveralls.io/repos/github/AsaiYusuke/6502_test_executor/badge.svg?branch=master)](https://coveralls.io/github/AsaiYusuke/6502_test_executor?branch=master)
 
 You can find all command line arguments in help:
 
@@ -214,7 +268,7 @@ ca65 V2.18 - Ubuntu 2.19-1
 - [Complex evaluation](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/evaluation.test.json)
 - [Definitions](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/definitions.test.json)
 
-# Dependencies
+## Dependencies
 This project uses following project:
 - [Gianluca Ghettini's 6502 emulator](https://github.com/gianlucag/mos6502)
   - [Erik Lothe's 6502 Unit test executor](https://github.com/89erik/6502_test_executor)
