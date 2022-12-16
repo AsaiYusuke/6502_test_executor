@@ -1,0 +1,31 @@
+{
+    "$schema": "../../../schema/testcase.schema.json",
+    "target": {
+        "start": {
+            "label": "check_collision"
+        }
+    },
+    "cases": {
+        "group 1-1/": {},
+        "group 1-2/": {
+            "group 2-1/": {
+                "test 1": {
+                    "setup": {},
+                    "expected": {}
+                },
+                "test 2": {
+                    "setup": {},
+                    "expected": {}
+                }
+            },
+            "test 3": {
+                "setup": {},
+                "expected": {}
+            }
+        },
+        "test 4": {
+            "setup": {},
+            "expected": {}
+        }
+    }
+}

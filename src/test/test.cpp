@@ -3,7 +3,6 @@
 #include <string>
 
 #include "test/test.h"
-#include "test/test_total_result.h"
 #include "test/test_result.h"
 #include "test/test_setup.h"
 #include "test/test_assert.h"
@@ -33,23 +32,36 @@ bool test::execute()
 {
     test_total_result total_result{device, args, (int)test_scinario["cases"].size()};
 
-    for (auto &element : test_scinario["cases"].items())
-    {
-        auto id = element.key();
-        auto testcase = element.value();
-
-        if (!args->get_test_id().empty() && args->get_test_id() != id)
-            continue;
-
-        total_result.add_and_print_result(
-            do_test(id, testcase));
-    }
+    traverse(total_result, test_scinario["cases"], "");
 
     device->save_coverage();
 
     total_result.print_summary();
 
     return total_result.is_success();
+}
+
+void test::traverse(test_total_result &total_result, json testcase, string path)
+{
+    for (auto &element : testcase.items())
+    {
+        auto id = element.key();
+        auto sub_testcase = element.value();
+
+        string test_id_path = path + id;
+
+        if (test_id_path.ends_with("/"))
+        {
+            traverse(total_result, sub_testcase, test_id_path);
+            continue;
+        }
+
+        if (!args->get_test_id().empty() && args->get_test_id() != test_id_path)
+            continue;
+
+        total_result.add_and_print_result(
+            do_test(test_id_path, sub_testcase));
+    }
 }
 
 test_result test::do_test(string id, json testcase)

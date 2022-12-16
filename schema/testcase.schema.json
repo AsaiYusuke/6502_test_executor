@@ -130,29 +130,7 @@
             "description": "Test cases specify, for each test, the setup conditions and the expected conditions.",
             "type": "object",
             "minProperties": 1,
-            "patternProperties": {
-                "^.*$": {
-                    "title": "Test ID",
-                    "description": "Test ID can be any string that uniquely identifies it in the file.",
-                    "type": "object",
-                    "required": [
-                        "setup",
-                        "expected"
-                    ],
-                    "additionalProperties": false,
-                    "properties": {
-                        "skip": {
-                            "type": "boolean"
-                        },
-                        "setup": {
-                            "$ref": "#/definitions/case_setup"
-                        },
-                        "expected": {
-                            "$ref": "#/definitions/case_expected"
-                        }
-                    }
-                }
-            }
+            "$ref": "#/definitions/case"
         },
         "config": {
             "title": "Configuration",
@@ -296,6 +274,35 @@
         }
     },
     "definitions": {
+        "case": {
+            "patternProperties": {
+                "/$": {
+                    "type": "object",
+                    "$ref": "#/definitions/case"
+                },
+                ".*": {
+                    "title": "Test ID",
+                    "description": "Test ID can be any string that uniquely identifies it in the file.",
+                    "type": "object",
+                    "required": [
+                        "setup",
+                        "expected"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                        "skip": {
+                            "type": "boolean"
+                        },
+                        "setup": {
+                            "$ref": "#/definitions/case_setup"
+                        },
+                        "expected": {
+                            "$ref": "#/definitions/case_expected"
+                        }
+                    }
+                }
+            }
+        },
         "address": {
             "type": "object",
             "oneOf": [

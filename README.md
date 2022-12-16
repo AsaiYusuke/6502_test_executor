@@ -268,6 +268,7 @@ ca65 V2.18 - Ubuntu 2.19-1
 - [Customize configurations](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/customize.configurations.test.json)
 - [Skip test (ignore)](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/skip.test.json)
 - [Complex evaluation](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/evaluation.test.json)
+- [Grouping](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/group.test.json)
 - [Definitions](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/definitions.test.json)
 
 ## Dependencies

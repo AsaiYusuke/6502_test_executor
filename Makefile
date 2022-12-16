@@ -23,7 +23,7 @@ MOS6502_PATCH_DIR	:=	$(THIRD_PARTY_DIR)/mos6502_patch
 MOS6502_PATCH		:=	$(MOS6502_PATCH_DIR)/mos6502.patch
 MOS6502_OBJ		:=	$(BUILD_DIR)/mos6502.o
 
-CFLAGS			:=	--std=c++17 -I $(INC_DIR) -I $(ARGS_DIR) -I $(JSON_DIR) -I $(MOS6502_DIR) -g
+CFLAGS			:=	--std=c++20 -I $(INC_DIR) -I $(ARGS_DIR) -I $(JSON_DIR) -I $(MOS6502_DIR) -g
 
 .PHONY : all exec clean test
 
