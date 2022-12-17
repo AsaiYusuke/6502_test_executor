@@ -1,9 +1,8 @@
 diff --git a/mos6502.cpp b/mos6502.cpp
-index 747786c..a5f8919 100644
+index 747786c..a5e5103 100644
 --- a/mos6502.cpp
 +++ b/mos6502.cpp
-@@ -1,10 +1,10 @@
-+#include <algorithm>
+@@ -1,10 +1,9 @@
  
  #include "mos6502.h"
  
@@ -16,7 +15,7 @@ index 747786c..a5f8919 100644
  	Instr instr;
  
  	// fill jump table with ILLEGALs
-@@ -696,8 +696,8 @@ uint16_t mos6502::Addr_ABS()
+@@ -696,8 +695,8 @@ uint16_t mos6502::Addr_ABS()
  	uint16_t addrH;
  	uint16_t addr;
  
@@ -27,7 +26,7 @@ index 747786c..a5f8919 100644
  
  	addr = addrL + (addrH << 8);
  
-@@ -706,7 +706,7 @@ uint16_t mos6502::Addr_ABS()
+@@ -706,7 +705,7 @@ uint16_t mos6502::Addr_ABS()
  
  uint16_t mos6502::Addr_ZER()
  {
@@ -36,7 +35,7 @@ index 747786c..a5f8919 100644
  }
  
  uint16_t mos6502::Addr_IMP()
-@@ -719,7 +719,7 @@ uint16_t mos6502::Addr_REL()
+@@ -719,7 +718,7 @@ uint16_t mos6502::Addr_REL()
  	uint16_t offset;
  	uint16_t addr;
  
@@ -45,7 +44,7 @@ index 747786c..a5f8919 100644
  	if (offset & 0x80) offset |= 0xFF00;
  	addr = pc + (int16_t)offset;
  	return addr;
-@@ -734,17 +734,17 @@ uint16_t mos6502::Addr_ABI()
+@@ -734,17 +733,17 @@ uint16_t mos6502::Addr_ABI()
  	uint16_t abs;
  	uint16_t addr;
  
@@ -68,7 +67,7 @@ index 747786c..a5f8919 100644
  #endif
  
  	addr = effL + 0x100 * effH;
-@@ -754,13 +754,13 @@ uint16_t mos6502::Addr_ABI()
+@@ -754,13 +753,13 @@ uint16_t mos6502::Addr_ABI()
  
  uint16_t mos6502::Addr_ZEX()
  {
@@ -84,7 +83,7 @@ index 747786c..a5f8919 100644
  	return addr;
  }
  
-@@ -770,8 +770,8 @@ uint16_t mos6502::Addr_ABX()
+@@ -770,8 +769,8 @@ uint16_t mos6502::Addr_ABX()
  	uint16_t addrL;
  	uint16_t addrH;
  
@@ -95,7 +94,7 @@ index 747786c..a5f8919 100644
  
  	addr = addrL + (addrH << 8) + X;
  	return addr;
-@@ -783,8 +783,8 @@ uint16_t mos6502::Addr_ABY()
+@@ -783,8 +782,8 @@ uint16_t mos6502::Addr_ABY()
  	uint16_t addrL;
  	uint16_t addrH;
  
@@ -106,7 +105,7 @@ index 747786c..a5f8919 100644
  
  	addr = addrL + (addrH << 8) + Y;
  	return addr;
-@@ -797,9 +797,9 @@ uint16_t mos6502::Addr_INX()
+@@ -797,9 +796,9 @@ uint16_t mos6502::Addr_INX()
  	uint16_t zeroH;
  	uint16_t addr;
  
@@ -118,7 +117,7 @@ index 747786c..a5f8919 100644
  
  	return addr;
  }
-@@ -810,9 +810,9 @@ uint16_t mos6502::Addr_INY()
+@@ -810,9 +809,9 @@ uint16_t mos6502::Addr_INY()
  	uint16_t zeroH;
  	uint16_t addr;
  
@@ -130,7 +129,7 @@ index 747786c..a5f8919 100644
  
  	return addr;
  }
-@@ -823,7 +823,7 @@ void mos6502::Reset()
+@@ -823,7 +822,7 @@ void mos6502::Reset()
  	Y = reset_Y;
  	X = reset_X;
  
@@ -139,35 +138,8 @@ index 747786c..a5f8919 100644
  
  	sp = reset_sp;
  
-@@ -834,9 +834,34 @@ void mos6502::Reset()
- 	return;
- }
+@@ -836,7 +835,7 @@ void mos6502::Reset()
  
-+void mos6502::SetP(uint8_t value)
-+{
-+	status = value;
-+}
-+
-+void mos6502::SetA(uint8_t value)
-+{
-+	A = value;
-+}
-+
-+void mos6502::SetX(uint8_t value)
-+{
-+	X = value;
-+}
-+
-+void mos6502::SetY(uint8_t value)
-+{
-+	Y = value;
-+}
-+
-+void mos6502::SetPC(uint16_t value)
-+{
-+	pc = value;
-+}
-+
  void mos6502::StackPush(uint8_t byte)
  {
 -	Write(0x0100 + sp, byte);
@@ -175,7 +147,7 @@ index 747786c..a5f8919 100644
  	if(sp == 0x00) sp = 0xFF;
  	else sp--;
  }
-@@ -845,7 +870,7 @@ uint8_t mos6502::StackPop()
+@@ -845,7 +844,7 @@ uint8_t mos6502::StackPop()
  {
  	if(sp == 0xFF) sp = 0x00;
  	else sp++;
@@ -184,7 +156,7 @@ index 747786c..a5f8919 100644
  }
  
  void mos6502::IRQ()
-@@ -857,7 +882,7 @@ void mos6502::IRQ()
+@@ -857,7 +856,7 @@ void mos6502::IRQ()
  		StackPush(pc & 0xFF);
  		StackPush((status & ~BREAK) | CONSTANT);
  		SET_INTERRUPT(1);
@@ -193,7 +165,7 @@ index 747786c..a5f8919 100644
  	}
  	return;
  }
-@@ -869,7 +894,7 @@ void mos6502::NMI()
+@@ -869,7 +868,7 @@ void mos6502::NMI()
  	StackPush(pc & 0xFF);
  	StackPush((status & ~BREAK) | CONSTANT);
  	SET_INTERRUPT(1);
@@ -202,7 +174,7 @@ index 747786c..a5f8919 100644
  	return;
  }
  
-@@ -884,7 +909,7 @@ void mos6502::Run(
+@@ -884,7 +883,7 @@ void mos6502::Run(
  	while(cyclesRemaining > 0 && !illegalOpcode)
  	{
  		// fetch
@@ -211,7 +183,7 @@ index 747786c..a5f8919 100644
  
  		// decode
  		instr = InstrTable[opcode];
-@@ -992,7 +1017,7 @@ void mos6502::Op_ILLEGAL(uint16_t src)
+@@ -992,7 +991,7 @@ void mos6502::Op_ILLEGAL(uint16_t src)
  
  void mos6502::Op_ADC(uint16_t src)
  {
@@ -220,7 +192,7 @@ index 747786c..a5f8919 100644
  	unsigned int tmp = m + A + (IF_CARRY() ? 1 : 0);
  	SET_ZERO(!(tmp & 0xFF));
  	if (IF_DECIMAL())
-@@ -1021,7 +1046,7 @@ void mos6502::Op_ADC(uint16_t src)
+@@ -1021,7 +1020,7 @@ void mos6502::Op_ADC(uint16_t src)
  
  void mos6502::Op_AND(uint16_t src)
  {
@@ -229,7 +201,7 @@ index 747786c..a5f8919 100644
  	uint8_t res = m & A;
  	SET_NEGATIVE(res & 0x80);
  	SET_ZERO(!res);
-@@ -1032,13 +1057,13 @@ void mos6502::Op_AND(uint16_t src)
+@@ -1032,13 +1031,13 @@ void mos6502::Op_AND(uint16_t src)
  
  void mos6502::Op_ASL(uint16_t src)
  {
@@ -245,7 +217,7 @@ index 747786c..a5f8919 100644
  	return;
  }
  
-@@ -1084,7 +1109,7 @@ void mos6502::Op_BEQ(uint16_t src)
+@@ -1084,7 +1083,7 @@ void mos6502::Op_BEQ(uint16_t src)
  
  void mos6502::Op_BIT(uint16_t src)
  {
@@ -254,7 +226,7 @@ index 747786c..a5f8919 100644
  	uint8_t res = m & A;
  	SET_NEGATIVE(res & 0x80);
  	status = (status & 0x3F) | (uint8_t)(m & 0xC0) | CONSTANT | BREAK;
-@@ -1126,7 +1151,7 @@ void mos6502::Op_BRK(uint16_t src)
+@@ -1126,7 +1125,7 @@ void mos6502::Op_BRK(uint16_t src)
  	StackPush(pc & 0xFF);
  	StackPush(status | CONSTANT | BREAK);
  	SET_INTERRUPT(1);
@@ -263,7 +235,7 @@ index 747786c..a5f8919 100644
  	return;
  }
  
-@@ -1174,7 +1199,7 @@ void mos6502::Op_CLV(uint16_t src)
+@@ -1174,7 +1173,7 @@ void mos6502::Op_CLV(uint16_t src)
  
  void mos6502::Op_CMP(uint16_t src)
  {
@@ -272,7 +244,7 @@ index 747786c..a5f8919 100644
  	SET_CARRY(tmp < 0x100);
  	SET_NEGATIVE(tmp & 0x80);
  	SET_ZERO(!(tmp & 0xFF));
-@@ -1183,7 +1208,7 @@ void mos6502::Op_CMP(uint16_t src)
+@@ -1183,7 +1182,7 @@ void mos6502::Op_CMP(uint16_t src)
  
  void mos6502::Op_CPX(uint16_t src)
  {
@@ -281,7 +253,7 @@ index 747786c..a5f8919 100644
  	SET_CARRY(tmp < 0x100);
  	SET_NEGATIVE(tmp & 0x80);
  	SET_ZERO(!(tmp & 0xFF));
-@@ -1192,7 +1217,7 @@ void mos6502::Op_CPX(uint16_t src)
+@@ -1192,7 +1191,7 @@ void mos6502::Op_CPX(uint16_t src)
  
  void mos6502::Op_CPY(uint16_t src)
  {
@@ -290,7 +262,7 @@ index 747786c..a5f8919 100644
  	SET_CARRY(tmp < 0x100);
  	SET_NEGATIVE(tmp & 0x80);
  	SET_ZERO(!(tmp & 0xFF));
-@@ -1201,11 +1226,11 @@ void mos6502::Op_CPY(uint16_t src)
+@@ -1201,11 +1200,11 @@ void mos6502::Op_CPY(uint16_t src)
  
  void mos6502::Op_DEC(uint16_t src)
  {
@@ -304,7 +276,7 @@ index 747786c..a5f8919 100644
  	return;
  }
  
-@@ -1231,7 +1256,7 @@ void mos6502::Op_DEY(uint16_t src)
+@@ -1231,7 +1230,7 @@ void mos6502::Op_DEY(uint16_t src)
  
  void mos6502::Op_EOR(uint16_t src)
  {
@@ -313,7 +285,7 @@ index 747786c..a5f8919 100644
  	m = A ^ m;
  	SET_NEGATIVE(m & 0x80);
  	SET_ZERO(!m);
-@@ -1240,11 +1265,11 @@ void mos6502::Op_EOR(uint16_t src)
+@@ -1240,11 +1239,11 @@ void mos6502::Op_EOR(uint16_t src)
  
  void mos6502::Op_INC(uint16_t src)
  {
@@ -327,7 +299,7 @@ index 747786c..a5f8919 100644
  }
  
  void mos6502::Op_INX(uint16_t src)
-@@ -1280,7 +1305,7 @@ void mos6502::Op_JSR(uint16_t src)
+@@ -1280,7 +1279,7 @@ void mos6502::Op_JSR(uint16_t src)
  
  void mos6502::Op_LDA(uint16_t src)
  {
@@ -336,7 +308,7 @@ index 747786c..a5f8919 100644
  	SET_NEGATIVE(m & 0x80);
  	SET_ZERO(!m);
  	A = m;
-@@ -1288,7 +1313,7 @@ void mos6502::Op_LDA(uint16_t src)
+@@ -1288,7 +1287,7 @@ void mos6502::Op_LDA(uint16_t src)
  
  void mos6502::Op_LDX(uint16_t src)
  {
@@ -345,7 +317,7 @@ index 747786c..a5f8919 100644
  	SET_NEGATIVE(m & 0x80);
  	SET_ZERO(!m);
  	X = m;
-@@ -1296,7 +1321,7 @@ void mos6502::Op_LDX(uint16_t src)
+@@ -1296,7 +1295,7 @@ void mos6502::Op_LDX(uint16_t src)
  
  void mos6502::Op_LDY(uint16_t src)
  {
@@ -354,7 +326,7 @@ index 747786c..a5f8919 100644
  	SET_NEGATIVE(m & 0x80);
  	SET_ZERO(!m);
  	Y = m;
-@@ -1304,12 +1329,12 @@ void mos6502::Op_LDY(uint16_t src)
+@@ -1304,12 +1303,12 @@ void mos6502::Op_LDY(uint16_t src)
  
  void mos6502::Op_LSR(uint16_t src)
  {
@@ -369,7 +341,7 @@ index 747786c..a5f8919 100644
  }
  
  void mos6502::Op_LSR_ACC(uint16_t src)
-@@ -1329,7 +1354,7 @@ void mos6502::Op_NOP(uint16_t src)
+@@ -1329,7 +1328,7 @@ void mos6502::Op_NOP(uint16_t src)
  
  void mos6502::Op_ORA(uint16_t src)
  {
@@ -378,7 +350,7 @@ index 747786c..a5f8919 100644
  	m = A | m;
  	SET_NEGATIVE(m & 0x80);
  	SET_ZERO(!m);
-@@ -1365,14 +1390,14 @@ void mos6502::Op_PLP(uint16_t src)
+@@ -1365,14 +1364,14 @@ void mos6502::Op_PLP(uint16_t src)
  
  void mos6502::Op_ROL(uint16_t src)
  {
@@ -395,7 +367,7 @@ index 747786c..a5f8919 100644
  	return;
  }
  
-@@ -1391,14 +1416,14 @@ void mos6502::Op_ROL_ACC(uint16_t src)
+@@ -1391,14 +1390,14 @@ void mos6502::Op_ROL_ACC(uint16_t src)
  
  void mos6502::Op_ROR(uint16_t src)
  {
@@ -412,7 +384,7 @@ index 747786c..a5f8919 100644
  	return;
  }
  
-@@ -1441,7 +1466,7 @@ void mos6502::Op_RTS(uint16_t src)
+@@ -1441,7 +1440,7 @@ void mos6502::Op_RTS(uint16_t src)
  
  void mos6502::Op_SBC(uint16_t src)
  {
@@ -421,7 +393,7 @@ index 747786c..a5f8919 100644
  	unsigned int tmp = A - m - (IF_CARRY() ? 0 : 1);
  	SET_NEGATIVE(tmp & 0x80);
  	SET_ZERO(!(tmp & 0xFF));
-@@ -1480,19 +1505,19 @@ void mos6502::Op_SEI(uint16_t src)
+@@ -1480,19 +1479,19 @@ void mos6502::Op_SEI(uint16_t src)
  
  void mos6502::Op_STA(uint16_t src)
  {
@@ -444,203 +416,11 @@ index 747786c..a5f8919 100644
  	return;
  }
  
-@@ -1546,3 +1571,191 @@ void mos6502::Op_TYA(uint16_t src)
- 	A = m;
- 	return;
- }
-+
-+bool mos6502::isIllegalInstr()
-+{
-+	return illegalOpcode;
-+}
-+
-+bool mos6502::isCallInstr()
-+{
-+	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-+	return find(callInstr.begin(), callInstr.end(), instr) != callInstr.end();
-+}
-+
-+bool mos6502::isReturnInstr()
-+{
-+	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-+	return find(returnInstr.begin(), returnInstr.end(), instr) != returnInstr.end();
-+}
-+
-+bool mos6502::isReadInstrA()
-+{
-+	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-+	return find(readInstrA.begin(), readInstrA.end(), instr) != readInstrA.end();
-+}
-+
-+bool mos6502::isWriteInstrA()
-+{
-+	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-+	return find(writeInstrA.begin(), writeInstrA.end(), instr) != writeInstrA.end();
-+}
-+
-+bool mos6502::isReadInstrX()
-+{
-+	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-+	return find(readInstrX.begin(), readInstrX.end(), instr) != readInstrX.end();
-+}
-+
-+bool mos6502::isWriteInstrX()
-+{
-+	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-+	return find(writeInstrX.begin(), writeInstrX.end(), instr) != writeInstrX.end();
-+}
-+
-+bool mos6502::isReadInstrY()
-+{
-+	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-+	return find(readInstrY.begin(), readInstrY.end(), instr) != readInstrY.end();
-+}
-+
-+bool mos6502::isWriteInstrY()
-+{
-+	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-+	return find(writeInstrY.begin(), writeInstrY.end(), instr) != writeInstrY.end();
-+}
-+
-+bool mos6502::isReadInstrNegative()
-+{
-+	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-+	return find(readInstrNegative.begin(), readInstrNegative.end(), instr) != readInstrNegative.end();
-+}
-+
-+bool mos6502::isWriteInstrNegative()
-+{
-+	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-+	return find(writeInstrNegative.begin(), writeInstrNegative.end(), instr) != writeInstrNegative.end();
-+}
-+
-+bool mos6502::isReadInstrOverflow()
-+{
-+	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-+	return find(readInstrOverflow.begin(), readInstrOverflow.end(), instr) != readInstrOverflow.end();
-+}
-+
-+bool mos6502::isWriteInstrOverflow()
-+{
-+	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-+	return find(writeInstrOverflow.begin(), writeInstrOverflow.end(), instr) != writeInstrOverflow.end();
-+}
-+
-+bool mos6502::isReadInstrConstant()
-+{
-+	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-+	return find(readInstrConstant.begin(), readInstrConstant.end(), instr) != readInstrConstant.end();
-+}
-+
-+bool mos6502::isWriteInstrConstant()
-+{
-+	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-+	return find(writeInstrConstant.begin(), writeInstrConstant.end(), instr) != writeInstrConstant.end();
-+}
-+
-+bool mos6502::isReadInstrBreak()
-+{
-+	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-+	return find(readInstrBreak.begin(), readInstrBreak.end(), instr) != readInstrBreak.end();
-+}
-+
-+bool mos6502::isWriteInstrBreak()
-+{
-+	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-+	return find(writeInstrBreak.begin(), writeInstrBreak.end(), instr) != writeInstrBreak.end();
-+}
-+
-+bool mos6502::isReadInstrDecimal()
-+{
-+	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-+	return find(readInstrDecimal.begin(), readInstrDecimal.end(), instr) != readInstrDecimal.end();
-+}
-+
-+bool mos6502::isWriteInstrDecimal()
-+{
-+	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-+	return find(writeInstrDecimal.begin(), writeInstrDecimal.end(), instr) != writeInstrDecimal.end();
-+}
-+
-+bool mos6502::isReadInstrInterrupt()
-+{
-+	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-+	return find(readInstrInterrupt.begin(), readInstrInterrupt.end(), instr) != readInstrInterrupt.end();
-+}
-+
-+bool mos6502::isWriteInstrInterrupt()
-+{
-+	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-+	return find(writeInstrInterrupt.begin(), writeInstrInterrupt.end(), instr) != writeInstrInterrupt.end();
-+}
-+
-+bool mos6502::isReadInstrZero()
-+{
-+	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-+	return find(readInstrZero.begin(), readInstrZero.end(), instr) != readInstrZero.end();
-+}
-+
-+bool mos6502::isWriteInstrZero()
-+{
-+	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-+	return find(writeInstrZero.begin(), writeInstrZero.end(), instr) != writeInstrZero.end();
-+}
-+
-+bool mos6502::isReadInstrCarry()
-+{
-+	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-+	return find(readInstrCarry.begin(), readInstrCarry.end(), instr) != readInstrCarry.end();
-+}
-+
-+bool mos6502::isWriteInstrCarry()
-+{
-+	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-+	return find(writeInstrCarry.begin(), writeInstrCarry.end(), instr) != writeInstrCarry.end();
-+}
-+
-+bool mos6502::isReadInstrS()
-+{
-+	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-+	return find(readInstrS.begin(), readInstrS.end(), instr) != readInstrS.end();
-+}
-+
-+bool mos6502::isWriteInstrS()
-+{
-+	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-+	return find(writeInstrS.begin(), writeInstrS.end(), instr) != writeInstrS.end();
-+}
-+
-+bool mos6502::isReadInstrPC()
-+{
-+	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-+	return find(readInstrPC.begin(), readInstrPC.end(), instr) != readInstrPC.end();
-+}
-+
-+bool mos6502::isWriteInstrPC()
-+{
-+	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-+	return find(writeInstrPC.begin(), writeInstrPC.end(), instr) != writeInstrPC.end();
-+}
-+
-+void mos6502::forceRts()
-+{
-+	Op_RTS(0);
-+}
-+
-+void mos6502::forceJmp(uint16_t address)
-+{
-+	Op_JMP(address);
-+}
-+
-+void mos6502::forceJsr(uint16_t address)
-+{
-+	Op_JSR(address);
-+}
 diff --git a/mos6502.h b/mos6502.h
-index 8229cc7..f47cad6 100644
+index 8229cc7..0989b7f 100644
 --- a/mos6502.h
 +++ b/mos6502.h
-@@ -5,9 +5,12 @@
+@@ -5,9 +5,11 @@
  // Copyright   :
  // Description : A MOS 6502 CPU emulator written in C++
  //============================================================================
@@ -648,12 +428,20 @@ index 8229cc7..f47cad6 100644
  
  #include <iostream>
  #include <stdint.h>
-+#include <vector>
 +#include "emulation/memory_access.h"
  using namespace std;
  
  #define NEGATIVE  0x80
-@@ -172,22 +175,346 @@ private:
+@@ -41,7 +43,7 @@ using namespace std;
+ 
+ class mos6502
+ {
+-private:
++protected:
+     // register reset values
+     uint8_t reset_A = 0x00;
+     uint8_t reset_X = 0x00;
+@@ -172,22 +174,24 @@ private:
  	static const uint16_t nmiVectorH = 0xFFFB;
  	static const uint16_t nmiVectorL = 0xFFFA;
  
@@ -668,337 +456,12 @@ index 8229cc7..f47cad6 100644
 +	// BusRead Read;
 +	// BusWrite Write;
  
--	// stack operations
--	inline void StackPush(uint8_t byte);
--	inline uint8_t StackPop();
-+	// // stack operations
-+	// inline void StackPush(uint8_t byte);
-+	// inline uint8_t StackPop();
-+
+ 	// stack operations
+ 	inline void StackPush(uint8_t byte);
+ 	inline uint8_t StackPop();
+ 
 +	i_memory_access *memory_access;
 +
-+	vector<CodeExec> callInstr{
-+		&mos6502::Op_BRK,
-+		&mos6502::Op_JSR
-+	};
-+	vector<CodeExec> returnInstr{
-+		&mos6502::Op_RTI,
-+		&mos6502::Op_RTS
-+	};
-+	vector<CodeExec> readInstrA{
-+		&mos6502::Op_ADC,
-+		&mos6502::Op_AND,
-+		&mos6502::Op_ASL_ACC,
-+		&mos6502::Op_BIT,
-+		&mos6502::Op_CMP,
-+		&mos6502::Op_EOR,
-+		&mos6502::Op_LSR_ACC,
-+		&mos6502::Op_ORA,
-+		&mos6502::Op_PHA,
-+		&mos6502::Op_PLA,
-+		&mos6502::Op_ROL_ACC,
-+		&mos6502::Op_ROR_ACC,
-+		&mos6502::Op_SBC,
-+		&mos6502::Op_STA,
-+		&mos6502::Op_TAX,
-+		&mos6502::Op_TAY
-+	};
-+	vector<CodeExec> writeInstrA{
-+		&mos6502::Op_ADC,
-+		&mos6502::Op_AND,
-+		&mos6502::Op_ASL_ACC,
-+		&mos6502::Op_EOR,
-+		&mos6502::Op_LDA,
-+		&mos6502::Op_LSR_ACC,
-+		&mos6502::Op_ORA,
-+		&mos6502::Op_ROL_ACC,
-+		&mos6502::Op_ROR_ACC,
-+		&mos6502::Op_SBC,
-+		&mos6502::Op_TXA,
-+		&mos6502::Op_TYA
-+	};
-+	vector<CodeExec> readInstrX{
-+		&mos6502::Op_CPX,
-+		&mos6502::Op_DEX,
-+		&mos6502::Op_INX,
-+		&mos6502::Op_STX,
-+		&mos6502::Op_TXA,
-+		&mos6502::Op_TXS
-+	};
-+	vector<CodeExec> writeInstrX{
-+		&mos6502::Op_DEX,
-+		&mos6502::Op_INX,
-+		&mos6502::Op_LDX,
-+		&mos6502::Op_TAX,
-+		&mos6502::Op_TSX
-+	};
-+	vector<CodeExec> readInstrY{
-+		&mos6502::Op_CPY,
-+		&mos6502::Op_DEY,
-+		&mos6502::Op_INY,
-+		&mos6502::Op_STY,
-+		&mos6502::Op_TYA
-+	};
-+	vector<CodeExec> writeInstrY{
-+		&mos6502::Op_DEY,
-+		&mos6502::Op_INY,
-+		&mos6502::Op_LDY,
-+		&mos6502::Op_TAY
-+	};
-+	vector<CodeExec> readInstrNegative{
-+		&mos6502::Op_ADC,
-+		&mos6502::Op_AND,
-+		&mos6502::Op_ASL,
-+		&mos6502::Op_ASL_ACC,
-+		&mos6502::Op_BIT,
-+		&mos6502::Op_BMI,
-+		&mos6502::Op_BPL,
-+		&mos6502::Op_CMP,
-+		&mos6502::Op_CPX,
-+		&mos6502::Op_CPY,
-+		&mos6502::Op_DEC,
-+		&mos6502::Op_DEX,
-+		&mos6502::Op_DEY,
-+		&mos6502::Op_EOR,
-+		&mos6502::Op_INC,
-+		&mos6502::Op_INX,
-+		&mos6502::Op_INY,
-+		&mos6502::Op_LDA,
-+		&mos6502::Op_LDX,
-+		&mos6502::Op_LDY,
-+		&mos6502::Op_LSR,
-+		&mos6502::Op_LSR_ACC,
-+		&mos6502::Op_ORA,
-+		&mos6502::Op_PLA,
-+		&mos6502::Op_ROL,
-+		&mos6502::Op_ROL_ACC,
-+		&mos6502::Op_ROR,
-+		&mos6502::Op_ROR_ACC,
-+		&mos6502::Op_SBC,
-+		&mos6502::Op_TAX,
-+		&mos6502::Op_TAY,
-+		&mos6502::Op_TSX,
-+		&mos6502::Op_TXA,
-+		&mos6502::Op_TYA
-+	};
-+	vector<CodeExec> readInstrOverflow{
-+		&mos6502::Op_ADC,
-+		&mos6502::Op_BVC,
-+		&mos6502::Op_BVS,
-+		&mos6502::Op_CLV,
-+		&mos6502::Op_SBC
-+	};
-+	vector<CodeExec> readInstrConstant{
-+	};
-+	vector<CodeExec> readInstrBreak{
-+	};
-+	vector<CodeExec> readInstrDecimal{
-+		&mos6502::Op_ADC,
-+		&mos6502::Op_CLD,
-+		&mos6502::Op_SBC,
-+		&mos6502::Op_SED
-+	};
-+	vector<CodeExec> readInstrInterrupt{
-+		&mos6502::Op_BRK,
-+		&mos6502::Op_CLI,
-+		&mos6502::Op_SEI
-+	};
-+	vector<CodeExec> readInstrZero{
-+		&mos6502::Op_ADC,
-+		&mos6502::Op_AND,
-+		&mos6502::Op_ASL,
-+		&mos6502::Op_ASL_ACC,
-+		&mos6502::Op_BEQ,
-+		&mos6502::Op_BIT,
-+		&mos6502::Op_BNE,
-+		&mos6502::Op_CMP,
-+		&mos6502::Op_CPX,
-+		&mos6502::Op_CPY,
-+		&mos6502::Op_DEC,
-+		&mos6502::Op_DEX,
-+		&mos6502::Op_DEY,
-+		&mos6502::Op_EOR,
-+		&mos6502::Op_INC,
-+		&mos6502::Op_INX,
-+		&mos6502::Op_INY,
-+		&mos6502::Op_LDA,
-+		&mos6502::Op_LDX,
-+		&mos6502::Op_LDY,
-+		&mos6502::Op_LSR,
-+		&mos6502::Op_LSR_ACC,
-+		&mos6502::Op_ORA,
-+		&mos6502::Op_PHA,
-+		&mos6502::Op_PLA,
-+		&mos6502::Op_ROL,
-+		&mos6502::Op_ROL_ACC,
-+		&mos6502::Op_ROR,
-+		&mos6502::Op_ROR_ACC,
-+		&mos6502::Op_SBC,
-+		&mos6502::Op_TAX,
-+		&mos6502::Op_TAY,
-+		&mos6502::Op_TSX,
-+		&mos6502::Op_TXA,
-+		&mos6502::Op_TYA
-+	};
-+	vector<CodeExec> readInstrCarry{
-+		&mos6502::Op_ADC,
-+		&mos6502::Op_AND,
-+		&mos6502::Op_ASL,
-+		&mos6502::Op_ASL_ACC,
-+		&mos6502::Op_BCC,
-+		&mos6502::Op_BCS,
-+		&mos6502::Op_CLC,
-+		&mos6502::Op_CMP,
-+		&mos6502::Op_CPX,
-+		&mos6502::Op_CPY,
-+		&mos6502::Op_LSR,
-+		&mos6502::Op_LSR_ACC,
-+		&mos6502::Op_ROL,
-+		&mos6502::Op_ROL_ACC,
-+		&mos6502::Op_ROR,
-+		&mos6502::Op_ROR_ACC,
-+		&mos6502::Op_SBC,
-+		&mos6502::Op_SEC
-+	};
-+	vector<CodeExec> writeInstrNegative{
-+		&mos6502::Op_ADC,
-+		&mos6502::Op_AND,
-+		&mos6502::Op_ASL,
-+		&mos6502::Op_ASL_ACC,
-+		&mos6502::Op_BIT,
-+		&mos6502::Op_CMP,
-+		&mos6502::Op_CPX,
-+		&mos6502::Op_CPY,
-+		&mos6502::Op_DEC,
-+		&mos6502::Op_DEX,
-+		&mos6502::Op_DEY,
-+		&mos6502::Op_EOR,
-+		&mos6502::Op_INC,
-+		&mos6502::Op_INX,
-+		&mos6502::Op_INY,
-+		&mos6502::Op_LDA,
-+		&mos6502::Op_LDX,
-+		&mos6502::Op_LDY,
-+		&mos6502::Op_LSR,
-+		&mos6502::Op_LSR_ACC,
-+		&mos6502::Op_ORA,
-+		&mos6502::Op_PLA,
-+		&mos6502::Op_ROL,
-+		&mos6502::Op_ROL_ACC,
-+		&mos6502::Op_ROR,
-+		&mos6502::Op_ROR_ACC,
-+		&mos6502::Op_SBC,
-+		&mos6502::Op_TAX,
-+		&mos6502::Op_TAY,
-+		&mos6502::Op_TSX,
-+		&mos6502::Op_TXA,
-+		&mos6502::Op_TYA
-+	};
-+	vector<CodeExec> writeInstrOverflow{
-+		&mos6502::Op_ADC,
-+		&mos6502::Op_CLV,
-+		&mos6502::Op_SBC
-+	};
-+	vector<CodeExec> writeInstrConstant{
-+	};
-+	vector<CodeExec> writeInstrBreak{
-+	};
-+	vector<CodeExec> writeInstrDecimal{
-+		&mos6502::Op_CLD,
-+		&mos6502::Op_SED
-+	};
-+	vector<CodeExec> writeInstrInterrupt{
-+		&mos6502::Op_BRK,
-+		&mos6502::Op_CLI,
-+		&mos6502::Op_SEI
-+	};
-+	vector<CodeExec> writeInstrZero{
-+		&mos6502::Op_ADC,
-+		&mos6502::Op_AND,
-+		&mos6502::Op_ASL,
-+		&mos6502::Op_ASL_ACC,
-+		&mos6502::Op_BIT,
-+		&mos6502::Op_CMP,
-+		&mos6502::Op_CPX,
-+		&mos6502::Op_CPY,
-+		&mos6502::Op_DEC,
-+		&mos6502::Op_DEX,
-+		&mos6502::Op_DEY,
-+		&mos6502::Op_EOR,
-+		&mos6502::Op_INC,
-+		&mos6502::Op_INX,
-+		&mos6502::Op_INY,
-+		&mos6502::Op_LDA,
-+		&mos6502::Op_LDX,
-+		&mos6502::Op_LDY,
-+		&mos6502::Op_LSR,
-+		&mos6502::Op_LSR_ACC,
-+		&mos6502::Op_ORA,
-+		&mos6502::Op_PHA,
-+		&mos6502::Op_PLA,
-+		&mos6502::Op_ROL,
-+		&mos6502::Op_ROL_ACC,
-+		&mos6502::Op_ROR,
-+		&mos6502::Op_ROR_ACC,
-+		&mos6502::Op_SBC,
-+		&mos6502::Op_TAX,
-+		&mos6502::Op_TAY,
-+		&mos6502::Op_TSX,
-+		&mos6502::Op_TXA,
-+		&mos6502::Op_TYA
-+	};
-+	vector<CodeExec> writeInstrCarry{
-+		&mos6502::Op_ADC,
-+		&mos6502::Op_AND,
-+		&mos6502::Op_ASL,
-+		&mos6502::Op_ASL_ACC,
-+		&mos6502::Op_CLC,
-+		&mos6502::Op_CMP,
-+		&mos6502::Op_CPX,
-+		&mos6502::Op_CPY,
-+		&mos6502::Op_LSR,
-+		&mos6502::Op_LSR_ACC,
-+		&mos6502::Op_ROL,
-+		&mos6502::Op_ROL_ACC,
-+		&mos6502::Op_ROR,
-+		&mos6502::Op_ROR_ACC,
-+		&mos6502::Op_SBC,
-+		&mos6502::Op_SEC
-+	};
-+	vector<CodeExec> readInstrS{
-+		&mos6502::Op_PLA,
-+		&mos6502::Op_PLP,
-+		&mos6502::Op_RTI,
-+		&mos6502::Op_RTS,
-+		&mos6502::Op_TSX
-+	};
-+	vector<CodeExec> writeInstrS{
-+		&mos6502::Op_BRK,
-+		&mos6502::Op_JSR,
-+		&mos6502::Op_PHA,
-+		&mos6502::Op_PHP,
-+		&mos6502::Op_TXS
-+	};
-+	vector<CodeExec> readInstrPC{
-+		&mos6502::Op_BRK,
-+		&mos6502::Op_JSR,
-+	};
-+	vector<CodeExec> writeInstrPC{
-+		&mos6502::Op_BCC,
-+		&mos6502::Op_BCS,
-+		&mos6502::Op_BEQ,
-+		&mos6502::Op_BMI,
-+		&mos6502::Op_BNE,
-+		&mos6502::Op_BPL,
-+		&mos6502::Op_BRK,
-+		&mos6502::Op_BVC,
-+		&mos6502::Op_BVS,
-+		&mos6502::Op_JMP,
-+		&mos6502::Op_JSR,
-+		&mos6502::Op_RTI,
-+		&mos6502::Op_RTS
-+	};
- 
  public:
  	enum CycleMethod {
  		INST_COUNT,
@@ -1009,48 +472,3 @@ index 8229cc7..f47cad6 100644
  	void NMI();
  	void IRQ();
  	void Reset();
-@@ -211,4 +538,44 @@ public:
-     uint8_t GetResetA();
-     uint8_t GetResetX();
-     uint8_t GetResetY();
-+
-+    void SetP(uint8_t value);
-+    void SetA(uint8_t value);
-+    void SetX(uint8_t value);
-+    void SetY(uint8_t value);
-+	void SetPC(uint16_t value);
-+	void StackPush(uint8_t byte);
-+	uint8_t StackPop();
-+	bool isIllegalInstr();
-+	bool isCallInstr();
-+	bool isReturnInstr();
-+	bool isReadInstrA();
-+	bool isWriteInstrA();
-+	bool isReadInstrX();
-+	bool isWriteInstrX();
-+	bool isReadInstrY();
-+	bool isWriteInstrY();
-+	bool isReadInstrNegative();
-+	bool isWriteInstrNegative();
-+	bool isReadInstrOverflow();
-+	bool isWriteInstrOverflow();
-+	bool isReadInstrConstant();
-+	bool isWriteInstrConstant();
-+	bool isReadInstrBreak();
-+	bool isWriteInstrBreak();
-+	bool isReadInstrDecimal();
-+	bool isWriteInstrDecimal();
-+	bool isReadInstrInterrupt();
-+	bool isWriteInstrInterrupt();
-+	bool isReadInstrZero();
-+	bool isWriteInstrZero();
-+	bool isReadInstrCarry();
-+	bool isWriteInstrCarry();
-+	bool isReadInstrS();
-+	bool isWriteInstrS();
-+	bool isReadInstrPC();
-+	bool isWriteInstrPC();
-+	void forceRts();
-+	void forceJmp(uint16_t address);
-+	void forceJsr(uint16_t address);
- };

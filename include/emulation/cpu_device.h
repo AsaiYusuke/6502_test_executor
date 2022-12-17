@@ -2,9 +2,9 @@
 
 #include <vector>
 
-#include "mos6502.h"
 #include "nlohmann/json.hpp"
 #include "args_parser.h"
+#include "emulation/mos6502/exec_mos6502.h"
 #include "emulation/debug_info.h"
 #include "emulation/cpu_filter/cpu_filter.h"
 #include "emulation/cpu_filter/call_stack_filter.h"
@@ -30,7 +30,7 @@ class cpu_device
 private:
     emulation_devices *device;
 
-    mos6502 *cpu;
+    exec_mos6502 *cpu;
     uint64_t max_cycle_count;
     uint64_t cycle_count;
     enum class inst_type

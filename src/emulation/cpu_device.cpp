@@ -13,7 +13,7 @@ cpu_device::cpu_device(emulation_devices *_device, args_parser *args, json confi
 {
     device = _device;
 
-    cpu = new mos6502((i_memory_access *)_device->get_memory());
+    cpu = new exec_mos6502((i_memory_access *)_device->get_memory());
 
     if (config["maxCycleCount"].is_number())
         max_cycle_count = config["maxCycleCount"].get<uint64_t>();
