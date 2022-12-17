@@ -26,6 +26,7 @@ This tool enables [unit testing](https://en.wikipedia.org/wiki/Unit_testing) for
 ## Basic design
 #### *Execute test on built-in emulator*
 - Built-in [6502 emulation by Gianluca Ghettini](https://github.com/gianlucag/mos6502) enables stand-alone testing on Linux, etc.
+- No need to add hooks to the product code to invoke test.
 #### *Write test with JSON Schema*
 - The tool provides [JSON Schema](https://json-schema.org/) document that makes it easy to create test.
 #### *Evaluate test like modern frameworks*
