@@ -12,9 +12,8 @@ using namespace std;
 class rom_image
 {
 private:
-    map<int, int> segment_id_image_id_map;
-    vector<char *> images;
-    map<string, int> image_name_image_id_map;
+    map<int, string> segment_id_image_id_map;
+    map<string, char *> image_map;
 
     void load_rom_image(filesystem::path debug_path, debug_segment *segment_def);
 

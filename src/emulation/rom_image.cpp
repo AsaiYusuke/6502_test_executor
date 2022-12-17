@@ -18,10 +18,11 @@ void rom_image::load_rom_image(filesystem::path debug_path, debug_segment *segme
 
     debug_path = absolute(debug_path.parent_path());
     ifstream *file;
+    filesystem::path image_path;
     while (1)
     {
-        auto append_path = debug_path / path;
-        file = new ifstream(append_path, ios::in | ios::binary | ios::ate);
+        image_path = debug_path / path;
+        file = new ifstream(image_path, ios::in | ios::binary | ios::ate);
         if (file->is_open())
             break;
         if (!debug_path.has_parent_path())
@@ -29,25 +30,24 @@ void rom_image::load_rom_image(filesystem::path debug_path, debug_segment *segme
         debug_path = debug_path.parent_path();
     }
 
-    streampos size = file->tellg();
-    auto image = new char[size];
-    file->seekg(0, ios::beg);
-    file->read(image, size);
-    file->close();
+    if (image_map.count(image_path) == 0)
+    {
+        streampos size = file->tellg();
+        auto image = new char[size];
+        file->seekg(0, ios::beg);
+        file->read(image, size);
+        file->close();
+        image_map[image_path] = image;
+    }
 
-    auto image_id = images.size();
-    images.push_back(image);
-
-    if (image_name_image_id_map.count(path) == 0)
-        image_name_image_id_map[path] = image_id;
-
-    segment_id_image_id_map[segment_id] = image_id;
+    segment_id_image_id_map[segment_id] = image_path;
 }
 
 platform_type rom_image::detect_platform()
 {
-    for (auto image : images)
+    for (auto entry : image_map)
     {
+        auto image = entry.second;
         if (image[0] == 'N' && image[1] == 'E' && image[2] == 'S' && image[3] == 0x1A)
             return platform_type::NES;
     }
@@ -56,5 +56,5 @@ platform_type rom_image::detect_platform()
 
 char *rom_image::get(int segment_id)
 {
-    return images[segment_id_image_id_map[segment_id]];
+    return image_map[segment_id_image_id_map[segment_id]];
 }
