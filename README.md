@@ -290,3 +290,9 @@ This project uses following project:
   - [Erik Lothe's 6502 Unit test executor](https://github.com/89erik/6502_test_executor)
 - [Taylor C. Richberger's args](https://github.com/Taywee/args)
 - [Niels Lohmann's JSON for Modern C++](https://github.com/nlohmann/json)
+
+## License
+
+This project is licensed under the **MIT license**. Feel free to edit and distribute this template as you like.
+
+See [LICENSE](LICENSE) for more information.
