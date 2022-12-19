@@ -122,7 +122,7 @@ Since the tool repository has the submodules, the `--recurse-submodules` option 
 # ./6502_tester --help
 ```
 
-### Test example project
+### Run example
 
 #### Unit testing
 [Simple example project](https://github.com/AsaiYusuke/6502_test_executor/tree/master/example) includes many test cases that demonstrate the features:
