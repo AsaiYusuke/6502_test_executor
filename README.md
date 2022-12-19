@@ -292,7 +292,4 @@ This project uses following project:
 - [Niels Lohmann's JSON for Modern C++](https://github.com/nlohmann/json)
 
 ## License
-
-This project is licensed under the **MIT license**. Feel free to edit and distribute this template as you like.
-
-See [LICENSE](LICENSE) for more information.
+This project is available under the **MIT license**. See the [LICENSE](LICENSE) file for more information.
