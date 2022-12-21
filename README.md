@@ -191,8 +191,9 @@ the settings of the register and memory to make before the test
 - *Expected condition*  
 the expected responses of the register and memory after the test
 
-#### [JSON Schema file](https://github.com/AsaiYusuke/6502_test_executor/blob/master/schema/testcase.schema.json)
+#### JSON Schema file
 The tool also provides a [JSON Schema](https://json-schema.org/) document that makes it easy to create test scinario files.
+
 If you use [Visual Studio Code](https://code.visualstudio.com/), it will tell you about formatting error and element completion candidates based on JSON Schema without any extensions.
 
 ### Run test
