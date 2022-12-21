@@ -9,6 +9,11 @@ This tool enables [unit testing](https://en.wikipedia.org/wiki/Unit_testing) for
 ## Table of Contents
 * [Basic design](#Basic-design)
 * [Supported testing feature](#Supported-testing-feature)
+  * [Testable program](#Testable-program)
+  * [Condition](#Condition)
+  * [Assertion](#Assertion)
+  * [Coverage](#Coverage)
+  * [Additional useful feature](#Additional-useful-feature)
 * [Getting started](#getting-started)
   * [Prerequisites](#Prerequisites)
   * [Install](#Install)
@@ -19,7 +24,6 @@ This tool enables [unit testing](https://en.wikipedia.org/wiki/Unit_testing) for
   * [Build CA65 project with debug option](#Build-CA65-project-with-debug-option)
   * [Create unit test](#Create-unit-test)
   * [Run test](#Run-test)
-* [Tested CA65 version](#Tested-CA65-version)
 * [Test scinario examples](#Test-scinario-examples)
 * [Dependencies](#Dependencies)
 
@@ -34,6 +38,20 @@ This tool enables [unit testing](https://en.wikipedia.org/wiki/Unit_testing) for
 
 ## Supported testing feature
 
+### Testable program
+- Test target
+  - JSR procedure
+  - NMI procedure
+  - IRQ procedure
+  - Address range
+- Type of interrupts that can occur during testing
+  - NMI
+  - IRQ
+- Mockable call instruction that sets the result in register and memory
+  - JSR
+  - JMP
+
+### Condition
 - Setup device conditions before test  
   |                         |      Register      |       Memory       |       Stack        |
   | :---------------------- | :----------------: | :----------------: | :----------------: |
@@ -47,17 +65,8 @@ This tool enables [unit testing](https://en.wikipedia.org/wiki/Unit_testing) for
   | Check write value history |                    | :heavy_check_mark: |                    |
 - Evaluate processor information
   - Cycle count
-- Testable procedures
-  - JSR
-  - NMI
-  - IRQ
-  - Address range
-- Mockable call instructions that can output results to each register and memory
-  - JSR
-  - JMP
-- Types of interrupts that can occur during testing
-  - NMI
-  - IRQ
+
+### Assertion
 - Assertion operator how test is evaluated
   - *"eq"* (Equal to)
   - *"ne"* (Not equal to)
@@ -73,6 +82,8 @@ This tool enables [unit testing](https://en.wikipedia.org/wiki/Unit_testing) for
   - Write access to readonly memory
   - Access to undefined memory
   - Illegal instruction
+
+### Coverage
 - Testable coverage
   - [LCOV](https://github.com/linux-test-project/lcov) format
 
@@ -93,6 +104,14 @@ The easiest way to install CC65 on [Ubuntu](https://ubuntu.com/) linux is by run
 # sudo apt-get install cc65
 ```
 
+Verified CA65 version:
+
+```
+# ca65 --version
+ca65 V2.18 - Ubuntu 2.19-1
+```
+
+
 ### Install
 Since the tool repository has the submodules, the `--recurse-submodules` option must be specified when cloning:
 
@@ -103,7 +122,7 @@ Since the tool repository has the submodules, the `--recurse-submodules` option 
 # ./6502_tester --help
 ```
 
-### Test example project
+### Run example
 
 #### Unit testing
 [Simple example project](https://github.com/AsaiYusuke/6502_test_executor/tree/master/example) includes many test cases that demonstrate the features:
@@ -172,8 +191,9 @@ the settings of the register and memory to make before the test
 - *Expected condition*  
 the expected responses of the register and memory after the test
 
-#### [JSON Schema file](https://github.com/AsaiYusuke/6502_test_executor/blob/master/schema/testcase.schema.json)
+#### JSON Schema file
 The tool also provides a [JSON Schema](https://json-schema.org/) document that makes it easy to create test scinario files.
+
 If you use [Visual Studio Code](https://code.visualstudio.com/), it will tell you about formatting error and element completion candidates based on JSON Schema without any extensions.
 
 ### Run test
@@ -223,13 +243,6 @@ You can find all command line arguments in help:
 Some options can be specified either as command line arguments or test scenario file ([See example](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/customize.configurations.test.json)).  
 If both are specified, the values in the test scenario file are adopted.
 
-## Tested CA65 version
-
-```
-# ca65 --version
-ca65 V2.18 - Ubuntu 2.19-1
-```
-
 ## Test scinario examples
 
 ### Register conditions
@@ -278,3 +291,6 @@ This project uses following project:
   - [Erik Lothe's 6502 Unit test executor](https://github.com/89erik/6502_test_executor)
 - [Taylor C. Richberger's args](https://github.com/Taywee/args)
 - [Niels Lohmann's JSON for Modern C++](https://github.com/nlohmann/json)
+
+## License
+This project is available under the **MIT license**. See the [LICENSE](LICENSE) file for more information.
