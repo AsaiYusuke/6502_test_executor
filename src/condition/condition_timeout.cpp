@@ -3,7 +3,7 @@
 
 condition_timeout::condition_timeout(emulation_devices *device, json condition)
 {
-    if (!expression_executer::find(condition))
+    if (!expression_execute::find(condition))
         condition = {{operator_type_name_map[operator_type::EQ], false}};
 
     expression =

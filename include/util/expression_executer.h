@@ -7,7 +7,7 @@ using namespace std;
 
 using json = nlohmann::json;
 
-class expression_executer
+class expression_execute
 {
 public:
     static bool find(json value);

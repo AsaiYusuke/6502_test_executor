@@ -18,7 +18,7 @@ private:
 public:
     condition_expression(emulation_devices *device, json condition)
     {
-        for (auto &expression : expression_executer::get(condition))
+        for (auto &expression : expression_execute::get(condition))
         {
             if (expression.first == operator_type::ANY_OF)
             {
@@ -39,7 +39,7 @@ public:
     {
         bool total_result = true;
         for (auto &expression : and_expressions)
-            total_result &= expression_executer::test(expression.first, actual, expression.second);
+            total_result &= expression_execute::test(expression.first, actual, expression.second);
 
         if (or_expressions.size() > 0)
         {
