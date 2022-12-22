@@ -8,7 +8,7 @@ condition_memory_value::condition_memory_value(emulation_devices *device, uint16
     name = _name;
     permanent = _permanent;
     for (json &value_def : condition)
-        if (expression_executer::find(value_def))
+        if (expression_execute::find(value_def))
             expression_sequence.push_back(
                 condition_expression<expression_two_complement_byte, uint8_t>(device, value_def));
         else

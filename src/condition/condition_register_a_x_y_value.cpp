@@ -7,7 +7,7 @@ condition_register_a_x_y_value::condition_register_a_x_y_value(emulation_devices
 {
     expression = new condition_expression<expression_two_complement_byte, uint8_t>(
         device,
-        expression_executer::find(condition) ? condition : json::object());
+        expression_execute::find(condition) ? condition : json::object());
     value = value_convert::to_two_complement_byte(device, condition);
 }
 

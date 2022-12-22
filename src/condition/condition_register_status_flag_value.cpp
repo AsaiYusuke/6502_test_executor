@@ -6,7 +6,7 @@ condition_register_status_flag_value::condition_register_status_flag_value(emula
 {
     expression = new condition_expression<expression_value, bool>(
         device,
-        expression_executer::find(condition) ? condition : json::object());
+        expression_execute::find(condition) ? condition : json::object());
     value = condition.is_boolean() ? condition.get<bool>() : false;
 }
 

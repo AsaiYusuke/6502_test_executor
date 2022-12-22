@@ -8,7 +8,7 @@ condition_stack::condition_stack(emulation_devices *device, json condition)
         return;
 
     for (json &stack_def : condition)
-        if (expression_executer::find(stack_def))
+        if (expression_execute::find(stack_def))
             expression_stack.push_back(
                 condition_expression<expression_two_complement_byte, uint8_t>(device, stack_def));
         else

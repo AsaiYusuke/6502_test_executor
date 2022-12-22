@@ -1,6 +1,6 @@
 #include "util/expression_executer.h"
 
-bool expression_executer::find(json value)
+bool expression_execute::find(json value)
 {
     if (!value.is_object())
         return false;
@@ -12,7 +12,7 @@ bool expression_executer::find(json value)
     return true;
 }
 
-vector<pair<operator_type, json>> expression_executer::get(json value)
+vector<pair<operator_type, json>> expression_execute::get(json value)
 {
     vector<pair<operator_type, json>> result;
     for (auto &element : value.items())
