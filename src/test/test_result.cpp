@@ -3,6 +3,7 @@
 
 test_result::test_result() : test_result(test_result_type::OK)
 {
+    device_ready = true;
 }
 
 test_result::test_result(test_result_type type)
@@ -19,6 +20,16 @@ void test_result::add_error(string message)
 {
     result_type = test_result_type::FAIL;
     errors.push_back(message);
+}
+
+void test_result::set_device_not_ready()
+{
+    device_ready = false;
+}
+
+bool test_result::is_device_ready()
+{
+    return device_ready;
 }
 
 test_result_type test_result::get_result_type()
@@ -50,9 +61,13 @@ void test_result::print_result(emulation_devices *device)
     if (get_result_type() == test_result_type::FAIL)
     {
         cerr << endl;
-        device->print();
 
-        cerr << endl;
+        if (is_device_ready())
+        {
+            device->print();
+            cerr << endl;
+        }
+
         for (string error : errors)
         {
             cerr << error;

@@ -95,6 +95,7 @@ test_result test::do_test(string id, json testcase)
         test_result result;
         result.set_id(id);
         result.add_error(message::error_message(e));
+        result.set_device_not_ready();
         return result;
     }
     catch (cpu_runtime_error &e)
