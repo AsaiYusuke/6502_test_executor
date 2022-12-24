@@ -14,11 +14,13 @@ class test
 {
 private:
     args_parser *args;
+    debug_info *debug;
     emulation_devices *device;
-    json test_scinario;
+    vector<json> test_scinarios;
 
-    void traverse(test_total_result &total_result, json testcase, string path);
-    test_result do_test(string id, json testcase);
+    json read_json(string path);
+    void traverse(test_total_result &total_result, json test_target, json test_template, json testcase, string path);
+    test_result do_test(string id, json test_target, json test_template, json testcase);
     void print_call_stack();
 
 public:

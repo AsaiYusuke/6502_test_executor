@@ -1,10 +1,9 @@
 #include "test/test_total_result.h"
 
-test_total_result::test_total_result(emulation_devices *_device, args_parser *_args, int _total)
+test_total_result::test_total_result(emulation_devices *_device, args_parser *_args)
 {
     device = _device;
     args = _args;
-    total = _total;
 }
 
 void test_total_result::add_and_print_result(test_result result)
@@ -18,6 +17,11 @@ void test_total_result::add_and_print_result(test_result result)
 bool test_total_result::is_success()
 {
     return test_result_map[test_result_type::FAIL] == 0;
+}
+
+void test_total_result::set_total(int _total)
+{
+    total = _total;
 }
 
 void test_total_result::print_summary()

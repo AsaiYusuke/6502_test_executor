@@ -2,9 +2,8 @@
 
 #include "emulation/emulation_devices.h"
 
-emulation_devices::emulation_devices(args_parser *args, json config)
+emulation_devices::emulation_devices(args_parser *args, json config, debug_info *debug)
 {
-    debug = new debug_info(args, config);
     memory = new memory_device(this, args, config, debug);
     cpu = new cpu_device(this, args, config, debug);
 }
@@ -29,11 +28,6 @@ memory_device *emulation_devices::get_memory()
 uint16_t emulation_devices::get_address(string label)
 {
     return memory->get_address(label);
-}
-
-void emulation_devices::save_coverage()
-{
-    debug->save_coverage();
 }
 
 void emulation_devices::print()
