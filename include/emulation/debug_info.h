@@ -46,7 +46,7 @@ private:
 public:
     debug_info(args_parser *args, json config);
     string get_path();
-    void activate_line_coverage(uint16_t address);
+    void add_line_coverage(uint16_t address);
     string get_source_line(uint16_t address);
     bool has_address(string label);
     string get_label(uint16_t address);

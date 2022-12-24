@@ -23,12 +23,12 @@ int debug_source_line::get_line_number()
     return line_number;
 }
 
-bool debug_source_line::is_cover()
+int debug_source_line::get_cover()
 {
     return cover;
 }
 
-void debug_source_line::set_cover()
+void debug_source_line::add_cover()
 {
-    cover = true;
+    cover++;
 }

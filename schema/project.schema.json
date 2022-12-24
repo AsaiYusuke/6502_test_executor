@@ -1,0 +1,50 @@
+{
+    "$schema": "http://json-schema.org/schema",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+        "$schema": {
+            "type": "string"
+        },
+        "tests": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                    "target": true,
+                    "cases": true,
+                    "definitions": true,
+                    "config": true,
+                    "file": {
+                        "type": "string"
+                    }
+                },
+                "if": {
+                    "properties": {
+                        "file": {
+                            "type": "null"
+                        }
+                    }
+                },
+                "then": {
+                    "allOf": [
+                        {
+                            "$ref": "testcase.schema.json"
+                        }
+                    ]
+                },
+                "else": {
+                    "properties": {
+                        "target": false,
+                        "cases": false,
+                        "definitions": false,
+                        "config": false
+                    }
+                }
+                
+            }
+        }
+    }
+}

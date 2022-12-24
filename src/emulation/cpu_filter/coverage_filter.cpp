@@ -11,7 +11,7 @@ void coverage_filter::clear()
 
 bool coverage_filter::pre()
 {
-    debug->activate_line_coverage(cpu->get_register16(register_type::PC));
+    debug->add_line_coverage(cpu->get_register16(register_type::PC));
     return true;
 }
 

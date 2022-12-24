@@ -187,11 +187,11 @@ void debug_info::make_address_source_map()
     }
 }
 
-void debug_info::activate_line_coverage(uint16_t address)
+void debug_info::add_line_coverage(uint16_t address)
 {
     if (address_source_map.count(address) == 0)
         return;
-    address_source_map[address]->set_cover();
+    address_source_map[address]->add_cover();
 }
 
 string debug_info::get_source_line(uint16_t address)
@@ -305,7 +305,7 @@ void debug_info::save_coverage()
                 file << "DA:"
                      << debug_line.second->get_line_number()
                      << ","
-                     << (debug_line.second->is_cover() ? 1 : 0)
+                     << (debug_line.second->get_cover())
                      << endl;
         }
     }

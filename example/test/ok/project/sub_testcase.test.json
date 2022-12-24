@@ -1,0 +1,14 @@
+{
+    "$schema": "../../../../schema/testcase.schema.json",
+    "target": {
+        "start": {
+            "label": "check_collision"
+        }
+    },
+    "cases": {
+        "sub test 1": {
+            "setup": {},
+            "expected": {}
+        }
+    }
+}
