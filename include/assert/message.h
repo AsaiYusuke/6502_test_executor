@@ -1,10 +1,6 @@
 #pragma once
 
 #include "condition/message_name.h"
-#include "condition/condition_register_a_x_y.h"
-#include "condition/condition_register_status_flag.h"
-#include "condition/condition_memory_value.h"
-#include "condition/condition_memory_count.h"
 #include "condition/condition_stack.h"
 
 using namespace std;

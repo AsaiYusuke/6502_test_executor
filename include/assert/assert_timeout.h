@@ -4,7 +4,6 @@
 #include "test/test_result.h"
 #include "assert/message.h"
 #include "util/to_string.h"
-#include "util/expression_executer.h"
 
 using namespace std;
 

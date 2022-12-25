@@ -9,7 +9,6 @@
 #include "assert/message.h"
 #include "util/test_detect.h"
 #include "util/value_convert.h"
-#include "condition/condition.h"
 #include "exception/file_open.h"
 #include "exception/cpu_runtime_error.h"
 
