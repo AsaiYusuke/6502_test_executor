@@ -2,6 +2,9 @@
 #include <vector>
 
 #include "emulation/debug_info.h"
+#include "emulation/debug_segment.h"
+#include "emulation/debug_source_line.h"
+#include "args_parser.h"
 #include "exception/file_open.h"
 #include "exception/parse_ignore_entry.h"
 #include "exception/cpu_runtime_error.h"

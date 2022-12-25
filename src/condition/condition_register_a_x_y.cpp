@@ -1,7 +1,10 @@
-#include "condition/condition_register_a_x_y.h"
-#include "util/value_convert.h"
-#include "util/expression_executer.h"
 #include <iostream>
+
+#include "condition/condition_register_a_x_y.h"
+#include "condition/condition_register_a_x_y_value.h"
+#include "condition/condition_register_a_x_y_count.h"
+#include "util/value_convert.h"
+#include "util/expression_execute.h"
 
 condition_register_a_x_y::condition_register_a_x_y(emulation_devices *device, string _name, json condition)
 {

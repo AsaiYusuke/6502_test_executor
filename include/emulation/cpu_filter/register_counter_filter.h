@@ -1,9 +1,12 @@
 #pragma once
 
+#include <vector>
+
 #include "emulation/cpu_filter/cpu_filter.h"
-#include "emulation/cpu_device.h"
 #include "enum/register_type.h"
 #include "enum/status_flag_type.h"
+
+class cpu_device;
 
 class register_counter_filter : public i_cpu_filter
 {

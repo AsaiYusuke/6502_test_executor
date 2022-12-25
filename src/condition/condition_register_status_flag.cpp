@@ -1,5 +1,7 @@
 #include "condition/condition_register_status_flag.h"
-#include "util/expression_executer.h"
+#include "condition/condition_register_status_flag_value.h"
+#include "condition/condition_register_status_flag_count.h"
+#include "util/expression_execute.h"
 #include "util/value_convert.h"
 
 condition_register_status_flag::condition_register_status_flag(emulation_devices *device, string _name, json condition)

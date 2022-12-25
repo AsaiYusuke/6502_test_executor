@@ -1,4 +1,5 @@
 #include "test/test_total_result.h"
+#include "args_parser.h"
 
 test_total_result::test_total_result(emulation_devices *_device, args_parser *_args)
 {

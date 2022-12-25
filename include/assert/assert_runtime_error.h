@@ -1,13 +1,12 @@
 #pragma once
 
-#include "emulation/emulation_devices.h"
+#include "assert/runtime_error_result.h"
 #include "test/test_result.h"
-#include "enum/operator_type.h"
 #include "assert/message.h"
-#include "util/to_string.h"
-#include "util/expression_executer.h"
 
 using namespace std;
+
+class emulation_devices;
 
 class assert_runtime_error
 {

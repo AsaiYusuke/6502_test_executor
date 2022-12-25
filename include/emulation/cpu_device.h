@@ -3,26 +3,23 @@
 #include <vector>
 
 #include "nlohmann/json.hpp"
-#include "args_parser.h"
-#include "emulation/mos6502/exec_mos6502.h"
-#include "emulation/debug_info.h"
-#include "emulation/cpu_filter/cpu_filter.h"
-#include "emulation/cpu_filter/call_stack_filter.h"
-#include "emulation/cpu_filter/register_counter_filter.h"
-#include "condition/condition_mocked_proc.h"
-#include "condition/condition_mocked_value.h"
 #include "enum/register_type.h"
 #include "enum/interrupt_type.h"
 #include "enum/runtime_error_type.h"
+#include "enum/status_flag_type.h"
 
 using namespace std;
 
 using json = nlohmann::json;
 
+class i_cpu_filter;
+class condition_register_pc;
+class condition_mocked_proc;
+class args_parser;
+class exec_mos6502;
+class debug_info;
 class emulation_devices;
-
 class call_stack_filter;
-
 class register_counter_filter;
 
 class cpu_device
@@ -43,7 +40,7 @@ private:
     vector<i_cpu_filter *> filters;
     uint16_t endPC;
     map<uint16_t, interrupt_type> interrupt_defs;
-    map<uint16_t, condition_mocked_proc> mocked_proc_defs;
+    map<uint16_t, condition_mocked_proc *> mocked_proc_defs;
 
 public:
     cpu_device(emulation_devices *_device, args_parser *args, json config, debug_info *debug);
@@ -71,7 +68,7 @@ public:
     bool is_mocked_proc_instruction();
     vector<uint8_t> get_stack();
     void add_interrupt_hook(interrupt_type type, uint16_t address);
-    void add_mocked_proc_hook(condition_mocked_proc mocked_proc_def);
+    void add_mocked_proc_hook(condition_mocked_proc *mocked_proc_def);
     void execute_interrupt();
     void execute_mocked_proc();
     void execute_standard_instruction();

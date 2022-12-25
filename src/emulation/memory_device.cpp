@@ -1,4 +1,8 @@
+#include "emulation/memory_device.h"
 #include "emulation/emulation_devices.h"
+#include "emulation/debug_info.h"
+#include "emulation/debug_segment.h"
+#include "emulation/rom_image.h"
 #include "util/value_convert.h"
 #include "exception/cpu_runtime_error.h"
 #include "enum/platform_type.h"

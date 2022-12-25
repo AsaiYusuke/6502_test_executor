@@ -1,4 +1,6 @@
 #include "emulation/cpu_filter/instruction_check_filter.h"
+#include "emulation/cpu_device.h"
+#include "util/value_convert.h"
 
 instruction_check_filter::instruction_check_filter(cpu_device *cpu)
 {

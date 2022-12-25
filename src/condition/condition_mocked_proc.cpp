@@ -1,6 +1,6 @@
+#include "condition/condition_mocked_proc.h"
 #include "util/value_convert.h"
 #include "condition/condition_mocked_value.h"
-#include "condition/condition_mocked_proc.h"
 
 condition_mocked_proc::condition_mocked_proc(emulation_devices *device, json condition)
 {

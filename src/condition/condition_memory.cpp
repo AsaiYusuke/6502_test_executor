@@ -1,4 +1,6 @@
 #include "condition/condition_memory.h"
+#include "condition/condition_memory_value.h"
+#include "condition/condition_memory_count.h"
 #include "util/value_convert.h"
 
 condition_memory::condition_memory(emulation_devices *device, json condition)
@@ -12,7 +14,7 @@ condition_memory::condition_memory(emulation_devices *device, json condition)
     {
         auto sequence = sequences.at(offset);
         value_sequences.push_back(
-            condition_memory_value(
+            new condition_memory_value(
                 device,
                 address + offset,
                 sequence,
@@ -25,7 +27,7 @@ condition_memory::condition_memory(emulation_devices *device, json condition)
     {
         auto read_count = r_counts.at(offset);
         read_counts.push_back(
-            condition_memory_count(
+            new condition_memory_count(
                 device,
                 address + offset,
                 read_count,
@@ -37,7 +39,7 @@ condition_memory::condition_memory(emulation_devices *device, json condition)
     {
         auto write_count = w_counts.at(offset);
         write_counts.push_back(
-            condition_memory_count(
+            new condition_memory_count(
                 device,
                 address + offset,
                 write_count,
@@ -45,17 +47,17 @@ condition_memory::condition_memory(emulation_devices *device, json condition)
     }
 }
 
-vector<condition_memory_value> condition_memory::get_value_sequences()
+vector<condition_memory_value *> condition_memory::get_value_sequences()
 {
     return value_sequences;
 }
 
-vector<condition_memory_count> condition_memory::get_read_counts()
+vector<condition_memory_count *> condition_memory::get_read_counts()
 {
     return read_counts;
 }
 
-vector<condition_memory_count> condition_memory::get_write_counts()
+vector<condition_memory_count *> condition_memory::get_write_counts()
 {
     return write_counts;
 }

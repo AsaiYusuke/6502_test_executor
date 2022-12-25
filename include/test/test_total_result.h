@@ -1,9 +1,10 @@
 #pragma once
 
-#include "args_parser.h"
 #include "test/test_result.h"
 
 using namespace std;
+
+class args_parser;
 
 class test_total_result
 {

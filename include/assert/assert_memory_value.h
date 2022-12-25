@@ -1,26 +1,26 @@
 #pragma once
 
 #include "emulation/emulation_devices.h"
+#include "emulation/memory_device.h"
 #include "condition/condition_memory_value.h"
 #include "test/test_result.h"
 #include "assert/message.h"
 #include "util/to_string.h"
-#include "util/expression_executer.h"
 
 using namespace std;
 
 class assert_memory_value
 {
 public:
-    static bool test(emulation_devices *device, condition_memory_value memory_value_def, test_result *result)
+    static bool test(emulation_devices *device, condition_memory_value *memory_value_def, test_result *result)
     {
-        auto expression_sequences = memory_value_def.get_expressions();
+        auto expression_sequences = memory_value_def->get_expressions();
         if (expression_sequences.size() == 0)
             return true;
 
         bool total_result = true;
         auto actuals = device->get_memory()->get_write_sequence(
-            memory_value_def.get_address(),
+            memory_value_def->get_address(),
             expression_sequences.size());
         for (decltype(expression_sequences.size()) offset = 0, size = expression_sequences.size(); offset < size && total_result; offset++)
             if (actuals.size() <= offset)

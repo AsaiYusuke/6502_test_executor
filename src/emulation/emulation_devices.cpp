@@ -1,6 +1,8 @@
 #include <stdexcept>
 
 #include "emulation/emulation_devices.h"
+#include "emulation/cpu_device.h"
+#include "emulation/memory_device.h"
 
 emulation_devices::emulation_devices(args_parser *args, json config, debug_info *debug)
 {

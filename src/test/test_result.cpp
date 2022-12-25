@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "test/test_result.h"
 #include "emulation/emulation_devices.h"
 

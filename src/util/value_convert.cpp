@@ -2,6 +2,8 @@
 #include "enum/value_type.h"
 #include "util/value_convert.h"
 #include "emulation/emulation_devices.h"
+#include "emulation/cpu_device.h"
+#include "emulation/memory_device.h"
 #include "exception/parse_abort.h"
 
 uint16_t value_convert::get_address(emulation_devices *device, json value)

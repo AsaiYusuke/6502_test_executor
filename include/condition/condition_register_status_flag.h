@@ -2,14 +2,14 @@
 
 #include "enum/status_flag_type.h"
 #include "condition/message_name.h"
-#include "condition/condition_register_status_flag_value.h"
-#include "condition/condition_register_status_flag_count.h"
 #include "nlohmann/json.hpp"
 
 using namespace std;
 
 using json = nlohmann::json;
 
+class condition_register_status_flag_value;
+class condition_register_status_flag_count;
 class emulation_devices;
 
 class condition_register_status_flag : public i_message_name

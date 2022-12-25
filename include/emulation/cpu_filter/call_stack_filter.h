@@ -1,9 +1,11 @@
 #pragma once
 
 #include <vector>
+#include <cstdint>
 
 #include "emulation/cpu_filter/cpu_filter.h"
-#include "emulation/cpu_device.h"
+
+class cpu_device;
 
 class call_stack_filter : public i_cpu_filter
 {

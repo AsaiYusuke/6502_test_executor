@@ -1,14 +1,16 @@
 #pragma once
 
-#include "args_parser.h"
 #include "test/test_total_result.h"
 #include "test/test_result.h"
-#include "emulation/emulation_devices.h"
 #include "nlohmann/json.hpp"
 
 using namespace std;
 
 using json = nlohmann::json;
+
+class args_parser;
+class emulation_devices;
+class debug_info;
 
 class test
 {

@@ -4,10 +4,12 @@
 #include <string>
 #include <filesystem>
 
-#include "emulation/debug_info.h"
 #include "enum/platform_type.h"
 
 using namespace std;
+
+class debug_info;
+class debug_segment;
 
 class rom_image
 {

@@ -3,14 +3,17 @@
 #include <map>
 
 #include "nlohmann/json.hpp"
-#include "args_parser.h"
-#include "cpu_device.h"
-#include "memory_device.h"
 #include "assert/runtime_error_result.h"
 
 using namespace std;
 
 using json = nlohmann::json;
+
+class args_parser;
+class cpu_device;
+class memory_device;
+class debug_info;
+class condition_register_pc;
 
 class emulation_devices
 {
