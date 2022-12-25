@@ -3,6 +3,7 @@
 #include <string>
 
 #include "test/test.h"
+#include "test/test_total_result.h"
 #include "test/test_result.h"
 #include "test/test_setup.h"
 #include "test/test_assert.h"
@@ -56,7 +57,7 @@ test::test(args_parser *_args)
 
 bool test::execute()
 {
-    test_total_result total_result{device, args};
+    test_total_result total_result{args};
     int num_cases = 0;
 
     for (auto test_scinario : test_scinarios)
@@ -64,7 +65,8 @@ bool test::execute()
         num_cases += test_scinario["cases"].size();
         device = new emulation_devices(args, test_scinario["config"], debug);
         traverse(
-            total_result,
+            device,
+            &total_result,
             test_scinario["target"],
             test_scinario["definitions"]["templates"],
             test_scinario["cases"],
@@ -80,7 +82,7 @@ bool test::execute()
     return total_result.is_success();
 }
 
-void test::traverse(test_total_result &total_result, json test_target, json test_template, json test_case, string path)
+void test::traverse(emulation_devices *device, test_total_result *total_result, json test_target, json test_template, json test_case, string path)
 {
     for (auto &element : test_case.items())
     {
@@ -91,14 +93,15 @@ void test::traverse(test_total_result &total_result, json test_target, json test
 
         if (test_id_path.ends_with("/"))
         {
-            traverse(total_result, test_target, test_template, sub_test_case, test_id_path);
+            traverse(device, total_result, test_target, test_template, sub_test_case, test_id_path);
             continue;
         }
 
         if (!args->get_test_id().empty() && args->get_test_id() != test_id_path)
             continue;
 
-        total_result.add_and_print_result(
+        total_result->add_and_print_result(
+            device,
             do_test(test_id_path, test_target, test_template, sub_test_case));
     }
 }

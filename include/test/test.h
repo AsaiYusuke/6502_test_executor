@@ -1,6 +1,5 @@
 #pragma once
 
-#include "test/test_total_result.h"
 #include "test/test_result.h"
 #include "nlohmann/json.hpp"
 
@@ -10,6 +9,7 @@ using json = nlohmann::json;
 
 class args_parser;
 class emulation_devices;
+class test_total_result;
 class debug_info;
 
 class test
@@ -21,7 +21,7 @@ private:
     vector<json> test_scinarios;
 
     json read_json(string path);
-    void traverse(test_total_result &total_result, json test_target, json test_template, json testcase, string path);
+    void traverse(emulation_devices *device, test_total_result *total_result, json test_target, json test_template, json testcase, string path);
     test_result do_test(string id, json test_target, json test_template, json testcase);
     void print_call_stack();
 
