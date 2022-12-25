@@ -1,6 +1,7 @@
 # 6502 Unit Test executor
 
 [![example workflow](https://github.com/AsaiYusuke/6502_test_executor/actions/workflows/make.yml/badge.svg)](https://github.com/AsaiYusuke/6502_test_executor/actions/workflows/make.yml)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/4c943cf3172642469b3249fbc6f4c672)](https://www.codacy.com/gh/AsaiYusuke/6502_test_executor/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=AsaiYusuke/6502_test_executor&amp;utm_campaign=Badge_Grade)
 
 ![6502 unit test](6502-unit-test.svg)
 
