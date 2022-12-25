@@ -31,13 +31,13 @@ args_parser::args_parser(int argc, char *argv[])
         cout << parser;
         throw parse_abort(EX_OK);
     }
-    catch (const args::ParseError e)
+    catch (const args::ParseError &e)
     {
         cerr << e.what() << endl;
         cerr << parser;
         throw parse_abort(EX_USAGE);
     }
-    catch (const args::ValidationError e)
+    catch (const args::ValidationError &e)
     {
         cerr << e.what() << endl;
         cerr << parser;
