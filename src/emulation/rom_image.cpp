@@ -1,6 +1,8 @@
 #include <fstream>
 
 #include "emulation/rom_image.h"
+#include "emulation/debug_info.h"
+#include "emulation/debug_segment.h"
 #include "exception/file_open.h"
 
 rom_image::rom_image(debug_info *debug)

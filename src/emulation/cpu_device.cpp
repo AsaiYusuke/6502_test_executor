@@ -1,13 +1,27 @@
 #include <vector>
 #include <typeinfo>
 
+#include "emulation/cpu_device.h"
 #include "emulation/emulation_devices.h"
-#include "enum/cycle_type.h"
-#include "util/constant.h"
+#include "emulation/memory_device.h"
+#include "emulation/mos6502/exec_mos6502.h"
 #include "emulation/cpu_filter/call_stack_filter.h"
 #include "emulation/cpu_filter/timeout_check_filter.h"
 #include "emulation/cpu_filter/instruction_check_filter.h"
 #include "emulation/cpu_filter/coverage_filter.h"
+#include "emulation/cpu_filter/register_counter_filter.h"
+#include "args_parser.h"
+#include "condition/condition_register_pc.h"
+#include "condition/condition_register_a_x_y.h"
+#include "condition/condition_register_a_x_y_value.h"
+#include "condition/condition_register_status_flag.h"
+#include "condition/condition_register_status_flag_value.h"
+#include "condition/condition_memory.h"
+#include "condition/condition_memory_value.h"
+#include "condition/condition_mocked_proc.h"
+#include "condition/condition_mocked_value.h"
+#include "enum/cycle_type.h"
+#include "util/constant.h"
 
 cpu_device::cpu_device(emulation_devices *_device, args_parser *args, json config, debug_info *debug)
 {
@@ -188,7 +202,7 @@ bool cpu_device::is_return_instruction()
     auto it_mocked_proc = mocked_proc_defs.find(cpu->GetPC());
     if (it_mocked_proc != mocked_proc_defs.end())
     {
-        auto mocked_proc_def = &it_mocked_proc->second;
+        auto mocked_proc_def = it_mocked_proc->second;
         return mocked_proc_def->get_action() == mock_action_type::RTS;
     }
 
@@ -315,10 +329,10 @@ void cpu_device::add_interrupt_hook(interrupt_type type, uint16_t address)
     interrupt_defs.insert(make_pair(address, type));
 }
 
-void cpu_device::add_mocked_proc_hook(condition_mocked_proc mocked_proc_def)
+void cpu_device::add_mocked_proc_hook(condition_mocked_proc *mocked_proc_def)
 {
     mocked_proc_defs.insert(
-        make_pair(mocked_proc_def.get_entry_point(), mocked_proc_def));
+        make_pair(mocked_proc_def->get_entry_point(), mocked_proc_def));
 }
 
 void cpu_device::execute_interrupt()
@@ -337,21 +351,21 @@ void cpu_device::execute_interrupt()
 void cpu_device::execute_mocked_proc()
 {
     auto it_mocked_proc = mocked_proc_defs.find(cpu->GetPC());
-    auto mocked_proc_def = &it_mocked_proc->second;
+    auto mocked_proc_def = it_mocked_proc->second;
     auto mocked_value_def = mocked_proc_def->get_erased_front_mock_value_def();
 
     for (auto register_def : mocked_value_def.get_register_defs())
-        set_register8(register_def.get_type(), register_def.get_value()->get_value());
+        set_register8(register_def->get_type(), register_def->get_value()->get_value());
 
     uint8_t status_bits = 0;
     for (auto status_flag_def : mocked_value_def.get_status_flag_defs())
-        status_bits |= ((uint8_t)status_flag_def.get_type() * status_flag_def.get_value()->get_value());
+        status_bits |= ((uint8_t)status_flag_def->get_type() * status_flag_def->get_value()->get_value());
     set_register8(register_type::P, status_bits);
 
     memory_device *mem_dev = device->get_memory();
     for (auto memory_def : mocked_value_def.get_memory_defs())
-        for (auto memory_value_def : memory_def.get_value_sequences())
-            mem_dev->write_raw(memory_value_def.get_address(), memory_value_def.get_sequence().front());
+        for (auto memory_value_def : memory_def->get_value_sequences())
+            mem_dev->write_raw(memory_value_def->get_address(), memory_value_def->get_sequence().front());
 
     switch (mocked_proc_def->get_action())
     {

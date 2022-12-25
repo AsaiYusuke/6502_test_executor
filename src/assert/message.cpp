@@ -1,5 +1,7 @@
 #include "assert/message.h"
 #include "emulation/emulation_devices.h"
+#include "emulation/cpu_device.h"
+#include "emulation/memory_device.h"
 #include "condition/message_name.h"
 #include "util/to_string.h"
 #include "util/value_convert.h"
@@ -75,26 +77,26 @@ string message::call_stack_message(emulation_devices *device, vector<uint16_t> c
     return ss.str();
 }
 
-string message::error_register_data(string type, i_message_name &register_def, string expected, string actual)
+string message::error_register_data(string type, i_message_name *register_def, string expected, string actual)
 {
     return error_message(
-        "Register (" + type + ") [" + register_def.get_name() + "]",
+        "Register (" + type + ") [" + register_def->get_name() + "]",
         expected,
         actual);
 }
 
-string message::error_register_status_flag_data(string type, i_message_name &status_flag_def, string expected, string actual)
+string message::error_register_status_flag_data(string type, i_message_name *status_flag_def, string expected, string actual)
 {
     return error_message(
-        "Register (" + type + ") [P (" + status_flag_def.get_name() + ")]",
+        "Register (" + type + ") [P (" + status_flag_def->get_name() + ")]",
         expected,
         actual);
 }
 
-string message::error_memory_data(string type, i_message_name &memory_def, string expected, string actual)
+string message::error_memory_data(string type, i_message_name *memory_def, string expected, string actual)
 {
     return error_message(
-        "Memory (" + type + ") [" + memory_def.get_name() + "]",
+        "Memory (" + type + ") [" + memory_def->get_name() + "]",
         expected,
         actual);
 }

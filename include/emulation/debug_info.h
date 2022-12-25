@@ -5,14 +5,15 @@
 #include <string>
 #include <vector>
 
-#include "args_parser.h"
 #include "nlohmann/json.hpp"
-#include "emulation/debug_segment.h"
-#include "emulation/debug_source_line.h"
 
 using namespace std;
 
 using json = nlohmann::json;
+
+class args_parser;
+class debug_segment;
+class debug_source_line;
 
 class debug_info
 {

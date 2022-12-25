@@ -2,8 +2,6 @@
 
 using namespace std;
 
-class cpu_device;
-
 class i_cpu_filter
 {
 public:

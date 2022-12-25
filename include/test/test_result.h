@@ -1,5 +1,8 @@
 #pragma once
 
+#include <vector>
+#include <string>
+
 #include "enum/test_result_type.h"
 
 using namespace std;

@@ -1,4 +1,6 @@
 #include "condition/condition_register_status_flag.h"
+#include "condition/condition_register_status_flag_value.h"
+#include "condition/condition_register_status_flag_count.h"
 #include "util/expression_execute.h"
 #include "util/value_convert.h"
 

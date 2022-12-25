@@ -14,6 +14,7 @@
 #include "assert/assert_memory_read_count.h"
 #include "assert/assert_memory_write_count.h"
 #include "assert/assert_stack_value.h"
+#include "condition/condition_memory.h"
 
 test_assert::test_assert(emulation_devices *device, json condition_json)
     : condition(device, condition_json)
@@ -62,15 +63,15 @@ void test_assert::execute()
 
     for (auto memory_def : get_memory_defs())
     {
-        for (auto memory_value_def : memory_def.get_value_sequences())
+        for (auto memory_value_def : memory_def->get_value_sequences())
             assert_memory_value::test(
                 get_device(), memory_value_def, &result);
 
-        for (auto memory_read_count_def : memory_def.get_read_counts())
+        for (auto memory_read_count_def : memory_def->get_read_counts())
             assert_memory_read_count::test(
                 get_device(), memory_read_count_def, &result);
 
-        for (auto memory_write_count_def : memory_def.get_write_counts())
+        for (auto memory_write_count_def : memory_def->get_write_counts())
             assert_memory_write_count::test(
                 get_device(), memory_write_count_def, &result);
     }

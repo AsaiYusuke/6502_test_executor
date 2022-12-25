@@ -1,4 +1,6 @@
 #include "emulation/cpu_filter/coverage_filter.h"
+#include "emulation/cpu_device.h"
+#include "emulation/debug_info.h"
 
 coverage_filter::coverage_filter(cpu_device *cpu)
 {

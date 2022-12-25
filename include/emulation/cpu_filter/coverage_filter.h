@@ -3,8 +3,9 @@
 #include <vector>
 
 #include "emulation/cpu_filter/cpu_filter.h"
-#include "emulation/cpu_device.h"
-#include "emulation/debug_info.h"
+
+class cpu_device;
+class debug_info;
 
 class coverage_filter : public i_cpu_filter
 {

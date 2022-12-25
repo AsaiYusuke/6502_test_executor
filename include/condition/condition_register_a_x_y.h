@@ -2,14 +2,14 @@
 
 #include "enum/register_type.h"
 #include "condition/message_name.h"
-#include "condition/condition_register_a_x_y_value.h"
-#include "condition/condition_register_a_x_y_count.h"
 #include "nlohmann/json.hpp"
 
 using namespace std;
 
 using json = nlohmann::json;
 
+class condition_register_a_x_y_value;
+class condition_register_a_x_y_count;
 class emulation_devices;
 
 class condition_register_a_x_y : public i_message_name

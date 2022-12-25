@@ -5,16 +5,16 @@
 #include <vector>
 
 #include "nlohmann/json.hpp"
-#include "args_parser.h"
 #include "memory_access.h"
-#include "debug_info.h"
-#include "emulation/rom_image.h"
 
 using namespace std;
 
 using json = nlohmann::json;
 
 class emulation_devices;
+class args_parser;
+class debug_info;
+class rom_image;
 
 class memory_device : public i_memory_access
 {

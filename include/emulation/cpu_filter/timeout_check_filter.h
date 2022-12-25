@@ -3,7 +3,8 @@
 #include <vector>
 
 #include "emulation/cpu_filter/cpu_filter.h"
-#include "emulation/cpu_device.h"
+
+class cpu_device;
 
 class timeout_check_filter : public i_cpu_filter
 {

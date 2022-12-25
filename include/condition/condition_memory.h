@@ -1,7 +1,5 @@
 #pragma once
 
-#include "condition/condition_memory_value.h"
-#include "condition/condition_memory_count.h"
 #include "nlohmann/json.hpp"
 
 using namespace std;
@@ -9,13 +7,15 @@ using namespace std;
 using json = nlohmann::json;
 
 class emulation_devices;
+class condition_memory_value;
+class condition_memory_count;
 
 class condition_memory
 {
 private:
-    vector<condition_memory_value> value_sequences;
-    vector<condition_memory_count> read_counts;
-    vector<condition_memory_count> write_counts;
+    vector<condition_memory_value *> value_sequences;
+    vector<condition_memory_count *> read_counts;
+    vector<condition_memory_count *> write_counts;
 
     string create_address_name(emulation_devices *device, json memory_def, int offset);
     json normalize_value_sequences(emulation_devices *device, json memory_def);
@@ -24,7 +24,7 @@ private:
 
 public:
     condition_memory(emulation_devices *device, json condition);
-    vector<condition_memory_value> get_value_sequences();
-    vector<condition_memory_count> get_read_counts();
-    vector<condition_memory_count> get_write_counts();
+    vector<condition_memory_value *> get_value_sequences();
+    vector<condition_memory_count *> get_read_counts();
+    vector<condition_memory_count *> get_write_counts();
 };

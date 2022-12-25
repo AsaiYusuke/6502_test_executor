@@ -1,5 +1,13 @@
-#include "condition/condition_mocked_value.h"
 #include "condition/condition.h"
+#include "condition/condition_register_pc.h"
+#include "condition/condition_register_a_x_y.h"
+#include "condition/condition_register_status_flag.h"
+#include "condition/condition_memory.h"
+#include "condition/condition_stack.h"
+#include "condition/condition_interrupt.h"
+#include "condition/condition_mocked_proc.h"
+#include "condition/condition_timeout.h"
+#include "condition/condition_mocked_value.h"
 #include "util/value_convert.h"
 
 condition::condition(emulation_devices *_device, json condition, json target)
@@ -18,14 +26,14 @@ condition::condition(emulation_devices *_device, json condition_json)
             case register_type::P:
                 for (auto &status_element : register_element.value().items())
                     status_flag_defs.push_back(
-                        condition_register_status_flag(
+                        new condition_register_status_flag(
                             device,
                             status_element.key(),
                             status_element.value()));
                 break;
             default:
                 register_defs.push_back(
-                    condition_register_a_x_y(
+                    new condition_register_a_x_y(
                         device,
                         register_element.key(),
                         register_element.value()));
@@ -35,7 +43,7 @@ condition::condition(emulation_devices *_device, json condition_json)
     if (condition_json["memory"].is_array())
         for (auto &memory_def : condition_json["memory"])
             memory_defs.push_back(
-                condition_memory(
+                new condition_memory(
                     device,
                     memory_def));
 
@@ -44,14 +52,14 @@ condition::condition(emulation_devices *_device, json condition_json)
     if (condition_json["interrupt"].is_array())
         for (auto &interrupt_def : condition_json["interrupt"])
             interrupt_defs.push_back(
-                condition_interrupt(
+                new condition_interrupt(
                     device,
                     interrupt_def));
 
     if (condition_json["mockedProc"].is_array())
         for (auto &mocked_proc_def : condition_json["mockedProc"])
             mocked_proc_defs.push_back(
-                condition_mocked_proc(
+                new condition_mocked_proc(
                     device,
                     mocked_proc_def));
 
@@ -63,17 +71,17 @@ emulation_devices *condition::get_device()
     return device;
 }
 
-vector<condition_register_a_x_y> condition::get_register_defs()
+vector<condition_register_a_x_y *> condition::get_register_defs()
 {
     return register_defs;
 }
 
-vector<condition_register_status_flag> condition::get_status_flag_defs()
+vector<condition_register_status_flag *> condition::get_status_flag_defs()
 {
     return status_flag_defs;
 }
 
-vector<condition_memory> condition::get_memory_defs()
+vector<condition_memory *> condition::get_memory_defs()
 {
     return memory_defs;
 }
@@ -88,12 +96,12 @@ condition_stack *condition::get_stack_def()
     return stack_def;
 }
 
-vector<condition_interrupt> condition::get_interrupt_defs()
+vector<condition_interrupt *> condition::get_interrupt_defs()
 {
     return interrupt_defs;
 }
 
-vector<condition_mocked_proc> condition::get_mocked_proc_defs()
+vector<condition_mocked_proc *> condition::get_mocked_proc_defs()
 {
     return mocked_proc_defs;
 }
