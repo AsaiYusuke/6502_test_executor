@@ -417,7 +417,7 @@ index 747786c..a5e5103 100644
  }
  
 diff --git a/mos6502.h b/mos6502.h
-index 8229cc7..0989b7f 100644
+index 8229cc7..fe5abb0 100644
 --- a/mos6502.h
 +++ b/mos6502.h
 @@ -5,9 +5,11 @@
@@ -441,7 +441,7 @@ index 8229cc7..0989b7f 100644
      // register reset values
      uint8_t reset_A = 0x00;
      uint8_t reset_X = 0x00;
-@@ -172,22 +174,24 @@ private:
+@@ -172,22 +174,18 @@ private:
  	static const uint16_t nmiVectorH = 0xFFFB;
  	static const uint16_t nmiVectorL = 0xFFFA;
  
@@ -450,18 +450,15 @@ index 8229cc7..0989b7f 100644
 -	typedef uint8_t (*BusRead)(uint16_t);
 -	BusRead Read;
 -	BusWrite Write;
-+	// // read/write callbacks
-+	// typedef void (*BusWrite)(uint16_t, uint8_t);
-+	// typedef uint8_t (*BusRead)(uint16_t);
-+	// BusRead Read;
-+	// BusWrite Write;
- 
+-
  	// stack operations
- 	inline void StackPush(uint8_t byte);
- 	inline uint8_t StackPop();
- 
-+	i_memory_access *memory_access;
+-	inline void StackPush(uint8_t byte);
+-	inline uint8_t StackPop();
++	void StackPush(uint8_t byte);
++	uint8_t StackPop();
 +
++	i_memory_access *memory_access;
+ 
  public:
  	enum CycleMethod {
  		INST_COUNT,
