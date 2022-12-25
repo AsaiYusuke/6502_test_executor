@@ -1,13 +1,12 @@
 #include "test/test_total_result.h"
 #include "args_parser.h"
 
-test_total_result::test_total_result(emulation_devices *_device, args_parser *_args)
+test_total_result::test_total_result(args_parser *_args)
 {
-    device = _device;
     args = _args;
 }
 
-void test_total_result::add_and_print_result(test_result result)
+void test_total_result::add_and_print_result(emulation_devices *device, test_result result)
 {
     test_result_map[result.get_result_type()]++;
 
