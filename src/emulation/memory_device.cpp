@@ -152,7 +152,7 @@ uint8_t memory_device::read(uint16_t address)
         }
     }
 
-    return ram[address];
+    return ram.count(address) == 0 ? 0 : ram[address];
 }
 
 uint8_t memory_device::read_raw(uint16_t address)
