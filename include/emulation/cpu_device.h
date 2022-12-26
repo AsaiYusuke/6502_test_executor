@@ -30,11 +30,6 @@ private:
     exec_mos6502 *cpu;
     uint64_t max_cycle_count;
     uint64_t cycle_count;
-    enum class inst_type
-    {
-        call,
-        retern
-    };
     call_stack_filter *call_stack;
     register_counter_filter *register_counter;
     vector<i_cpu_filter *> filters;
@@ -57,7 +52,7 @@ public:
     uint8_t get_read_count(status_flag_type type);
     uint8_t get_write_count(status_flag_type type);
     bool is_illegal_instruction();
-    bool is_call_instrunction();
+    bool is_call_instruction();
     bool is_return_instruction();
     bool is_read_register_instruction(register_type type);
     bool is_write_register_instruction(register_type type);
