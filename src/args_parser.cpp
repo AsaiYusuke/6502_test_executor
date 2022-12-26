@@ -8,7 +8,7 @@ args_parser::args_parser(int argc, char *argv[])
     args::ArgumentParser parser("6502 test executor");
     args::HelpFlag help(parser, "HELP", "Show this help menu.", {'h', "help"});
     debug_file_path = new args::ValueFlag<string>(parser, "DEBUG", "Specify the path of the debug information file used for testing.", {'d', "debug"});
-    test_file_path = new args::ValueFlag<string>(parser, "TEST", "(REQUIRED)\nSpecify the path of the test scinario file.", {'t', "test"}, args::Options::Required);
+    test_file_path = new args::ValueFlag<string>(parser, "TEST", "(REQUIRED)\nSpecify the path of the test scenario file.", {'t', "test"}, args::Options::Required);
 
     coverage_file_path = new args::ValueFlag<string>(parser, "COVERAGE", "Specify the path of the coverage file.", {'c', "coverage"});
     coverage_segment_names = new args::ValueFlag<string>(parser, "SEGMENT", "Specify the segment names for coverage.", {'s', "segment"});
