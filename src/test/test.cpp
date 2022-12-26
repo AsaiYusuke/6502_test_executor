@@ -34,12 +34,12 @@ test::test(args_parser *_args)
 {
     args = _args;
 
-    json test_scinario = read_json(args->get_test_path());
+    json test_scenario = read_json(args->get_test_path());
 
-    debug = new debug_info(args, test_scinario["config"]);
+    debug = new debug_info(args, test_scenario["config"]);
 
-    if (test_detect::is_project(test_scinario))
-        for (auto test_entry : test_scinario["tests"])
+    if (test_detect::is_project(test_scenario))
+        for (auto test_entry : test_scenario["tests"])
         {
             if (test_detect::is_file_reference(test_entry))
             {
@@ -47,12 +47,12 @@ test::test(args_parser *_args)
                 test_entry.merge_patch(read_json(test_path.parent_path() / test_entry["file"]));
             }
 
-            test_scinarios.push_back(value_convert::parse_all_variable(
+            test_scenarios.push_back(value_convert::parse_all_variable(
                 test_entry["definitions"]["primitives"]["value"], test_entry));
         }
     else
-        test_scinarios.push_back(value_convert::parse_all_variable(
-            test_scinario["definitions"]["primitives"]["value"], test_scinario));
+        test_scenarios.push_back(value_convert::parse_all_variable(
+            test_scenario["definitions"]["primitives"]["value"], test_scenario));
 }
 
 bool test::execute()
@@ -60,16 +60,16 @@ bool test::execute()
     test_total_result total_result{args};
     int num_cases = 0;
 
-    for (auto test_scinario : test_scinarios)
+    for (auto test_scenario : test_scenarios)
     {
-        num_cases += test_scinario["cases"].size();
-        device = new emulation_devices(args, test_scinario["config"], debug);
+        num_cases += test_scenario["cases"].size();
+        device = new emulation_devices(args, test_scenario["config"], debug);
         traverse(
             device,
             &total_result,
-            test_scinario["target"],
-            test_scinario["definitions"]["templates"],
-            test_scinario["cases"],
+            test_scenario["target"],
+            test_scenario["definitions"]["templates"],
+            test_scenario["cases"],
             "");
     }
 

@@ -26,7 +26,7 @@ This tool enables [unit testing](https://en.wikipedia.org/wiki/Unit_testing) for
   - [Build CA65 project with debug option](#Build-CA65-project-with-debug-option)
   - [Create unit test](#Create-unit-test)
   - [Run test](#Run-test)
-- [Test scinario examples](#Test-scinario-examples)
+- [Test scenario examples](#Test-scenario-examples)
 - [Dependencies](#Dependencies)
 
 ## Basic design
@@ -175,7 +175,7 @@ flowchart LR;
   B(Binary);
   D(Debug information);
   V[[Visual Studio Code]];
-  S(Test scinario);
+  S(Test scenario);
   U[[6502 Unit Test executor]];
   R[(Test result)];
   L[(Test coverage)];
@@ -199,7 +199,7 @@ Build your 6502 project using [CA65 assembler](https://cc65.github.io/doc/ca65.h
 
 ### Create unit test
 
-Create test scinario files containing the three key items in JSON format:
+Create test scenario files containing the three key items in JSON format:
 
 - _Test target_  
   the starting address of the test procedure
@@ -210,7 +210,7 @@ Create test scinario files containing the three key items in JSON format:
 
 #### JSON Schema file
 
-The tool also provides a [JSON Schema](https://json-schema.org/) document that makes it easy to create test scinario files.
+The tool also provides a [JSON Schema](https://json-schema.org/) document that makes it easy to create test scenario files.
 
 If you use [Visual Studio Code](https://code.visualstudio.com/), it will tell you about formatting error and element completion candidates based on JSON Schema without any extensions.
 
@@ -219,14 +219,14 @@ If you use [Visual Studio Code](https://code.visualstudio.com/), it will tell yo
 Run the tool with the prepared debug information file and test scenario file:
 
 ```
-6502_tester -d <debug information> -t <test scinario>
+6502_tester -d <debug information> -t <test scenario>
 ```
 
 Test coverage can also be measured.
 Both the coverage file and the segment names used in the debug information file must be specified to enable.
 
 ```
-6502_tester -d <debug information> -t <test scinario> -c <coverage> -s <segment names>
+6502_tester -d <debug information> -t <test scenario> -c <coverage> -s <segment names>
 ```
 
 You can find all command line arguments in help:
@@ -243,7 +243,7 @@ You can find all command line arguments in help:
       -d[DEBUG], --debug=[DEBUG]        Specify the path of the debug
                                         information file used for testing.
       -t[TEST], --test=[TEST]           (REQUIRED)
-                                        Specify the path of the test scinario
+                                        Specify the path of the test scenario
                                         file.
       -c[COVERAGE],
       --coverage=[COVERAGE]             Specify the path of the coverage file.
@@ -263,7 +263,7 @@ You can find all command line arguments in help:
 Some options can be specified either as command line arguments or test scenario file ([See example](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/customize.configurations.test.json)).  
 If both are specified, the values in the test scenario file are adopted.
 
-## Test scinario examples
+## Test scenario examples
 
 ### Register conditions
 
