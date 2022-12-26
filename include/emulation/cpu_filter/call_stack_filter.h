@@ -13,11 +13,11 @@ private:
     enum class inst_type
     {
         call,
-        retern
+        return_back
     };
     cpu_device *cpu;
     bool isCallInstr;
-    bool isReternInstr;
+    bool isReturnInstr;
     bool isInterruptInstr;
     bool isReturned;
     bool willReturn;

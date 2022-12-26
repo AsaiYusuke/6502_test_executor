@@ -192,7 +192,7 @@ bool cpu_device::is_illegal_instruction()
     return cpu->isIllegalInstr();
 }
 
-bool cpu_device::is_call_instrunction()
+bool cpu_device::is_call_instruction()
 {
     return cpu->isCallInstr();
 }
