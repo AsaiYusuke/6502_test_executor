@@ -27,3 +27,18 @@ jobs:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         path-to-lcov: "./example/coverage/lcov.info"
         base-path: "./example"
+
+    - name: Make tarball
+      run: tar cvzf linux.tar.gz 6502_tester LICENSE README.md
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: Binary
+        path: linux.tar.gz
+
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        files: linux.tar.gz
