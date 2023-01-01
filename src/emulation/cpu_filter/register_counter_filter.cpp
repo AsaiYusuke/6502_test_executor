@@ -4,25 +4,15 @@
 register_counter_filter::register_counter_filter(cpu_device *cpu)
 {
     this->cpu = cpu;
-    register_types.push_back(register_type::A);
-    register_types.push_back(register_type::X);
-    register_types.push_back(register_type::Y);
-    register_types.push_back(register_type::S);
-    register_types.push_back(register_type::PC);
-    status_types.push_back(status_flag_type::Negative);
-    status_types.push_back(status_flag_type::Overflow);
-    status_types.push_back(status_flag_type::Constant);
-    status_types.push_back(status_flag_type::Break);
-    status_types.push_back(status_flag_type::Decimal);
-    status_types.push_back(status_flag_type::InterruptDisable);
-    status_types.push_back(status_flag_type::Zero);
-    status_types.push_back(status_flag_type::Carry);
 }
 
 
 void register_counter_filter::clear()
 {
     register_read_counts.clear();
+    register_write_counts.clear();
+    status_read_counts.clear();
+    status_write_counts.clear();
 }
 
 bool register_counter_filter::pre()
