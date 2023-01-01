@@ -29,16 +29,16 @@ jobs:
         base-path: "./example"
 
     - name: Make tarball
-      run: tar cvzf linux.tar.gz 6502_tester LICENSE README.md
+      run: tar cvf linux.tar 6502_tester LICENSE README.md
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v3
       with:
         name: Binary
-        path: linux.tar.gz
+        path: linux.tar
 
     - name: Release
       uses: softprops/action-gh-release@v1
       if: startsWith(github.ref, 'refs/tags/')
       with:
-        files: linux.tar.gz
+        files: linux.tar
