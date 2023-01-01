@@ -18,7 +18,7 @@ void rom_image::load_rom_image(filesystem::path debug_path, debug_segment *segme
     if (path.empty() || segment_id_image_id_map.count(segment_id) != 0)
         return;
 
-    debug_path = absolute(debug_path.parent_path());
+    debug_path = absolute(debug_path).parent_path();
     ifstream *file;
     filesystem::path image_path;
     while (1)
@@ -27,7 +27,7 @@ void rom_image::load_rom_image(filesystem::path debug_path, debug_segment *segme
         file = new ifstream(image_path, ios::in | ios::binary | ios::ate);
         if (file->is_open())
             break;
-        if (!debug_path.has_parent_path())
+        if (debug_path.root_path() == debug_path)
             throw file_open_error(path);
         debug_path = debug_path.parent_path();
     }
