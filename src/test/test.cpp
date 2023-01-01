@@ -58,13 +58,12 @@ test::test(args_parser *_args)
 bool test::execute()
 {
     test_total_result total_result{args};
-    int num_cases = 0;
+    int num_tests = 0;
 
     for (auto test_scenario : test_scenarios)
     {
-        num_cases += test_scenario["cases"].size();
         device = new emulation_devices(args, test_scenario["config"], debug);
-        traverse(
+        num_tests += traverse(
             device,
             &total_result,
             test_scenario["target"],
@@ -73,7 +72,7 @@ bool test::execute()
             "");
     }
 
-    total_result.set_total(num_cases);
+    total_result.set_total(num_tests);
 
     debug->save_coverage();
 
@@ -82,8 +81,10 @@ bool test::execute()
     return total_result.is_success();
 }
 
-void test::traverse(emulation_devices *device, test_total_result *total_result, json test_target, json test_template, json test_case, string path)
+int test::traverse(emulation_devices *device, test_total_result *total_result, json test_target, json test_template, json test_case, string path)
 {
+    int num_tests = 0;
+
     for (auto &element : test_case.items())
     {
         auto id = element.key();
@@ -93,7 +94,7 @@ void test::traverse(emulation_devices *device, test_total_result *total_result, 
 
         if (test_id_path.ends_with("/"))
         {
-            traverse(device, total_result, test_target, test_template, sub_test_case, test_id_path);
+            num_tests += traverse(device, total_result, test_target, test_template, sub_test_case, test_id_path);
             continue;
         }
 
@@ -103,7 +104,11 @@ void test::traverse(emulation_devices *device, test_total_result *total_result, 
         total_result->add_and_print_result(
             device,
             do_test(test_id_path, test_target, test_template, sub_test_case));
+
+        num_tests++;
     }
+
+    return num_tests;
 }
 
 test_result test::do_test(string id, json test_target, json test_template, json test_case)
