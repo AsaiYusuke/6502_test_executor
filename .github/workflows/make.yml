@@ -31,16 +31,10 @@ jobs:
         base-path: "./example"
 
     - name: Make tarball
-      run: tar cvf linux.tar 6502_tester LICENSE README.md
-
-    - name: Upload artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: Binary
-        path: linux.tar
+      run: tar cvjf linux.tar.bz2 6502_tester LICENSE README.md
 
     - name: Release
       uses: softprops/action-gh-release@v1
       if: startsWith(github.ref, 'refs/tags/')
       with:
-        files: linux.tar
+        files: linux.tar.bz2
