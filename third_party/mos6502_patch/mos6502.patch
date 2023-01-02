@@ -417,14 +417,10 @@ index 747786c..a5e5103 100644
  }
  
 diff --git a/mos6502.h b/mos6502.h
-index 8229cc7..fe5abb0 100644
+index 37c40ea..a40ab8a 100644
 --- a/mos6502.h
 +++ b/mos6502.h
-@@ -5,9 +5,11 @@
- // Copyright   :
- // Description : A MOS 6502 CPU emulator written in C++
- //============================================================================
-+#pragma once
+@@ -10,6 +10,7 @@
  
  #include <iostream>
  #include <stdint.h>
@@ -432,7 +428,7 @@ index 8229cc7..fe5abb0 100644
  using namespace std;
  
  #define NEGATIVE  0x80
-@@ -41,7 +43,7 @@ using namespace std;
+@@ -43,7 +44,7 @@ using namespace std;
  
  class mos6502
  {
@@ -441,7 +437,7 @@ index 8229cc7..fe5abb0 100644
      // register reset values
      uint8_t reset_A = 0x00;
      uint8_t reset_X = 0x00;
-@@ -172,22 +174,18 @@ private:
+@@ -174,22 +175,18 @@ private:
  	static const uint16_t nmiVectorH = 0xFFFB;
  	static const uint16_t nmiVectorL = 0xFFFA;
  
