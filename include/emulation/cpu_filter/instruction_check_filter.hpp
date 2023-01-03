@@ -1,7 +1,7 @@
 #pragma once
 
-#include <vector>
 #include <cstdint>
+#include <vector>
 
 #include "emulation/cpu_filter/cpu_filter.hpp"
 

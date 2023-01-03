@@ -1,10 +1,12 @@
-#include <sstream>
 #include "enum/value_type.hpp"
-#include "util/value_convert.hpp"
+
+#include <sstream>
+
 #include "emulation/emulation_devices.hpp"
 #include "emulation/cpu_device.hpp"
 #include "emulation/memory_device.hpp"
 #include "exception/parse_abort.hpp"
+#include "util/value_convert.hpp"
 
 uint16_t value_convert::get_address(emulation_devices *device, json value)
 {

@@ -3,8 +3,8 @@
 #include <vector>
 
 #include "emulation/cpu_filter/cpu_filter.hpp"
-#include "enum/register_type.hpp"
 #include "enum/status_flag_type.hpp"
+#include "enum/register_type.hpp"
 
 class cpu_device;
 

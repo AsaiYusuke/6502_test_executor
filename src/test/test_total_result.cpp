@@ -1,4 +1,5 @@
 #include "test/test_total_result.hpp"
+
 #include "args_parser.hpp"
 
 test_total_result::test_total_result(args_parser *_args)

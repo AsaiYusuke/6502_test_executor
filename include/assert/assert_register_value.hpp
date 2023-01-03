@@ -1,11 +1,11 @@
 #pragma once
 
-#include "emulation/emulation_devices.hpp"
-#include "emulation/cpu_device.hpp"
+#include "assert/message.hpp"
 #include "condition/condition_register_a_x_y.hpp"
 #include "condition/condition_register_a_x_y_value.hpp"
+#include "emulation/cpu_device.hpp"
+#include "emulation/emulation_devices.hpp"
 #include "test/test_result.hpp"
-#include "assert/message.hpp"
 #include "util/to_string.hpp"
 
 using namespace std;

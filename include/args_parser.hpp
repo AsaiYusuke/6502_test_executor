@@ -1,6 +1,7 @@
 #pragma once
 
 #include "args.hxx"
+
 #include "enum/test_result_type.hpp"
 
 using namespace std;

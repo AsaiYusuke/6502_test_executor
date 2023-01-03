@@ -3,8 +3,9 @@
 #include <vector>
 
 #include "nlohmann/json.hpp"
-#include "enum/register_type.hpp"
+
 #include "enum/interrupt_type.hpp"
+#include "enum/register_type.hpp"
 #include "enum/runtime_error_type.hpp"
 #include "enum/status_flag_type.hpp"
 

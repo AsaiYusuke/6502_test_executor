@@ -1,6 +1,7 @@
 #include "condition/condition_memory.hpp"
-#include "condition/condition_memory_value.hpp"
+
 #include "condition/condition_memory_count.hpp"
+#include "condition/condition_memory_value.hpp"
 #include "util/value_convert.hpp"
 
 condition_memory::condition_memory(emulation_devices *device, json condition)

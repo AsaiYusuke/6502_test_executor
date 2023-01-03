@@ -1,4 +1,5 @@
 #include "emulation/cpu_filter/register_counter_filter.hpp"
+
 #include "emulation/cpu_device.hpp"
 
 register_counter_filter::register_counter_filter(cpu_device *cpu)

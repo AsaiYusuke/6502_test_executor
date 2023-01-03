@@ -2,8 +2,9 @@
 
 #include <string>
 #include <vector>
-#include "enum/operator_type.hpp"
+
 #include "condition/condition_expression.hpp"
+#include "enum/operator_type.hpp"
 
 using namespace std;
 

@@ -1,7 +1,8 @@
 #pragma once
 
-#include "enum/test_type.hpp"
 #include "nlohmann/json.hpp"
+
+#include "enum/test_type.hpp"
 
 using namespace std;
 

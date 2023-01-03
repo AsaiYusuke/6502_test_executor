@@ -1,7 +1,8 @@
 #include "condition/condition.hpp"
-#include "condition/condition_register_pc.hpp"
+
 #include "condition/condition_register_a_x_y.hpp"
 #include "condition/condition_register_status_flag.hpp"
+#include "condition/condition_register_pc.hpp"
 #include "condition/condition_memory.hpp"
 #include "condition/condition_stack.hpp"
 #include "condition/condition_interrupt.hpp"

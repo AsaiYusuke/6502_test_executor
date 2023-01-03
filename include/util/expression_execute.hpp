@@ -1,6 +1,7 @@
 #pragma once
 
 #include "nlohmann/json.hpp"
+
 #include "enum/operator_type.hpp"
 
 using namespace std;

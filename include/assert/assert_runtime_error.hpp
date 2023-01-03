@@ -1,8 +1,8 @@
 #pragma once
 
+#include "assert/message.hpp"
 #include "assert/runtime_error_result.hpp"
 #include "test/test_result.hpp"
-#include "assert/message.hpp"
 
 using namespace std;
 

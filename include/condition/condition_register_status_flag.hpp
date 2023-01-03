@@ -1,8 +1,9 @@
 #pragma once
 
-#include "enum/status_flag_type.hpp"
-#include "condition/message_name.hpp"
 #include "nlohmann/json.hpp"
+
+#include "condition/message_name.hpp"
+#include "enum/status_flag_type.hpp"
 
 using namespace std;
 

@@ -1,11 +1,12 @@
 #include "assert/message.hpp"
-#include "emulation/emulation_devices.hpp"
-#include "emulation/cpu_device.hpp"
-#include "emulation/memory_device.hpp"
+
 #include "condition/message_name.hpp"
+#include "emulation/cpu_device.hpp"
+#include "emulation/emulation_devices.hpp"
+#include "emulation/memory_device.hpp"
+#include "util/constant.hpp"
 #include "util/to_string.hpp"
 #include "util/value_convert.hpp"
-#include "util/constant.hpp"
 
 string message::error_message(exception &e)
 {

@@ -1,4 +1,5 @@
 #include "emulation/cpu_filter/coverage_filter.hpp"
+
 #include "emulation/cpu_device.hpp"
 #include "emulation/debug_info.hpp"
 

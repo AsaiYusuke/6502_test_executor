@@ -1,8 +1,9 @@
 #pragma once
 
+#include "nlohmann/json.hpp"
+
 #include "condition/condition_expression.hpp"
 #include "condition/expression_value.hpp"
-#include "nlohmann/json.hpp"
 
 using namespace std;
 

@@ -1,7 +1,5 @@
 #include "test/test_setup.hpp"
-#include "emulation/emulation_devices.hpp"
-#include "emulation/cpu_device.hpp"
-#include "emulation/memory_device.hpp"
+
 #include "condition/condition_register_a_x_y.hpp"
 #include "condition/condition_register_a_x_y_value.hpp"
 #include "condition/condition_register_status_flag.hpp"
@@ -11,6 +9,9 @@
 #include "condition/condition_stack.hpp"
 #include "condition/condition_interrupt.hpp"
 #include "condition/condition_mocked_proc.hpp"
+#include "emulation/emulation_devices.hpp"
+#include "emulation/cpu_device.hpp"
+#include "emulation/memory_device.hpp"
 
 test_setup::test_setup(emulation_devices *device, json condition_json, json target)
     : condition(device, condition_json, target)

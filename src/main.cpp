@@ -3,8 +3,8 @@
 #include <sysexits.h>
 
 #include "args_parser.hpp"
-#include "exception/parse_abort.hpp"
 #include "emulation/emulation_devices.hpp"
+#include "exception/parse_abort.hpp"
 #include "test/test.hpp"
 #include "util/constant.hpp"
 

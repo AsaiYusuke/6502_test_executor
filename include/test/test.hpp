@@ -1,7 +1,8 @@
 #pragma once
 
-#include "test/test_result.hpp"
 #include "nlohmann/json.hpp"
+
+#include "test/test_result.hpp"
 
 using namespace std;
 

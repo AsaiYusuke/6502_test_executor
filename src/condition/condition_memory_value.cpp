@@ -1,6 +1,7 @@
 #include "condition/condition_memory_value.hpp"
-#include "util/value_convert.hpp"
+
 #include "util/expression_execute.hpp"
+#include "util/value_convert.hpp"
 
 condition_memory_value::condition_memory_value(emulation_devices *device, uint16_t _address, json condition, bool _permanent, string _name)
 {

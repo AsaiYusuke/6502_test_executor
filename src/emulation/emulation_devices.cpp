@@ -1,6 +1,7 @@
+#include "emulation/emulation_devices.hpp"
+
 #include <stdexcept>
 
-#include "emulation/emulation_devices.hpp"
 #include "emulation/cpu_device.hpp"
 #include "emulation/memory_device.hpp"
 

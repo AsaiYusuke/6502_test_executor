@@ -1,7 +1,8 @@
 #pragma once
 
-#include "enum/interrupt_type.hpp"
 #include "nlohmann/json.hpp"
+
+#include "enum/interrupt_type.hpp"
 
 using namespace std;
 

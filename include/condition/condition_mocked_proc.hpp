@@ -1,7 +1,8 @@
 #pragma once
 
-#include "enum/mock_action_type.hpp"
 #include "nlohmann/json.hpp"
+
+#include "enum/mock_action_type.hpp"
 
 using namespace std;
 

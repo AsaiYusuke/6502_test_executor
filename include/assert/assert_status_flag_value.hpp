@@ -1,10 +1,10 @@
 #pragma once
 
-#include "emulation/emulation_devices.hpp"
+#include "assert/message.hpp"
 #include "condition/condition_register_status_flag.hpp"
 #include "condition/condition_register_status_flag_value.hpp"
+#include "emulation/emulation_devices.hpp"
 #include "test/test_result.hpp"
-#include "assert/message.hpp"
 #include "util/to_string.hpp"
 
 using namespace std;

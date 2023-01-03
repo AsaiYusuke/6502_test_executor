@@ -1,21 +1,22 @@
-#include <sstream>
+#include "test/test.hpp"
+
 #include <fstream>
+#include <sstream>
 #include <string>
 
-#include "test/test.hpp"
-#include "test/test_total_result.hpp"
-#include "test/test_result.hpp"
-#include "test/test_setup.hpp"
-#include "test/test_assert.hpp"
 #include "args_parser.hpp"
+#include "assert/message.hpp"
 #include "emulation/emulation_devices.hpp"
 #include "emulation/cpu_device.hpp"
 #include "emulation/debug_info.hpp"
-#include "assert/message.hpp"
-#include "util/test_detect.hpp"
-#include "util/value_convert.hpp"
 #include "exception/file_open.hpp"
 #include "exception/cpu_runtime_error.hpp"
+#include "test/test_setup.hpp"
+#include "test/test_assert.hpp"
+#include "util/test_detect.hpp"
+#include "test/test_result.hpp"
+#include "test/test_total_result.hpp"
+#include "util/value_convert.hpp"
 
 json test::read_json(string path)
 {

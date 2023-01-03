@@ -1,6 +1,7 @@
 #include "condition/condition_register_status_flag.hpp"
-#include "condition/condition_register_status_flag_value.hpp"
+
 #include "condition/condition_register_status_flag_count.hpp"
+#include "condition/condition_register_status_flag_value.hpp"
 #include "util/expression_execute.hpp"
 #include "util/value_convert.hpp"
 

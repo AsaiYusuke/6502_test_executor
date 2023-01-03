@@ -1,25 +1,26 @@
-#include <vector>
-#include <typeinfo>
-
 #include "emulation/cpu_device.hpp"
+
+#include <typeinfo>
+#include <vector>
+
+#include "args_parser.hpp"
+#include "condition/condition_register_a_x_y.hpp"
+#include "condition/condition_register_a_x_y_value.hpp"
+#include "condition/condition_register_status_flag.hpp"
+#include "condition/condition_register_status_flag_value.hpp"
+#include "condition/condition_register_pc.hpp"
+#include "condition/condition_memory.hpp"
+#include "condition/condition_memory_value.hpp"
+#include "condition/condition_mocked_proc.hpp"
+#include "condition/condition_mocked_value.hpp"
 #include "emulation/emulation_devices.hpp"
-#include "emulation/memory_device.hpp"
-#include "emulation/mos6502/exec_mos6502.hpp"
 #include "emulation/cpu_filter/call_stack_filter.hpp"
 #include "emulation/cpu_filter/timeout_check_filter.hpp"
 #include "emulation/cpu_filter/instruction_check_filter.hpp"
 #include "emulation/cpu_filter/coverage_filter.hpp"
 #include "emulation/cpu_filter/register_counter_filter.hpp"
-#include "args_parser.hpp"
-#include "condition/condition_register_pc.hpp"
-#include "condition/condition_register_a_x_y.hpp"
-#include "condition/condition_register_a_x_y_value.hpp"
-#include "condition/condition_register_status_flag.hpp"
-#include "condition/condition_register_status_flag_value.hpp"
-#include "condition/condition_memory.hpp"
-#include "condition/condition_memory_value.hpp"
-#include "condition/condition_mocked_proc.hpp"
-#include "condition/condition_mocked_value.hpp"
+#include "emulation/memory_device.hpp"
+#include "emulation/mos6502/exec_mos6502.hpp"
 #include "enum/cycle_type.hpp"
 #include "util/constant.hpp"
 

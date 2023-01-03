@@ -1,7 +1,7 @@
 #pragma once
 
-#include "condition/message_name.hpp"
 #include "condition/condition_stack.hpp"
+#include "condition/message_name.hpp"
 
 using namespace std;
 

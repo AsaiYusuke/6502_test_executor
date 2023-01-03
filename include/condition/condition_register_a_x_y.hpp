@@ -1,8 +1,9 @@
 #pragma once
 
-#include "enum/register_type.hpp"
-#include "condition/message_name.hpp"
 #include "nlohmann/json.hpp"
+
+#include "condition/message_name.hpp"
+#include "enum/register_type.hpp"
 
 using namespace std;
 

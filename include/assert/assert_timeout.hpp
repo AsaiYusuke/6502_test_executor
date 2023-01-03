@@ -1,9 +1,9 @@
 #pragma once
 
-#include "emulation/emulation_devices.hpp"
-#include "condition/condition_timeout.hpp"
-#include "test/test_result.hpp"
 #include "assert/message.hpp"
+#include "condition/condition_timeout.hpp"
+#include "emulation/emulation_devices.hpp"
+#include "test/test_result.hpp"
 #include "util/to_string.hpp"
 
 using namespace std;

@@ -1,5 +1,6 @@
-#include <string>
 #include "assert/runtime_error_result.hpp"
+
+#include <string>
 
 runtime_error_result::runtime_error_result(runtime_error_type _type, string _message, vector<uint16_t> _call_stack)
 {

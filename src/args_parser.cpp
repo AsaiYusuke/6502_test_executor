@@ -1,6 +1,7 @@
+#include "args_parser.hpp"
+
 #include <sysexits.h>
 
-#include "args_parser.hpp"
 #include "exception/parse_abort.hpp"
 
 args_parser::args_parser(int argc, char *argv[])
