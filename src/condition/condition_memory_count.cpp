@@ -1,7 +1,7 @@
-#include "condition/condition_memory_count.h"
-#include "condition/condition_expression.h"
-#include "condition/expression_value.h"
-#include "util/expression_execute.h"
+#include "condition/condition_memory_count.hpp"
+#include "condition/condition_expression.hpp"
+#include "condition/expression_value.hpp"
+#include "util/expression_execute.hpp"
 
 condition_memory_count::condition_memory_count(emulation_devices *device, uint16_t _address, json condition, string _name)
 {

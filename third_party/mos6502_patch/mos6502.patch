@@ -417,14 +417,14 @@ index 747786c..a5e5103 100644
  }
  
 diff --git a/mos6502.h b/mos6502.h
-index 37c40ea..a40ab8a 100644
+index 37c40ea..d165f54 100644
 --- a/mos6502.h
 +++ b/mos6502.h
 @@ -10,6 +10,7 @@
  
  #include <iostream>
  #include <stdint.h>
-+#include "emulation/memory_access.h"
++#include "emulation/memory_access.hpp"
  using namespace std;
  
  #define NEGATIVE  0x80

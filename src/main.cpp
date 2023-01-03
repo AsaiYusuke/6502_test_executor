@@ -2,11 +2,11 @@
 #include <map>
 #include <sysexits.h>
 
-#include "args_parser.h"
-#include "exception/parse_abort.h"
-#include "emulation/emulation_devices.h"
-#include "test/test.h"
-#include "util/constant.h"
+#include "args_parser.hpp"
+#include "exception/parse_abort.hpp"
+#include "emulation/emulation_devices.hpp"
+#include "test/test.hpp"
+#include "util/constant.hpp"
 
 using namespace std;
 

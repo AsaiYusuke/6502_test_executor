@@ -1,5 +1,5 @@
-#include "condition/condition_timeout.h"
-#include "util/expression_execute.h"
+#include "condition/condition_timeout.hpp"
+#include "util/expression_execute.hpp"
 
 condition_timeout::condition_timeout(emulation_devices *device, json condition)
 {

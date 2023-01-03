@@ -1,6 +1,6 @@
-#include "condition/condition_stack.h"
-#include "util/value_convert.h"
-#include "util/expression_execute.h"
+#include "condition/condition_stack.hpp"
+#include "util/value_convert.hpp"
+#include "util/expression_execute.hpp"
 
 condition_stack::condition_stack(emulation_devices *device, json condition)
 {

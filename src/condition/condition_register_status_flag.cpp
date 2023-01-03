@@ -1,8 +1,8 @@
-#include "condition/condition_register_status_flag.h"
-#include "condition/condition_register_status_flag_value.h"
-#include "condition/condition_register_status_flag_count.h"
-#include "util/expression_execute.h"
-#include "util/value_convert.h"
+#include "condition/condition_register_status_flag.hpp"
+#include "condition/condition_register_status_flag_value.hpp"
+#include "condition/condition_register_status_flag_count.hpp"
+#include "util/expression_execute.hpp"
+#include "util/value_convert.hpp"
 
 condition_register_status_flag::condition_register_status_flag(emulation_devices *device, string _name, json condition)
 {

@@ -1,6 +1,6 @@
-#include "emulation/cpu_filter/call_stack_filter.h"
-#include "emulation/cpu_device.h"
-#include "util/constant.h"
+#include "emulation/cpu_filter/call_stack_filter.hpp"
+#include "emulation/cpu_device.hpp"
+#include "util/constant.hpp"
 
 call_stack_filter::call_stack_filter(cpu_device *cpu)
 {

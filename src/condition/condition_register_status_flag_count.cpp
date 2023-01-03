@@ -1,4 +1,4 @@
-#include "condition/condition_register_status_flag_count.h"
+#include "condition/condition_register_status_flag_count.hpp"
 
 condition_register_status_flag_count::condition_register_status_flag_count(emulation_devices *device, json condition)
 {

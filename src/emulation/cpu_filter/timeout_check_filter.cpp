@@ -1,6 +1,6 @@
-#include "emulation/cpu_filter/timeout_check_filter.h"
-#include "emulation/cpu_device.h"
-#include "util/value_convert.h"
+#include "emulation/cpu_filter/timeout_check_filter.hpp"
+#include "emulation/cpu_device.hpp"
+#include "util/value_convert.hpp"
 
 timeout_check_filter::timeout_check_filter(cpu_device *cpu)
 {

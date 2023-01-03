@@ -1,11 +1,11 @@
-#include "emulation/memory_device.h"
-#include "emulation/emulation_devices.h"
-#include "emulation/debug_info.h"
-#include "emulation/debug_segment.h"
-#include "emulation/rom_image.h"
-#include "util/value_convert.h"
-#include "exception/cpu_runtime_error.h"
-#include "enum/platform_type.h"
+#include "emulation/memory_device.hpp"
+#include "emulation/emulation_devices.hpp"
+#include "emulation/debug_info.hpp"
+#include "emulation/debug_segment.hpp"
+#include "emulation/rom_image.hpp"
+#include "util/value_convert.hpp"
+#include "exception/cpu_runtime_error.hpp"
+#include "enum/platform_type.hpp"
 
 memory_device::memory_device(emulation_devices *_device, args_parser *args, json config, debug_info *_debug)
 {
