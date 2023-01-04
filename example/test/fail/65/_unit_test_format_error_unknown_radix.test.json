@@ -1,17 +1,17 @@
 {
-    "$schema": "../../../schema/testcase.schema.json",
+    "$schema": "../../../../schema/testcase.schema.json",
     "target": {
         "start": {
             "label": "check_collision"
         }
     },
     "cases": {
-        "array as number": {
+        "unknown radix": {
             "setup": {
                 "register": {
                     "A": {
                         "value": {
-                            "address": []
+                            "address": "#address"
                         }
                     }
                 }
