@@ -1,6 +1,7 @@
-#include "condition/condition_register_pc.h"
-#include "util/value_convert.h"
-#include "util/constant.h"
+#include "condition/condition_register_pc.hpp"
+
+#include "util/constant.hpp"
+#include "util/value_convert.hpp"
 
 condition_register_pc::condition_register_pc(emulation_devices *_device, json condition)
 {

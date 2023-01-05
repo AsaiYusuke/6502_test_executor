@@ -1,14 +1,15 @@
+#include "emulation/debug_info.hpp"
+
 #include <fstream>
 #include <vector>
 
-#include "emulation/debug_info.h"
-#include "emulation/debug_segment.h"
-#include "emulation/debug_source_line.h"
-#include "args_parser.h"
-#include "exception/file_open.h"
-#include "exception/parse_ignore_entry.h"
-#include "exception/cpu_runtime_error.h"
-#include "util/value_convert.h"
+#include "args_parser.hpp"
+#include "emulation/debug_segment.hpp"
+#include "emulation/debug_source_line.hpp"
+#include "exception/cpu_runtime_error.hpp"
+#include "exception/file_open.hpp"
+#include "exception/parse_ignore_entry.hpp"
+#include "util/value_convert.hpp"
 
 debug_info::debug_info(args_parser *args, json config)
 {

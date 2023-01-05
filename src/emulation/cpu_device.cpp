@@ -1,27 +1,28 @@
-#include <vector>
-#include <typeinfo>
+#include "emulation/cpu_device.hpp"
 
-#include "emulation/cpu_device.h"
-#include "emulation/emulation_devices.h"
-#include "emulation/memory_device.h"
-#include "emulation/mos6502/exec_mos6502.h"
-#include "emulation/cpu_filter/call_stack_filter.h"
-#include "emulation/cpu_filter/timeout_check_filter.h"
-#include "emulation/cpu_filter/instruction_check_filter.h"
-#include "emulation/cpu_filter/coverage_filter.h"
-#include "emulation/cpu_filter/register_counter_filter.h"
-#include "args_parser.h"
-#include "condition/condition_register_pc.h"
-#include "condition/condition_register_a_x_y.h"
-#include "condition/condition_register_a_x_y_value.h"
-#include "condition/condition_register_status_flag.h"
-#include "condition/condition_register_status_flag_value.h"
-#include "condition/condition_memory.h"
-#include "condition/condition_memory_value.h"
-#include "condition/condition_mocked_proc.h"
-#include "condition/condition_mocked_value.h"
-#include "enum/cycle_type.h"
-#include "util/constant.h"
+#include <typeinfo>
+#include <vector>
+
+#include "args_parser.hpp"
+#include "condition/condition_register_a_x_y.hpp"
+#include "condition/condition_register_a_x_y_value.hpp"
+#include "condition/condition_register_status_flag.hpp"
+#include "condition/condition_register_status_flag_value.hpp"
+#include "condition/condition_register_pc.hpp"
+#include "condition/condition_memory.hpp"
+#include "condition/condition_memory_value.hpp"
+#include "condition/condition_mocked_proc.hpp"
+#include "condition/condition_mocked_value.hpp"
+#include "emulation/emulation_devices.hpp"
+#include "emulation/cpu_filter/call_stack_filter.hpp"
+#include "emulation/cpu_filter/timeout_check_filter.hpp"
+#include "emulation/cpu_filter/instruction_check_filter.hpp"
+#include "emulation/cpu_filter/coverage_filter.hpp"
+#include "emulation/cpu_filter/register_counter_filter.hpp"
+#include "emulation/memory_device.hpp"
+#include "emulation/mos6502/exec_mos6502.hpp"
+#include "enum/cycle_type.hpp"
+#include "util/constant.hpp"
 
 cpu_device::cpu_device(emulation_devices *_device, args_parser *args, json config, debug_info *debug)
 {

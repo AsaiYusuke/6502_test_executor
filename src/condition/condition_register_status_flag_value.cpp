@@ -1,6 +1,7 @@
-#include "condition/condition_register_status_flag_value.h"
-#include "util/value_convert.h"
-#include "util/expression_execute.h"
+#include "condition/condition_register_status_flag_value.hpp"
+
+#include "util/expression_execute.hpp"
+#include "util/value_convert.hpp"
 
 condition_register_status_flag_value::condition_register_status_flag_value(emulation_devices *device, json condition)
 {

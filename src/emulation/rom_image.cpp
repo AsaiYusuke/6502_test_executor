@@ -1,9 +1,10 @@
+#include "emulation/rom_image.hpp"
+
 #include <fstream>
 
-#include "emulation/rom_image.h"
-#include "emulation/debug_info.h"
-#include "emulation/debug_segment.h"
-#include "exception/file_open.h"
+#include "emulation/debug_info.hpp"
+#include "emulation/debug_segment.hpp"
+#include "exception/file_open.hpp"
 
 rom_image::rom_image(debug_info *debug)
 {

@@ -1,9 +1,10 @@
+#include "util/to_string.hpp"
+
 #include <vector>
 #include <sstream>
 
-#include "util/to_string.h"
-#include "util/value_convert.h"
-#include "enum/operator_type.h"
+#include "enum/operator_type.hpp"
+#include "util/value_convert.hpp"
 
 string to_string(uint8_t value)
 {

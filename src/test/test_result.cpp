@@ -1,7 +1,8 @@
+#include "test/test_result.hpp"
+
 #include <iostream>
 
-#include "test/test_result.h"
-#include "emulation/emulation_devices.h"
+#include "emulation/emulation_devices.hpp"
 
 test_result::test_result() : test_result(test_result_type::OK)
 {

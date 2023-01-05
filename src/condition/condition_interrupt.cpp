@@ -1,5 +1,6 @@
-#include "condition/condition_interrupt.h"
-#include "util/value_convert.h"
+#include "condition/condition_interrupt.hpp"
+
+#include "util/value_convert.hpp"
 
 condition_interrupt::condition_interrupt(emulation_devices *device, json condition)
 {

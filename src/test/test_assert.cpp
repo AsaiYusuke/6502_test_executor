@@ -1,20 +1,21 @@
+#include "test/test_assert.hpp"
+
 #include <sstream>
 
-#include "test/test_assert.h"
-#include "util/value_convert.h"
-#include "assert/assert_timeout.h"
-#include "assert/assert_runtime_error.h"
-#include "assert/assert_register_value.h"
-#include "assert/assert_register_read_count.h"
-#include "assert/assert_register_write_count.h"
-#include "assert/assert_status_flag_value.h"
-#include "assert/assert_status_flag_read_count.h"
-#include "assert/assert_status_flag_write_count.h"
-#include "assert/assert_memory_value.h"
-#include "assert/assert_memory_read_count.h"
-#include "assert/assert_memory_write_count.h"
-#include "assert/assert_stack_value.h"
-#include "condition/condition_memory.h"
+#include "assert/assert_register_value.hpp"
+#include "assert/assert_register_read_count.hpp"
+#include "assert/assert_register_write_count.hpp"
+#include "assert/assert_status_flag_value.hpp"
+#include "assert/assert_status_flag_read_count.hpp"
+#include "assert/assert_status_flag_write_count.hpp"
+#include "assert/assert_memory_value.hpp"
+#include "assert/assert_memory_read_count.hpp"
+#include "assert/assert_memory_write_count.hpp"
+#include "assert/assert_stack_value.hpp"
+#include "assert/assert_timeout.hpp"
+#include "assert/assert_runtime_error.hpp"
+#include "condition/condition_memory.hpp"
+#include "util/value_convert.hpp"
 
 test_assert::test_assert(emulation_devices *device, json condition_json)
     : condition(device, condition_json)

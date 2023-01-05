@@ -1,4 +1,4 @@
-#include "util/test_detect.h"
+#include "util/test_detect.hpp"
 
 bool test_detect::key_type_check(string key, json::value_t type, json value)
 {
