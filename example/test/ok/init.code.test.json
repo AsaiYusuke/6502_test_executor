@@ -24,7 +24,10 @@
     },
     "config": {
         "maxCycleCount": "DISABLE",
-        "invalidMemory": {
+        "testMemoryAccess": {
+            "feature": [
+                "ACCESS_TO_OUT_OF_SEGMENT"
+            ],
             "ignoreList": [
                 {
                     "start": {

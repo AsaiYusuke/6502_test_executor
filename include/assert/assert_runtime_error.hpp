@@ -36,6 +36,20 @@ public:
                     error_def.get_call_stack(),
                     error_def.get_message()));
             break;
+        case runtime_error_type::UNAUTHORIZED_MEMORY:
+            result->add_error(
+                message::trace_unauthorized_memory(
+                    device,
+                    error_def.get_call_stack(),
+                    error_def.get_message()));
+            break;
+        case runtime_error_type::UNINITIALIZED_MEMORY:
+            result->add_error(
+                message::trace_uninitialized_memory(
+                    device,
+                    error_def.get_call_stack(),
+                    error_def.get_message()));
+            break;
         }
 
         return false;

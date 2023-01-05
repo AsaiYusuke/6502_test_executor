@@ -188,6 +188,11 @@ uint8_t cpu_device::get_write_count(status_flag_type type)
     return register_counter->get_write_count(type);
 }
 
+bool cpu_device::is_addr_imm()
+{
+    return cpu->isAddrImm();
+}
+
 bool cpu_device::is_illegal_instruction()
 {
     return cpu->isIllegalInstr();

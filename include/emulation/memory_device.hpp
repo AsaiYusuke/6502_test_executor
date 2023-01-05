@@ -34,7 +34,10 @@ private:
     map<uint16_t, uint8_t> read_counts;
     map<uint16_t, uint8_t> write_counts;
 
-    bool assert_invalid_memory;
+    bool assert_write_to_readonly_memory;
+    bool assert_access_to_out_of_segment;
+    bool assert_read_from_uninitialized_memory;
+    bool assert_access_to_unauthorized_memory;
 
 public:
     memory_device(emulation_devices *_device, args_parser *args, json config, debug_info *debug);
@@ -48,7 +51,9 @@ public:
     uint8_t get_write_count(uint16_t address);
     uint8_t read(uint16_t address);
     uint8_t read_raw(uint16_t address);
+    uint8_t read_data(uint16_t address);
     void write(uint16_t address, uint8_t value);
     void write_raw(uint16_t address, uint8_t value);
+    void write_data(uint16_t address, uint8_t value);
     void print();
 };

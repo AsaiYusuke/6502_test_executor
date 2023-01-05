@@ -12,8 +12,11 @@
         }
     },
     "config": {
-        "invalidMemory": {
-            "enable": true
+        "testMemoryAccess": {
+            "feature": [
+                "WRITE_TO_READONLY_MEMORY"
+            ],
+            "ignoreList": []
         }
     }
 }

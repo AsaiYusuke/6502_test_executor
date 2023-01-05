@@ -3,6 +3,12 @@
 exec_mos6502::exec_mos6502(i_memory_access *i_memory_access) : mos6502(i_memory_access)
 {}
 
+void exec_mos6502::Exec(Instr i)
+{
+	is_addr_imm = i.addr == &exec_mos6502::Addr_IMM;
+	mos6502::Exec(i);
+}
+
 void exec_mos6502::SetP(uint8_t value)
 {
 	status = value;
@@ -36,6 +42,11 @@ void exec_mos6502::StackPush(uint8_t byte)
 uint8_t exec_mos6502::StackPop()
 {
     return mos6502::StackPop();
+}
+
+bool exec_mos6502::isAddrImm()
+{
+	return is_addr_imm;
 }
 
 bool exec_mos6502::isIllegalInstr()

@@ -1,0 +1,29 @@
+{
+    "$schema": "../../../../schema/testcase.schema.json",
+    "target": {
+        "start": {
+            "label": "unauthorized_access"
+        }
+    },
+    "cases": {
+        "Unauthorized access test": {
+            "setup": {},
+            "expected": {}
+        }
+    },
+    "config": {
+        "testMemoryAccess": {
+            "feature": [
+                "ACCESS_TO_UNAUTHORIZED_MEMORY"
+            ],
+            "authorizedList": [
+                {
+                    "name": "ZEROPAGE"
+                },
+                {
+                    "detect": true
+                }
+            ]
+        }
+    }
+}

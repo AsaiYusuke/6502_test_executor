@@ -33,6 +33,8 @@ private:
     map<string, uint16_t> label_address_map;
     map<uint16_t, string> address_label_map;
 
+    vector<debug_segment *> authorized_segments;
+
     void parse_debug_def(string line);
 
     string get_substr(string value, string begin, string end);
@@ -53,12 +55,15 @@ public:
     string get_label(uint16_t address);
     uint16_t get_address(string label);
     bool has_write_access(uint16_t address);
-    bool has_read_access(uint16_t address);
+    void test_segment_access(uint16_t address);
     map<int, debug_segment *> get_segment_def_map();
     debug_segment *get_segment_def(uint16_t address);
     debug_segment *get_segment_def(string name);
     void add_segment_def(int id, string name, uint16_t start, int size, bool writable, string image_file_name = string(), int image_file_offset = 0);
     void remove_segment_def(int id);
     void remove_segment_def(string name);
+    void add_authorized_segment_def(uint16_t start, int size);
+    void add_authorized_segment_def(string name);
+    bool has_authorized_access(uint16_t address);
     void save_coverage();
 };

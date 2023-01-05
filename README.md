@@ -90,9 +90,16 @@ This tool enables [unit testing](https://en.wikipedia.org/wiki/Unit_testing) for
   - Composite operators  
     Same as logical AND operator. e.g. "_gt_"+"_lt_" for range selection
 - Error handling
-  - Write access to readonly memory
-  - Access to undefined memory
-  - Illegal instruction
+  - Write access to readonly memory  
+    Able to detect write operations to read-only memory.
+  - Read access from uninitialized memory  
+    Able to detect read operations from memory that has never had a write operation.
+  - Access to undefined memory  
+    Able to detect memory operations using addresses outside the segment defined at build time.
+  - Access to unauthorized memory  
+    Able to detect access outside the memory for which authorized area has been defined.
+  - Illegal instruction  
+    Able to detect illegal instruction code execution.
 
 ### Coverage
 
@@ -301,9 +308,11 @@ If both are specified, the values in the test scenario file are adopted.
 
 ### Error handling
 
-- [Write to readonly memory](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/fail/error.readonly.test.json)
-- [Access to out of segment](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/fail/error.out_of_segment.test.json)
-- [Illegal instruction](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/fail/error.illegal_instruction.test.json)
+- [Write access to readonly memory](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/fail/200/error.readonly.test.json)
+- [Read access from uninitialized memory](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/fail/200/error.uninitialized_memory_read.test.json)
+- [Access to undefined memory](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/fail/200/error.out_of_segment.test.json)
+- [Access to unauthorized memory](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/fail/200/error.unauthorized_memory_access.test.json)
+- [Illegal instruction](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/fail/200/error.illegal_instruction.test.json)
 
 ### Misc
 

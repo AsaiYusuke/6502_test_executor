@@ -63,7 +63,7 @@ $(TEST_OK_DIR)/%.test : $(TEST_OK_DIR)/%.test.json
 
 $(TEST_FAIL_DIR)/%.test : $(TEST_FAIL_DIR)/%.test.json
 	$(eval TEST_FAILED_CODE := $(shell echo $< | sed -e 's~^$(TEST_FAIL_DIR)/~~' -e 's~/.*~~'))
-	$(TEST_EXEC) $(TEST_FLAGS) $(TEST_FAIL_FLAGS) -t $< 2> /dev/null && { exit 1; } || { [ $$? -eq $(TEST_FAILED_CODE) ] && exit 0 || exit 1; }
+	$(TEST_EXEC) $(TEST_FLAGS) $(TEST_FAIL_FLAGS) -t $< 2> /dev/null && { exit 1; } || { [ $$? -ne $(TEST_FAILED_CODE) ] && exit 2 || exit 0 ; }
 
 clean :
 	-rm -r $(BUILD_DIR)

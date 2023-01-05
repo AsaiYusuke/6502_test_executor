@@ -143,3 +143,19 @@ string message::trace_illegal_instruction(emulation_devices *device, vector<uint
         call_stack,
         "Illegal instruction [" + detail + "]");
 }
+
+string message::trace_unauthorized_memory(emulation_devices *device, vector<uint16_t> call_stack, string detail)
+{
+    return trace_message(
+        device,
+        call_stack,
+        "Attempted access to unauthorized memory [" + detail + "]");
+}
+
+string message::trace_uninitialized_memory(emulation_devices *device, vector<uint16_t> call_stack, string detail)
+{
+    return trace_message(
+        device,
+        call_stack,
+        "Attempted read to uninitialized memory [" + detail + "]");
+}

@@ -27,4 +27,6 @@ public:
     static string trace_readonly_memory(emulation_devices *device, vector<uint16_t> call_stack, string detail);
     static string trace_out_of_segment(emulation_devices *device, vector<uint16_t> call_stack, string detail);
     static string trace_illegal_instruction(emulation_devices *device, vector<uint16_t> call_stack, string detail);
+    static string trace_unauthorized_memory(emulation_devices *device, vector<uint16_t> call_stack, string detail);
+    static string trace_uninitialized_memory(emulation_devices *device, vector<uint16_t> call_stack, string detail);
 };

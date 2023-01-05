@@ -1,0 +1,28 @@
+{
+    "$schema": "../../../../schema/testcase.schema.json",
+    "target": {
+        "start": {
+            "label": "uninitialized_read"
+        }
+    },
+    "cases": {
+        "Unauthorized access test": {
+            "setup": {
+                "memory": [
+                    {
+                        "label": "pos",
+                        "value": 0
+                    }
+                ]
+            },
+            "expected": {}
+        }
+    },
+    "config": {
+        "testMemoryAccess": {
+            "feature": [
+                "READ_FROM_UNINITIALIZED_MEMORY"
+            ]
+        }
+    }
+}
