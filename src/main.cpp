@@ -24,6 +24,11 @@ int main(int argc, char *argv[])
     {
         return e.get_return_value();
     }
+    catch (invalid_argument &e)
+    {
+        cerr << e.what() << endl;
+        return EX_DATAERR;
+    }
     catch (exception &e)
     {
         cerr << e.what() << endl;

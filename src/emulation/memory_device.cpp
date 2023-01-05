@@ -193,7 +193,7 @@ void memory_device::write(uint16_t address, uint8_t value)
         }
         catch (const cpu_runtime_error &e)
         {
-            device->add_error_result(runtime_error_type::OUT_OF_SEGMENT, e.what());
+            device->add_error_result(e.get_type(), e.what());
         }
     }
 

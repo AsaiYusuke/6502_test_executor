@@ -27,7 +27,6 @@ ASFLAGS			:=		--cpu 6502 --target nes --debug-info
 LD			:=		ld65
 LDFLAGS			:=		
 TEST_EXEC		:=		$(TEST_EXEC_DIR)/6502_tester
-TEST_FAILED_CODE	:=		200
 
 TEST_FLAGS		:=		--debug=$(DEBUG) --coverage=$(COVARAGE) --segment=$(COVERAGE_SEGMENTS)
 TEST_OK_FLAGS		:=		--quiet-summary --quiet-ok
@@ -63,7 +62,8 @@ $(TEST_OK_DIR)/%.test : $(TEST_OK_DIR)/%.test.json
 	$(TEST_EXEC) $(TEST_FLAGS) $(TEST_OK_FLAGS) -t $<
 
 $(TEST_FAIL_DIR)/%.test : $(TEST_FAIL_DIR)/%.test.json
-	$(TEST_EXEC) $(TEST_FLAGS) $(TEST_FAIL_FLAGS) -t $< && { exit 1; } || { [ $$? -eq $(TEST_FAILED_CODE) ] && exit 0 || exit 1; }
+	$(eval TEST_FAILED_CODE := $(shell echo $< | sed -e 's~^$(TEST_FAIL_DIR)/~~' -e 's~/.*~~'))
+	$(TEST_EXEC) $(TEST_FLAGS) $(TEST_FAIL_FLAGS) -t $< 2> /dev/null && { exit 1; } || { [ $$? -eq $(TEST_FAILED_CODE) ] && exit 0 || exit 1; }
 
 clean :
 	-rm -r $(BUILD_DIR)
