@@ -1,9 +1,11 @@
 #include "emulation/memory_device.hpp"
 
 #include "emulation/emulation_devices.hpp"
+#include "emulation/cpu_device.hpp"
 #include "emulation/debug_info.hpp"
 #include "emulation/debug_segment.hpp"
 #include "emulation/rom_image.hpp"
+#include "enum/memory_test_type.hpp"
 #include "enum/platform_type.hpp"
 #include "exception/cpu_runtime_error.hpp"
 #include "util/value_convert.hpp"
@@ -15,13 +17,39 @@ memory_device::memory_device(emulation_devices *_device, args_parser *args, json
     debug = _debug;
     rom = new rom_image(debug);
 
-    if (config["invalidMemory"]["enable"].is_boolean())
-        assert_invalid_memory = config["invalidMemory"]["enable"].get<bool>();
+    if (config["testMemoryAccess"]["feature"].is_array())
+    {
+        for (auto &feature : config["testMemoryAccess"]["feature"])
+        {
+            switch (memory_test_name_type_map[feature.get<string>()])
+            {
+            case memory_test_type::WRITE_TO_READONLY_MEMORY:
+                assert_write_to_readonly_memory = true;
+                break;
+            case memory_test_type::ACCESS_TO_OUT_OF_SEGMENT:
+                assert_access_to_out_of_segment = true;
+                break;
+            case memory_test_type::READ_FROM_UNINITIALIZED_MEMORY:
+                assert_read_from_uninitialized_memory = true;
+                break;
+            case memory_test_type::ACCESS_TO_UNAUTHORIZED_MEMORY:
+                assert_access_to_unauthorized_memory = true;
+                break;
+            default:
+                break;
+            }
+        }
+    }
     else
-        assert_invalid_memory = true;
+    {
+        assert_write_to_readonly_memory = true;
+        assert_access_to_out_of_segment = true;
+        assert_read_from_uninitialized_memory = false;
+        assert_access_to_unauthorized_memory = false;
+    }
 
     vector<int> remove_segment_ids;
-    if (config["invalidMemory"]["ignoreList"].is_null())
+    if (config["testMemoryAccess"]["ignoreList"].is_null())
     {
         switch (rom->detect_platform())
         {
@@ -35,7 +63,7 @@ memory_device::memory_device(emulation_devices *_device, args_parser *args, json
     }
     else
     {
-        for (auto &ignore_def : config["invalidMemory"]["ignoreList"])
+        for (auto &ignore_def : config["testMemoryAccess"]["ignoreList"])
         {
             if (ignore_def["start"].is_object() && !ignore_def["size"].is_null())
                 debug->add_segment_def(
@@ -57,6 +85,23 @@ memory_device::memory_device(emulation_devices *_device, args_parser *args, json
     }
     for (auto id : remove_segment_ids)
         debug->remove_segment_def(id);
+
+    if (config["testMemoryAccess"]["authorizedList"].is_array())
+        for (auto &authorized_def : config["testMemoryAccess"]["authorizedList"])
+            if (authorized_def["start"].is_object() && !authorized_def["size"].is_null())
+                debug->add_authorized_segment_def(
+                    value_convert::get_address(device, authorized_def["start"]),
+                    value_convert::parse_json_number(device, authorized_def["size"]));
+            else if (authorized_def["name"].is_string())
+                debug->add_authorized_segment_def(authorized_def["name"].get<string>());
+            else if (authorized_def["detect"].is_boolean() && authorized_def["detect"].get<bool>())
+                switch (rom->detect_platform())
+                {
+                case platform_type::NES:
+                    debug->add_authorized_segment_def(0x100, 0x100);
+                    debug->add_authorized_segment_def(0x2000, 0x2020);
+                    break;
+                }
 }
 
 vector<int> memory_device::get_detected_remove_segment_ids()
@@ -137,7 +182,8 @@ uint8_t memory_device::read(uint16_t address)
     catch (const cpu_runtime_error &e)
     {
         // When exception occurs, it is considered RAM access.
-        device->add_error_result(e.get_type(), e.what());
+        if (assert_access_to_out_of_segment)
+            device->add_error_result(e.get_type(), e.what());
     }
 
     if (read_sequences.count(address) > 0)
@@ -153,7 +199,16 @@ uint8_t memory_device::read(uint16_t address)
         }
     }
 
-    return ram.count(address) == 0 ? 0 : ram[address];
+    if (ram.count(address) == 0)
+    {
+        if (assert_read_from_uninitialized_memory)
+            device->add_error_result(
+                runtime_error_type::UNINITIALIZED_MEMORY,
+                "address=" + value_convert::to_zero_filled_hex_string(address));
+        return 0;
+    }
+
+    return ram[address];
 }
 
 uint8_t memory_device::read_raw(uint16_t address)
@@ -175,26 +230,37 @@ uint8_t memory_device::read_raw(uint16_t address)
     return ram[address];
 }
 
+uint8_t memory_device::read_data(uint16_t address)
+{
+    if (assert_access_to_unauthorized_memory)
+        if (!device->get_cpu()->is_addr_imm())
+            if (!debug->has_authorized_access(address))
+                device->add_error_result(
+                    runtime_error_type::UNAUTHORIZED_MEMORY,
+                    "address=" + value_convert::to_zero_filled_hex_string(address));
+
+    return read(address);
+}
+
 void memory_device::write(uint16_t address, uint8_t value)
 {
     write_counts[address]++;
     write_sequences[address].push_back(value);
 
-    if (assert_invalid_memory)
+    try
     {
-        try
-        {
+        if (assert_access_to_out_of_segment)
+            debug->test_segment_access(address);
+
+        if (assert_write_to_readonly_memory)
             if (!debug->has_write_access(address))
-            {
                 device->add_error_result(
                     runtime_error_type::READONLY_MEMORY,
                     "address=" + value_convert::to_zero_filled_hex_string(address));
-            }
-        }
-        catch (const cpu_runtime_error &e)
-        {
-            device->add_error_result(e.get_type(), e.what());
-        }
+    }
+    catch (const cpu_runtime_error &e)
+    {
+        device->add_error_result(e.get_type(), e.what());
     }
 
     ram[address] = value;
@@ -203,6 +269,18 @@ void memory_device::write(uint16_t address, uint8_t value)
 void memory_device::write_raw(uint16_t address, uint8_t value)
 {
     ram[address] = value;
+}
+
+void memory_device::write_data(uint16_t address, uint8_t value)
+{
+    if (assert_access_to_unauthorized_memory)
+        if (!device->get_cpu()->is_addr_imm())
+            if (!debug->has_authorized_access(address))
+                device->add_error_result(
+                    runtime_error_type::UNAUTHORIZED_MEMORY,
+                    "address=" + value_convert::to_zero_filled_hex_string(address));
+
+    write(address, value);
 }
 
 void memory_device::print()

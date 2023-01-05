@@ -276,3 +276,15 @@ palette:	.byte $0F, $11, $21, $31
 	cmp #1
 	rts
 .endproc
+
+.proc unauthorized_access
+	lda old_pos
+	lda unauthorized_access
+	rts
+.endproc
+
+.proc uninitialized_read
+	lda pos
+	lda pos + 1
+	rts
+.endproc

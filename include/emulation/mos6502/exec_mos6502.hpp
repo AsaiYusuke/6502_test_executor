@@ -331,8 +331,11 @@ private:
          &exec_mos6502::Op_RTI,
          &exec_mos6502::Op_RTS};
 
+     bool is_addr_imm;
+
 public:
     exec_mos6502(i_memory_access *i_memory_access);
+    void Exec(Instr i);
     void SetP(uint8_t value);
     void SetA(uint8_t value);
     void SetX(uint8_t value);
@@ -340,6 +343,7 @@ public:
     void SetPC(uint16_t value);
     void StackPush(uint8_t byte);
     uint8_t StackPop();
+    bool isAddrImm();
     bool isIllegalInstr();
     bool isCallInstr();
     bool isReturnInstr();

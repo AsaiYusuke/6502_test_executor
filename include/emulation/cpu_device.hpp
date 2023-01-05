@@ -52,6 +52,7 @@ public:
     uint8_t get_write_count(register_type type);
     uint8_t get_read_count(status_flag_type type);
     uint8_t get_write_count(status_flag_type type);
+    bool is_addr_imm();
     bool is_illegal_instruction();
     bool is_call_instruction();
     bool is_return_instruction();

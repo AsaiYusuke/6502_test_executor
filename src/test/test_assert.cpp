@@ -32,7 +32,9 @@ void test_assert::execute()
          get_device()->get_filtered_errors(
              {runtime_error_type::OUT_OF_SEGMENT,
               runtime_error_type::READONLY_MEMORY,
-              runtime_error_type::ILLEGAL_INSTRUCTION}))
+              runtime_error_type::ILLEGAL_INSTRUCTION,
+              runtime_error_type::UNAUTHORIZED_MEMORY,
+              runtime_error_type::UNINITIALIZED_MEMORY}))
     {
         assert_runtime_error::test(
             get_device(), error_def, &result);

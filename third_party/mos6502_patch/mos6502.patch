@@ -1,5 +1,5 @@
 diff --git a/mos6502.cpp b/mos6502.cpp
-index 747786c..a5e5103 100644
+index 747786c..346eae5 100644
 --- a/mos6502.cpp
 +++ b/mos6502.cpp
 @@ -1,10 +1,9 @@
@@ -134,7 +134,7 @@ index 747786c..a5e5103 100644
  	X = reset_X;
  
 -	pc = (Read(rstVectorH) << 8) + Read(rstVectorL); // load PC from reset vector
-+	pc = (memory_access->read(rstVectorH) << 8) + memory_access->read(rstVectorL); // load PC from reset vector
++	pc = (memory_access->read_raw(rstVectorH) << 8) + memory_access->read_raw(rstVectorL); // load PC from reset vector
  
  	sp = reset_sp;
  
@@ -188,7 +188,7 @@ index 747786c..a5e5103 100644
  void mos6502::Op_ADC(uint16_t src)
  {
 -	uint8_t m = Read(src);
-+	uint8_t m = memory_access->read(src);
++	uint8_t m = memory_access->read_data(src);
  	unsigned int tmp = m + A + (IF_CARRY() ? 1 : 0);
  	SET_ZERO(!(tmp & 0xFF));
  	if (IF_DECIMAL())
@@ -197,7 +197,7 @@ index 747786c..a5e5103 100644
  void mos6502::Op_AND(uint16_t src)
  {
 -	uint8_t m = Read(src);
-+	uint8_t m = memory_access->read(src);
++	uint8_t m = memory_access->read_data(src);
  	uint8_t res = m & A;
  	SET_NEGATIVE(res & 0x80);
  	SET_ZERO(!res);
@@ -206,14 +206,14 @@ index 747786c..a5e5103 100644
  void mos6502::Op_ASL(uint16_t src)
  {
 -	uint8_t m = Read(src);
-+	uint8_t m = memory_access->read(src);
++	uint8_t m = memory_access->read_data(src);
  	SET_CARRY(m & 0x80);
  	m <<= 1;
  	m &= 0xFF;
  	SET_NEGATIVE(m & 0x80);
  	SET_ZERO(!m);
 -	Write(src, m);
-+	memory_access->write(src, m);
++	memory_access->write_data(src, m);
  	return;
  }
  
@@ -222,7 +222,7 @@ index 747786c..a5e5103 100644
  void mos6502::Op_BIT(uint16_t src)
  {
 -	uint8_t m = Read(src);
-+	uint8_t m = memory_access->read(src);
++	uint8_t m = memory_access->read_data(src);
  	uint8_t res = m & A;
  	SET_NEGATIVE(res & 0x80);
  	status = (status & 0x3F) | (uint8_t)(m & 0xC0) | CONSTANT | BREAK;
@@ -231,7 +231,7 @@ index 747786c..a5e5103 100644
  	StackPush(status | CONSTANT | BREAK);
  	SET_INTERRUPT(1);
 -	pc = (Read(irqVectorH) << 8) + Read(irqVectorL);
-+	pc = (memory_access->read(irqVectorH) << 8) + memory_access->read(irqVectorL);
++	pc = (memory_access->read_data(irqVectorH) << 8) + memory_access->read_data(irqVectorL);
  	return;
  }
  
@@ -240,7 +240,7 @@ index 747786c..a5e5103 100644
  void mos6502::Op_CMP(uint16_t src)
  {
 -	unsigned int tmp = A - Read(src);
-+	unsigned int tmp = A - memory_access->read(src);
++	unsigned int tmp = A - memory_access->read_data(src);
  	SET_CARRY(tmp < 0x100);
  	SET_NEGATIVE(tmp & 0x80);
  	SET_ZERO(!(tmp & 0xFF));
@@ -249,7 +249,7 @@ index 747786c..a5e5103 100644
  void mos6502::Op_CPX(uint16_t src)
  {
 -	unsigned int tmp = X - Read(src);
-+	unsigned int tmp = X - memory_access->read(src);
++	unsigned int tmp = X - memory_access->read_data(src);
  	SET_CARRY(tmp < 0x100);
  	SET_NEGATIVE(tmp & 0x80);
  	SET_ZERO(!(tmp & 0xFF));
@@ -258,7 +258,7 @@ index 747786c..a5e5103 100644
  void mos6502::Op_CPY(uint16_t src)
  {
 -	unsigned int tmp = Y - Read(src);
-+	unsigned int tmp = Y - memory_access->read(src);
++	unsigned int tmp = Y - memory_access->read_data(src);
  	SET_CARRY(tmp < 0x100);
  	SET_NEGATIVE(tmp & 0x80);
  	SET_ZERO(!(tmp & 0xFF));
@@ -267,12 +267,12 @@ index 747786c..a5e5103 100644
  void mos6502::Op_DEC(uint16_t src)
  {
 -	uint8_t m = Read(src);
-+	uint8_t m = memory_access->read(src);
++	uint8_t m = memory_access->read_data(src);
  	m = (m - 1) % 256;
  	SET_NEGATIVE(m & 0x80);
  	SET_ZERO(!m);
 -	Write(src, m);
-+	memory_access->write(src, m);
++	memory_access->write_data(src, m);
  	return;
  }
  
@@ -281,7 +281,7 @@ index 747786c..a5e5103 100644
  void mos6502::Op_EOR(uint16_t src)
  {
 -	uint8_t m = Read(src);
-+	uint8_t m = memory_access->read(src);
++	uint8_t m = memory_access->read_data(src);
  	m = A ^ m;
  	SET_NEGATIVE(m & 0x80);
  	SET_ZERO(!m);
@@ -290,12 +290,12 @@ index 747786c..a5e5103 100644
  void mos6502::Op_INC(uint16_t src)
  {
 -	uint8_t m = Read(src);
-+	uint8_t m = memory_access->read(src);
++	uint8_t m = memory_access->read_data(src);
  	m = (m + 1) % 256;
  	SET_NEGATIVE(m & 0x80);
  	SET_ZERO(!m);
 -	Write(src, m);
-+	memory_access->write(src, m);
++	memory_access->write_data(src, m);
  }
  
  void mos6502::Op_INX(uint16_t src)
@@ -304,7 +304,7 @@ index 747786c..a5e5103 100644
  void mos6502::Op_LDA(uint16_t src)
  {
 -	uint8_t m = Read(src);
-+	uint8_t m = memory_access->read(src);
++	uint8_t m = memory_access->read_data(src);
  	SET_NEGATIVE(m & 0x80);
  	SET_ZERO(!m);
  	A = m;
@@ -313,7 +313,7 @@ index 747786c..a5e5103 100644
  void mos6502::Op_LDX(uint16_t src)
  {
 -	uint8_t m = Read(src);
-+	uint8_t m = memory_access->read(src);
++	uint8_t m = memory_access->read_data(src);
  	SET_NEGATIVE(m & 0x80);
  	SET_ZERO(!m);
  	X = m;
@@ -322,7 +322,7 @@ index 747786c..a5e5103 100644
  void mos6502::Op_LDY(uint16_t src)
  {
 -	uint8_t m = Read(src);
-+	uint8_t m = memory_access->read(src);
++	uint8_t m = memory_access->read_data(src);
  	SET_NEGATIVE(m & 0x80);
  	SET_ZERO(!m);
  	Y = m;
@@ -331,13 +331,13 @@ index 747786c..a5e5103 100644
  void mos6502::Op_LSR(uint16_t src)
  {
 -	uint8_t m = Read(src);
-+	uint8_t m = memory_access->read(src);
++	uint8_t m = memory_access->read_data(src);
  	SET_CARRY(m & 0x01);
  	m >>= 1;
  	SET_NEGATIVE(0);
  	SET_ZERO(!m);
 -	Write(src, m);
-+	memory_access->write(src, m);
++	memory_access->write_data(src, m);
  }
  
  void mos6502::Op_LSR_ACC(uint16_t src)
@@ -346,7 +346,7 @@ index 747786c..a5e5103 100644
  void mos6502::Op_ORA(uint16_t src)
  {
 -	uint8_t m = Read(src);
-+	uint8_t m = memory_access->read(src);
++	uint8_t m = memory_access->read_data(src);
  	m = A | m;
  	SET_NEGATIVE(m & 0x80);
  	SET_ZERO(!m);
@@ -355,7 +355,7 @@ index 747786c..a5e5103 100644
  void mos6502::Op_ROL(uint16_t src)
  {
 -	uint16_t m = Read(src);
-+	uint16_t m = memory_access->read(src);
++	uint16_t m = memory_access->read_data(src);
  	m <<= 1;
  	if (IF_CARRY()) m |= 0x01;
  	SET_CARRY(m > 0xFF);
@@ -363,7 +363,7 @@ index 747786c..a5e5103 100644
  	SET_NEGATIVE(m & 0x80);
  	SET_ZERO(!m);
 -	Write(src, m);
-+	memory_access->write(src, m);
++	memory_access->write_data(src, m);
  	return;
  }
  
@@ -372,7 +372,7 @@ index 747786c..a5e5103 100644
  void mos6502::Op_ROR(uint16_t src)
  {
 -	uint16_t m = Read(src);
-+	uint16_t m = memory_access->read(src);
++	uint16_t m = memory_access->read_data(src);
  	if (IF_CARRY()) m |= 0x100;
  	SET_CARRY(m & 0x01);
  	m >>= 1;
@@ -380,7 +380,7 @@ index 747786c..a5e5103 100644
  	SET_NEGATIVE(m & 0x80);
  	SET_ZERO(!m);
 -	Write(src, m);
-+	memory_access->write(src, m);
++	memory_access->write_data(src, m);
  	return;
  }
  
@@ -389,7 +389,7 @@ index 747786c..a5e5103 100644
  void mos6502::Op_SBC(uint16_t src)
  {
 -	uint8_t m = Read(src);
-+	uint8_t m = memory_access->read(src);
++	uint8_t m = memory_access->read_data(src);
  	unsigned int tmp = A - m - (IF_CARRY() ? 0 : 1);
  	SET_NEGATIVE(tmp & 0x80);
  	SET_ZERO(!(tmp & 0xFF));
@@ -398,21 +398,21 @@ index 747786c..a5e5103 100644
  void mos6502::Op_STA(uint16_t src)
  {
 -	Write(src, A);
-+	memory_access->write(src, A);
++	memory_access->write_data(src, A);
  	return;
  }
  
  void mos6502::Op_STX(uint16_t src)
  {
 -	Write(src, X);
-+	memory_access->write(src, X);
++	memory_access->write_data(src, X);
  	return;
  }
  
  void mos6502::Op_STY(uint16_t src)
  {
 -	Write(src, Y);
-+	memory_access->write(src, Y);
++	memory_access->write_data(src, Y);
  	return;
  }
  

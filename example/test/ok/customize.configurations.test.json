@@ -30,8 +30,11 @@
     "config": {
         "debugFile": "dist/example.dbg",
         "maxCycleCount": "NES_NTSC_VSYNC",
-        "invalidMemory": {
-            "enable": true,
+        "testMemoryAccess": {
+            "feature": [
+                "WRITE_TO_READONLY_MEMORY",
+                "ACCESS_TO_OUT_OF_SEGMENT"
+            ],
             "ignoreList": [
                 {
                     "start": {

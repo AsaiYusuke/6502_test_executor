@@ -17,7 +17,7 @@ debug_info::debug_info(args_parser *args, json config)
         path = config["debugFile"].get<string>();
     else
         path = args->get_debug_path();
-    
+
     test_path = args->get_test_path();
 
     coverage_path = args->get_coverage_path();
@@ -227,10 +227,9 @@ bool debug_info::has_write_access(uint16_t address)
     return get_segment_def(address)->is_writable();
 }
 
-bool debug_info::has_read_access(uint16_t address)
+void debug_info::test_segment_access(uint16_t address)
 {
     get_segment_def(address);
-    return true;
 }
 
 map<int, debug_segment *> debug_info::get_segment_def_map()
@@ -280,6 +279,27 @@ void debug_info::remove_segment_def(int id)
 void debug_info::remove_segment_def(string name)
 {
     segment_def_map.erase(get_segment_def(name)->get_id());
+}
+
+void debug_info::add_authorized_segment_def(uint16_t start, int size)
+{
+    authorized_segments.push_back(
+        new debug_segment(-1, "AUTHORIZED_SEGMENT", start, size, false, "", 0));
+}
+
+void debug_info::add_authorized_segment_def(string name)
+{
+    authorized_segments.push_back(
+        get_segment_def(name));
+}
+
+bool debug_info::has_authorized_access(uint16_t address)
+{
+    for (auto segment_def : authorized_segments)
+        if (segment_def->contains(address))
+            return true;
+
+    return false;
 }
 
 void debug_info::save_coverage()
