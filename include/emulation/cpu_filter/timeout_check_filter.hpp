@@ -12,7 +12,7 @@ private:
     cpu_device *cpu;
 
 public:
-    timeout_check_filter(cpu_device *cpu);
+    explicit timeout_check_filter(cpu_device *cpu);
     void clear();
     bool pre();
     bool post();

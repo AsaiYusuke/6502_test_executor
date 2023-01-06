@@ -27,6 +27,6 @@ private:
     void print_call_stack();
 
 public:
-    test(args_parser *args);
+    explicit test(args_parser *args);
     bool execute();
 };

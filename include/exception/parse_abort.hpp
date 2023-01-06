@@ -8,7 +8,7 @@ private:
     int return_value;
 
 public:
-    parse_abort(int _return_value)
+    explicit parse_abort(int _return_value)
     {
         return_value = _return_value;
     }

@@ -15,7 +15,7 @@ private:
     map<test_result_type, int> test_result_map;
 
 public:
-    test_total_result(args_parser *_args);
+    explicit test_total_result(args_parser *_args);
     void add_and_print_result(emulation_devices *device, test_result result);
     bool is_success();
     void set_total(int total);

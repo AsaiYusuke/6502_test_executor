@@ -20,7 +20,7 @@ private:
     void load_rom_image(filesystem::path debug_path, debug_segment *segment_def);
 
 public:
-    rom_image(debug_info *debug);
+    explicit rom_image(debug_info *debug);
     platform_type detect_platform();
     char *get(int segment_id);
 };

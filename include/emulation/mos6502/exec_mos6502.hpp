@@ -334,7 +334,7 @@ private:
      bool is_addr_imm;
 
 public:
-    exec_mos6502(i_memory_access *i_memory_access);
+    explicit exec_mos6502(i_memory_access *i_memory_access);
     void Exec(Instr i);
     void SetP(uint8_t value);
     void SetA(uint8_t value);
