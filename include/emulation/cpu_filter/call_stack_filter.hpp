@@ -25,7 +25,7 @@ private:
     uint16_t pre_pc;
 
 public:
-    call_stack_filter(cpu_device *cpu);
+    explicit call_stack_filter(cpu_device *cpu);
     void clear();
     bool pre();
     bool post();

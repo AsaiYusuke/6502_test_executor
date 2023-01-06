@@ -14,7 +14,7 @@ private:
     uint16_t pre_pc;
 
 public:
-    instruction_check_filter(cpu_device *cpu);
+    explicit instruction_check_filter(cpu_device *cpu);
     void clear();
     bool pre();
     bool post();

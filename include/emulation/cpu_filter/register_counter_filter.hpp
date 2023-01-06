@@ -35,7 +35,7 @@ private:
     map<status_flag_type, uint8_t> status_write_counts;
 
 public:
-    register_counter_filter(cpu_device *cpu);
+    explicit register_counter_filter(cpu_device *cpu);
     void clear();
     bool pre();
     bool post();

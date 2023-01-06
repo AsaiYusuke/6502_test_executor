@@ -14,7 +14,7 @@ private:
     debug_info *debug;
 
 public:
-    coverage_filter(cpu_device *cpu);
+    explicit coverage_filter(cpu_device *cpu);
     void clear();
     bool pre();
     bool post();
