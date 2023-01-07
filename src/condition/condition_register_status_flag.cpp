@@ -5,7 +5,7 @@
 #include "util/expression_execute.hpp"
 #include "util/value_convert.hpp"
 
-condition_register_status_flag::condition_register_status_flag(emulation_devices *device, string _name, json condition)
+condition_register_status_flag::condition_register_status_flag(const emulation_devices *device, const string &_name, json condition)
 {
     name = _name;
     type = status_flag_name_type_map[name];
@@ -14,27 +14,27 @@ condition_register_status_flag::condition_register_status_flag(emulation_devices
     write_count = new condition_register_status_flag_count(device, condition["writeCount"]);
 }
 
-string condition_register_status_flag::get_name()
+string condition_register_status_flag::get_name() const
 {
     return name;
 }
 
-status_flag_type condition_register_status_flag::get_type()
+status_flag_type condition_register_status_flag::get_type() const
 {
     return type;
 }
 
-condition_register_status_flag_value *condition_register_status_flag::get_value()
+condition_register_status_flag_value *condition_register_status_flag::get_value() const
 {
     return value;
 }
 
-condition_register_status_flag_count *condition_register_status_flag::get_read_count()
+condition_register_status_flag_count *condition_register_status_flag::get_read_count() const
 {
     return read_count;
 }
 
-condition_register_status_flag_count *condition_register_status_flag::get_write_count()
+condition_register_status_flag_count *condition_register_status_flag::get_write_count() const
 {
     return write_count;
 }

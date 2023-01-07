@@ -3,9 +3,9 @@
 #include "emulation/cpu_device.hpp"
 #include "emulation/debug_info.hpp"
 
-coverage_filter::coverage_filter(cpu_device *cpu)
+coverage_filter::coverage_filter(cpu_device *_cpu)
 {
-    this->cpu = cpu;
+    cpu = _cpu;
 }
 
 void coverage_filter::clear()

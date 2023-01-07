@@ -30,15 +30,15 @@ private:
     condition_timeout *timeout_def;
 
 protected:
-    emulation_devices *get_device();
-    condition_register_pc *get_register_pc_def();
-    vector<condition_register_a_x_y *> get_register_defs();
-    vector<condition_register_status_flag *> get_status_flag_defs();
-    vector<condition_memory *> get_memory_defs();
-    condition_stack *get_stack_def();
-    vector<condition_interrupt *> get_interrupt_defs();
-    vector<condition_mocked_proc *> get_mocked_proc_defs();
-    condition_timeout *get_timeout_def();
+    emulation_devices *get_device() const;
+    condition_register_pc *get_register_pc_def() const;
+    vector<condition_register_a_x_y *> get_register_defs() const;
+    vector<condition_register_status_flag *> get_status_flag_defs() const;
+    vector<condition_memory *> get_memory_defs() const;
+    condition_stack *get_stack_def() const;
+    vector<condition_interrupt *> get_interrupt_defs() const;
+    vector<condition_mocked_proc *> get_mocked_proc_defs() const;
+    condition_timeout *get_timeout_def() const;
 
 public:
     condition(emulation_devices *_device, json condition_json, json target);

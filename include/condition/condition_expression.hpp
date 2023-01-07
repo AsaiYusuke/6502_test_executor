@@ -11,12 +11,11 @@ template <typename T, typename U>
 class condition_expression
 {
 private:
-    operator_type type;
     vector<pair<operator_type, U>> and_expressions;
     vector<condition_expression<T, U>> or_expressions;
 
 public:
-    condition_expression(emulation_devices *device, json condition)
+    condition_expression(const emulation_devices *device, json condition)
     {
         for (auto &expression : expression_execute::get(condition))
         {
@@ -35,7 +34,7 @@ public:
         }
     }
 
-    bool test(U actual)
+    bool test(const U actual) const
     {
         bool total_result = true;
         for (auto &expression : and_expressions)
@@ -52,12 +51,12 @@ public:
         return total_result;
     }
 
-    vector<pair<operator_type, U>> get_and_expressions()
+    vector<pair<operator_type, U>> get_and_expressions() const
     {
         return and_expressions;
     }
 
-    vector<condition_expression<T, U>> get_or_expressions()
+    vector<condition_expression<T, U>> get_or_expressions() const
     {
         return or_expressions;
     }

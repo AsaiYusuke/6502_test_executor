@@ -35,35 +35,35 @@ private:
 
     vector<debug_segment *> authorized_segments;
 
-    void parse_debug_def(string line);
+    void parse_debug_def(const string &line);
 
-    string get_substr(string value, string begin, string end);
-    int get_int_substr(string value, string begin, string end, int radix);
-    void add_file(string line);
-    void add_segment(string line);
-    void add_span(string line);
-    void add_source_line(string line);
+    string get_substr(const string &value, const string &begin, const string &end) const;
+    int get_int_substr(const string &value, const string &begin, const string &end, int radix) const;
+    void add_file(const string &line);
+    void add_segment(const string &line);
+    void add_span(const string &line);
+    void add_source_line(const string &line);
     void make_address_source_map();
-    void add_symbol(string line);
+    void add_symbol(const string &line);
 
 public:
     debug_info(args_parser *args, json config);
-    string get_path();
+    string get_path() const;
     void add_line_coverage(uint16_t address);
-    string get_source_line(uint16_t address);
-    bool has_address(string label);
-    string get_label(uint16_t address);
-    uint16_t get_address(string label);
-    bool has_write_access(uint16_t address);
-    void test_segment_access(uint16_t address);
-    map<int, debug_segment *> get_segment_def_map();
-    debug_segment *get_segment_def(uint16_t address);
-    debug_segment *get_segment_def(string name);
-    void add_segment_def(int id, string name, uint16_t start, int size, bool writable, string image_file_name = string(), int image_file_offset = 0);
+    string get_source_line(uint16_t address) const;
+    bool has_address(const string &label) const;
+    string get_label(uint16_t address) const;
+    uint16_t get_address(const string &label) const;
+    bool has_write_access(uint16_t address) const;
+    void test_segment_access(uint16_t address) const;
+    map<int, debug_segment *> get_segment_def_map() const;
+    debug_segment *get_segment_def(uint16_t address) const;
+    debug_segment *get_segment_def(const string &name) const;
+    void add_segment_def(int id, const string &name, uint16_t start, int size, bool writable, const string &image_file_name = string(), int image_file_offset = 0);
     void remove_segment_def(int id);
-    void remove_segment_def(string name);
+    void remove_segment_def(const string &name);
     void add_authorized_segment_def(uint16_t start, int size);
-    void add_authorized_segment_def(string name);
-    bool has_authorized_access(uint16_t address);
+    void add_authorized_segment_def(const string &name);
+    bool has_authorized_access(uint16_t address) const;
     void save_coverage();
 };

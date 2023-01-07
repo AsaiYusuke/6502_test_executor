@@ -12,7 +12,7 @@ using namespace std;
 class assert_register_read_count
 {
 public:
-    static bool test(emulation_devices *device, condition_register_a_x_y *register_def, test_result *result)
+    static bool test(const emulation_devices *device, const condition_register_a_x_y *register_def, test_result *result)
     {
         auto actual = device->get_cpu()->get_read_count(register_def->get_type());
 

@@ -22,7 +22,7 @@ private:
     vector<json> test_scenarios;
 
     json read_json(string path);
-    int traverse(emulation_devices *device, test_total_result *total_result, json test_target, json test_template, json testcase, string path);
+    int traverse(emulation_devices *device, test_total_result *total_result, json test_target, json test_template, json testcase, const string &path);
     test_result do_test(string id, json test_target, json test_template, json testcase);
     void print_call_stack();
 

@@ -3,9 +3,9 @@
 #include "emulation/cpu_device.hpp"
 #include "util/value_convert.hpp"
 
-instruction_check_filter::instruction_check_filter(cpu_device *cpu)
+instruction_check_filter::instruction_check_filter(cpu_device *_cpu)
 {
-    this->cpu = cpu;
+    cpu = _cpu;
 }
 
 void instruction_check_filter::clear()

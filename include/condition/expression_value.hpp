@@ -12,7 +12,7 @@ class expression_value
 {
 public:
     template <typename U>
-    static U convert(emulation_devices *device, json condition)
+    static U convert(const emulation_devices *device, json condition)
     {
         return condition.get<U>();
     }

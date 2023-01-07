@@ -12,7 +12,7 @@ using namespace std;
 class assert_memory_read_count
 {
 public:
-    static bool test(emulation_devices *device, condition_memory_count *memory_count_def, test_result *result)
+    static bool test(const emulation_devices *device, const condition_memory_count *memory_count_def, test_result *result)
     {
         auto actual = device->get_memory()->get_read_count(
             memory_count_def->get_address());

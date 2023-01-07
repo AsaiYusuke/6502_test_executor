@@ -12,7 +12,7 @@ private:
     condition_expression<expression_two_complement_byte, uint8_t> *expression;
 
 public:
-    condition_register_a_x_y_value(emulation_devices *device, json condition);
-    uint8_t get_value();
-    condition_expression<expression_two_complement_byte, uint8_t> *get_expression();
+    condition_register_a_x_y_value(const emulation_devices *device, json condition);
+    uint8_t get_value() const;
+    condition_expression<expression_two_complement_byte, uint8_t> *get_expression() const;
 };

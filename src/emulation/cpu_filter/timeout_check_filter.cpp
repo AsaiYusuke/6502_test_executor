@@ -3,9 +3,9 @@
 #include "emulation/cpu_device.hpp"
 #include "util/value_convert.hpp"
 
-timeout_check_filter::timeout_check_filter(cpu_device *cpu)
+timeout_check_filter::timeout_check_filter(cpu_device *_cpu)
 {
-    this->cpu = cpu;
+    cpu = _cpu;
 }
 
 void timeout_check_filter::clear()

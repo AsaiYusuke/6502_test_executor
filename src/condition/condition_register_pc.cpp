@@ -3,7 +3,7 @@
 #include "util/constant.hpp"
 #include "util/value_convert.hpp"
 
-condition_register_pc::condition_register_pc(emulation_devices *_device, json condition)
+condition_register_pc::condition_register_pc(const emulation_devices *_device, json condition)
 {
     start_address = value_convert::get_address(_device, condition["start"]);
 
@@ -18,17 +18,17 @@ condition_register_pc::condition_register_pc(emulation_devices *_device, json co
         end_address = value_convert::get_address(_device, condition["end"]);
 }
 
-uint16_t condition_register_pc::get_start_address()
+uint16_t condition_register_pc::get_start_address() const
 {
     return start_address;
 }
 
-test_type condition_register_pc::get_test_type()
+test_type condition_register_pc::get_test_type() const
 {
     return type;
 }
 
-uint16_t condition_register_pc::get_end_address()
+uint16_t condition_register_pc::get_end_address() const
 {
     return end_address;
 }

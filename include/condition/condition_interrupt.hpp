@@ -17,7 +17,7 @@ private:
     uint16_t entryPoint;
 
 public:
-    condition_interrupt(emulation_devices *_device, json condition);
-    interrupt_type get_type();
-    uint16_t get_entry_point();
+    condition_interrupt(const emulation_devices *_device, json condition);
+    interrupt_type get_type() const;
+    uint16_t get_entry_point() const;
 };

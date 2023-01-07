@@ -17,8 +17,8 @@
 #include "condition/condition_memory.hpp"
 #include "util/value_convert.hpp"
 
-test_assert::test_assert(emulation_devices *device, json condition_json)
-    : condition(device, condition_json)
+test_assert::test_assert(string id, emulation_devices *device, json condition_json)
+    : result(id), condition(device, condition_json)
 {
 }
 
@@ -82,8 +82,7 @@ void test_assert::execute()
     assert_stack_value::test(get_device(), get_stack_def(), &result);
 }
 
-test_result test_assert::get_result(string id)
+test_result test_assert::get_result() const
 {
-    result.set_id(id);
     return result;
 }

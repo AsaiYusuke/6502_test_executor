@@ -16,14 +16,14 @@ string message::error_message(exception &e)
     return ss.str();
 }
 
-string message::error_message(string message)
+string message::error_message(const string &message)
 {
     stringstream ss;
     ss << message << endl;
     return ss.str();
 }
 
-string message::error_message(string message, string expected, string actual)
+string message::error_message(const string &message, const string &expected, const string &actual)
 {
     stringstream ss;
     ss << message
@@ -33,7 +33,7 @@ string message::error_message(string message, string expected, string actual)
     return ss.str();
 }
 
-string message::trace_message(emulation_devices *device, vector<uint16_t> call_stack, string message)
+string message::trace_message(const emulation_devices *device, const vector<uint16_t> &call_stack, const string &message)
 {
     stringstream ss;
     ss << error_message(message);
@@ -41,7 +41,7 @@ string message::trace_message(emulation_devices *device, vector<uint16_t> call_s
     return ss.str();
 }
 
-string message::trace_message(emulation_devices *device, vector<uint16_t> call_stack, string message, string expected, string actual)
+string message::trace_message(const emulation_devices *device, const vector<uint16_t> &call_stack, const string &message, const string &expected, const string &actual)
 {
     stringstream ss;
     ss << error_message(message, expected, actual);
@@ -49,36 +49,38 @@ string message::trace_message(emulation_devices *device, vector<uint16_t> call_s
     return ss.str();
 }
 
-string message::call_stack_message(emulation_devices *device, vector<uint16_t> call_stack)
+string message::call_stack_message(const emulation_devices *device, const vector<uint16_t> &call_stack)
 {
+    if (call_stack.empty())
+        return {};
+
     stringstream ss;
-    if (!call_stack.empty())
+
+    ss << endl
+       << "Call stack:" << endl;
+
+    uint16_t prev_address = 0;
+    int index = 0;
+    for (auto address : call_stack)
     {
-        ss << endl
-           << "Call stack:" << endl;
+        if (address == DEFAULT_TEST_RETURN_ADDRESS)
+            continue;
 
-        uint16_t prev_address = 0;
-        int index = 0;
-        for (auto address : call_stack)
-        {
-            if (address == DEFAULT_TEST_RETURN_ADDRESS)
-                continue;
+        if (prev_address == address)
+            continue;
 
-            if (prev_address == address)
-                continue;
+        prev_address = address;
 
-            prev_address = address;
-
-            ss << "  " << index++ << ":  "
-               << value_convert::to_zero_filled_hex_string(address) << " : "
-               << device->get_memory()->get_source_line(address) << endl;
-        }
-        ss << endl;
+        ss << "  " << index++ << ":  "
+           << value_convert::to_zero_filled_hex_string(address) << " : "
+           << device->get_memory()->get_source_line(address) << endl;
     }
+    ss << endl;
+
     return ss.str();
 }
 
-string message::error_register_data(string type, i_message_name *register_def, string expected, string actual)
+string message::error_register_data(const string &type, const i_message_name *register_def, const string &expected, const string &actual)
 {
     return error_message(
         "Register (" + type + ") [" + register_def->get_name() + "]",
@@ -86,7 +88,7 @@ string message::error_register_data(string type, i_message_name *register_def, s
         actual);
 }
 
-string message::error_register_status_flag_data(string type, i_message_name *status_flag_def, string expected, string actual)
+string message::error_register_status_flag_data(const string &type, const i_message_name *status_flag_def, const string &expected, const string &actual)
 {
     return error_message(
         "Register (" + type + ") [P (" + status_flag_def->get_name() + ")]",
@@ -94,7 +96,7 @@ string message::error_register_status_flag_data(string type, i_message_name *sta
         actual);
 }
 
-string message::error_memory_data(string type, i_message_name *memory_def, string expected, string actual)
+string message::error_memory_data(const string &type, const i_message_name *memory_def, const string &expected, const string &actual)
 {
     return error_message(
         "Memory (" + type + ") [" + memory_def->get_name() + "]",
@@ -102,7 +104,7 @@ string message::error_memory_data(string type, i_message_name *memory_def, strin
         actual);
 }
 
-string message::error_stack_data(condition_stack *stack_def, string expected, string actual)
+string message::error_stack_data(const condition_stack *stack_def, const string &expected, const string &actual)
 {
     return error_message(
         "Stack data",
@@ -110,7 +112,7 @@ string message::error_stack_data(condition_stack *stack_def, string expected, st
         actual);
 }
 
-string message::trace_timeout(emulation_devices *device, vector<uint16_t> call_stack, string detail, string expected, string actual)
+string message::trace_timeout(const emulation_devices *device, const vector<uint16_t> &call_stack, const string &detail, const string &expected, const string &actual)
 {
     return trace_message(
         device,
@@ -120,7 +122,7 @@ string message::trace_timeout(emulation_devices *device, vector<uint16_t> call_s
         actual);
 }
 
-string message::trace_readonly_memory(emulation_devices *device, vector<uint16_t> call_stack, string detail)
+string message::trace_readonly_memory(const emulation_devices *device, const vector<uint16_t> &call_stack, const string &detail)
 {
     return trace_message(
         device,
@@ -128,7 +130,7 @@ string message::trace_readonly_memory(emulation_devices *device, vector<uint16_t
         "Attempted write to readonly memory [" + detail + "]");
 }
 
-string message::trace_out_of_segment(emulation_devices *device, vector<uint16_t> call_stack, string detail)
+string message::trace_out_of_segment(const emulation_devices *device, const vector<uint16_t> &call_stack, const string &detail)
 {
     return trace_message(
         device,
@@ -136,7 +138,7 @@ string message::trace_out_of_segment(emulation_devices *device, vector<uint16_t>
         "Out of segment [" + detail + "]");
 }
 
-string message::trace_illegal_instruction(emulation_devices *device, vector<uint16_t> call_stack, string detail)
+string message::trace_illegal_instruction(const emulation_devices *device, const vector<uint16_t> &call_stack, const string &detail)
 {
     return trace_message(
         device,
@@ -144,7 +146,7 @@ string message::trace_illegal_instruction(emulation_devices *device, vector<uint
         "Illegal instruction [" + detail + "]");
 }
 
-string message::trace_unauthorized_memory(emulation_devices *device, vector<uint16_t> call_stack, string detail)
+string message::trace_unauthorized_memory(const emulation_devices *device, const vector<uint16_t> &call_stack, const string &detail)
 {
     return trace_message(
         device,
@@ -152,7 +154,7 @@ string message::trace_unauthorized_memory(emulation_devices *device, vector<uint
         "Attempted access to unauthorized memory [" + detail + "]");
 }
 
-string message::trace_uninitialized_memory(emulation_devices *device, vector<uint16_t> call_stack, string detail)
+string message::trace_uninitialized_memory(const emulation_devices *device, const vector<uint16_t> &call_stack, const string &detail)
 {
     return trace_message(
         device,

@@ -45,12 +45,12 @@ debug_info::debug_info(args_parser *args, json config)
     make_address_source_map();
 }
 
-string debug_info::get_path()
+string debug_info::get_path() const
 {
     return path;
 }
 
-void debug_info::parse_debug_def(string line)
+void debug_info::parse_debug_def(const string &line)
 {
     if (line.substr(0, 5).compare("file\t") == 0)
         add_file(line);
@@ -64,7 +64,7 @@ void debug_info::parse_debug_def(string line)
         add_symbol(line);
 }
 
-string debug_info::get_substr(string value, string begin, string end)
+string debug_info::get_substr(const string &value, const string &begin, const string &end) const
 {
     size_t begin_pos;
     if (begin.empty())
@@ -93,12 +93,12 @@ string debug_info::get_substr(string value, string begin, string end)
     return value.substr(begin_pos, str_size);
 }
 
-int debug_info::get_int_substr(string value, string begin, string end, int radix)
+int debug_info::get_int_substr(const string &value, const string &begin, const string &end, int radix) const
 {
     return stoi(get_substr(value, begin, end), 0, radix);
 }
 
-void debug_info::add_file(string line)
+void debug_info::add_file(const string &line)
 {
     auto id = get_int_substr(line, "\tid=", ",", 10);
     auto name = get_substr(line, ",name=\"", "\"");
@@ -106,7 +106,7 @@ void debug_info::add_file(string line)
     source_file_map[id] = name;
 }
 
-void debug_info::add_segment(string line)
+void debug_info::add_segment(const string &line)
 {
     auto id = get_int_substr(line, "\tid=", ",", 10);
     auto name = get_substr(line, ",name=\"", "\"");
@@ -123,7 +123,7 @@ void debug_info::add_segment(string line)
     add_segment_def(id, name, start, size, writable, image_file_name, ooffs);
 }
 
-void debug_info::add_span(string line)
+void debug_info::add_span(const string &line)
 {
     auto id = get_int_substr(line, "\tid=", ",", 10);
     auto segment = get_int_substr(line, ",seg=", ",", 10);
@@ -132,7 +132,7 @@ void debug_info::add_span(string line)
     span_map[id] = make_pair(segment, start);
 }
 
-void debug_info::add_source_line(string line)
+void debug_info::add_source_line(const string &line)
 {
     auto id = get_int_substr(line, "\tid=", ",", 10);
     auto file = get_int_substr(line, ",file=", ",", 10);
@@ -151,7 +151,7 @@ void debug_info::add_source_line(string line)
     source_line_map[id] = make_tuple(file, line_number, span_ids);
 }
 
-void debug_info::add_symbol(string line)
+void debug_info::add_symbol(const string &line)
 {
     auto label = get_substr(line, ",name=\"", "\"");
     auto value = get_int_substr(line, ",val=0x", ",", 16);
@@ -198,46 +198,51 @@ void debug_info::add_line_coverage(uint16_t address)
     address_source_map[address]->add_cover();
 }
 
-string debug_info::get_source_line(uint16_t address)
+string debug_info::get_source_line(uint16_t address) const
 {
     if (address_source_map.count(address) == 0)
         return "";
 
-    auto line_def = address_source_map[address];
-    return source_file_map[line_def->get_file_id()] + ":" + to_string(line_def->get_line_number());
+    auto line_def = address_source_map.at(address);
+    auto file = source_file_map.at(line_def->get_file_id());
+    auto lineNumber = to_string(line_def->get_line_number());
+    return file + ":" + lineNumber;
 }
 
-bool debug_info::has_address(string label)
+bool debug_info::has_address(const string &label) const
 {
     return label_address_map.count(label) > 0;
 }
 
-string debug_info::get_label(uint16_t address)
+string debug_info::get_label(uint16_t address) const
 {
-    return address_label_map[address];
+    if (address_label_map.count(address) == 0)
+        return "";
+
+    return address_label_map.at(address);
 }
 
-uint16_t debug_info::get_address(string label)
+uint16_t debug_info::get_address(const string &label) const
 {
-    return label_address_map[label];
+    return label_address_map.at(label);
 }
 
-bool debug_info::has_write_access(uint16_t address)
+bool debug_info::has_write_access(uint16_t address) const
 {
     return get_segment_def(address)->is_writable();
 }
 
-void debug_info::test_segment_access(uint16_t address)
+void debug_info::test_segment_access(uint16_t address) const
 {
     get_segment_def(address);
 }
 
-map<int, debug_segment *> debug_info::get_segment_def_map()
+map<int, debug_segment *> debug_info::get_segment_def_map() const
 {
     return segment_def_map;
 }
 
-debug_segment *debug_info::get_segment_def(uint16_t address)
+debug_segment *debug_info::get_segment_def(uint16_t address) const
 {
     for (auto element : segment_def_map)
         if (element.second->contains(address))
@@ -245,7 +250,7 @@ debug_segment *debug_info::get_segment_def(uint16_t address)
     throw cpu_runtime_error(runtime_error_type::OUT_OF_SEGMENT, "address=" + value_convert::to_zero_filled_hex_string(address));
 }
 
-debug_segment *debug_info::get_segment_def(string name)
+debug_segment *debug_info::get_segment_def(const string &name) const
 {
     for (auto element : segment_def_map)
         if (element.second->get_name() == name)
@@ -254,7 +259,7 @@ debug_segment *debug_info::get_segment_def(string name)
 }
 
 void debug_info::add_segment_def(
-    int id, string name, uint16_t start, int size, bool writable, string image_file_name, int image_file_offset)
+    int id, const string &name, uint16_t start, int size, bool writable, const string &image_file_name, int image_file_offset)
 {
     if (id < 0)
         id = segment_def_map.rbegin()->first + 1;
@@ -276,7 +281,7 @@ void debug_info::remove_segment_def(int id)
     segment_def_map.erase(id);
 }
 
-void debug_info::remove_segment_def(string name)
+void debug_info::remove_segment_def(const string &name)
 {
     segment_def_map.erase(get_segment_def(name)->get_id());
 }
@@ -287,13 +292,13 @@ void debug_info::add_authorized_segment_def(uint16_t start, int size)
         new debug_segment(-1, "AUTHORIZED_SEGMENT", start, size, false, "", 0));
 }
 
-void debug_info::add_authorized_segment_def(string name)
+void debug_info::add_authorized_segment_def(const string &name)
 {
     authorized_segments.push_back(
         get_segment_def(name));
 }
 
-bool debug_info::has_authorized_access(uint16_t address)
+bool debug_info::has_authorized_access(uint16_t address) const
 {
     for (auto segment_def : authorized_segments)
         if (segment_def->contains(address))

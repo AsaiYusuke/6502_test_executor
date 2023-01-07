@@ -23,10 +23,10 @@ private:
     condition_register_a_x_y_count *write_count;
 
 public:
-    condition_register_a_x_y(emulation_devices *_device, string _name, json condition);
-    string get_name();
-    register_type get_type();
-    condition_register_a_x_y_value *get_value();
-    condition_register_a_x_y_count *get_read_count();
-    condition_register_a_x_y_count *get_write_count();
+    condition_register_a_x_y(const emulation_devices *_device, const string &_name, json condition);
+    string get_name() const;
+    register_type get_type() const;
+    condition_register_a_x_y_value *get_value() const;
+    condition_register_a_x_y_count *get_read_count() const;
+    condition_register_a_x_y_count *get_write_count() const;
 };

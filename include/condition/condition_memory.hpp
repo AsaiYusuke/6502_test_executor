@@ -17,14 +17,14 @@ private:
     vector<condition_memory_count *> read_counts;
     vector<condition_memory_count *> write_counts;
 
-    string create_address_name(emulation_devices *device, json memory_def, int offset);
-    json normalize_value_sequences(emulation_devices *device, json memory_def);
-    json normalize_read_counts(emulation_devices *device, json memory_def);
-    json normalize_write_counts(emulation_devices *device, json memory_def);
+    string create_address_name(const emulation_devices *device, json memory_def, int offset) const;
+    json normalize_value_sequences(const emulation_devices *device, json memory_def) const;
+    json normalize_read_counts(const emulation_devices *device, json memory_def) const;
+    json normalize_write_counts(const emulation_devices *device, json memory_def) const;
 
 public:
-    condition_memory(emulation_devices *device, json condition);
-    vector<condition_memory_value *> get_value_sequences();
-    vector<condition_memory_count *> get_read_counts();
-    vector<condition_memory_count *> get_write_counts();
+    condition_memory(const emulation_devices *device, json condition);
+    vector<condition_memory_value *> get_value_sequences() const;
+    vector<condition_memory_count *> get_read_counts() const;
+    vector<condition_memory_count *> get_write_counts() const;
 };

@@ -8,6 +8,11 @@ test_result::test_result() : test_result(test_result_type::OK)
 {
 }
 
+test_result::test_result(string id) : test_result(test_result_type::OK)
+{
+    set_id(id);
+}
+
 test_result::test_result(test_result_type type)
 {
     result_type = type;

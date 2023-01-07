@@ -12,7 +12,7 @@ using namespace std;
 class assert_memory_value
 {
 public:
-    static bool test(emulation_devices *device, condition_memory_value *memory_value_def, test_result *result)
+    static bool test(const emulation_devices *device, const condition_memory_value *memory_value_def, test_result *result)
     {
         auto expression_sequences = memory_value_def->get_expressions();
         if (expression_sequences.size() == 0)

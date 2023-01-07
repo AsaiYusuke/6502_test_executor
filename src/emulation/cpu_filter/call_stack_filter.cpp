@@ -3,9 +3,9 @@
 #include "emulation/cpu_device.hpp"
 #include "util/constant.hpp"
 
-call_stack_filter::call_stack_filter(cpu_device *cpu)
+call_stack_filter::call_stack_filter(cpu_device *_cpu)
 {
-    this->cpu = cpu;
+    cpu = _cpu;
 }
 
 void call_stack_filter::clear()
@@ -73,12 +73,12 @@ bool call_stack_filter::post()
     return true;
 }
 
-bool call_stack_filter::is_returned_instruction()
+bool call_stack_filter::is_returned_instruction() const
 {
     return isReturned;
 }
 
-vector<uint16_t> call_stack_filter::get_call_stack()
+vector<uint16_t> call_stack_filter::get_call_stack() const
 {
     vector<uint16_t> current_call_stack;
     for (auto entry : call_stack)

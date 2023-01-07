@@ -21,6 +21,6 @@ private:
 
 public:
     explicit rom_image(debug_info *debug);
-    platform_type detect_platform();
-    char *get(int segment_id);
+    platform_type detect_platform() const;
+    char *get(int segment_id) const;
 };

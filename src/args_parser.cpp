@@ -46,42 +46,42 @@ args_parser::args_parser(int argc, char *argv[])
     }
 }
 
-string args_parser::get_debug_path()
+string args_parser::get_debug_path() const
 {
     return args::get(*debug_file_path);
 }
 
-string args_parser::get_test_path()
+string args_parser::get_test_path() const
 {
     return args::get(*test_file_path);
 }
 
-string args_parser::get_coverage_path()
+string args_parser::get_coverage_path() const
 {
     return args::get(*coverage_file_path);
 }
 
-string args_parser::get_coverage_segment_names()
+string args_parser::get_coverage_segment_names() const
 {
     return args::get(*coverage_segment_names);
 }
 
-string args_parser::get_test_id()
+string args_parser::get_test_id() const
 {
     return args::get(*test_id);
 }
 
-uint64_t args_parser::get_test_timeout()
+uint64_t args_parser::get_test_timeout() const
 {
     return args::get(*test_timeout);
 }
 
-bool args_parser::is_quiet()
+bool args_parser::is_quiet() const
 {
     return *quiet;
 }
 
-bool args_parser::is_quiet_type(test_result_type type)
+bool args_parser::is_quiet_type(test_result_type type) const
 {
     switch (type)
     {
@@ -94,7 +94,7 @@ bool args_parser::is_quiet_type(test_result_type type)
     return false;
 }
 
-bool args_parser::is_quiet_summary()
+bool args_parser::is_quiet_summary() const
 {
     return *quiet_summary;
 }

@@ -20,6 +20,7 @@ private:
 
 public:
     test_result();
+    explicit test_result(string id);
     void set_id(string id);
     void add_error(string error);
     test_result_type get_result_type();

@@ -26,13 +26,13 @@ private:
 
 public:
     args_parser(int argc, char *argv[]);
-    string get_debug_path();
-    string get_test_path();
-    string get_coverage_path();
-    string get_coverage_segment_names();
-    string get_test_id();
-    uint64_t get_test_timeout();
-    bool is_quiet();
-    bool is_quiet_type(test_result_type type);
-    bool is_quiet_summary();
+    string get_debug_path() const;
+    string get_test_path() const;
+    string get_coverage_path() const;
+    string get_coverage_segment_names() const;
+    string get_test_id() const;
+    uint64_t get_test_timeout() const;
+    bool is_quiet() const;
+    bool is_quiet_type(test_result_type type) const;
+    bool is_quiet_summary() const;
 };

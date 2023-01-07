@@ -21,8 +21,8 @@ private:
 
 public:
     condition_mocked_proc(emulation_devices *device, json condition);
-    uint16_t get_entry_point();
-    mock_action_type get_action();
-    uint16_t get_jmp_dest();
+    uint16_t get_entry_point() const;
+    mock_action_type get_action() const;
+    uint16_t get_jmp_dest() const;
     condition_mocked_value get_erased_front_mock_value_def();
 };

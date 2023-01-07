@@ -8,7 +8,7 @@
 #include "exception/parse_abort.hpp"
 #include "util/value_convert.hpp"
 
-uint16_t value_convert::get_address(emulation_devices *device, json value)
+uint16_t value_convert::get_address(const emulation_devices *device, json value)
 {
     uint16_t address;
     if (value.is_null())
@@ -20,11 +20,11 @@ uint16_t value_convert::get_address(emulation_devices *device, json value)
     if (!value["label"].is_null())
         return device->get_address(value["label"].get<string>()) +
                parse_json_number(device, value["offset"]);
-    
+
     return 0;
 }
 
-uint16_t value_convert::parse_json_number(emulation_devices *device, json value)
+uint16_t value_convert::parse_json_number(const emulation_devices *device, json value)
 {
     switch (value.type())
     {
@@ -77,7 +77,7 @@ uint16_t value_convert::parse_json_number(emulation_devices *device, json value)
     throw invalid_argument("Invalid format: " + to_string(value));
 }
 
-uint16_t value_convert::to_two_complement_byte(emulation_devices *device, json value)
+uint16_t value_convert::to_two_complement_byte(const emulation_devices *device, json value)
 {
     auto number = parse_json_number(device, value);
     if (number < 0)
@@ -85,14 +85,14 @@ uint16_t value_convert::to_two_complement_byte(emulation_devices *device, json v
     return number;
 }
 
-string value_convert::to_hex_string(uint16_t value)
+string value_convert::to_hex_string(const uint16_t value)
 {
     stringstream ss;
     ss << "$" << uppercase << hex << value;
     return ss.str();
 }
 
-string value_convert::to_zero_filled_hex_string(uint16_t value)
+string value_convert::to_zero_filled_hex_string(const uint16_t value)
 {
     stringstream ss;
     ss << "$" << uppercase << hex << setw(4) << setfill('0') << value;
@@ -129,12 +129,14 @@ json value_convert::parse_all_variable(json definitions_def, json condition)
     if (condition.is_array())
         for (auto &entity : condition)
             entity = parse_all_variable(definitions_def, entity);
+
     if (condition.is_object())
         for (auto &entity : condition.items())
             if (entity.key() != "template")
                 condition[entity.key()] = parse_all_variable(definitions_def, entity.value());
+
     if (condition.is_string())
-        condition = parse_variable(definitions_def, condition);
+        return parse_variable(definitions_def, condition);
 
     return condition;
 }
