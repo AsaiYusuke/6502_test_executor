@@ -3,12 +3,12 @@
 #include "util/expression_execute.hpp"
 #include "util/value_convert.hpp"
 
-condition_stack::condition_stack(emulation_devices *device, json condition)
+condition_stack::condition_stack(const emulation_devices *device, json condition)
 {
     if (!condition.is_array())
         return;
 
-    for (json &stack_def : condition)
+    for (auto &stack_def : condition)
         if (expression_execute::find(stack_def))
             expression_stack.push_back(
                 condition_expression<expression_two_complement_byte, uint8_t>(device, stack_def));
@@ -17,12 +17,12 @@ condition_stack::condition_stack(emulation_devices *device, json condition)
                 value_convert::to_two_complement_byte(device, stack_def));
 }
 
-vector<uint8_t> condition_stack::get_stack()
+vector<uint8_t> condition_stack::get_stack() const
 {
     return stack;
 }
 
-vector<condition_expression<expression_two_complement_byte, uint8_t>> condition_stack::get_expressions()
+vector<condition_expression<expression_two_complement_byte, uint8_t>> condition_stack::get_expressions() const
 {
     return expression_stack;
 }

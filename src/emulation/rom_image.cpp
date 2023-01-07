@@ -46,7 +46,7 @@ void rom_image::load_rom_image(filesystem::path debug_path, debug_segment *segme
     segment_id_image_id_map[segment_id] = image_path;
 }
 
-platform_type rom_image::detect_platform()
+platform_type rom_image::detect_platform() const
 {
     for (auto entry : image_map)
     {
@@ -57,7 +57,7 @@ platform_type rom_image::detect_platform()
     return platform_type::UNKNOWN;
 }
 
-char *rom_image::get(int segment_id)
+char *rom_image::get(int segment_id) const
 {
-    return image_map[segment_id_image_id_map[segment_id]];
+    return image_map.at(segment_id_image_id_map.at(segment_id));
 }

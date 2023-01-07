@@ -39,8 +39,8 @@ public:
     void clear();
     bool pre();
     bool post();
-    uint8_t get_read_count(register_type type);
-    uint8_t get_write_count(register_type type);
-    uint8_t get_read_count(status_flag_type type);
-    uint8_t get_write_count(status_flag_type type);
+    uint8_t get_read_count(register_type type) const;
+    uint8_t get_write_count(register_type type) const;
+    uint8_t get_read_count(status_flag_type type) const;
+    uint8_t get_write_count(status_flag_type type) const;
 };

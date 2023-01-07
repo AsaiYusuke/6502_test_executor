@@ -11,7 +11,7 @@ using namespace std;
 class assert_stack_value
 {
 public:
-    static bool test(emulation_devices *device, condition_stack *stack_def, test_result *result)
+    static bool test(const emulation_devices *device, const condition_stack *stack_def, test_result *result)
     {
         auto expression_stack = stack_def->get_expressions();
         if (expression_stack.size() == 0)

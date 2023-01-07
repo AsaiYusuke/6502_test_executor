@@ -14,7 +14,7 @@ class expression_two_complement_byte
 {
 public:
     template <typename U>
-    static U convert(emulation_devices *device, json condition)
+    static U convert(const emulation_devices *device, json condition)
     {
         return value_convert::to_two_complement_byte(device, condition);
     }

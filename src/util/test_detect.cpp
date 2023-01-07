@@ -10,7 +10,7 @@ bool test_detect::key_type_check(string key, json::value_t type, json value)
 
     if (value[key].is_null())
         return false;
-    
+
     throw invalid_argument("Invalid format: " + to_string(value));
 }
 

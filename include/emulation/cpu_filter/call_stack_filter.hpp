@@ -29,6 +29,6 @@ public:
     void clear();
     bool pre();
     bool post();
-    bool is_returned_instruction();
-    vector<uint16_t> get_call_stack();
+    bool is_returned_instruction() const;
+    vector<uint16_t> get_call_stack() const;
 };

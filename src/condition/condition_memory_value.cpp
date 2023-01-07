@@ -3,12 +3,12 @@
 #include "util/expression_execute.hpp"
 #include "util/value_convert.hpp"
 
-condition_memory_value::condition_memory_value(emulation_devices *device, uint16_t _address, json condition, bool _permanent, string _name)
+condition_memory_value::condition_memory_value(const emulation_devices *device, const uint16_t _address, json condition, const bool _permanent, const string &_name)
 {
     address = _address;
     name = _name;
     permanent = _permanent;
-    for (json &value_def : condition)
+    for (auto &value_def : condition)
         if (expression_execute::find(value_def))
             expression_sequence.push_back(
                 condition_expression<expression_two_complement_byte, uint8_t>(device, value_def));
@@ -17,27 +17,27 @@ condition_memory_value::condition_memory_value(emulation_devices *device, uint16
                 value_convert::to_two_complement_byte(device, value_def));
 }
 
-uint16_t condition_memory_value::get_address()
+uint16_t condition_memory_value::get_address() const
 {
     return address;
 }
 
-string condition_memory_value::get_name()
+string condition_memory_value::get_name() const
 {
     return name;
 }
 
-bool condition_memory_value::is_permanent()
+bool condition_memory_value::is_permanent() const
 {
     return permanent;
 }
 
-vector<uint8_t> condition_memory_value::get_sequence()
+vector<uint8_t> condition_memory_value::get_sequence() const
 {
     return sequence;
 }
 
-vector<condition_expression<expression_two_complement_byte, uint8_t>> condition_memory_value::get_expressions()
+vector<condition_expression<expression_two_complement_byte, uint8_t>> condition_memory_value::get_expressions() const
 {
     return expression_sequence;
 }

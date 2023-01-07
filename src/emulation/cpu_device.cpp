@@ -24,7 +24,7 @@
 #include "enum/cycle_type.hpp"
 #include "util/constant.hpp"
 
-cpu_device::cpu_device(emulation_devices *_device, args_parser *args, json config, debug_info *debug)
+cpu_device::cpu_device(emulation_devices *_device, const args_parser *args, json config, debug_info *debug)
 {
     device = _device;
 
@@ -52,7 +52,7 @@ cpu_device::cpu_device(emulation_devices *_device, args_parser *args, json confi
     filters.push_back(new instruction_check_filter(this));
 }
 
-void cpu_device::clear(condition_register_pc *pc, vector<uint8_t> stack)
+void cpu_device::clear(const condition_register_pc *pc, const vector<uint8_t> &stack)
 {
     cpu->Reset();
 
@@ -108,22 +108,22 @@ void cpu_device::execute()
     } while (cpu->GetPC() != endPC && !cpu->isIllegalInstr());
 }
 
-void cpu_device::add_error_result(runtime_error_type type, string message)
+void cpu_device::add_error_result(runtime_error_type type, const string &message)
 {
     device->add_error_result(type, message);
 }
 
-uint64_t cpu_device::get_max_cycle_count()
+uint64_t cpu_device::get_max_cycle_count() const
 {
     return max_cycle_count;
 }
 
-uint64_t cpu_device::get_cycle_count()
+uint64_t cpu_device::get_cycle_count() const
 {
     return cycle_count;
 }
 
-uint8_t cpu_device::get_register8(register_type type)
+uint8_t cpu_device::get_register8(register_type type) const
 {
     switch (type)
     {
@@ -140,7 +140,7 @@ uint8_t cpu_device::get_register8(register_type type)
     throw logic_error("Invalid register type");
 }
 
-uint16_t cpu_device::get_register16(register_type type)
+uint16_t cpu_device::get_register16(register_type type) const
 {
     switch (type)
     {
@@ -168,42 +168,42 @@ void cpu_device::set_register8(register_type type, uint8_t value)
     throw logic_error("Invalid register type");
 }
 
-uint8_t cpu_device::get_read_count(register_type type)
+uint8_t cpu_device::get_read_count(register_type type) const
 {
     return register_counter->get_read_count(type);
 }
 
-uint8_t cpu_device::get_write_count(register_type type)
+uint8_t cpu_device::get_write_count(register_type type) const
 {
     return register_counter->get_write_count(type);
 }
 
-uint8_t cpu_device::get_read_count(status_flag_type type)
+uint8_t cpu_device::get_read_count(status_flag_type type) const
 {
     return register_counter->get_read_count(type);
 }
 
-uint8_t cpu_device::get_write_count(status_flag_type type)
+uint8_t cpu_device::get_write_count(status_flag_type type) const
 {
     return register_counter->get_write_count(type);
 }
 
-bool cpu_device::is_addr_imm()
+bool cpu_device::is_addr_imm() const
 {
     return cpu->isAddrImm();
 }
 
-bool cpu_device::is_illegal_instruction()
+bool cpu_device::is_illegal_instruction() const
 {
     return cpu->isIllegalInstr();
 }
 
-bool cpu_device::is_call_instruction()
+bool cpu_device::is_call_instruction() const
 {
     return cpu->isCallInstr();
 }
 
-bool cpu_device::is_return_instruction()
+bool cpu_device::is_return_instruction() const
 {
     auto it_mocked_proc = mocked_proc_defs.find(cpu->GetPC());
     if (it_mocked_proc != mocked_proc_defs.end())
@@ -215,7 +215,7 @@ bool cpu_device::is_return_instruction()
     return cpu->isReturnInstr();
 }
 
-bool cpu_device::is_read_register_instruction(register_type type)
+bool cpu_device::is_read_register_instruction(register_type type) const
 {
     switch (type)
     {
@@ -234,7 +234,7 @@ bool cpu_device::is_read_register_instruction(register_type type)
     throw logic_error("Invalid register type");
 }
 
-bool cpu_device::is_write_register_instruction(register_type type)
+bool cpu_device::is_write_register_instruction(register_type type) const
 {
     switch (type)
     {
@@ -253,7 +253,7 @@ bool cpu_device::is_write_register_instruction(register_type type)
     throw logic_error("Invalid register type");
 }
 
-bool cpu_device::is_read_status_instruction(status_flag_type type)
+bool cpu_device::is_read_status_instruction(status_flag_type type) const
 {
     switch (type)
     {
@@ -278,7 +278,7 @@ bool cpu_device::is_read_status_instruction(status_flag_type type)
     throw logic_error("Invalid register type");
 }
 
-bool cpu_device::is_write_status_instruction(status_flag_type type)
+bool cpu_device::is_write_status_instruction(status_flag_type type) const
 {
     switch (type)
     {
@@ -303,24 +303,24 @@ bool cpu_device::is_write_status_instruction(status_flag_type type)
     throw logic_error("Invalid register type");
 }
 
-bool cpu_device::is_previous_returned_instruction()
+bool cpu_device::is_previous_returned_instruction() const
 {
     return call_stack->is_returned_instruction();
 }
 
-bool cpu_device::is_interrupt_instruction()
+bool cpu_device::is_interrupt_instruction() const
 {
     auto it = interrupt_defs.find(cpu->GetPC());
     return it != interrupt_defs.end();
 }
 
-bool cpu_device::is_mocked_proc_instruction()
+bool cpu_device::is_mocked_proc_instruction() const
 {
     auto it_mocked_proc = mocked_proc_defs.find(cpu->GetPC());
     return it_mocked_proc != mocked_proc_defs.end();
 }
 
-vector<uint8_t> cpu_device::get_stack()
+vector<uint8_t> cpu_device::get_stack() const
 {
     vector<uint8_t> result_stack;
     auto resetS = cpu->GetResetS();
@@ -389,7 +389,7 @@ void cpu_device::execute_standard_instruction()
     cpu->Run(1, cycle_count, cpu->INST_COUNT);
 }
 
-void cpu_device::print()
+void cpu_device::print() const
 {
     printf("Register result:\n");
     printf("  A   $%02X\n", cpu->GetA());
@@ -408,7 +408,7 @@ void cpu_device::print()
     printf("  S   $%02X\n", cpu->GetS());
 }
 
-vector<uint16_t> cpu_device::get_call_stack()
+vector<uint16_t> cpu_device::get_call_stack() const
 {
     return call_stack->get_call_stack();
 }

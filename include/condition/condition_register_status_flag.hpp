@@ -23,10 +23,10 @@ private:
     condition_register_status_flag_count *write_count;
 
 public:
-    condition_register_status_flag(emulation_devices *device, string _name, json condition);
-    string get_name();
-    status_flag_type get_type();
-    condition_register_status_flag_value *get_value();
-    condition_register_status_flag_count *get_read_count();
-    condition_register_status_flag_count *get_write_count();
+    condition_register_status_flag(const emulation_devices *device, const string &_name, json condition);
+    string get_name() const;
+    status_flag_type get_type() const;
+    condition_register_status_flag_value *get_value() const;
+    condition_register_status_flag_count *get_read_count() const;
+    condition_register_status_flag_count *get_write_count() const;
 };

@@ -67,47 +67,47 @@ condition::condition(emulation_devices *_device, json condition_json)
     timeout_def = new condition_timeout(device, condition_json["timeout"]);
 }
 
-emulation_devices *condition::get_device()
+emulation_devices *condition::get_device() const
 {
     return device;
 }
 
-vector<condition_register_a_x_y *> condition::get_register_defs()
+vector<condition_register_a_x_y *> condition::get_register_defs() const
 {
     return register_defs;
 }
 
-vector<condition_register_status_flag *> condition::get_status_flag_defs()
+vector<condition_register_status_flag *> condition::get_status_flag_defs() const
 {
     return status_flag_defs;
 }
 
-vector<condition_memory *> condition::get_memory_defs()
+vector<condition_memory *> condition::get_memory_defs() const
 {
     return memory_defs;
 }
 
-condition_register_pc *condition::get_register_pc_def()
+condition_register_pc *condition::get_register_pc_def() const
 {
     return register_pc_def;
 }
 
-condition_stack *condition::get_stack_def()
+condition_stack *condition::get_stack_def() const
 {
     return stack_def;
 }
 
-vector<condition_interrupt *> condition::get_interrupt_defs()
+vector<condition_interrupt *> condition::get_interrupt_defs() const
 {
     return interrupt_defs;
 }
 
-vector<condition_mocked_proc *> condition::get_mocked_proc_defs()
+vector<condition_mocked_proc *> condition::get_mocked_proc_defs() const
 {
     return mocked_proc_defs;
 }
 
-condition_timeout *condition::get_timeout_def()
+condition_timeout *condition::get_timeout_def() const
 {
     return timeout_def;
 }

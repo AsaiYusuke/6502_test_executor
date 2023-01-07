@@ -13,13 +13,13 @@ private:
     runtime_error_type type;
 
 public:
-    cpu_runtime_error(runtime_error_type _type, string message)
+    cpu_runtime_error(runtime_error_type _type, const string &message)
         : runtime_error(message)
     {
         type = _type;
     }
 
-    const runtime_error_type get_type() const noexcept
+    runtime_error_type get_type() const
     {
         return type;
     }

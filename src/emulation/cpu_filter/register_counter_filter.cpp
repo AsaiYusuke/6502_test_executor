@@ -2,18 +2,25 @@
 
 #include "emulation/cpu_device.hpp"
 
-register_counter_filter::register_counter_filter(cpu_device *cpu)
+register_counter_filter::register_counter_filter(cpu_device *_cpu)
 {
-    this->cpu = cpu;
+    cpu = _cpu;
 }
 
 
 void register_counter_filter::clear()
 {
-    register_read_counts.clear();
-    register_write_counts.clear();
-    status_read_counts.clear();
-    status_write_counts.clear();
+    for (auto type : register_types)
+    {
+        register_read_counts[type] = 0;
+        register_write_counts[type] = 0;
+    }
+
+    for (auto type : status_types)
+    {
+        status_read_counts[type] = 0;
+        status_write_counts[type] = 0;
+    }
 }
 
 bool register_counter_filter::pre()
@@ -42,22 +49,22 @@ bool register_counter_filter::post()
     return true;
 }
 
-uint8_t register_counter_filter::get_read_count(register_type type)
+uint8_t register_counter_filter::get_read_count(const register_type type) const
 {
-    return register_read_counts[type];
+    return register_read_counts.at(type);
 }
 
-uint8_t register_counter_filter::get_write_count(register_type type)
+uint8_t register_counter_filter::get_write_count(const register_type type) const
 {
-    return register_write_counts[type];
+    return register_write_counts.at(type);
 }
 
-uint8_t register_counter_filter::get_read_count(status_flag_type type)
+uint8_t register_counter_filter::get_read_count(const status_flag_type type) const
 {
-    return status_read_counts[type];
+    return status_read_counts.at(type);
 }
 
-uint8_t register_counter_filter::get_write_count(status_flag_type type)
+uint8_t register_counter_filter::get_write_count(const status_flag_type type) const
 {
-    return status_write_counts[type];
+    return status_write_counts.at(type);
 }

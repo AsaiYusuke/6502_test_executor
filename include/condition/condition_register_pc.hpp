@@ -18,8 +18,8 @@ private:
     test_type type;
 
 public:
-    condition_register_pc(emulation_devices *_device, json condition);
-    uint16_t get_start_address();
-    test_type get_test_type();
-    uint16_t get_end_address();
+    condition_register_pc(const emulation_devices *_device, json condition);
+    uint16_t get_start_address() const;
+    test_type get_test_type() const;
+    uint16_t get_end_address() const;
 };

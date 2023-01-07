@@ -18,7 +18,7 @@ private:
     vector<condition_expression<expression_two_complement_byte, uint8_t>> expression_stack;
 
 public:
-    condition_stack(emulation_devices *device, json condition);
-    vector<uint8_t> get_stack();
-    vector<condition_expression<expression_two_complement_byte, uint8_t>> get_expressions();
+    condition_stack(const emulation_devices *device, json condition);
+    vector<uint8_t> get_stack() const;
+    vector<condition_expression<expression_two_complement_byte, uint8_t>> get_expressions() const;
 };

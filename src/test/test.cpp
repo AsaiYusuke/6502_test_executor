@@ -82,7 +82,7 @@ bool test::execute()
     return total_result.is_success();
 }
 
-int test::traverse(emulation_devices *device, test_total_result *total_result, json test_target, json test_template, json test_case, string path)
+int test::traverse(emulation_devices *device, test_total_result *total_result, json test_target, json test_template, json test_case, const string &path)
 {
     int num_tests = 0;
 
@@ -130,13 +130,14 @@ test_result test::do_test(string id, json test_target, json test_template, json 
         device->get_cpu()->execute();
 
         test_assert assert = test_assert(
+            id,
             device,
             value_convert::merge_template(
                 test_template["expected"],
                 test_case["expected"]));
         assert.execute();
 
-        return assert.get_result(id);
+        return assert.get_result();
     }
     catch (cpu_runtime_error &e)
     {

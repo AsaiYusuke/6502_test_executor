@@ -18,10 +18,10 @@ private:
     vector<condition_expression<expression_two_complement_byte, uint8_t>> expression_sequence;
 
 public:
-    condition_memory_value(emulation_devices *device, uint16_t _address, json condition, bool _permanent, string _name);
-    uint16_t get_address();
-    string get_name();
-    bool is_permanent();
-    vector<uint8_t> get_sequence();
-    vector<condition_expression<expression_two_complement_byte, uint8_t>> get_expressions();
+    condition_memory_value(const emulation_devices *device, uint16_t _address, json condition, bool _permanent, const string &_name);
+    uint16_t get_address() const;
+    string get_name() const;
+    bool is_permanent() const;
+    vector<uint8_t> get_sequence() const;
+    vector<condition_expression<expression_two_complement_byte, uint8_t>> get_expressions() const;
 };

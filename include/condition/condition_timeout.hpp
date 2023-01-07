@@ -17,6 +17,6 @@ private:
     condition_expression<expression_value, bool> *expression;
 
 public:
-    condition_timeout(emulation_devices *device, json condition);
-    condition_expression<expression_value, bool> *get_expression();
+    condition_timeout(const emulation_devices *device, json condition);
+    condition_expression<expression_value, bool> *get_expression() const;
 };

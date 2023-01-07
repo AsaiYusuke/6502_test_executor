@@ -10,7 +10,7 @@
 #include "exception/cpu_runtime_error.hpp"
 #include "util/value_convert.hpp"
 
-memory_device::memory_device(emulation_devices *_device, args_parser *args, json config, debug_info *_debug)
+memory_device::memory_device(emulation_devices *_device, const args_parser *args, json config, debug_info *_debug)
 {
     device = _device;
 
@@ -104,7 +104,7 @@ memory_device::memory_device(emulation_devices *_device, args_parser *args, json
                 }
 }
 
-vector<int> memory_device::get_detected_remove_segment_ids()
+vector<int> memory_device::get_detected_remove_segment_ids() const
 {
     vector<int> remove_ids;
     switch (rom->detect_platform())
@@ -127,12 +127,12 @@ void memory_device::clear()
     write_counts.clear();
 }
 
-string memory_device::get_source_line(uint16_t address)
+string memory_device::get_source_line(uint16_t address) const
 {
     return debug->get_source_line(address);
 }
 
-uint16_t memory_device::get_address(string label)
+uint16_t memory_device::get_address(const string &label) const
 {
     if (!debug->has_address(label))
         throw invalid_argument("Symbol not found: " + label);
@@ -150,20 +150,20 @@ vector<uint8_t> memory_device::get_write_sequence(uint16_t address, size_t lengt
 {
     if (write_sequences.count(address) > 0)
     {
-        vector<uint8_t> result(write_sequences[address].end() - length, write_sequences[address].end());
+        vector<uint8_t> result(write_sequences.at(address).end() - length, write_sequences.at(address).end());
         return result;
     }
     return {read(address)};
 }
 
-uint8_t memory_device::get_read_count(uint16_t address)
+uint8_t memory_device::get_read_count(uint16_t address) const
 {
-    return read_counts[address];
+    return read_counts.at(address);
 }
 
-uint8_t memory_device::get_write_count(uint16_t address)
+uint8_t memory_device::get_write_count(uint16_t address) const
 {
-    return write_counts[address];
+    return write_counts.at(address);
 }
 
 uint8_t memory_device::read(uint16_t address)
@@ -283,7 +283,7 @@ void memory_device::write_data(uint16_t address, uint8_t value)
     write(address, value);
 }
 
-void memory_device::print()
+void memory_device::print() const
 {
     printf("MEMORY result:\n");
 

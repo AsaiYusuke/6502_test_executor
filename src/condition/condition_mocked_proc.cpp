@@ -17,17 +17,17 @@ condition_mocked_proc::condition_mocked_proc(emulation_devices *device, json con
                     mock_value_def));
 }
 
-uint16_t condition_mocked_proc::get_entry_point()
+uint16_t condition_mocked_proc::get_entry_point() const
 {
     return entry_point;
 }
 
-mock_action_type condition_mocked_proc::get_action()
+mock_action_type condition_mocked_proc::get_action() const
 {
     return action;
 }
 
-uint16_t condition_mocked_proc::get_jmp_dest()
+uint16_t condition_mocked_proc::get_jmp_dest() const
 {
     return jmp_dest;
 }

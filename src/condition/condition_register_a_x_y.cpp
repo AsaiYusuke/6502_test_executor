@@ -7,7 +7,7 @@
 #include "util/expression_execute.hpp"
 #include "util/value_convert.hpp"
 
-condition_register_a_x_y::condition_register_a_x_y(emulation_devices *device, string _name, json condition)
+condition_register_a_x_y::condition_register_a_x_y(const emulation_devices *device, const string &_name, json condition)
 {
     name = _name;
     type = register_name_type_map[name];
@@ -16,27 +16,27 @@ condition_register_a_x_y::condition_register_a_x_y(emulation_devices *device, st
     write_count = new condition_register_a_x_y_count(device, condition["writeCount"]);
 }
 
-string condition_register_a_x_y::get_name()
+string condition_register_a_x_y::get_name() const
 {
     return name;
 }
 
-register_type condition_register_a_x_y::get_type()
+register_type condition_register_a_x_y::get_type() const
 {
     return type;
 }
 
-condition_register_a_x_y_value *condition_register_a_x_y::get_value()
+condition_register_a_x_y_value *condition_register_a_x_y::get_value() const
 {
     return value;
 }
 
-condition_register_a_x_y_count *condition_register_a_x_y::get_read_count()
+condition_register_a_x_y_count *condition_register_a_x_y::get_read_count() const
 {
     return read_count;
 }
 
-condition_register_a_x_y_count *condition_register_a_x_y::get_write_count()
+condition_register_a_x_y_count *condition_register_a_x_y::get_write_count() const
 {
     return write_count;
 }

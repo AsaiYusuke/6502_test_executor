@@ -4,7 +4,7 @@
 #include "condition/condition_memory_value.hpp"
 #include "util/value_convert.hpp"
 
-condition_memory::condition_memory(emulation_devices *device, json condition)
+condition_memory::condition_memory(const emulation_devices *device, json condition)
 {
     auto address = value_convert::get_address(device, condition);
 
@@ -48,22 +48,22 @@ condition_memory::condition_memory(emulation_devices *device, json condition)
     }
 }
 
-vector<condition_memory_value *> condition_memory::get_value_sequences()
+vector<condition_memory_value *> condition_memory::get_value_sequences() const
 {
     return value_sequences;
 }
 
-vector<condition_memory_count *> condition_memory::get_read_counts()
+vector<condition_memory_count *> condition_memory::get_read_counts() const
 {
     return read_counts;
 }
 
-vector<condition_memory_count *> condition_memory::get_write_counts()
+vector<condition_memory_count *> condition_memory::get_write_counts() const
 {
     return write_counts;
 }
 
-string condition_memory::create_address_name(emulation_devices *device, json memory_def, int offset)
+string condition_memory::create_address_name(const emulation_devices *device, json memory_def, int offset) const
 {
     bool append_total_address = false;
     stringstream ss;
@@ -79,9 +79,7 @@ string condition_memory::create_address_name(emulation_devices *device, json mem
         ss << memory_def["label"].get<string>();
 
         if (!memory_def["offset"].is_null())
-        {
             offset += value_convert::parse_json_number(device, memory_def["offset"]);
-        }
     }
 
     if (offset != 0)
@@ -93,7 +91,7 @@ string condition_memory::create_address_name(emulation_devices *device, json mem
     return ss.str();
 }
 
-json condition_memory::normalize_value_sequences(emulation_devices *device, json memory_def)
+json condition_memory::normalize_value_sequences(const emulation_devices *device, json memory_def) const
 {
     if (memory_def.contains("sequence"))
     {
@@ -110,7 +108,7 @@ json condition_memory::normalize_value_sequences(emulation_devices *device, json
         if (value.is_array())
         {
             json value_defs = {};
-            for (json &value_def : value)
+            for (json value_def : value)
                 value_defs.push_back({value_def});
             return value_defs;
         }
@@ -121,7 +119,7 @@ json condition_memory::normalize_value_sequences(emulation_devices *device, json
     return {};
 }
 
-json condition_memory::normalize_read_counts(emulation_devices *device, json memory_def)
+json condition_memory::normalize_read_counts(const emulation_devices *device, json memory_def) const
 {
     if (!memory_def.contains("readCount"))
         return {};
@@ -134,7 +132,7 @@ json condition_memory::normalize_read_counts(emulation_devices *device, json mem
         return {value};
 }
 
-json condition_memory::normalize_write_counts(emulation_devices *device, json memory_def)
+json condition_memory::normalize_write_counts(const emulation_devices *device, json memory_def) const
 {
     if (!memory_def.contains("writeCount"))
         return {};

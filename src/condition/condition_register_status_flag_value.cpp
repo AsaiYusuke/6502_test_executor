@@ -3,7 +3,7 @@
 #include "util/expression_execute.hpp"
 #include "util/value_convert.hpp"
 
-condition_register_status_flag_value::condition_register_status_flag_value(emulation_devices *device, json condition)
+condition_register_status_flag_value::condition_register_status_flag_value(const emulation_devices *device, json condition)
 {
     expression = new condition_expression<expression_value, bool>(
         device,
@@ -11,12 +11,12 @@ condition_register_status_flag_value::condition_register_status_flag_value(emula
     value = condition.is_boolean() ? condition.get<bool>() : false;
 }
 
-bool condition_register_status_flag_value::get_value()
+bool condition_register_status_flag_value::get_value() const
 {
     return value;
 }
 
-condition_expression<expression_value, bool> *condition_register_status_flag_value::get_expression()
+condition_expression<expression_value, bool> *condition_register_status_flag_value::get_expression() const
 {
     return expression;
 }

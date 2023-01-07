@@ -5,7 +5,7 @@
 #include "util/expression_execute.hpp"
 #include "util/value_convert.hpp"
 
-condition_register_a_x_y_value::condition_register_a_x_y_value(emulation_devices *device, json condition)
+condition_register_a_x_y_value::condition_register_a_x_y_value(const emulation_devices *device, json condition)
 {
     expression = new condition_expression<expression_two_complement_byte, uint8_t>(
         device,
@@ -13,12 +13,12 @@ condition_register_a_x_y_value::condition_register_a_x_y_value(emulation_devices
     value = value_convert::to_two_complement_byte(device, condition);
 }
 
-uint8_t condition_register_a_x_y_value::get_value()
+uint8_t condition_register_a_x_y_value::get_value() const
 {
     return value;
 }
 
-condition_expression<expression_two_complement_byte, uint8_t> *condition_register_a_x_y_value::get_expression()
+condition_expression<expression_two_complement_byte, uint8_t> *condition_register_a_x_y_value::get_expression() const
 {
     return expression;
 }

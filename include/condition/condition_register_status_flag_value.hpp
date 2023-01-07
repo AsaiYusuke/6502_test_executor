@@ -12,7 +12,7 @@ private:
     condition_expression<expression_value, bool> *expression;
 
 public:
-    condition_register_status_flag_value(emulation_devices *device, json condition);
-    bool get_value();
-    condition_expression<expression_value, bool> *get_expression();
+    condition_register_status_flag_value(const emulation_devices *device, json condition);
+    bool get_value() const;
+    condition_expression<expression_value, bool> *get_expression() const;
 };
