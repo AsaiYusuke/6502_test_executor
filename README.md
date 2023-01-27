@@ -2,6 +2,7 @@
 
 [![example workflow](https://github.com/AsaiYusuke/6502_test_executor/actions/workflows/make.yml/badge.svg)](https://github.com/AsaiYusuke/6502_test_executor/actions/workflows/make.yml)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/4c943cf3172642469b3249fbc6f4c672)](https://www.codacy.com/gh/AsaiYusuke/6502_test_executor/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=AsaiYusuke/6502_test_executor&amp;utm_campaign=Badge_Grade)
+[![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/ellisonleao/magictools#engines-and-frameworks)
 
 ![6502 unit test](6502-unit-test.svg)
 
