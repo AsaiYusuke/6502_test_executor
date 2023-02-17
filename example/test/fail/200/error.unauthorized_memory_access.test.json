@@ -5,8 +5,16 @@
             "label": "unauthorized_access"
         }
     },
-    "cases": {
+    "testCases": {
         "Unauthorized access test": {
+            "$comment": [
+                "The addresses in ZEROPAGE segment is authorized for data access.",
+                "The unauthorized_access proc executes two lda.",
+                "1st lda is from the authorized address.",
+                "2nd lda is from the unauthorized address.",
+                "Since ACCESS_TO_UNAUTHORIZED_MEMORY is activated,",
+                "2nd lda terminates test with an error."
+            ],
             "setup": {},
             "expected": {}
         }

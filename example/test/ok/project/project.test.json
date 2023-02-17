@@ -7,7 +7,7 @@
                     "label": "check_collision"
                 }
             },
-            "cases": {
+            "testCases": {
                 "test 1-1": {
                     "setup": {},
                     "expected": {}
@@ -24,7 +24,7 @@
                     "label": "check_collision"
                 }
             },
-            "cases": {
+            "testCases": {
                 "test 2-1": {
                     "setup": {},
                     "expected": {}

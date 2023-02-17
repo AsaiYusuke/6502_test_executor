@@ -5,7 +5,7 @@
             "label": "${LABEL}"
         }
     },
-    "cases": {
+    "testCases": {
         "Test ID": {
             "setup": {},
             "expected": {}

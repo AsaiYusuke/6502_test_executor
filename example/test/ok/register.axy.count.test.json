@@ -5,7 +5,7 @@
             "label": "check_collision"
         }
     },
-    "cases": {
+    "testCases": {
         "count test for register A/X/Y": {
             "setup": {},
             "expected": {

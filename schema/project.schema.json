@@ -14,7 +14,7 @@
                 "additionalProperties": false,
                 "properties": {
                     "target": true,
-                    "cases": true,
+                    "testCases": true,
                     "definitions": true,
                     "config": true,
                     "file": {
@@ -38,12 +38,11 @@
                 "else": {
                     "properties": {
                         "target": false,
-                        "cases": false,
+                        "testCases": false,
                         "definitions": false,
                         "config": false
                     }
                 }
-                
             }
         }
     }

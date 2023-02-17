@@ -9,7 +9,7 @@
             "label": "end_update_stack"
         }
     },
-    "cases": {
+    "testCases": {
         "update stack test": {
             "setup": {
                 "stack": [

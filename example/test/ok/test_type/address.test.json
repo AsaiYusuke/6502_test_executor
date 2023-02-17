@@ -10,7 +10,7 @@
             "offset": 2
         }
     },
-    "cases": {
+    "testCases": {
         "address range": {
             "setup": {},
             "expected": {

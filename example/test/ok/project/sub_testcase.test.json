@@ -5,7 +5,7 @@
             "label": "check_collision"
         }
     },
-    "cases": {
+    "testCases": {
         "sub test 1": {
             "setup": {},
             "expected": {}

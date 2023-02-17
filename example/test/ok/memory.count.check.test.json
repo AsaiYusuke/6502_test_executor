@@ -5,7 +5,7 @@
             "label": "control"
         }
     },
-    "cases": {
+    "testCases": {
         "check the read/write count": {
             "setup": {
                 "memory": [

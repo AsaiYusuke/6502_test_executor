@@ -5,7 +5,7 @@
             "label": "control"
         }
     },
-    "cases": {
+    "testCases": {
         "NMI interrupt": {
             "setup": {
                 "memory": [

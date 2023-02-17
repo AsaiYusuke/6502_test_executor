@@ -9,7 +9,7 @@
             "label": "main_loop"
         }
     },
-    "cases": {
+    "testCases": {
         "Complete initialize code": {
             "setup": {
                 "memory": [

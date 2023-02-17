@@ -5,7 +5,7 @@
             "label": "control"
         }
     },
-    "cases": {
+    "testCases": {
         "sequential change value test": {
             "setup": {
                 "memory": [
