@@ -69,7 +69,7 @@ bool test::execute()
             &total_result,
             test_scenario["target"],
             test_scenario["definitions"]["templates"],
-            test_scenario["cases"],
+            test_scenario["testCases"],
             "");
     }
 

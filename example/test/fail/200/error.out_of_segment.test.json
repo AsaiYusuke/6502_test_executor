@@ -5,7 +5,7 @@
             "label": "write_out_of_segment"
         }
     },
-    "cases": {
+    "testCases": {
         "out of segment test": {
             "setup": {},
             "expected": {}

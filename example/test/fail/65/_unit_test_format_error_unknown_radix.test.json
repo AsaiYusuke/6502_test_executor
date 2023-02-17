@@ -5,7 +5,7 @@
             "label": "check_collision"
         }
     },
-    "cases": {
+    "testCases": {
         "unknown radix": {
             "setup": {
                 "register": {

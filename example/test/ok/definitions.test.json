@@ -211,7 +211,7 @@
             }
         }
     },
-    "cases": {
+    "testCases": {
         "NMI interrupt (definitions)": {
             "setup": {
                 "template": [

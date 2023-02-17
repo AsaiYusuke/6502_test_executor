@@ -3,7 +3,7 @@
     "target": {
         "testType": "IRQ"
     },
-    "cases": {
+    "testCases": {
         "IRQ test": {
             "setup": {},
             "expected": {

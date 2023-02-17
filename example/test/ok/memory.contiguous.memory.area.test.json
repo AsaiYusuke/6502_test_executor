@@ -5,7 +5,7 @@
             "label": "check_collision"
         }
     },
-    "cases": {
+    "testCases": {
         "contiguous memory area test": {
             "setup": {
                 "memory": [

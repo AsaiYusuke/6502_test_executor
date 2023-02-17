@@ -5,7 +5,7 @@
             "label": "subproc"
         }
     },
-    "cases": {
+    "testCases": {
         "pass value to the caller : A=1": {
             "setup": {
                 "register": {

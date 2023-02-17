@@ -3,7 +3,7 @@
     "type": "object",
     "required": [
         "target",
-        "cases"
+        "testCases"
     ],
     "additionalProperties": false,
     "properties": {
@@ -125,12 +125,12 @@
                 }
             }
         },
-        "cases": {
+        "testCases": {
             "title": "Test cases",
             "description": "Test cases specify, for each test, the setup conditions and the expected conditions.",
             "type": "object",
             "minProperties": 1,
-            "$ref": "#/definitions/case"
+            "$ref": "#/definitions/testCase"
         },
         "config": {
             "title": "Configuration",
@@ -382,11 +382,11 @@
         }
     },
     "definitions": {
-        "case": {
+        "testCase": {
             "patternProperties": {
                 "/$": {
                     "type": "object",
-                    "$ref": "#/definitions/case"
+                    "$ref": "#/definitions/testCase"
                 },
                 ".*": {
                     "title": "Test ID",
@@ -398,6 +398,12 @@
                     ],
                     "additionalProperties": false,
                     "properties": {
+                        "$comment": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
                         "skip": {
                             "type": "boolean"
                         },

@@ -5,7 +5,7 @@
             "label": "control"
         }
     },
-    "cases": {
+    "testCases": {
         "permanent input and timeout test": {
             "setup": {
                 "memory": [

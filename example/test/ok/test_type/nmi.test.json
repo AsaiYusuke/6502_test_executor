@@ -3,7 +3,7 @@
     "target": {
         "testType": "NMI"
     },
-    "cases": {
+    "testCases": {
         "NMI test": {
             "setup": {},
             "expected": {

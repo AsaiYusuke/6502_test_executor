@@ -5,7 +5,7 @@
             "label": "control"
         }
     },
-    "cases": {
+    "testCases": {
         "call mocked proc read_joypad_a_key": {
             "setup": {
                 "mockedProc": [

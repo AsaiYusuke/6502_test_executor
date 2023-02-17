@@ -5,7 +5,7 @@
             "label": "check_collision"
         }
     },
-    "cases": {
+    "testCases": {
         "count test for flags of the Processor status register": {
             "setup": {},
             "expected": {

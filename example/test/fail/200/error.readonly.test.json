@@ -5,8 +5,13 @@
             "label": "write_rodata"
         }
     },
-    "cases": {
+    "testCases": {
         "write readonly memory test": {
+            "$comment": [
+                "write_rodata proc executes sta to read-only memory.",
+                "Since WRITE_TO_READONLY_MEMORY is activated,",
+                "sta terminates test with an error."
+            ],
             "setup": {},
             "expected": {}
         }
