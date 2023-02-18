@@ -14,9 +14,8 @@
     "config": {
         "testMemoryAccess": {
             "feature": [
-                "WRITE_TO_READONLY_MEMORY"
-            ],
-            "ignoreList": []
+                "ACCESS_TO_OUT_OF_SEGMENT"
+            ]
         }
     }
 }
