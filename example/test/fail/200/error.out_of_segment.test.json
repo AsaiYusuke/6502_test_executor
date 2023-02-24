@@ -7,6 +7,11 @@
     },
     "testCases": {
         "out of segment test": {
+            "$comment": [
+                "The `write_out_of_segment` proc executes sta in the undefined memory at address `$7fff`.",
+                "Since `ACCESS_TO_OUT_OF_SEGMENT` is activated,",
+                "attempting to write to such undefined memory terminates test with an error."
+            ],
             "setup": {},
             "expected": {}
         }

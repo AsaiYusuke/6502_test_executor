@@ -8,11 +8,11 @@
     "testCases": {
         "Uninitialized access test": {
             "$comment": [
-                "uninitialized_read proc executes two lda",
-                "1st lda is from initialized 'pos' address.",
-                "2nd lda is from uninitialized 'pos+1' address.",
-                "Since READ_FROM_UNINITIALIZED_MEMORY is activated,",
-                "2nd lda terminates test with an error."
+                "The `uninitialized_read` proc executes two `lda`.",
+                "1st `lda` is from initialized `pos` address.",
+                "2nd `lda` is from uninitialized `pos+1` address.",
+                "Since `READ_FROM_UNINITIALIZED_MEMORY` is activated,",
+                "2nd `lda` terminates test with an error."
             ],
             "setup": {
                 "memory": [

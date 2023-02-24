@@ -8,9 +8,9 @@
     "testCases": {
         "write readonly memory test": {
             "$comment": [
-                "write_rodata proc executes sta to read-only memory.",
-                "Since WRITE_TO_READONLY_MEMORY is activated,",
-                "sta terminates test with an error."
+                "The `write_rodata` proc executes `sta` in readonly memory at address with `vector_dic` label.",
+                "Since `WRITE_TO_READONLY_MEMORY` is activated,",
+                "attempting to write to such readonly memory terminates test with an error."
             ],
             "setup": {},
             "expected": {}
