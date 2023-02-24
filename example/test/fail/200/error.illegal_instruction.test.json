@@ -7,6 +7,10 @@
     },
     "testCases": {
         "illegal instruction test": {
+            "$comment": [
+                "The `illegal_instruction` proc executes the invalid instruction code `$ff`.",
+                "Executing an invalid code terminates test with an error."
+            ],
             "setup": {},
             "expected": {}
         }
