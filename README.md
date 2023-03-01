@@ -320,7 +320,9 @@ If both are specified, the values in the test scenario file are adopted.
 - [Customize configurations](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/customize.configurations.test.json)
 - [Skip test (ignore)](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/skip.test.json)
 - [Complex evaluation](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/evaluation.test.json)
-- [Project for tests](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/project/project.test.json)
+- [Project-wide test set](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/project/project.test.json)
+- [Project-wide configuration](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/fail/200/project/error.out_of_segment.test.json)
+  - [Override from project-wide configuration](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/project/merge_config.test.json)
 - [Grouping](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/group.test.json)
 - [Definitions](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/definitions.test.json)
 

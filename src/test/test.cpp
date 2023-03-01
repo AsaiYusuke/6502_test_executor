@@ -37,7 +37,8 @@ test::test(args_parser *_args)
 
     json test_scenario = read_json(args->get_test_path());
 
-    debug = new debug_info(args, test_scenario["config"]);
+    config = test_scenario["config"];
+    debug = new debug_info(args, config);
 
     if (test_detect::is_project(test_scenario))
         for (auto test_entry : test_scenario["tests"])
@@ -63,7 +64,9 @@ bool test::execute()
 
     for (auto test_scenario : test_scenarios)
     {
-        device = new emulation_devices(args, test_scenario["config"], debug);
+        json test_config = config;
+        test_config.merge_patch(test_scenario["config"]);
+        device = new emulation_devices(args, test_config, debug);
         num_tests += traverse(
             device,
             &total_result,

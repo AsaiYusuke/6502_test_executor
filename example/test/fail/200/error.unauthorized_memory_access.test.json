@@ -9,7 +9,7 @@
         "Unauthorized access test": {
             "$comment": [
                 "The `unauthorized_access` proc executes two `lda`.",
-                "Since `ACCESS_TO_UNAUTHORIZED_MEMORY` is activated",
+                "Since `ACCESS_TO_UNAUTHORIZED_MEMORY` is active",
                 "and the addresses in `ZEROPAGE` segment indicated in `authorizedList` are authorized for data access,",
                 "1st `lda` succeeds as it accesses an authorized address,",
                 "but 2nd `lda` terminates test with an error."
