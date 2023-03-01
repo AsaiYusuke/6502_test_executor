@@ -1,0 +1,37 @@
+{
+    "$schema": "../../../../schema/project.schema.json",
+    "config": {
+        "maxCycleCount": 1,
+        "testMemoryAccess": {
+            "feature": [
+                "ACCESS_TO_OUT_OF_SEGMENT"
+            ]
+        }
+    },
+    "tests": [
+        {
+            "config": {
+                "maxCycleCount": 10000,
+                "testMemoryAccess": {
+                    "feature": []
+                }
+            },
+            "target": {
+                "start": {
+                    "label": "write_out_of_segment"
+                }
+            },
+            "testCases": {
+                "success out of segment test": {
+                    "$comment": [
+                        "The `write_out_of_segment` proc executes sta on undefined memory at address $7fff.",
+                        "Since `ACCESS_TO_OUT_OF_SEGMENT` is inactive (overrided),",
+                        "writing to such undefined memory results in a successful completion without any errors."
+                    ],
+                    "setup": {},
+                    "expected": {}
+                }
+            }
+        }
+    ]
+}

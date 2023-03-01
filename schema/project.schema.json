@@ -33,7 +33,14 @@
                         {
                             "$ref": "testcase.schema.json"
                         }
-                    ]
+                    ],
+                    "properties": {
+                        "config": {
+                            "properties": {
+                                "debugFile": false
+                            }
+                        }
+                    }
                 },
                 "else": {
                     "properties": {
@@ -44,6 +51,9 @@
                     }
                 }
             }
+        },
+        "config": {
+            "$ref": "testcase.schema.json#/definitions/config"
         }
     }
 }

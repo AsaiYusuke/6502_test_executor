@@ -17,6 +17,7 @@ class test
 {
 private:
     args_parser *args;
+    json config;
     debug_info *debug;
     emulation_devices *device;
     vector<json> test_scenarios;

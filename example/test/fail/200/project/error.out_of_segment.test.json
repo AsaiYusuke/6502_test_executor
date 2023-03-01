@@ -1,0 +1,31 @@
+{
+    "$schema": "../../../../../schema/project.schema.json",
+    "config": {
+        "testMemoryAccess": {
+            "feature": [
+                "ACCESS_TO_OUT_OF_SEGMENT"
+            ]
+        }
+    },
+    "tests": [
+        {
+            "target": {
+                "start": {
+                    "label": "write_out_of_segment"
+                }
+            },
+            "testCases": {
+                "out of segment test": {
+                    "$comment": [
+                        "Same as example/test/fail/200/error.out_of_segment.test.json.",
+                        "The `write_out_of_segment` proc executes sta in the undefined memory at address `$7fff`.",
+                        "Since `ACCESS_TO_OUT_OF_SEGMENT` is active,",
+                        "writing to such undefined memory terminates test with an error."
+                    ],
+                    "setup": {},
+                    "expected": {}
+                }
+            }
+        }
+    ]
+}

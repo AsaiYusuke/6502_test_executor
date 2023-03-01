@@ -133,252 +133,7 @@
             "$ref": "#/definitions/testCase"
         },
         "config": {
-            "title": "Configuration",
-            "description": "Configuration specifies the customization parameters to be given to the testing tool.",
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "maxCycleCount": {
-                    "title": "Max cycle count",
-                    "description": "Max cycle count specifies the threshold before the test becomes an error.",
-                    "oneOf": [
-                        {
-                            "title": "Max cycle count (Number of execution instruction cycles)",
-                            "type": "number",
-                            "default": 10000,
-                            "minimum": 1
-                        },
-                        {
-                            "title": "Max cycle count (pre-defined cycle types)",
-                            "description": "- NES_NTSC_VSYNC : number of processor cycles per NES NTSC Vsync.\n- DISABLE : disable max cycle check",
-                            "type": "string",
-                            "enum": [
-                                "NES_NTSC_VSYNC",
-                                "DISABLE"
-                            ]
-                        }
-                    ]
-                },
-                "debugFile": {
-                    "title": "Debug file path",
-                    "description": "Debug file path specifies the path of the debug information file used for testing.",
-                    "type": "string"
-                },
-                "testMemoryAccess": {
-                    "title": "Test memory access",
-                    "description": "Test memory access specifies the behavior when an invalid memory access occurs.",
-                    "type": "object",
-                    "additionalProperties": false,
-                    "required": [
-                        "feature"
-                    ],
-                    "properties": {
-                        "feature": {
-                            "title": "Feature",
-                            "description": "Feature specifies which memory test features are enabled.",
-                            "type": "array",
-                            "minItems": 1,
-                            "items": {
-                                "type": "string",
-                                "enum": [
-                                    "WRITE_TO_READONLY_MEMORY",
-                                    "ACCESS_TO_OUT_OF_SEGMENT",
-                                    "READ_FROM_UNINITIALIZED_MEMORY",
-                                    "ACCESS_TO_UNAUTHORIZED_MEMORY"
-                                ]
-                            },
-                            "default": [
-                                "WRITE_TO_READONLY_MEMORY",
-                                "ACCESS_TO_OUT_OF_SEGMENT"
-                            ]
-                        },
-                        "ignoreList": {
-                            "title": "Ignore list",
-                            "description": "Ignore list specifies memory areas that are not controlled by invalid memory control.",
-                            "type": "array",
-                            "items": {
-                                "type": "object",
-                                "oneOf": [
-                                    {
-                                        "required": [
-                                            "start",
-                                            "size"
-                                        ]
-                                    },
-                                    {
-                                        "required": [
-                                            "name"
-                                        ]
-                                    },
-                                    {
-                                        "required": [
-                                            "detect"
-                                        ]
-                                    }
-                                ],
-                                "additionalProperties": false,
-                                "properties": {
-                                    "start": {
-                                        "title": "range start address",
-                                        "$ref": "#/definitions/address"
-                                    },
-                                    "size": {
-                                        "title": "range size",
-                                        "$ref": "#/definitions/number_16bit"
-                                    },
-                                    "name": {
-                                        "title": "segment name",
-                                        "type": "string"
-                                    },
-                                    "detect": {
-                                        "title": "detect platform",
-                                        "type": "boolean",
-                                        "default": true
-                                    }
-                                },
-                                "dependencies": {
-                                    "start": {
-                                        "properties": {
-                                            "name": false,
-                                            "detect": false
-                                        }
-                                    },
-                                    "size": {
-                                        "properties": {
-                                            "name": false,
-                                            "detect": false
-                                        }
-                                    },
-                                    "name": {
-                                        "properties": {
-                                            "start": false,
-                                            "size": false,
-                                            "detect": false
-                                        }
-                                    },
-                                    "detect": {
-                                        "properties": {
-                                            "start": false,
-                                            "size": false,
-                                            "name": false
-                                        }
-                                    }
-                                }
-                            },
-                            "default": [
-                                {
-                                    "start": {
-                                        "address": "$100"
-                                    },
-                                    "size": "$100"
-                                },
-                                {
-                                    "start": {
-                                        "address": "$2000"
-                                    },
-                                    "size": "$2020"
-                                },
-                                {
-                                    "detect": true
-                                }
-                            ]
-                        },
-                        "authorizedList": {
-                            "title": "Authorized list",
-                            "description": "Authorized list specifies memory area that are permitted by authorized memory control.",
-                            "type": "array",
-                            "items": {
-                                "type": "object",
-                                "oneOf": [
-                                    {
-                                        "required": [
-                                            "start",
-                                            "size"
-                                        ]
-                                    },
-                                    {
-                                        "required": [
-                                            "name"
-                                        ]
-                                    },
-                                    {
-                                        "required": [
-                                            "detect"
-                                        ]
-                                    }
-                                ],
-                                "additionalProperties": false,
-                                "properties": {
-                                    "start": {
-                                        "title": "range start address",
-                                        "$ref": "#/definitions/address"
-                                    },
-                                    "size": {
-                                        "title": "range size",
-                                        "$ref": "#/definitions/number_16bit"
-                                    },
-                                    "name": {
-                                        "title": "segment name",
-                                        "type": "string"
-                                    },
-                                    "detect": {
-                                        "title": "detect platform",
-                                        "type": "boolean",
-                                        "default": true
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "allOf": [
-                        {
-                            "if": {
-                                "properties": {
-                                    "feature": {
-                                        "not": {
-                                            "contains": {
-                                                "const": "ACCESS_TO_UNAUTHORIZED_MEMORY"
-                                            }
-                                        }
-                                    }
-                                }
-                            },
-                            "then": {
-                                "properties": {
-                                    "authorizedList": false
-                                }
-                            },
-                            "else": {}
-                        },
-                        {
-                            "if": {
-                                "properties": {
-                                    "feature": {
-                                        "not": {
-                                            "contains": {
-                                                "oneOf": [
-                                                    {
-                                                        "const": "WRITE_TO_READONLY_MEMORY"
-                                                    },
-                                                    {
-                                                        "const": "ACCESS_TO_OUT_OF_SEGMENT"
-                                                    }
-                                                ]
-                                            }
-                                        }
-                                    }
-                                }
-                            },
-                            "then": {
-                                "properties": {
-                                    "ignoreList": false
-                                }
-                            },
-                            "else": {}
-                        }
-                    ]
-                }
-            }
+            "$ref": "#/definitions/config"
         }
     },
     "definitions": {
@@ -1177,6 +932,253 @@
                         "title": "Less than or equal to",
                         "type": "number"
                     }
+                }
+            }
+        },
+        "config": {
+            "title": "Configuration",
+            "description": "Configuration specifies the customization parameters to be given to the testing tool.",
+            "additionalProperties": false,
+            "type": "object",
+            "properties": {
+                "debugFile": {
+                    "title": "Debug file path",
+                    "description": "Debug file path specifies the path of the debug information file used for testing.",
+                    "type": "string"
+                },
+                "maxCycleCount": {
+                    "title": "Max cycle count",
+                    "description": "Max cycle count specifies the threshold before the test becomes an error.",
+                    "oneOf": [
+                        {
+                            "title": "Max cycle count (Number of execution instruction cycles)",
+                            "type": "number",
+                            "default": 10000,
+                            "minimum": 1
+                        },
+                        {
+                            "title": "Max cycle count (pre-defined cycle types)",
+                            "description": "- NES_NTSC_VSYNC : number of processor cycles per NES NTSC Vsync.\n- DISABLE : disable max cycle check",
+                            "type": "string",
+                            "enum": [
+                                "NES_NTSC_VSYNC",
+                                "DISABLE"
+                            ]
+                        }
+                    ]
+                },
+                "testMemoryAccess": {
+                    "title": "Test memory access",
+                    "description": "Test memory access specifies the behavior when an invalid memory access occurs.",
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                        "feature"
+                    ],
+                    "properties": {
+                        "feature": {
+                            "title": "Feature",
+                            "description": "Feature specifies which memory test features are enabled.",
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "WRITE_TO_READONLY_MEMORY",
+                                    "ACCESS_TO_OUT_OF_SEGMENT",
+                                    "READ_FROM_UNINITIALIZED_MEMORY",
+                                    "ACCESS_TO_UNAUTHORIZED_MEMORY"
+                                ]
+                            },
+                            "default": [
+                                "WRITE_TO_READONLY_MEMORY",
+                                "ACCESS_TO_OUT_OF_SEGMENT"
+                            ]
+                        },
+                        "ignoreList": {
+                            "title": "Ignore list",
+                            "description": "Ignore list specifies memory areas that are not controlled by invalid memory control.",
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "oneOf": [
+                                    {
+                                        "required": [
+                                            "start",
+                                            "size"
+                                        ]
+                                    },
+                                    {
+                                        "required": [
+                                            "name"
+                                        ]
+                                    },
+                                    {
+                                        "required": [
+                                            "detect"
+                                        ]
+                                    }
+                                ],
+                                "additionalProperties": false,
+                                "properties": {
+                                    "start": {
+                                        "title": "range start address",
+                                        "$ref": "#/definitions/address"
+                                    },
+                                    "size": {
+                                        "title": "range size",
+                                        "$ref": "#/definitions/number_16bit"
+                                    },
+                                    "name": {
+                                        "title": "segment name",
+                                        "type": "string"
+                                    },
+                                    "detect": {
+                                        "title": "detect platform",
+                                        "type": "boolean",
+                                        "default": true
+                                    }
+                                },
+                                "dependencies": {
+                                    "start": {
+                                        "properties": {
+                                            "name": false,
+                                            "detect": false
+                                        }
+                                    },
+                                    "size": {
+                                        "properties": {
+                                            "name": false,
+                                            "detect": false
+                                        }
+                                    },
+                                    "name": {
+                                        "properties": {
+                                            "start": false,
+                                            "size": false,
+                                            "detect": false
+                                        }
+                                    },
+                                    "detect": {
+                                        "properties": {
+                                            "start": false,
+                                            "size": false,
+                                            "name": false
+                                        }
+                                    }
+                                }
+                            },
+                            "default": [
+                                {
+                                    "start": {
+                                        "address": "$100"
+                                    },
+                                    "size": "$100"
+                                },
+                                {
+                                    "start": {
+                                        "address": "$2000"
+                                    },
+                                    "size": "$2020"
+                                },
+                                {
+                                    "detect": true
+                                }
+                            ]
+                        },
+                        "authorizedList": {
+                            "title": "Authorized list",
+                            "description": "Authorized list specifies memory area that are permitted by authorized memory control.",
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "oneOf": [
+                                    {
+                                        "required": [
+                                            "start",
+                                            "size"
+                                        ]
+                                    },
+                                    {
+                                        "required": [
+                                            "name"
+                                        ]
+                                    },
+                                    {
+                                        "required": [
+                                            "detect"
+                                        ]
+                                    }
+                                ],
+                                "additionalProperties": false,
+                                "properties": {
+                                    "start": {
+                                        "title": "range start address",
+                                        "$ref": "#/definitions/address"
+                                    },
+                                    "size": {
+                                        "title": "range size",
+                                        "$ref": "#/definitions/number_16bit"
+                                    },
+                                    "name": {
+                                        "title": "segment name",
+                                        "type": "string"
+                                    },
+                                    "detect": {
+                                        "title": "detect platform",
+                                        "type": "boolean",
+                                        "default": true
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "allOf": [
+                        {
+                            "if": {
+                                "properties": {
+                                    "feature": {
+                                        "not": {
+                                            "contains": {
+                                                "const": "ACCESS_TO_UNAUTHORIZED_MEMORY"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "then": {
+                                "properties": {
+                                    "authorizedList": false
+                                }
+                            },
+                            "else": {}
+                        },
+                        {
+                            "if": {
+                                "properties": {
+                                    "feature": {
+                                        "not": {
+                                            "contains": {
+                                                "oneOf": [
+                                                    {
+                                                        "const": "WRITE_TO_READONLY_MEMORY"
+                                                    },
+                                                    {
+                                                        "const": "ACCESS_TO_OUT_OF_SEGMENT"
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "then": {
+                                "properties": {
+                                    "ignoreList": false
+                                }
+                            },
+                            "else": {}
+                        }
+                    ]
                 }
             }
         }
