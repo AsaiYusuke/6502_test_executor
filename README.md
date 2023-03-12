@@ -45,7 +45,7 @@ This tool enables [unit testing](https://en.wikipedia.org/wiki/Unit_testing) for
 
 - It comes with many useful evaluation methods found in [the modern UNIT testing frameworks](https://en.wikipedia.org/wiki/List_of_unit_testing_frameworks).
 
-## Supported testing feature
+## Supported testing features
 
 ### Testable program
 
@@ -57,29 +57,29 @@ This tool enables [unit testing](https://en.wikipedia.org/wiki/Unit_testing) for
 - Type of interrupts that can occur during testing
   - NMI
   - IRQ
-- Mockable call instruction that sets the result in register and memory
+- Mockable call instructions that set the result in register and memory
   - JSR
   - JMP
 
 ### Condition
 
-- Setup device conditions before test  
+- Setting up device conditions before testing  
   | | Register | Memory | Stack |
   | :---------------------- | :----------------: | :----------------: | :----------------: |
   | Set value | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
   | Mock read value history | | :heavy_check_mark: | |
-- Evaluate device conditions after test  
+- Evaluating device conditions after testing  
   | | Register | Memory | Stack |
   | :------------------------ | :----------------: | :----------------: | :----------------: |
   | Check value | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
   | Check read/write count | :heavy_check_mark: | :heavy_check_mark: | |
   | Check write value history | | :heavy_check_mark: | |
-- Evaluate processor information
+- Evaluating processor information
   - Cycle count
 
 ### Assertion
 
-- Assertion operator how test is evaluated
+- Assertion operators that determine how tests is evaluated
   - _"eq"_ (Equal to)
   - _"ne"_ (Not equal to)
   - _"gt"_ (Greater than)
@@ -92,7 +92,7 @@ This tool enables [unit testing](https://en.wikipedia.org/wiki/Unit_testing) for
     Same as logical AND operator. e.g. "_gt_"+"_lt_" for range selection
 - Error handling
   - Write access to readonly memory  
-    Able to detect write operations to read-only memory.
+    Able to detect write operations to readonly memory.
   - Read access from uninitialized memory  
     Able to detect read operations from memory that has never had a write operation.
   - Access to undefined memory  
@@ -106,6 +106,11 @@ This tool enables [unit testing](https://en.wikipedia.org/wiki/Unit_testing) for
 
 - Testable coverage
   - [LCOV](https://github.com/linux-test-project/lcov) format
+
+### Test classification
+- Aggregated testing for the entire project
+- Common configuration settings for the entire project
+- Grouping of individual tests
 
 ### Additional useful feature
 
@@ -315,15 +320,18 @@ If both are specified, the values in the test scenario file are adopted.
 - [Access to unauthorized memory](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/fail/200/error.unauthorized_memory_access.test.json)
 - [Illegal instruction](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/fail/200/error.illegal_instruction.test.json)
 
+### Test classification
+
+- [Aggregated testing](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/project/project.test.json)
+- [Common configuration settings](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/fail/200/project/error.out_of_segment.test.json)
+  - [Override from project-wide configuration settings](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/project/merge_config.test.json)
+- [Grouping of individual tests](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/group.test.json)
+
 ### Misc
 
 - [Customize configurations](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/customize.configurations.test.json)
 - [Skip test (ignore)](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/skip.test.json)
 - [Complex evaluation](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/evaluation.test.json)
-- [Project-wide test set](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/project/project.test.json)
-- [Project-wide configuration](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/fail/200/project/error.out_of_segment.test.json)
-  - [Override from project-wide configuration](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/project/merge_config.test.json)
-- [Grouping](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/group.test.json)
 - [Definitions](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/definitions.test.json)
 
 ## Dependencies
