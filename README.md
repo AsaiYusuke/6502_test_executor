@@ -280,30 +280,30 @@ If both are specified, the values in the test scenario file are adopted.
 
 ### Register conditions
 
-- [Check value of A/X/Y registers](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/register.axy.value.test.json)
-- [Check read/write count of A/X/Y registers](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/register.axy.count.test.json)
-- [Check value of Processor status register flags](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/register.status.flag.value.test.json)
-- [Check read/write count of Processor status register flags](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/register.status.flag.count.test.json)
-- [Check machine when PC register arrives at a specific address](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/init.code.test.json)
+- [Check value of A/X/Y registers](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/register/register.axy.value.test.json)
+- [Check read/write count of A/X/Y registers](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/register/register.axy.count.test.json)
+- [Check value of Processor status register flags](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/register/register.status.flag.value.test.json)
+- [Check read/write count of Processor status register flags](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/register/register.status.flag.count.test.json)
+- [Check machine when PC register arrives at a specific address](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/register/init.code.test.json)
 
 ### Memory conditions
 
-- [Memory addressing](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/memory.addressing.test.json)
-- [Check value of memory](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/memory.value.check.test.json)
-- [Check read/write count of memory](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/memory.count.check.test.json)
-- [Batch selection of continuous memory area](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/memory.contiguous.memory.area.test.json)
-- [Sequential change value](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/memory.sequential.change.value.test.json)
+- [Memory addressing](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/memory/memory.addressing.test.json)
+- [Check value of memory](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/memory/memory.value.check.test.json)
+- [Check read/write count of memory](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/memory/memory.count.check.test.json)
+- [Batch selection of continuous memory area](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/memory/memory.contiguous.memory.area.test.json)
+- [Sequential change value](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/memory/memory.sequential.change.value.test.json)
 
 ### Stack conditions
 
-- [Check value of stack](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/stack.value.check.test.json)
-- [rts to caller](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/stack.rts.check.test.json)
+- [Check value of stack](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/stack/stack.value.check.test.json)
+- [rts to caller](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/stack/stack.rts.check.test.json)
 
 ### Processor conditions
 
-- [Cycle count information](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/error.timeout.test.json)
-- [Interrupt hooks](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/interrupt.test.json)
-- [Call mocked proc](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/mock.proc.test.json)
+- [Cycle count information](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/processor/error.timeout.test.json)
+- [Interrupt hooks](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/processor/interrupt.test.json)
+- [Call mocked proc](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/processor/mock.proc.test.json)
 
 ### Testable procedures
 
@@ -322,17 +322,17 @@ If both are specified, the values in the test scenario file are adopted.
 
 ### Test classification
 
-- [Aggregated testing](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/project/project.test.json)
-- [Common configuration settings](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/fail/200/project/error.out_of_segment.test.json)
-  - [Override from project-wide configuration settings](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/project/merge_config.test.json)
-- [Grouping of individual tests](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/group.test.json)
+- [Aggregated testing](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/classification/project.test.json)
+- [Common configuration settings](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/fail/200/classification/error.out_of_segment.test.json)
+  - [Override from project-wide configuration settings](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/classification/merge_config.test.json)
+- [Grouping of individual tests](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/classification/group.test.json)
 
 ### Misc
 
-- [Customize configurations](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/customize.configurations.test.json)
-- [Skip test (ignore)](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/skip.test.json)
-- [Complex evaluation](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/evaluation.test.json)
-- [Definitions](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/definitions.test.json)
+- [Customize configurations](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/misc/customize.configurations.test.json)
+- [Skip test (ignore)](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/misc/skip.test.json)
+- [Complex evaluation](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/misc/evaluation.test.json)
+- [Definitions](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/misc/definitions.test.json)
 
 ## Dependencies
 
