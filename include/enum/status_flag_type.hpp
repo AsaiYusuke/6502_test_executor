@@ -3,7 +3,7 @@
 #include <map>
 #include <string>
 
-#include "mos6502.h"
+#include "emulation/mos6502/exec_mos6502.hpp"
 
 using namespace std;
 
