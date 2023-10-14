@@ -10,46 +10,48 @@ This tool enables [unit testing](https://en.wikipedia.org/wiki/Unit_testing) for
 
 ## Table of Contents
 
-- [Basic design](#Basic-design)
-- [Supported testing feature](#Supported-testing-feature)
-  - [Testable program](#Testable-program)
-  - [Condition](#Condition)
-  - [Assertion](#Assertion)
-  - [Coverage](#Coverage)
-  - [Additional useful feature](#Additional-useful-feature)
-- [Getting started](#getting-started)
-  - [Prerequisites](#Prerequisites)
-  - [Install](#Install)
-  - [Test example project](#Test-example-project)
-    - [Unit testing](#Unit-testing)
-    - [Coverage](#Coverage)
-- [Usage](#Usage)
-  - [Build CA65 project with debug option](#Build-CA65-project-with-debug-option)
-  - [Create unit test](#Create-unit-test)
-  - [Run test](#Run-test)
-- [Test scenario examples](#Test-scenario-examples)
-- [Dependencies](#Dependencies)
+- [Basic Design](#basic-design)
+- [Supported Testing Features](#supported-testing-features)
+  - [Testable Program](#testable-program)
+  - [Conditions](#conditions)
+  - [Assertions](#assertions)
+  - [Coverage](#coverage)
+  - [Test Classification](#test-classification)
+  - [Additional Useful Features](#additional-useful-features)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Install](#install)
+  - [Running Examples](#running-examples)
+    - [Unit Testing](#unit-testing)
+    - [Coverage File](#coverage-file)
+- [Usage](#usage)
+  - [Build CA65 Project with Debug Option](#build-ca65-project-with-debug-option)
+  - [Create Unit Test](#create-unit-test)
+  - [Run Test](#run-test)
+- [Test Scenario Examples](#test-scenario-examples)
+- [Dependencies](#dependencies)
+- [License](#license)
 
-## Basic design
+## Basic Design
 
-#### _Execute test on built-in emulator_
+### *Execute Tests on Built-In Emulator*
 
-- Built-in [6502 emulation by Gianluca Ghettini](https://github.com/gianlucag/mos6502) enables stand-alone testing on Linux, etc.
-- No need to add hooks to the product code to invoke test.
+- The built-in [6502 emulation by Gianluca Ghettini](https://github.com/gianlucag/mos6502) enables stand-alone testing on platforms such as Linux.
+- There's no need to add hooks to the product code to invoke tests.
 
-#### _Write test with JSON Schema_
+### *Write Tests with JSON Schema*
 
-- The tool provides [JSON Schema](https://json-schema.org/) document that makes it easy to create test.
+- The tool provides [JSON Schema](https://json-schema.org/) document that simplifies test creation.
 
-#### _Evaluate test like modern frameworks_
+### *Evaluate Tests like Modern Frameworks*
 
-- It comes with many useful evaluation methods found in [the modern UNIT testing frameworks](https://en.wikipedia.org/wiki/List_of_unit_testing_frameworks).
+- It includes many useful evaluation methods found in [the modern UNIT testing frameworks](https://en.wikipedia.org/wiki/List_of_unit_testing_frameworks).
 
-## Supported testing features
+## Supported Testing Features
 
-### Testable program
+### Testable Program
 
-- Test target
+- Test targets
   - JSR procedure
   - NMI procedure
   - IRQ procedure
@@ -57,11 +59,11 @@ This tool enables [unit testing](https://en.wikipedia.org/wiki/Unit_testing) for
 - Type of interrupts that can occur during testing
   - NMI
   - IRQ
-- Mockable call instructions that set the result in register and memory
+- Mockable call instructions that set the results in registers and memory
   - JSR
   - JMP
 
-### Condition
+### Conditions
 
 - Setting up device conditions before testing  
   | | Register | Memory | Stack |
@@ -77,19 +79,19 @@ This tool enables [unit testing](https://en.wikipedia.org/wiki/Unit_testing) for
 - Evaluating processor information
   - Cycle count
 
-### Assertion
+### Assertions
 
-- Assertion operators that determine how tests is evaluated
-  - _"eq"_ (Equal to)
-  - _"ne"_ (Not equal to)
-  - _"gt"_ (Greater than)
-  - _"ge"_ (Greater than or equal to)
-  - _"lt"_ (Less than)
-  - _"le"_ (Less than or equal to)
-  - _"anyOf"_ (Any of)  
+- Assertion operators that determine how tests are evaluated
+  - *"eq"* (Equal to)
+  - *"ne"* (Not equal to)
+  - *"gt"* (Greater than)
+  - *"ge"* (Greater than or equal to)
+  - *"lt"* (Less than)
+  - *"le"* (Less than or equal to)
+  - *"anyOf"* (Any of)  
     Representing logical OR operator
   - Composite operators  
-    Same as logical AND operator. e.g. "_gt_"+"_lt_" for range selection
+    Same as logical AND operator. e.g. "*gt*"+"*lt*" for range selection
 - Error handling
   - Write access to readonly memory  
     Able to detect write operations to readonly memory.
@@ -107,54 +109,54 @@ This tool enables [unit testing](https://en.wikipedia.org/wiki/Unit_testing) for
 - Testable coverage
   - [LCOV](https://github.com/linux-test-project/lcov) format
 
-### Test classification
-- Aggregated testing for the entire project
+### Test Classification
+- Aggregating tests for the entire project
 - Common configuration settings for the entire project
 - Grouping of individual tests
 
-### Additional useful feature
+### Additional Useful Features
 
 - When a test terminates with an error, its callback trace can be output.
-- Test evaluations can be executed at any address.
+- Test evaluations can be executed at any memory address.
 - Test ROM images are detected from debug information file.
 
-## Getting started
+## Getting Started
 
 ### Prerequisites
 
-This tool is intended for the projects based on [CC65](https://cc65.github.io/).
+This tool is intended for the projects based on `[CC65](https://cc65.github.io/)`.
 
-The easiest way to install CC65 on [Ubuntu](https://ubuntu.com/) linux is by running:
+The easiest way to install `CC65` on `[Ubuntu](https://ubuntu.com/)` linux is by running:
 
-```
+```console
 # sudo apt-get install cc65
 ```
 
-Verified CA65 version:
+Verified `CA65` version:
 
-```
+```console
 # ca65 --version
 ca65 V2.18 - Ubuntu 2.19-1
 ```
 
 ### Install
 
-Since the tool repository has the submodules, the `--recurse-submodules` option must be specified when cloning:
+Since this tool repository includes submodules, you must specify the `--recurse-submodules` option when cloning:
 
-```
+```console
 # git clone --recurse-submodules https://github.com/AsaiYusuke/6502_test_executor.git
 # cd 6502_test_executor
 # make
 # ./6502_tester --help
 ```
 
-### Run example
+### Running Examples
 
-#### Unit testing
+#### Unit Testing
 
-[Simple example project](https://github.com/AsaiYusuke/6502_test_executor/tree/master/example) includes many test cases that demonstrate the features:
+The [simple example project](https://github.com/AsaiYusuke/6502_test_executor/tree/master/example) includes many test cases that demonstrate the features:
 
-```
+```console
 # cd example
 # make
 mkdir -p build
@@ -169,14 +171,13 @@ rm coverage/lcov.info
 All tests passed.
 ```
 
-#### Coverage
+#### Coverage File
 
-When the project is built, the coverage file is saved.
-It is located on `example/coverage/lcov.info` in case of example project.
+When the project is built, the coverage file is saved in the `example/coverage/lcov.info` in the case of the example project.
 
-The coverage file can be used to populate [Coveralls GitHub Action](https://github.com/marketplace/actions/coveralls-github-action), etc.
+The coverage file can be used to integrate with tools like [Coveralls GitHub Action](https://github.com/marketplace/actions/coveralls-github-action), and more.
 
-The results of the example project can be seen in [Coveralls](https://coveralls.io/github/AsaiYusuke/6502_test_executor).\
+The results of the example project can be seen on [Coveralls](https://coveralls.io/github/AsaiYusuke/6502_test_executor).\
 [![Coverage Status](https://coveralls.io/repos/github/AsaiYusuke/6502_test_executor/badge.svg?branch=master)](https://coveralls.io/github/AsaiYusuke/6502_test_executor?branch=master)
 
 ## Usage
@@ -206,45 +207,45 @@ flowchart LR;
   end
 ```
 
-### Build CA65 project with debug option
+### Build CA65 Project with Debug Option
 
-Build your 6502 project using [CA65 assembler](https://cc65.github.io/doc/ca65.html)/[LD65 linker](https://cc65.github.io/doc/ld65.html) with _debug information generation_ enabled.
+Build your 6502 project using the [CA65 assembler](https://cc65.github.io/doc/ca65.html) and [LD65 linker](https://cc65.github.io/doc/ld65.html) with *debug information generation* enabled.
 
-### Create unit test
+### Create Unit Test
 
-Create test scenario files containing the three key items in JSON format:
+Create test scenario files containing three key items in JSON format:
 
-- _Test target_  
-  the starting address of the test procedure
-- _Setup condition_  
-  the settings of the register and memory to make before the test
-- _Expected condition_  
-  the expected responses of the register and memory after the test
+- *Test target*  
+  The starting address of the test procedure
+- *Setup condition*  
+  The settings of the registers and memory before the test
+- *Expected condition*  
+  The expected responses of the registers and memory after the test
 
-#### JSON Schema file
+#### JSON Schema File
 
-The tool also provides a [JSON Schema](https://json-schema.org/) document that makes it easy to create test scenario files.
+The tool also provides a [JSON Schema](https://json-schema.org/) document that simplifies creating test scenario files.
 
-If you use [Visual Studio Code](https://code.visualstudio.com/), it will tell you about formatting error and element completion candidates based on JSON Schema without any extensions.
+If you use [Visual Studio Code](https://code.visualstudio.com/), it will provide formatting error notifications and auto-completion based on JSON Schema.
 
-### Run test
+### Run Test
 
 Run the tool with the prepared debug information file and test scenario file:
 
-```
+```text
 6502_tester -d <debug information> -t <test scenario>
 ```
 
 Test coverage can also be measured.
-Both the coverage file and the segment names used in the debug information file must be specified to enable.
+Both the coverage file and the segment names used in the debug information file must be specified to enable coverage reporting.
 
-```
+```text
 6502_tester -d <debug information> -t <test scenario> -c <coverage> -s <segment names>
 ```
 
-You can find all command line arguments in help:
+You can find all command-line arguments in the help:
 
-```
+```console
 # ./6502_tester --help
   ./6502_tester {OPTIONS}
 
@@ -273,12 +274,12 @@ You can find all command line arguments in help:
 
 ### Note:
 
-Some options can be specified either as command line arguments or test scenario file ([See example](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/customize.configurations.test.json)).  
-If both are specified, the values in the test scenario file are adopted.
+Some options can be specified either as command-line arguments or test scenario file ([See example](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/customize.configurations.test.json)).  
+If both are specified, the values in the test scenario file take precedence.
 
-## Test scenario examples
+## Test Scenario Examples
 
-### Register conditions
+### Register Conditions
 
 - [Check value of A/X/Y registers](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/register/register.axy.value.test.json)
 - [Check read/write count of A/X/Y registers](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/register/register.axy.count.test.json)
@@ -286,7 +287,7 @@ If both are specified, the values in the test scenario file are adopted.
 - [Check read/write count of Processor status register flags](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/register/register.status.flag.count.test.json)
 - [Check machine when PC register arrives at a specific address](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/register/init.code.test.json)
 
-### Memory conditions
+### Memory Conditions
 
 - [Memory addressing](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/memory/memory.addressing.test.json)
 - [Check value of memory](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/memory/memory.value.check.test.json)
@@ -294,25 +295,25 @@ If both are specified, the values in the test scenario file are adopted.
 - [Batch selection of continuous memory area](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/memory/memory.contiguous.memory.area.test.json)
 - [Sequential change value](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/memory/memory.sequential.change.value.test.json)
 
-### Stack conditions
+### Stack Conditions
 
 - [Check value of stack](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/stack/stack.value.check.test.json)
 - [rts to caller](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/stack/stack.rts.check.test.json)
 
-### Processor conditions
+### Processor Conditions
 
 - [Cycle count information](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/processor/error.timeout.test.json)
 - [Interrupt hooks](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/processor/interrupt.test.json)
 - [Call mocked proc](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/processor/mock.proc.test.json)
 
-### Testable procedures
+### Testable Procedures
 
 - [JSR proc](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/test_type/jsr.test.json)
 - [NMI proc](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/test_type/nmi.test.json)
 - [IRQ proc](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/test_type/irq.test.json)
 - [Address range](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/test_type/address.test.json)
 
-### Error handling
+### Error Handling
 
 - [Write access to readonly memory](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/fail/200/error.readonly.test.json)
 - [Read access from uninitialized memory](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/fail/200/error.uninitialized_memory_read.test.json)
@@ -320,7 +321,7 @@ If both are specified, the values in the test scenario file are adopted.
 - [Access to unauthorized memory](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/fail/200/error.unauthorized_memory_access.test.json)
 - [Illegal instruction](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/fail/200/error.illegal_instruction.test.json)
 
-### Test classification
+### Test Classification
 
 - [Aggregated testing](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/classification/project.test.json)
 - [Common configuration settings](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/fail/200/classification/error.out_of_segment.test.json)
@@ -336,7 +337,7 @@ If both are specified, the values in the test scenario file are adopted.
 
 ## Dependencies
 
-This project uses following project:
+This project uses the following libraries:
 
 - [Gianluca Ghettini's 6502 emulator](https://github.com/gianlucag/mos6502)
   - [Erik Lothe's 6502 Unit test executor](https://github.com/89erik/6502_test_executor)
