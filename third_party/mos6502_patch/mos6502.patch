@@ -1,5 +1,5 @@
 diff --git a/mos6502.cpp b/mos6502.cpp
-index 9d61662..29aedcf 100644
+index c680240..9a1b06d 100644
 --- a/mos6502.cpp
 +++ b/mos6502.cpp
 @@ -29,15 +29,14 @@
@@ -76,15 +76,15 @@ index 9d61662..29aedcf 100644
  
  uint16_t mos6502::Addr_ZEX()
  {
--	uint16_t addr = (Read(pc++) + X) % 256;
-+	uint16_t addr = (memory_access->read(pc++) + X) % 256;
+-	uint16_t addr = (Read(pc++) + X) & 0xFF;
++	uint16_t addr = (memory_access->read(pc++) + X) & 0xFF;
  	return addr;
  }
  
  uint16_t mos6502::Addr_ZEY()
  {
--	uint16_t addr = (Read(pc++) + Y) % 256;
-+	uint16_t addr = (memory_access->read(pc++) + Y) % 256;
+-	uint16_t addr = (Read(pc++) + Y) & 0xFF;
++	uint16_t addr = (memory_access->read(pc++) + Y) & 0xFF;
  	return addr;
  }
  
@@ -114,9 +114,9 @@ index 9d61662..29aedcf 100644
  	uint16_t zeroH;
  	uint16_t addr;
  
--	zeroL = (Read(pc++) + X) % 256;
-+	zeroL = (memory_access->read(pc++) + X) % 256;
- 	zeroH = (zeroL + 1) % 256;
+-	zeroL = (Read(pc++) + X) & 0xFF;
++	zeroL = (memory_access->read(pc++) + X) & 0xFF;
+ 	zeroH = (zeroL + 1) & 0xFF;
 -	addr = Read(zeroL) + (Read(zeroH) << 8);
 +	addr = memory_access->read(zeroL) + (memory_access->read(zeroH) << 8);
  
@@ -128,7 +128,7 @@ index 9d61662..29aedcf 100644
  
 -	zeroL = Read(pc++);
 +	zeroL = memory_access->read(pc++);
- 	zeroH = (zeroL + 1) % 256;
+ 	zeroH = (zeroL + 1) & 0xFF;
 -	addr = Read(zeroL) + (Read(zeroH) << 8) + Y;
 +	addr = memory_access->read(zeroL) + (memory_access->read(zeroH) << 8) + Y;
  
@@ -288,7 +288,7 @@ index 9d61662..29aedcf 100644
  {
 -	uint8_t m = Read(src);
 +	uint8_t m = memory_access->read_data(src);
- 	m = (m - 1) % 256;
+ 	m = (m - 1) & 0xFF;
  	SET_NEGATIVE(m & 0x80);
  	SET_ZERO(!m);
 -	Write(src, m);
@@ -311,7 +311,7 @@ index 9d61662..29aedcf 100644
  {
 -	uint8_t m = Read(src);
 +	uint8_t m = memory_access->read_data(src);
- 	m = (m + 1) % 256;
+ 	m = (m + 1) & 0xFF;
  	SET_NEGATIVE(m & 0x80);
  	SET_ZERO(!m);
 -	Write(src, m);
