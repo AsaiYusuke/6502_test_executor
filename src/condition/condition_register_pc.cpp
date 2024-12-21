@@ -1,5 +1,3 @@
-#include <cstdint>
-
 #include "condition/condition_register_pc.hpp"
 
 #include "util/constant.hpp"

@@ -2,7 +2,6 @@
 
 #include <fstream>
 #include <vector>
-#include <cstdint>
 
 #include "args_parser.hpp"
 #include "emulation/debug_segment.hpp"

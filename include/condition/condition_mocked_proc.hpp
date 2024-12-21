@@ -1,7 +1,5 @@
 #pragma once
 
-#include <cstdint>
-
 #include "nlohmann/json.hpp"
 
 #include "enum/mock_action_type.hpp"

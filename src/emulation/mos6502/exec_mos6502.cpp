@@ -1,5 +1,3 @@
-#include <cstdint>
-
 #include "emulation/mos6502/exec_mos6502.hpp"
 
 exec_mos6502::exec_mos6502(i_memory_access *i_memory_access) : mos6502(i_memory_access)

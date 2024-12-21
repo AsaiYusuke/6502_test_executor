@@ -1,7 +1,5 @@
 #pragma once
 
-#include <cstdint>
-
 #include "condition/condition_stack.hpp"
 #include "condition/message_name.hpp"
 

@@ -4,7 +4,6 @@
 #include <set>
 #include <string>
 #include <vector>
-#include <cstdint>
 
 #include "nlohmann/json.hpp"
 

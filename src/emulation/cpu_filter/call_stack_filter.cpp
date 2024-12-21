@@ -1,5 +1,3 @@
-#include <cstdint>
-
 #include "emulation/cpu_filter/call_stack_filter.hpp"
 
 #include "emulation/cpu_device.hpp"

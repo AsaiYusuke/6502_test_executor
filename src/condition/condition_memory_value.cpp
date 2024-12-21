@@ -1,5 +1,3 @@
-#include <cstdint>
-
 #include "condition/condition_memory_value.hpp"
 
 #include "util/expression_execute.hpp"

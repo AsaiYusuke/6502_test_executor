@@ -1,7 +1,5 @@
 #pragma once
 
-#include <cstdint>
-
 #include "condition/message_name.hpp"
 #include "condition/condition_expression.hpp"
 #include "condition/expression_value.hpp"

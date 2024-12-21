@@ -1,5 +1,3 @@
-#include <cstdint>
-
 #include "emulation/memory_device.hpp"
 
 #include "emulation/emulation_devices.hpp"
