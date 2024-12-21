@@ -7,6 +7,8 @@
 #include "util/expression_execute.hpp"
 #include "util/value_convert.hpp"
 
+using namespace std;
+
 condition_register_a_x_y::condition_register_a_x_y(const emulation_devices *device, const string &_name, json condition)
 {
     name = _name;

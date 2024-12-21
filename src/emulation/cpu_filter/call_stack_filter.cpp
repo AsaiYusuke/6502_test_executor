@@ -3,6 +3,8 @@
 #include "emulation/cpu_device.hpp"
 #include "util/constant.hpp"
 
+using namespace std;
+
 call_stack_filter::call_stack_filter(cpu_device *_cpu)
 {
     cpu = _cpu;

@@ -11,6 +11,8 @@
 #include "condition/condition_mocked_value.hpp"
 #include "util/value_convert.hpp"
 
+using namespace std;
+
 condition::condition(emulation_devices *_device, json condition, json target)
     : condition::condition(_device, condition)
 {

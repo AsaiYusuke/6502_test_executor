@@ -3,6 +3,8 @@
 #include "emulation/cpu_device.hpp"
 #include "util/value_convert.hpp"
 
+using namespace std;
+
 instruction_check_filter::instruction_check_filter(cpu_device *_cpu)
 {
     cpu = _cpu;

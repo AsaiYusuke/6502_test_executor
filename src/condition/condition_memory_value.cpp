@@ -3,6 +3,8 @@
 #include "util/expression_execute.hpp"
 #include "util/value_convert.hpp"
 
+using namespace std;
+
 condition_memory_value::condition_memory_value(const emulation_devices *device, const uint16_t _address, json condition, const bool _permanent, const string &_name)
 {
     address = _address;

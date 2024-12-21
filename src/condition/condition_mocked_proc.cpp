@@ -3,6 +3,8 @@
 #include "condition/condition_mocked_value.hpp"
 #include "util/value_convert.hpp"
 
+using namespace std;
+
 condition_mocked_proc::condition_mocked_proc(emulation_devices *device, json condition)
 {
     entry_point = value_convert::get_address(device, condition["entryPoint"]);

@@ -2,6 +2,8 @@
 
 #include "util/value_convert.hpp"
 
+using namespace std;
+
 condition_interrupt::condition_interrupt(const emulation_devices *device, json condition)
 {
     type = interrupt_name_type_map[condition["type"]];

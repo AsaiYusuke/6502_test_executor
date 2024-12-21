@@ -3,6 +3,8 @@
 #include "util/expression_execute.hpp"
 #include "util/value_convert.hpp"
 
+using namespace std;
+
 condition_register_status_flag_value::condition_register_status_flag_value(const emulation_devices *device, json condition)
 {
     expression = new condition_expression<expression_value, bool>(

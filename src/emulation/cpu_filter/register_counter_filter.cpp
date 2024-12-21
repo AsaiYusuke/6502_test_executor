@@ -2,6 +2,8 @@
 
 #include "emulation/cpu_device.hpp"
 
+using namespace std;
+
 register_counter_filter::register_counter_filter(cpu_device *_cpu)
 {
     cpu = _cpu;

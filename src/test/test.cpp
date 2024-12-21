@@ -18,6 +18,8 @@
 #include "test/test_total_result.hpp"
 #include "util/value_convert.hpp"
 
+using namespace std;
+
 json test::read_json(string path)
 {
     ifstream in(path);

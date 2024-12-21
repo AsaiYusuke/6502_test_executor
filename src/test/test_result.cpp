@@ -4,6 +4,8 @@
 
 #include "emulation/emulation_devices.hpp"
 
+using namespace std;
+
 test_result::test_result() : test_result(test_result_type::OK)
 {
 }

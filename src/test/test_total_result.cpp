@@ -2,6 +2,8 @@
 
 #include "args_parser.hpp"
 
+using namespace std;
+
 test_total_result::test_total_result(args_parser *_args)
 {
     args = _args;

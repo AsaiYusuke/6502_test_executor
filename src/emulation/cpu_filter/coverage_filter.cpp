@@ -3,6 +3,8 @@
 #include "emulation/cpu_device.hpp"
 #include "emulation/debug_info.hpp"
 
+using namespace std;
+
 coverage_filter::coverage_filter(cpu_device *_cpu)
 {
     cpu = _cpu;

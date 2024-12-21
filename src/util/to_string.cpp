@@ -6,6 +6,8 @@
 #include "enum/operator_type.hpp"
 #include "util/value_convert.hpp"
 
+using namespace std;
+
 string to_string(uint8_t value)
 {
     return value_convert::to_hex_string(value);

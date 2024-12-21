@@ -6,6 +6,8 @@
 #include "emulation/debug_segment.hpp"
 #include "exception/file_open.hpp"
 
+using namespace std;
+
 rom_image::rom_image(debug_info *debug)
 {
     for (auto element : debug->get_segment_def_map())

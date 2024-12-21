@@ -1,5 +1,7 @@
 #include "util/expression_execute.hpp"
 
+using namespace std;
+
 bool expression_execute::find(json value)
 {
     if (!value.is_object())

@@ -1,5 +1,7 @@
 #include "condition/condition_register_status_flag_count.hpp"
 
+using namespace std;
+
 condition_register_status_flag_count::condition_register_status_flag_count(const emulation_devices *device, json condition)
 {
     expression = new condition_expression<expression_value, uint8_t>(

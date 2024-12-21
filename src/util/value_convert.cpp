@@ -8,6 +8,8 @@
 #include "exception/parse_abort.hpp"
 #include "util/value_convert.hpp"
 
+using namespace std;
+
 uint16_t value_convert::get_address(const emulation_devices *device, json value)
 {
     uint16_t address;

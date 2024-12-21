@@ -4,6 +4,8 @@
 #include "condition/condition_memory_value.hpp"
 #include "util/value_convert.hpp"
 
+using namespace std;
+
 condition_memory::condition_memory(const emulation_devices *device, json condition)
 {
     auto address = value_convert::get_address(device, condition);

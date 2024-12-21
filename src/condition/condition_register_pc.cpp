@@ -3,6 +3,8 @@
 #include "util/constant.hpp"
 #include "util/value_convert.hpp"
 
+using namespace std;
+
 condition_register_pc::condition_register_pc(const emulation_devices *_device, json condition)
 {
     start_address = value_convert::get_address(_device, condition["start"]);
