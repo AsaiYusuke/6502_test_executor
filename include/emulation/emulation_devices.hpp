@@ -1,6 +1,7 @@
 #pragma once
 
 #include <map>
+#include <cstdint>
 
 #include "nlohmann/json.hpp"
 

@@ -1,6 +1,7 @@
 #include "emulation/emulation_devices.hpp"
 
 #include <stdexcept>
+#include <cstdint>
 
 #include "assert/runtime_error_result.hpp"
 #include "emulation/cpu_device.hpp"

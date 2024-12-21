@@ -1,6 +1,7 @@
 #include "enum/value_type.hpp"
 
 #include <sstream>
+#include <cstdint>
 
 #include "emulation/emulation_devices.hpp"
 #include "emulation/cpu_device.hpp"

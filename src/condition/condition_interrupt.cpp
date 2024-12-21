@@ -1,3 +1,5 @@
+#include <cstdint>
+
 #include "condition/condition_interrupt.hpp"
 
 #include "util/value_convert.hpp"

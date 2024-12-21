@@ -2,6 +2,7 @@
 
 #include <typeinfo>
 #include <vector>
+#include <cstdint>
 
 #include "args_parser.hpp"
 #include "condition/condition_register_a_x_y.hpp"

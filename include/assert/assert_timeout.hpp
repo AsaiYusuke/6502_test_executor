@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 #include "assert/message.hpp"
 #include "assert/runtime_error_result.hpp"
 #include "condition/condition_timeout.hpp"

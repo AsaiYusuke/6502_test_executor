@@ -1,3 +1,5 @@
+#include <cstdint>
+
 #include "condition/condition_mocked_proc.hpp"
 
 #include "condition/condition_mocked_value.hpp"

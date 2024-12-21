@@ -1,3 +1,5 @@
+#include <cstdint>
+
 #include "condition/condition_memory.hpp"
 
 #include "condition/condition_memory_count.hpp"

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 #include "nlohmann/json.hpp"
 
 #include "enum/interrupt_type.hpp"

@@ -1,3 +1,5 @@
+#include <cstdint>
+
 #include "emulation/debug_segment.hpp"
 
 debug_segment::debug_segment(int _id, const string &_name, uint16_t _start, int _size, bool _writable, const string &_image_file_name, int _image_file_offset)

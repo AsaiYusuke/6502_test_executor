@@ -1,3 +1,5 @@
+#include <cstdint>
+
 #include "assert/message.hpp"
 
 #include "condition/message_name.hpp"
