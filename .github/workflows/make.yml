@@ -20,6 +20,9 @@ jobs:
     - name: Install dependent commands
       run: sudo apt-get install cc65
 
+    - name: Check g++ version
+      run: g++ --version
+
     - name: Build
       run: make
 
