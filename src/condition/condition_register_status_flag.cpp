@@ -5,8 +5,6 @@
 #include "util/expression_execute.hpp"
 #include "util/value_convert.hpp"
 
-using namespace std;
-
 condition_register_status_flag::condition_register_status_flag(const emulation_devices *device, const string &_name, json condition)
 {
     name = _name;

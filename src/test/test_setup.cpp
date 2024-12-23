@@ -13,8 +13,6 @@
 #include "emulation/cpu_device.hpp"
 #include "emulation/memory_device.hpp"
 
-using namespace std;
-
 test_setup::test_setup(emulation_devices *device, json condition_json, json target)
     : condition(device, condition_json, target)
 {

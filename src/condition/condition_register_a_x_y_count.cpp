@@ -1,7 +1,5 @@
 #include "condition/condition_register_a_x_y_count.hpp"
 
-using namespace std;
-
 condition_register_a_x_y_count::condition_register_a_x_y_count(const emulation_devices *device, json condition)
 {
     expression = new condition_expression<expression_value, uint8_t>(

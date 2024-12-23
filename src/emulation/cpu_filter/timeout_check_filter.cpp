@@ -3,8 +3,6 @@
 #include "emulation/cpu_device.hpp"
 #include "util/value_convert.hpp"
 
-using namespace std;
-
 timeout_check_filter::timeout_check_filter(cpu_device *_cpu)
 {
     cpu = _cpu;

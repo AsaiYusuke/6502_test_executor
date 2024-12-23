@@ -2,8 +2,6 @@
 
 #include <string>
 
-using namespace std;
-
 runtime_error_result::runtime_error_result(runtime_error_type _type, const string &_message, const vector<uint16_t> &_call_stack)
 {
     type = _type;

@@ -11,8 +11,6 @@
 #include "exception/parse_ignore_entry.hpp"
 #include "util/value_convert.hpp"
 
-using namespace std;
-
 debug_info::debug_info(args_parser *args, json config)
 {
     if (config["debugFile"].is_string())

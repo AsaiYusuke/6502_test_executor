@@ -2,8 +2,6 @@
 
 #include "util/expression_execute.hpp"
 
-using namespace std;
-
 condition_timeout::condition_timeout(const emulation_devices *device, json condition)
 {
     expression =

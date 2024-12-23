@@ -8,8 +8,6 @@
 #include "util/to_string.hpp"
 #include "util/value_convert.hpp"
 
-using namespace std;
-
 string message::error_message(exception &e)
 {
     stringstream ss;

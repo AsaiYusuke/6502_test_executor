@@ -4,8 +4,6 @@
 #include "condition/expression_value.hpp"
 #include "util/expression_execute.hpp"
 
-using namespace std;
-
 condition_memory_count::condition_memory_count(const emulation_devices *device, uint16_t _address, json condition, const string &_name)
 {
     address = _address;

@@ -1,7 +1,5 @@
 #include "util/test_detect.hpp"
 
-using namespace std;
-
 bool test_detect::key_type_check(string key, json::value_t type, json value)
 {
     if (!value.is_object())

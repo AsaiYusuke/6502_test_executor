@@ -3,8 +3,6 @@
 #include "util/expression_execute.hpp"
 #include "util/value_convert.hpp"
 
-using namespace std;
-
 condition_stack::condition_stack(const emulation_devices *device, json condition)
 {
     if (!condition.is_array())

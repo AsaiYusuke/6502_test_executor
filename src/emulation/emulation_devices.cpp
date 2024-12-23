@@ -6,8 +6,6 @@
 #include "emulation/cpu_device.hpp"
 #include "emulation/memory_device.hpp"
 
-using namespace std;
-
 emulation_devices::emulation_devices(const args_parser *args, json config, debug_info *debug)
 {
     memory = new memory_device(this, args, config, debug);

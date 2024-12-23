@@ -17,8 +17,6 @@
 #include "condition/condition_memory.hpp"
 #include "util/value_convert.hpp"
 
-using namespace std;
-
 test_assert::test_assert(string id, emulation_devices *device, json condition_json)
     : result(id), condition(device, condition_json)
 {

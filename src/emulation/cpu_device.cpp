@@ -24,8 +24,6 @@
 #include "enum/cycle_type.hpp"
 #include "util/constant.hpp"
 
-using namespace std;
-
 cpu_device::cpu_device(emulation_devices *_device, const args_parser *args, json config, debug_info *debug)
 {
     device = _device;

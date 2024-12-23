@@ -1,7 +1,5 @@
 #include "emulation/debug_source_line.hpp"
 
-using namespace std;
-
 debug_source_line::debug_source_line(int _file_id, int _segment_id, int _line_number)
 {
     file_id = _file_id;

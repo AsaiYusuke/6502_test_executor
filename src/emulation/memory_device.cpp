@@ -10,8 +10,6 @@
 #include "exception/cpu_runtime_error.hpp"
 #include "util/value_convert.hpp"
 
-using namespace std;
-
 memory_device::memory_device(emulation_devices *_device, const args_parser *args, json config, debug_info *_debug)
 {
     device = _device;

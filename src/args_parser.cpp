@@ -4,8 +4,6 @@
 
 #include "exception/parse_abort.hpp"
 
-using namespace std;
-
 args_parser::args_parser(int argc, char *argv[])
 {
     args::ArgumentParser parser("6502 test executor");
