@@ -6,7 +6,7 @@
 
 ![6502 unit test](6502-unit-test.svg)
 
-This tool enables [unit testing](https://en.wikipedia.org/wiki/Unit_testing) for [MOS Technology 6502](https://en.wikipedia.org/wiki/MOS_Technology_6502) assembly programs on a cross-platform basis.
+This tool enables [unit testing](https://en.wikipedia.org/wiki/Unit_testing) for [MOS Technology 6502](https://en.wikipedia.org/wiki/MOS_Technology_6502) assembly programs across multiple platforms.
 
 ## Table of Contents
 
@@ -25,14 +25,17 @@ This tool enables [unit testing](https://en.wikipedia.org/wiki/Unit_testing) for
     - [Unit Testing](#unit-testing)
     - [Coverage File](#coverage-file)
 - [Usage](#usage)
-  - [Build CA65 Project with Debug Option](#build-ca65-project-with-debug-option)
-  - [Create Unit Test](#create-unit-test)
-  - [Run Test](#run-test)
+  - [Building a CA65 Project with Debug Option](#building-a-ca65-project-with-debug-option)
+  - [Creating Unit Tests](#creating-unit-tests)
+  - [Running Tests](#running-tests)
 - [Test Scenario Examples](#test-scenario-examples)
 - [Dependencies](#dependencies)
 - [License](#license)
 
 ## Basic Design
+
+The 6502 Unit Test Executor is designed to facilitate unit testing of 6502 assembly programs.
+It allows developers to write and execute tests to verify the correctness of their assembly code.
 
 ### *Execute Tests on Built-In Emulator*
 
@@ -51,6 +54,8 @@ This tool enables [unit testing](https://en.wikipedia.org/wiki/Unit_testing) for
 
 ### Testable Program
 
+Supports testing of some of 6502 assembly instructions.
+
 - Test targets
   - JSR procedure
   - NMI procedure
@@ -65,17 +70,21 @@ This tool enables [unit testing](https://en.wikipedia.org/wiki/Unit_testing) for
 
 ### Conditions
 
-- Setting up device conditions before testing  
+- Setting up device conditions before testing
+
   | | Register | Memory | Stack |
   | :---------------------- | :----------------: | :----------------: | :----------------: |
   | Set value | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
   | Mock read value history | | :heavy_check_mark: | |
-- Evaluating device conditions after testing  
+
+- Evaluating device conditions after testing
+
   | | Register | Memory | Stack |
   | :------------------------ | :----------------: | :----------------: | :----------------: |
   | Check value | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
   | Check read/write count | :heavy_check_mark: | :heavy_check_mark: | |
   | Check write value history | | :heavy_check_mark: | |
+
 - Evaluating processor information
   - Cycle count
 
@@ -88,21 +97,21 @@ This tool enables [unit testing](https://en.wikipedia.org/wiki/Unit_testing) for
   - *"ge"* (Greater than or equal to)
   - *"lt"* (Less than)
   - *"le"* (Less than or equal to)
-  - *"anyOf"* (Any of)  
-    Representing logical OR operator
-  - Composite operators  
-    Same as logical AND operator. e.g. "*gt*"+"*lt*" for range selection
+  - *"anyOf"* (Any of)
+    - Representing logical OR operator
+  - Composite operators
+    - Same as logical AND operator. e.g. "*gt*"+"*lt*" for range selection
 - Error handling
-  - Write access to readonly memory  
-    Able to detect write operations to readonly memory.
-  - Read access from uninitialized memory  
-    Able to detect read operations from memory that has never had a write operation.
-  - Access to undefined memory  
-    Able to detect memory operations using addresses outside the segment defined at build time.
-  - Access to unauthorized memory  
-    Able to detect access outside the memory for which authorized area has been defined.
-  - Illegal instruction  
-    Able to detect illegal instruction code execution.
+  - Write access to readonly memory
+    - Able to detect write operations to readonly memory.
+  - Read access from uninitialized memory
+    - Able to detect read operations from memory that has never had a write operation.
+  - Access to undefined memory
+    - Able to detect memory operations using addresses outside the segment defined at build time.
+  - Access to unauthorized memory
+    - Able to detect access outside the memory for which authorized area has been defined.
+  - Illegal instruction
+    - Able to detect illegal instruction code execution.
 
 ### Coverage
 
@@ -110,9 +119,13 @@ This tool enables [unit testing](https://en.wikipedia.org/wiki/Unit_testing) for
   - [LCOV](https://github.com/linux-test-project/lcov) format
 
 ### Test Classification
-- Aggregating tests for the entire project
-- Common configuration settings for the entire project
+
+- Aggregated Testing
+  - Group related tests for collective execution.
+- Common configuration settings
+  - Override project-wide configuration settings as needed.
 - Grouping of individual tests
+  - Organize tests into logical groups.
 
 ### Additional Useful Features
 
@@ -124,9 +137,9 @@ This tool enables [unit testing](https://en.wikipedia.org/wiki/Unit_testing) for
 
 ### Prerequisites
 
-This tool is intended for the projects based on `[CC65](https://cc65.github.io/)`.
+Ensure you have a compatible development environment based on [CC65](https://cc65.github.io/) for building and testing 6502 assembly programs.
 
-The easiest way to install `CC65` on `[Ubuntu](https://ubuntu.com/)` linux is by running:
+The easiest way to install `CC65` on [Ubuntu](https://ubuntu.com/) linux is by running:
 
 ```console
 # sudo apt-get install cc65
@@ -173,7 +186,7 @@ All tests passed.
 
 #### Coverage File
 
-When the project is built, the coverage file is saved in the `example/coverage/lcov.info` in the case of the example project.
+When the project is built, the coverage file is saved in the [example/coverage/lcov.info](example/coverage/lcov.info) in the case of the example project.
 
 The coverage file can be used to integrate with tools like [Coveralls GitHub Action](https://github.com/marketplace/actions/coveralls-github-action), and more.
 
@@ -207,19 +220,24 @@ flowchart LR;
   end
 ```
 
-### Build CA65 Project with Debug Option
+### Building a CA65 Project with Debug Option
 
 Build your 6502 project using the [CA65 assembler](https://cc65.github.io/doc/ca65.html) and [LD65 linker](https://cc65.github.io/doc/ld65.html) with *debug information generation* enabled.
 
-### Create Unit Test
+### Creating Unit Tests
 
 Create test scenario files containing three key items in JSON format:
 
-- *Test target*  
+- *Test target*
+
   The starting address of the test procedure
-- *Setup condition*  
+
+- *Setup condition*
+
   The settings of the registers and memory before the test
-- *Expected condition*  
+
+- *Expected condition*
+
   The expected responses of the registers and memory after the test
 
 #### JSON Schema File
@@ -228,7 +246,7 @@ The tool also provides a [JSON Schema](https://json-schema.org/) document that s
 
 If you use [Visual Studio Code](https://code.visualstudio.com/), it will provide formatting error notifications and auto-completion based on JSON Schema.
 
-### Run Test
+### Running Tests
 
 Run the tool with the prepared debug information file and test scenario file:
 
@@ -272,14 +290,14 @@ You can find all command-line arguments in the help:
 
 ```
 
-### Note:
+### Note
 
 Some options can be specified either as command-line arguments or test scenario file ([See example](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/customize.configurations.test.json)).  
 If both are specified, the values in the test scenario file take precedence.
 
 ## Test Scenario Examples
 
-### Register Conditions
+### Register Condition examples
 
 - [Check value of A/X/Y registers](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/register/register.axy.value.test.json)
 - [Check read/write count of A/X/Y registers](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/register/register.axy.count.test.json)
@@ -287,7 +305,7 @@ If both are specified, the values in the test scenario file take precedence.
 - [Check read/write count of Processor status register flags](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/register/register.status.flag.count.test.json)
 - [Check machine when PC register arrives at a specific address](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/register/init.code.test.json)
 
-### Memory Conditions
+### Memory Condition examples
 
 - [Memory addressing](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/memory/memory.addressing.test.json)
 - [Check value of memory](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/memory/memory.value.check.test.json)
@@ -295,25 +313,25 @@ If both are specified, the values in the test scenario file take precedence.
 - [Batch selection of continuous memory area](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/memory/memory.contiguous.memory.area.test.json)
 - [Sequential change value](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/memory/memory.sequential.change.value.test.json)
 
-### Stack Conditions
+### Stack Condition examples
 
 - [Check value of stack](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/stack/stack.value.check.test.json)
 - [rts to caller](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/stack/stack.rts.check.test.json)
 
-### Processor Conditions
+### Processor Condition examples
 
 - [Cycle count information](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/processor/error.timeout.test.json)
 - [Interrupt hooks](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/processor/interrupt.test.json)
 - [Call mocked proc](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/processor/mock.proc.test.json)
 
-### Testable Procedures
+### Testable Procedure examples
 
 - [JSR proc](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/test_type/jsr.test.json)
 - [NMI proc](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/test_type/nmi.test.json)
 - [IRQ proc](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/test_type/irq.test.json)
 - [Address range](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/test_type/address.test.json)
 
-### Error Handling
+### Error Handling examples
 
 - [Write access to readonly memory](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/fail/200/error.readonly.test.json)
 - [Read access from uninitialized memory](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/fail/200/error.uninitialized_memory_read.test.json)
@@ -321,14 +339,14 @@ If both are specified, the values in the test scenario file take precedence.
 - [Access to unauthorized memory](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/fail/200/error.unauthorized_memory_access.test.json)
 - [Illegal instruction](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/fail/200/error.illegal_instruction.test.json)
 
-### Test Classification
+### Test Classification examples
 
 - [Aggregated testing](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/classification/project.test.json)
 - [Common configuration settings](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/fail/200/classification/error.out_of_segment.test.json)
   - [Override from project-wide configuration settings](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/classification/merge_config.test.json)
 - [Grouping of individual tests](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/classification/group.test.json)
 
-### Misc
+### Misc examples
 
 - [Customize configurations](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/misc/customize.configurations.test.json)
 - [Skip test (ignore)](https://github.com/AsaiYusuke/6502_test_executor/blob/master/example/test/ok/misc/skip.test.json)
