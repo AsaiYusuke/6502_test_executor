@@ -18,14 +18,10 @@ JSON_DIR			:=	$(THIRD_PARTY_DIR)/json/single_include
 JSON_HEADER			:=	$(JSON_DIR)/nlohmann/json.hpp
 
 MOS6502_DIR			:=	$(THIRD_PARTY_DIR)/mos6502
-MOS6502_PATCH_DIR	:=	$(THIRD_PARTY_DIR)/mos6502_patch
-MOS6502_PATCH		:=	$(MOS6502_PATCH_DIR)/mos6502.patch
-MOS6502_BUILD_DIR	:=	$(BUILD_DIR)/mos6502
-MOS6502_CXX			:=	$(MOS6502_BUILD_DIR)/mos6502.cpp
-MOS6502_PATCHED		:=	$(MOS6502_BUILD_DIR)/.patched
+MOS6502_CXX			:=	$(MOS6502_DIR)/mos6502.cpp
 MOS6502_OBJ			:=	$(BUILD_DIR)/mos6502.o
 
-CFLAGS			:=	--std=c++20 -I $(INC_DIR) -I $(ARGS_DIR) -I $(JSON_DIR) -I $(MOS6502_BUILD_DIR) -I $(MOS6502_DIR) -g
+CFLAGS			:=	--std=c++20 -I $(INC_DIR) -I $(ARGS_DIR) -I $(JSON_DIR) -I $(MOS6502_DIR) -g
 
 .PHONY : all exec clean test compile_commands
 
@@ -42,21 +38,14 @@ $(BUILD_DIRS) : % :
 $(TARGET) : $(MOS6502_OBJ) $(OBJECTS)
 	$(CXX) $(CFLAGS) -o $(TARGET) $(OBJECTS) $(MOS6502_OBJ)
 
-$(MOS6502_PATCHED) : $(MOS6502_DIR)/mos6502.cpp $(MOS6502_DIR)/mos6502.h $(MOS6502_PATCH)
-	mkdir -p $(MOS6502_BUILD_DIR)
-	cp $(MOS6502_DIR)/mos6502.cpp $(MOS6502_DIR)/mos6502.h $(MOS6502_BUILD_DIR)/
-	patch --directory=$(MOS6502_BUILD_DIR) --input=$(abspath $(MOS6502_PATCH))
-	touch $@
-
-$(OBJECTS) : | $(MOS6502_PATCHED)
-
 $(BUILD_DIR)/%.o : $(SRC_DIR)/%.cpp
 	$(CXX) $(CFLAGS) -c -o $@ $<
 
-$(MOS6502_OBJ) : $(MOS6502_PATCHED)
+$(MOS6502_OBJ) : $(MOS6502_DIR)/mos6502.cpp $(MOS6502_DIR)/mos6502.h
 	$(CXX) $(CFLAGS) -c -o $@ $(MOS6502_CXX)
 
 test :
+	python3 tools/check_mos6502_opcode_metadata.py
 	make -C example
 
 clean :
