@@ -18,6 +18,8 @@ public:
     {
         switch (type)
         {
+        case operator_type::ANY_OF:
+            break;
         case operator_type::EQ:
             return a == b;
         case operator_type::GE:

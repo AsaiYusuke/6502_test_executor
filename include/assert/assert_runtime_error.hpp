@@ -15,6 +15,8 @@ public:
     {
         switch (error_def->get_type())
         {
+        case runtime_error_type::TIMEOUT:
+            break;
         case runtime_error_type::READONLY_MEMORY:
             result->add_error(
                 message::trace_readonly_memory(

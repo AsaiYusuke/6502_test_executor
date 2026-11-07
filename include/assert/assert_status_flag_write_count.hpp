@@ -3,6 +3,7 @@
 #include "assert/message.hpp"
 #include "condition/condition_register_status_flag.hpp"
 #include "condition/condition_register_status_flag_count.hpp"
+#include "emulation/cpu_device.hpp"
 #include "emulation/emulation_devices.hpp"
 #include "test/test_result.hpp"
 #include "util/to_string.hpp"

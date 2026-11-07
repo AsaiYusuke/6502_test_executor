@@ -2,6 +2,7 @@
 
 #include "assert/message.hpp"
 #include "condition/condition_stack.hpp"
+#include "emulation/cpu_device.hpp"
 #include "emulation/emulation_devices.hpp"
 #include "test/test_result.hpp"
 #include "util/to_string.hpp"

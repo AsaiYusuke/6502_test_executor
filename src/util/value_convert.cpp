@@ -5,7 +5,6 @@
 #include "emulation/emulation_devices.hpp"
 #include "emulation/cpu_device.hpp"
 #include "emulation/memory_device.hpp"
-#include "exception/parse_abort.hpp"
 #include "util/value_convert.hpp"
 
 uint16_t value_convert::get_address(const emulation_devices *device, json value)
@@ -72,6 +71,12 @@ uint16_t value_convert::parse_json_number(const emulation_devices *device, json 
     }
     case json::value_t::null:
         return 0;
+    case nlohmann::detail::value_t::array:
+    case nlohmann::detail::value_t::boolean:
+    case nlohmann::detail::value_t::number_float:
+    case nlohmann::detail::value_t::binary:
+    case nlohmann::detail::value_t::discarded:
+      break;
     }
 
     throw invalid_argument("Invalid format: " + to_string(value));

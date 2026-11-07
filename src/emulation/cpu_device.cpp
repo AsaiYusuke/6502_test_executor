@@ -1,6 +1,5 @@
 #include "emulation/cpu_device.hpp"
 
-#include <typeinfo>
 #include <vector>
 
 #include "args_parser.hpp"
@@ -135,6 +134,9 @@ uint8_t cpu_device::get_register8(register_type type) const
         return cpu->GetY();
     case register_type::P:
         return cpu->GetP();
+    case register_type::S:
+    case register_type::PC:
+        break;
     }
 
     throw logic_error("Invalid register type");
@@ -144,6 +146,12 @@ uint16_t cpu_device::get_register16(register_type type) const
 {
     switch (type)
     {
+    case register_type::A:
+    case register_type::X:
+    case register_type::Y:
+    case register_type::P:
+    case register_type::S:
+        break;
     case register_type::PC:
         return cpu->GetPC();
     }
@@ -163,6 +171,9 @@ void cpu_device::set_register8(register_type type, uint8_t value)
         return cpu->SetY(value);
     case register_type::P:
         return cpu->SetP(value);
+    case register_type::S:
+    case register_type::PC:
+        break;
     }
 
     throw logic_error("Invalid register type");
@@ -225,6 +236,8 @@ bool cpu_device::is_read_register_instruction(register_type type) const
         return cpu->isReadInstrX();
     case register_type::Y:
         return cpu->isReadInstrY();
+    case register_type::P:
+        break;
     case register_type::S:
         return cpu->isReadInstrS();
     case register_type::PC:
@@ -244,6 +257,8 @@ bool cpu_device::is_write_register_instruction(register_type type) const
         return cpu->isWriteInstrX();
     case register_type::Y:
         return cpu->isWriteInstrY();
+    case register_type::P:
+        break;
     case register_type::S:
         return cpu->isWriteInstrS();
     case register_type::PC:

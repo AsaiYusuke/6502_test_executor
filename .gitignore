@@ -4,3 +4,5 @@ example/build
 example/coverage
 example/dist
 build
+/compile_commands.json
+.cache/

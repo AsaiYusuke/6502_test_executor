@@ -1,239 +1,459 @@
 #include "emulation/mos6502/exec_mos6502.hpp"
 
-exec_mos6502::exec_mos6502(i_memory_access *i_memory_access) : mos6502(i_memory_access)
+#include <algorithm>
+#include <mutex>
+#include <stdexcept>
+
+namespace
 {
+using mos6502_metadata::addressing_mode;
+using mos6502_metadata::operation;
+
+size_t readsBeforeOperandData(addressing_mode mode)
+{
+    switch (mode)
+    {
+    case addressing_mode::IMM:
+        return 0;
+    case addressing_mode::ZER:
+    case addressing_mode::ZEX:
+    case addressing_mode::ZEY:
+    case addressing_mode::REL:
+        return 1;
+    case addressing_mode::ABS:
+    case addressing_mode::ABX:
+    case addressing_mode::ABY:
+    case addressing_mode::ABI:
+        return 2;
+    case addressing_mode::INX:
+    case addressing_mode::INY:
+        return 3;
+    case addressing_mode::ACC:
+    case addressing_mode::IMP:
+        return 0;
+    }
+
+    throw logic_error("Invalid MOS 6502 addressing mode");
 }
 
-void exec_mos6502::Exec(Instr i)
+bool readsMemoryOperand(operation op)
 {
-	is_addr_imm = i.addr == &exec_mos6502::Addr_IMM;
-	mos6502::Exec(i);
+    switch (op)
+    {
+    case operation::ADC:
+    case operation::AND:
+    case operation::ASL:
+    case operation::BIT:
+    case operation::CMP:
+    case operation::CPX:
+    case operation::CPY:
+    case operation::DEC:
+    case operation::EOR:
+    case operation::INC:
+    case operation::LDA:
+    case operation::LDX:
+    case operation::LDY:
+    case operation::LSR:
+    case operation::ORA:
+    case operation::ROL:
+    case operation::ROR:
+    case operation::SBC:
+        return true;
+    default:
+        return false;
+    }
+}
+
+bool writesMemoryOperand(operation op)
+{
+    switch (op)
+    {
+    case operation::ASL:
+    case operation::DEC:
+    case operation::INC:
+    case operation::LSR:
+    case operation::ROL:
+    case operation::ROR:
+    case operation::STA:
+    case operation::STX:
+    case operation::STY:
+        return true;
+    default:
+        return false;
+    }
+}
+
+void initializeMos6502InstructionTable()
+{
+    static once_flag initialized;
+    call_once(initialized, [] {
+        mos6502 cpu(nullptr, nullptr);
+    });
+}
+
+class scoped_value
+{
+public:
+    explicit scoped_value(bool &value) : value(value), previous(value)
+    {
+    }
+
+    ~scoped_value()
+    {
+        value = previous;
+    }
+
+private:
+    bool &value;
+    bool previous;
+};
+
+class scoped_cpu
+{
+public:
+    scoped_cpu(exec_mos6502 *&slot, exec_mos6502 *value) : slot(slot), previous(slot)
+    {
+        slot = value;
+    }
+
+    ~scoped_cpu()
+    {
+        slot = previous;
+    }
+
+private:
+    exec_mos6502 *&slot;
+    exec_mos6502 *previous;
+};
+}
+
+thread_local exec_mos6502 *exec_mos6502::active_cpu = nullptr;
+
+exec_mos6502::exec_mos6502(i_memory_access *i_memory_access)
+    : mos6502((initializeMos6502InstructionTable(), &exec_mos6502::readBus),
+              &exec_mos6502::writeBus),
+      memory_access(i_memory_access)
+{
+    if (memory_access == nullptr)
+        throw invalid_argument("MOS 6502 requires memory access");
+}
+
+uint8_t exec_mos6502::readBus(uint16_t address)
+{
+    if (active_cpu == nullptr)
+        throw logic_error("MOS 6502 bus read without an active CPU");
+
+    return active_cpu->readBusValue(address);
+}
+
+void exec_mos6502::writeBus(uint16_t address, uint8_t value)
+{
+    if (active_cpu == nullptr)
+        throw logic_error("MOS 6502 bus write without an active CPU");
+
+    active_cpu->writeBusValue(address, value);
+}
+
+uint8_t exec_mos6502::readBusValue(uint16_t address)
+{
+    if (reset_access)
+        return memory_access->read_raw(address);
+
+    if (!instruction_running)
+        return memory_access->read(address);
+
+    if (!opcode_fetch_seen)
+    {
+        opcode_fetch_seen = true;
+        return memory_access->read(address);
+    }
+
+    auto reads_operand = readsMemoryOperand(active_instruction.op);
+    auto is_operand_data =
+        active_instruction.op == operation::BRK ||
+        (reads_operand &&
+         instruction_reads == readsBeforeOperandData(active_instruction.mode));
+    ++instruction_reads;
+
+    return is_operand_data
+        ? memory_access->read_data(address)
+        : memory_access->read(address);
+}
+
+void exec_mos6502::writeBusValue(uint16_t address, uint8_t value)
+{
+    if (instruction_running && writesMemoryOperand(active_instruction.op))
+        memory_access->write_data(address, value);
+    else
+        memory_access->write(address, value);
+}
+
+mos6502_metadata::instruction exec_mos6502::instructionAtPC() const
+{
+    auto pc = const_cast<exec_mos6502 *>(this)->GetPC();
+    return mos6502_metadata::decode(memory_access->read_raw(pc));
+}
+
+bool exec_mos6502::contains(const vector<operation> &instructions) const
+{
+    return find(instructions.begin(), instructions.end(), instructionAtPC().op) !=
+        instructions.end();
+}
+
+void exec_mos6502::Reset()
+{
+    scoped_cpu binding(active_cpu, this);
+    scoped_value reset_binding(reset_access);
+    reset_access = true;
+    mos6502::Reset();
+    illegal_instruction = false;
+}
+
+void exec_mos6502::Run(int32_t cycles, uint64_t &cycleCount, CycleMethod cycleMethod)
+{
+    scoped_cpu binding(active_cpu, this);
+    scoped_value running_binding(instruction_running);
+    instruction_running = true;
+    opcode_fetch_seen = false;
+    instruction_reads = 0;
+    active_instruction = instructionAtPC();
+    is_addr_imm = active_instruction.mode == addressing_mode::IMM;
+    illegal_instruction = active_instruction.op == operation::invalid;
+    mos6502::Run(cycles, cycleCount, cycleMethod);
+}
+
+void exec_mos6502::NMI()
+{
+    StackPush(static_cast<uint8_t>(GetPC() >> 8));
+    StackPush(static_cast<uint8_t>(GetPC()));
+    StackPush(GetP() | CONSTANT | BREAK);
+    SetP(GetP() | INTERRUPT);
+
+    auto low = memory_access->read(0xFFFA);
+    auto high = memory_access->read(0xFFFB);
+    SetPC(static_cast<uint16_t>((high << 8) | low));
+}
+
+void exec_mos6502::IRQ()
+{
+    if ((GetP() & INTERRUPT) != 0)
+        return;
+
+    StackPush(static_cast<uint8_t>(GetPC() >> 8));
+    StackPush(static_cast<uint8_t>(GetPC()));
+    StackPush(GetP() | CONSTANT | BREAK);
+    SetP(GetP() | INTERRUPT);
+
+    auto low = memory_access->read(0xFFFE);
+    auto high = memory_access->read(0xFFFF);
+    SetPC(static_cast<uint16_t>((high << 8) | low));
 }
 
 void exec_mos6502::SetP(uint8_t value)
 {
-	status = value;
+    mos6502::SetP(value);
 }
 
 void exec_mos6502::SetA(uint8_t value)
 {
-	A = value;
+    mos6502::SetA(value);
 }
 
 void exec_mos6502::SetX(uint8_t value)
 {
-	X = value;
+    mos6502::SetX(value);
 }
 
 void exec_mos6502::SetY(uint8_t value)
 {
-	Y = value;
+    mos6502::SetY(value);
 }
 
 void exec_mos6502::SetPC(uint16_t value)
 {
-	pc = value;
+    mos6502::SetPC(value);
 }
 
 void exec_mos6502::StackPush(uint8_t byte)
 {
-	mos6502::StackPush(byte);
+    auto stack_pointer = GetS();
+    memory_access->write(static_cast<uint16_t>(0x0100 | stack_pointer), byte);
+    SetS(static_cast<uint8_t>(stack_pointer - 1));
 }
 
 uint8_t exec_mos6502::StackPop()
 {
-	return mos6502::StackPop();
+    auto stack_pointer = static_cast<uint8_t>(GetS() + 1);
+    SetS(stack_pointer);
+    return memory_access->read(static_cast<uint16_t>(0x0100 | stack_pointer));
 }
 
 bool exec_mos6502::isAddrImm() const
 {
-	return is_addr_imm;
+    return is_addr_imm;
 }
 
 bool exec_mos6502::isIllegalInstr() const
 {
-	return illegalOpcode;
+    return illegal_instruction;
 }
 
 bool exec_mos6502::isCallInstr() const
 {
-	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-	return find(callInstr.begin(), callInstr.end(), instr) != callInstr.end();
+    return contains(callInstr);
 }
 
 bool exec_mos6502::isReturnInstr() const
 {
-	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-	return find(returnInstr.begin(), returnInstr.end(), instr) != returnInstr.end();
+    return contains(returnInstr);
 }
 
 bool exec_mos6502::isReadInstrA() const
 {
-	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-	return find(readInstrA.begin(), readInstrA.end(), instr) != readInstrA.end();
+    return contains(readInstrA);
 }
 
 bool exec_mos6502::isWriteInstrA() const
 {
-	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-	return find(writeInstrA.begin(), writeInstrA.end(), instr) != writeInstrA.end();
+    return contains(writeInstrA);
 }
 
 bool exec_mos6502::isReadInstrX() const
 {
-	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-	return find(readInstrX.begin(), readInstrX.end(), instr) != readInstrX.end();
+    return contains(readInstrX);
 }
 
 bool exec_mos6502::isWriteInstrX() const
 {
-	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-	return find(writeInstrX.begin(), writeInstrX.end(), instr) != writeInstrX.end();
+    return contains(writeInstrX);
 }
 
 bool exec_mos6502::isReadInstrY() const
 {
-	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-	return find(readInstrY.begin(), readInstrY.end(), instr) != readInstrY.end();
+    return contains(readInstrY);
 }
 
 bool exec_mos6502::isWriteInstrY() const
 {
-	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-	return find(writeInstrY.begin(), writeInstrY.end(), instr) != writeInstrY.end();
+    return contains(writeInstrY);
 }
 
 bool exec_mos6502::isReadInstrNegative() const
 {
-	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-	return find(readInstrNegative.begin(), readInstrNegative.end(), instr) != readInstrNegative.end();
+    return contains(readInstrNegative);
 }
 
 bool exec_mos6502::isWriteInstrNegative() const
 {
-	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-	return find(writeInstrNegative.begin(), writeInstrNegative.end(), instr) != writeInstrNegative.end();
+    return contains(writeInstrNegative);
 }
 
 bool exec_mos6502::isReadInstrOverflow() const
 {
-	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-	return find(readInstrOverflow.begin(), readInstrOverflow.end(), instr) != readInstrOverflow.end();
+    return contains(readInstrOverflow);
 }
 
 bool exec_mos6502::isWriteInstrOverflow() const
 {
-	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-	return find(writeInstrOverflow.begin(), writeInstrOverflow.end(), instr) != writeInstrOverflow.end();
+    return contains(writeInstrOverflow);
 }
 
 bool exec_mos6502::isReadInstrConstant() const
 {
-	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-	return find(readInstrConstant.begin(), readInstrConstant.end(), instr) != readInstrConstant.end();
+    return contains(readInstrConstant);
 }
 
 bool exec_mos6502::isWriteInstrConstant() const
 {
-	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-	return find(writeInstrConstant.begin(), writeInstrConstant.end(), instr) != writeInstrConstant.end();
+    return contains(writeInstrConstant);
 }
 
 bool exec_mos6502::isReadInstrBreak() const
 {
-	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-	return find(readInstrBreak.begin(), readInstrBreak.end(), instr) != readInstrBreak.end();
+    return contains(readInstrBreak);
 }
 
 bool exec_mos6502::isWriteInstrBreak() const
 {
-	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-	return find(writeInstrBreak.begin(), writeInstrBreak.end(), instr) != writeInstrBreak.end();
+    return contains(writeInstrBreak);
 }
 
 bool exec_mos6502::isReadInstrDecimal() const
 {
-	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-	return find(readInstrDecimal.begin(), readInstrDecimal.end(), instr) != readInstrDecimal.end();
+    return contains(readInstrDecimal);
 }
 
 bool exec_mos6502::isWriteInstrDecimal() const
 {
-	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-	return find(writeInstrDecimal.begin(), writeInstrDecimal.end(), instr) != writeInstrDecimal.end();
+    return contains(writeInstrDecimal);
 }
 
 bool exec_mos6502::isReadInstrInterrupt() const
 {
-	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-	return find(readInstrInterrupt.begin(), readInstrInterrupt.end(), instr) != readInstrInterrupt.end();
+    return contains(readInstrInterrupt);
 }
 
 bool exec_mos6502::isWriteInstrInterrupt() const
 {
-	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-	return find(writeInstrInterrupt.begin(), writeInstrInterrupt.end(), instr) != writeInstrInterrupt.end();
+    return contains(writeInstrInterrupt);
 }
 
 bool exec_mos6502::isReadInstrZero() const
 {
-	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-	return find(readInstrZero.begin(), readInstrZero.end(), instr) != readInstrZero.end();
+    return contains(readInstrZero);
 }
 
 bool exec_mos6502::isWriteInstrZero() const
 {
-	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-	return find(writeInstrZero.begin(), writeInstrZero.end(), instr) != writeInstrZero.end();
+    return contains(writeInstrZero);
 }
 
 bool exec_mos6502::isReadInstrCarry() const
 {
-	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-	return find(readInstrCarry.begin(), readInstrCarry.end(), instr) != readInstrCarry.end();
+    return contains(readInstrCarry);
 }
 
 bool exec_mos6502::isWriteInstrCarry() const
 {
-	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-	return find(writeInstrCarry.begin(), writeInstrCarry.end(), instr) != writeInstrCarry.end();
+    return contains(writeInstrCarry);
 }
 
 bool exec_mos6502::isReadInstrS() const
 {
-	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-	return find(readInstrS.begin(), readInstrS.end(), instr) != readInstrS.end();
+    return contains(readInstrS);
 }
 
 bool exec_mos6502::isWriteInstrS() const
 {
-	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-	return find(writeInstrS.begin(), writeInstrS.end(), instr) != writeInstrS.end();
+    return contains(writeInstrS);
 }
 
 bool exec_mos6502::isReadInstrPC() const
 {
-	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-	return find(readInstrPC.begin(), readInstrPC.end(), instr) != readInstrPC.end();
+    return contains(readInstrPC);
 }
 
 bool exec_mos6502::isWriteInstrPC() const
 {
-	auto instr = InstrTable[memory_access->read_raw(pc)].code;
-	return find(writeInstrPC.begin(), writeInstrPC.end(), instr) != writeInstrPC.end();
+    return contains(writeInstrPC);
 }
 
 void exec_mos6502::forceRts()
 {
-	Op_RTS(0);
+    auto low = StackPop();
+    auto high = StackPop();
+    SetPC(static_cast<uint16_t>(((high << 8) | low) + 1));
 }
 
 void exec_mos6502::forceJmp(uint16_t address)
 {
-	Op_JMP(address);
+    SetPC(address);
 }
 
 void exec_mos6502::forceJsr(uint16_t address)
 {
-	Op_JSR(address);
+    auto return_address = static_cast<uint16_t>(GetPC() - 1);
+    StackPush(static_cast<uint8_t>(return_address >> 8));
+    StackPush(static_cast<uint8_t>(return_address));
+    SetPC(address);
 }

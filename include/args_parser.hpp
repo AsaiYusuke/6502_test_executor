@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 #include "args.hxx"
 
 #include "enum/test_result_type.hpp"
