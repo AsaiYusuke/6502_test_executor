@@ -1,7 +1,7 @@
 #include "test/test.hpp"
 
 #include <fstream>
-#include <sstream>
+#include <memory>
 #include <string>
 
 #include "args_parser.hpp"
@@ -66,7 +66,8 @@ bool test::execute()
     {
         json test_config = config;
         test_config.merge_patch(test_scenario["config"]);
-        device = new emulation_devices(args, test_config, debug);
+        auto device_owner = make_unique<emulation_devices>(args, test_config, debug);
+        device = device_owner.get();
         num_tests += traverse(
             device,
             &total_result,

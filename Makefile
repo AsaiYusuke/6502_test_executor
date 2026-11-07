@@ -46,6 +46,7 @@ $(MOS6502_OBJ) : $(MOS6502_DIR)/mos6502.cpp $(MOS6502_DIR)/mos6502.h
 
 test :
 	python3 tools/check_mos6502_opcode_metadata.py
+	python3 tools/check_rom_image_validation.py
 	make -C example
 
 clean :

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <map>
+#include <memory>
 
 #include "nlohmann/json.hpp"
 
@@ -20,12 +20,13 @@ class runtime_error_result;
 class emulation_devices
 {
 private:
-    cpu_device *cpu;
-    memory_device *memory;
+    unique_ptr<cpu_device> cpu;
+    unique_ptr<memory_device> memory;
     vector<runtime_error_result *> errors;
 
 public:
     emulation_devices(const args_parser *args, json config, debug_info *debug);
+    ~emulation_devices();
     void clear(const condition_register_pc *pc, const vector<uint8_t> &stack);
     cpu_device *get_cpu() const;
     memory_device *get_memory() const;

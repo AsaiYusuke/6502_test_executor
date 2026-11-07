@@ -1,32 +1,40 @@
 #include "emulation/emulation_devices.hpp"
 
-#include <stdexcept>
-
 #include "assert/runtime_error_result.hpp"
 #include "emulation/cpu_device.hpp"
 #include "emulation/memory_device.hpp"
 
 emulation_devices::emulation_devices(const args_parser *args, json config, debug_info *debug)
 {
-    memory = new memory_device(this, args, config, debug);
-    cpu = new cpu_device(this, args, config, debug);
+    memory = make_unique<memory_device>(this, args, config, debug);
+    cpu = make_unique<cpu_device>(this, args, config, debug);
+}
+
+emulation_devices::~emulation_devices()
+{
+    cpu.reset();
+    memory.reset();
+    for (auto error : errors)
+        delete error;
 }
 
 void emulation_devices::clear(const condition_register_pc *pc, const vector<uint8_t> &stack)
 {
     memory->clear();
     cpu->clear(pc, stack);
+    for (auto error : errors)
+        delete error;
     errors.clear();
 }
 
 cpu_device *emulation_devices::get_cpu() const
 {
-    return cpu;
+    return cpu.get();
 }
 
 memory_device *emulation_devices::get_memory() const
 {
-    return memory;
+    return memory.get();
 }
 
 uint16_t emulation_devices::get_address(const string &label) const
