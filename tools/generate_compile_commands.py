@@ -25,7 +25,7 @@ def main() -> None:
     database = [
         {
             "directory": str(root),
-            "file": str((root / source).resolve()),
+            "file": str(source),
             "arguments": [
                 *compiler,
                 *flags,
@@ -39,8 +39,7 @@ def main() -> None:
         for source, output in entries
     ]
 
-    destination = root / build_dir / "compile_commands.json"
-    destination.parent.mkdir(parents=True, exist_ok=True)
+    destination = root / "compile_commands.json"
     destination.write_text(json.dumps(database, indent=2) + "\n", encoding="utf-8")
 
 
