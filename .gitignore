@@ -4,3 +4,4 @@ example/build
 example/coverage
 example/dist
 build
+.cache/
