@@ -1,6 +1,5 @@
 import json
 import subprocess
-import sys
 import tempfile
 from pathlib import Path
 
@@ -54,7 +53,7 @@ def run_tester(
 
 
 def main():
-    executable = str(Path(sys.argv[1]).resolve())
+    executable = str((Path(__file__).resolve().parent.parent / "6502_tester").resolve())
 
     with tempfile.TemporaryDirectory() as temporary_dir:
         root = Path(temporary_dir)
