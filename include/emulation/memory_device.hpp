@@ -1,6 +1,7 @@
 #pragma once
 
 #include <map>
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -23,7 +24,7 @@ private:
     emulation_devices *device;
 
     debug_info *debug;
-    rom_image *rom;
+    unique_ptr<rom_image> rom;
 
     map<uint16_t, uint8_t> ram;
 
@@ -41,6 +42,7 @@ private:
 
 public:
     memory_device(emulation_devices *_device, const args_parser *args, json config, debug_info *debug);
+    ~memory_device();
     vector<int> get_detected_remove_segment_ids() const;
     void clear();
     string get_source_line(uint16_t address) const;

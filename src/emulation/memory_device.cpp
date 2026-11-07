@@ -1,5 +1,7 @@
 #include "emulation/memory_device.hpp"
 
+#include <memory>
+
 #include "emulation/emulation_devices.hpp"
 #include "emulation/cpu_device.hpp"
 #include "emulation/debug_info.hpp"
@@ -15,7 +17,7 @@ memory_device::memory_device(emulation_devices *_device, const args_parser *args
     device = _device;
 
     debug = _debug;
-    rom = new rom_image(debug);
+    rom = make_unique<rom_image>(debug);
 
     if (config["testMemoryAccess"]["feature"].is_array())
     {
@@ -57,6 +59,8 @@ memory_device::memory_device(emulation_devices *_device, const args_parser *args
             debug->add_segment_def(-1, "CPU_STACK", 0x100, 0x100, true);
             debug->add_segment_def(-1, "NES_PPU_PORTS", 0x2000, 0x2020, true);
             break;
+        case platform_type::UNKNOWN:
+            break;
         }
 
         remove_segment_ids = get_detected_remove_segment_ids();
@@ -87,22 +91,37 @@ memory_device::memory_device(emulation_devices *_device, const args_parser *args
         debug->remove_segment_def(id);
 
     if (config["testMemoryAccess"]["authorizedList"].is_array())
+    {
         for (auto &authorized_def : config["testMemoryAccess"]["authorizedList"])
+        {
             if (authorized_def["start"].is_object() && !authorized_def["size"].is_null())
+            {
                 debug->add_authorized_segment_def(
                     value_convert::get_address(device, authorized_def["start"]),
                     value_convert::parse_json_number(device, authorized_def["size"]));
+            }
             else if (authorized_def["name"].is_string())
+            {
                 debug->add_authorized_segment_def(authorized_def["name"].get<string>());
+            }
             else if (authorized_def["detect"].is_boolean() && authorized_def["detect"].get<bool>())
+            {
                 switch (rom->detect_platform())
                 {
                 case platform_type::NES:
                     debug->add_authorized_segment_def(0x100, 0x100);
                     debug->add_authorized_segment_def(0x2000, 0x2020);
                     break;
+                case platform_type::UNKNOWN:
+                    break;
                 }
+            }
+        }
+    }
 }
+
+memory_device::~memory_device()
+    = default;
 
 vector<int> memory_device::get_detected_remove_segment_ids() const
 {
@@ -113,6 +132,8 @@ vector<int> memory_device::get_detected_remove_segment_ids() const
         for (auto element : debug->get_segment_def_map())
             if (!element.second->is_nes_cpu_memory())
                 remove_ids.push_back(element.first);
+        break;
+    case platform_type::UNKNOWN:
         break;
     }
     return remove_ids;
@@ -174,10 +195,7 @@ uint8_t memory_device::read(uint16_t address)
     {
         debug_segment *segment_def = debug->get_segment_def(address);
         if (segment_def->is_readonly())
-        {
-            auto image = rom->get(segment_def->get_id());
-            return image[segment_def->get_image_file_address(address)];
-        }
+            return rom->get(segment_def->get_id(), segment_def->get_image_file_address(address));
     }
     catch (const cpu_runtime_error &e)
     {
@@ -217,10 +235,7 @@ uint8_t memory_device::read_raw(uint16_t address)
     {
         debug_segment *segment_def = debug->get_segment_def(address);
         if (segment_def->is_readonly())
-        {
-            auto image = rom->get(segment_def->get_id());
-            return image[segment_def->get_image_file_address(address)];
-        }
+            return rom->get(segment_def->get_id(), segment_def->get_image_file_address(address));
     }
     catch (const cpu_runtime_error &e)
     {

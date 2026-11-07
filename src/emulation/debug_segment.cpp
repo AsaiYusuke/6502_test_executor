@@ -21,9 +21,9 @@ bool debug_segment::is_nes_cpu_memory() const
     return start != 0x0 || image_file_name.empty();
 }
 
-uint16_t debug_segment::get_image_file_address(uint16_t address) const
+uint64_t debug_segment::get_image_file_address(uint16_t address) const
 {
-    return image_file_offset + address - start;
+    return static_cast<uint64_t>(image_file_offset) + address - start;
 }
 
 int debug_segment::get_id() const
