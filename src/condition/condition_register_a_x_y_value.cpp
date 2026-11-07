@@ -1,7 +1,5 @@
 #include "condition/condition_register_a_x_y_value.hpp"
 
-#include <iostream>
-
 #include "util/expression_execute.hpp"
 #include "util/value_convert.hpp"
 
