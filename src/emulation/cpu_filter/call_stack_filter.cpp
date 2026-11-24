@@ -20,6 +20,7 @@ bool call_stack_filter::pre()
     isCallInstr = false;
     isReturnInstr = false;
     isInterruptInstr = false;
+    willReturn = false;
 
     pre_pc = cpu->get_register16(register_type::PC);
 
@@ -30,8 +31,9 @@ bool call_stack_filter::pre()
     }
     else if (cpu->is_return_instruction())
     {
-        if (call_stack.back().first == inst_type::call)
+        if (!call_stack.empty() && call_stack.back().first == inst_type::call)
         {
+            willReturn = true;
             call_stack.pop_back();
             call_stack.pop_back();
         }
@@ -47,8 +49,6 @@ bool call_stack_filter::pre()
         call_stack.push_back(make_pair(inst_type::call, pre_pc));
         isInterruptInstr = true;
     }
-
-    willReturn = cpu->is_return_instruction() && call_stack.back().first == inst_type::call;
 
     return true;
 }
